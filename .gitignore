@@ -1,2 +1,5 @@
 # Qt Creator user files.
 *.user*
+
+# Qt MOC generated files.
+*.moc
