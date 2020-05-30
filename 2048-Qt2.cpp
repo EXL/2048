@@ -63,7 +63,8 @@ class Board : public QWidget {
 	//Tile *myTiles[boardSize];
 
 	// TODO:
-	QVector<Tile> myTiles;
+	//QVector<Tile> myTiles;
+	Tile *myTiles[boardSize];
 
 	bool myWin;
 	bool myLose;
@@ -73,25 +74,28 @@ class Board : public QWidget {
 		myScore = 0;
 		myWin = false;
 		myLose = false;
-		myTiles.resize(boardSize);
+		// myTiles.resize(boardSize);
 		for (uint i = 0; i < boardSize; i++) {
-			myTiles.insert(i, new Tile(0));
+			myTiles[i] = new Tile(0);
+			// myTiles.insert(i, new Tile(0));
 		}
 		addTile();
 		addTile();
 	}
 	void addTile() {
-		QVector<Tile> list = availableSpace();
+		QList<Tile> list = availableSpace();
 		if (!list.isEmpty()) {
-			uint index = (uint) (mathRandom() * list.size()) % list.size();
+			uint index = (uint) (mathRandom() * list.count()) % list.count();
 			Tile *emptyTile = list.at(index);
-			emptyTile->value = (mathRandom() < 0.9) ? 512 : 2;
+			emptyTile->value = (mathRandom() < 0.9) ? 2 : 4;
 		}
 	}
-	QVector<Tile> availableSpace() {
-		QVector<Tile> list(boardSize);
+	QList<Tile> availableSpace() {
+		QList<Tile> list;
 		for (uint i = 0; i < boardSize; ++i) {
-			list.insert(i, myTiles.at(i));
+			if (myTiles[i]->isEmpty()) {
+				list.append(myTiles[i]);
+			}
 		}
 		return list;
 	}
@@ -111,10 +115,10 @@ class Board : public QWidget {
 		return false;
 	}
 	Tile *tileAt(uint x, uint y) {
-		return myTiles.at(x + y * 4);
+		return myTiles[x + y * 4];
 	}
 	bool isFull() {
-		return availableSpace().size() == 0;
+		return availableSpace().count() == 0;
 	}
 	QVector<Tile> getLine(uint index) {
 		QVector<Tile> result(horizontal);
@@ -142,7 +146,10 @@ class Board : public QWidget {
 		} else {
 			QVector<Tile> vector(horizontal);
 			ensureSize(list, horizontal);
-			list.toVector(&vector);
+			for (int i = 0; i < horizontal; ++i) {
+				vector.insert(i, list.at(i));
+			}
+			// list.toVector(&vector);
 			return vector;
 		}
 	}
@@ -181,8 +188,8 @@ class Board : public QWidget {
 		}
 	}
 	void setLine(uint index, QVector<Tile> re) {
-		for (uint i = 0; i < vertical; ++i) {
-			myTiles.insert(index * 4 + i, re.at(i));
+		for (uint i = 0; i < horizontal; ++i) {
+			myTiles[index * 4 + i] = re.at(i);
 		}
 		/// System.arraycopy(re, 0, myTiles, index * 4, 4); ???
 	}
@@ -202,8 +209,9 @@ class Board : public QWidget {
 
 		return true;
 	}
-	QVector<Tile> rotate(int angle) {
-		QVector<Tile> newTiles(boardSize);
+	/*QVector<Tile>*/ void rotate(int angle) {
+		Tile *newTiles[boardSize];
+		// QVector<Tile> newTiles(boardSize);
 		int offsetX = 3, offsetY = 3;
 		if (angle == 90) {
 			offsetY = 0;
@@ -219,10 +227,12 @@ class Board : public QWidget {
 			for (int y = 0; y < vertical; y++ ) {
 				int newX = (x * cos) - (y * sin) + offsetX;
 				int newY = (x * sin) + (y * cos) + offsetY;
-				newTiles.insert((newX) + (newY) * 4, tileAt(x, y));
+				newTiles[(newX) + (newY) * 4] = tileAt(x, y);
 			}
 		}
-		return newTiles;
+		for (int i = 0; i < boardSize; ++i) {
+			myTiles[i] = newTiles[i];
+		}
 	}
 	void left() {
 		bool needAddTile = false;
@@ -239,19 +249,19 @@ class Board : public QWidget {
 		}
 	}
 	void right() {
-		myTiles = rotate(180);
+		rotate(180);
 		left();
-		myTiles = rotate(180);
+		rotate(180);
 	}
 	void up() {
-		myTiles = rotate(270);
+		rotate(270);
 		left();
-		myTiles = rotate(90);
+		rotate(90);
 	}
 	void down() {
-		myTiles = rotate(90);
+		rotate(90);
 		left();
-		myTiles = rotate(270);
+		rotate(270);
 	}
 	void drawTile(QPainter &painter, Tile *tile, int x, int y) {
 		int value = tile->value;
@@ -313,7 +323,7 @@ protected:
 		painter.fillRect(0, 0, width(), height(), QBrush(QColor(BG_COLOR)));
 		for (int y = 0; y < vertical; y++) {
 			for (int x = 0; x < horizontal; x++) {
-				drawTile(painter, myTiles.at(x + y * 4), x, y);
+				drawTile(painter, myTiles[x + y * 4], x, y);
 			}
 		}
 		if (myWin || myLose) {
