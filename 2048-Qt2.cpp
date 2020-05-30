@@ -2,12 +2,13 @@
 #include <qevent.h>
 #include <qpainter.h>
 #include <qapplication.h>
-#include <qvector.h>
-#include <qlist.h>
+//#include <qvector.h>
+//#include <qlist.h>
 #include <qfont.h>
 #include <qfontmetrics.h>
 
 #include <algorithm>
+#include <vector>
 
 #include <cstdlib>
 #include <cmath>
@@ -33,6 +34,9 @@ struct Tile {
 
 	Tile(int value) {
 		this->value = value;
+	}
+	~Tile() {
+		qDebug("Deleted!");
 	}
 	bool isEmpty() {
 		return (value == 0);
@@ -84,21 +88,21 @@ class Board : public QWidget {
 		addTile();
 	}
 	void addTile() {
-		QList<Tile> list = availableSpace();
-		if (!list.isEmpty()) {
-			uint index = (uint) (mathRandom() * list.count()) % list.count();
-			Tile *emptyTile = list.at(index);
+		std::vector<Tile *> vector = availableSpace();
+		if (!vector.empty()) {
+			uint index = (uint) (mathRandom() * vector.size()) % vector.size();
+			Tile *emptyTile = vector[index];
 			emptyTile->value = (mathRandom() < 0.9) ? 2 : 4;
 		}
 	}
-	QList<Tile> availableSpace() {
-		QList<Tile> list;
+	std::vector<Tile *> availableSpace() {
+		std::vector<Tile *> vector;
 		for (uint i = 0; i < boardSize; ++i) {
 			if (myTiles[i]->isEmpty()) {
-				list.append(myTiles[i]);
+				vector.push_back(myTiles[i]);
 			}
 		}
-		return list;
+		return vector;
 	}
 	bool canMove() {
 		if (!isFull()) {
@@ -119,17 +123,18 @@ class Board : public QWidget {
 		return myTiles[x + y * 4];
 	}
 	bool isFull() {
-		return availableSpace().count() == 0;
+		return availableSpace().size() == 0;
 	}
-	QVector<Tile> getLine(uint index) {
-		QVector<Tile> result(horizontal);
+	std::vector<Tile *> getLine(uint index) {
+		std::vector<Tile *> result;
 		for (uint i = 0; i < horizontal; i++) {
-			result.insert(i, tileAt(i, index));
+			result.push_back(tileAt(i, index));
 		}
 		return result;
 	}
-	QVector<Tile> mergeLine(QVector<Tile> oldLine) {
-		QList<Tile> list;
+	std::vector<Tile *> mergeLine(std::vector<Tile *> oldLine) {
+		// QList<Tile> list;
+		std::vector<Tile *> vector;
 		for (int i = 0; i < horizontal && !oldLine[i]->isEmpty(); i++) {
 			int num = oldLine.at(i)->value;
 			if (i < 3 && oldLine.at(i)->value == oldLine.at(i + 1)->value) {
@@ -140,30 +145,31 @@ class Board : public QWidget {
 				}
 				i++;
 			}
-			list.append(new Tile(num));
+			vector.push_back(new Tile(num));
 		}
-		if (list.count() == 0) {
+		if (vector.size() == 0) {
 			return oldLine;
 		} else {
-			QVector<Tile> vector(horizontal);
-			ensureSize(list, horizontal);
-			for (int i = 0; i < horizontal; ++i) {
-				vector.insert(i, list.at(i));
-			}
+			// QVector<Tile> vector(horizontal);
+			ensureSize(vector, horizontal);
+			//for (int i = 0; i < horizontal; ++i) {
+			//	vector.insert(i, list.at(i));
+			//}
 			// list.toVector(&vector);
 			return vector;
 		}
 	}
-	void ensureSize(QList<Tile> &l, uint s) {
-		while (l.count() != s) {
-			l.append(new Tile(0));
+	void ensureSize(std::vector<Tile *> &v, uint s) {
+		while (v.size() != s) {
+			v.push_back(new Tile(0));
 		}
 	}
-	QVector<Tile> moveLine(QVector<Tile> oldLine) {
-		QList<Tile> l;
+	std::vector<Tile *> moveLine(std::vector<Tile *> oldLine) {
+		std::vector<Tile *> vector;
+		//QList<Tile> l;
 		for (uint i = 0; i < horizontal; i++) {
-			if (!oldLine.at(i)->isEmpty()) {
-				l.append(oldLine.at(i));
+			if (!oldLine[i]->isEmpty()) {
+				vector.push_back(oldLine[i]);
 			}
 		}
 		///////////// ??????????????????????????????????????????????
@@ -172,38 +178,40 @@ class Board : public QWidget {
 //		for (int i = reversed.count() - 1; i >= 0; --i) {
 //			l.append(reversed.at(i));
 //		}
-		if (l.count() == 0) {
+		if (vector.size() == 0) {
 			return oldLine;
 		} else {
-			QVector<Tile> newLine(horizontal);
-			ensureSize(l, horizontal);
-			for (uint i = 0; i < horizontal; ++i) {
+			// QVector<Tile> newLine(horizontal);
+			ensureSize(vector, horizontal);
+			// for (uint i = 0; i < horizontal; ++i) {
 				/// ????????????????????????????????????????????????????????
 				/// newLine[i] = l.removeFirst();
 				///
 				//newLine.insert(i, l.at(i));
 				//l.removeFirst();
-				newLine.insert(i, l.at(i));
-			}
-			return newLine;
+			//	newLine.insert(i, l.at(i));
+			//}
+			return vector;
 		}
 	}
-	void setLine(uint index, QVector<Tile> re) {
+	void setLine(uint index, std::vector<Tile *> re) {
 		for (uint i = 0; i < horizontal; ++i) {
-			myTiles[index * 4 + i] = re.at(i);
+			myTiles[index * 4 + i] = re[i];
 		}
 		/// System.arraycopy(re, 0, myTiles, index * 4, 4); ???
 	}
-	bool compare(QVector<Tile> line1, QVector<Tile> line2) {
+	bool compare(std::vector<Tile *> line1, std::vector<Tile *> line2) {
 		/// ???????????????
-		if (&line1 == &line2) {
+		/*if (&line1 == &line2) {
 			return true;
-		} else if (line1.size() != line2.size()) {
+		} else
+		*/
+		if (line1.size() != line2.size()) {
 			return false;
 		}
 
 		for (uint i = 0; i < line1.size(); ++i) {
-			if (line1.at(i)->value != line2.at(i)->value) {
+			if (line1[i]->value != line2[i]->value) {
 				return false;
 			}
 		}
@@ -238,8 +246,8 @@ class Board : public QWidget {
 	void left() {
 		bool needAddTile = false;
 		for (int i = 0; i < horizontal; i++) {
-			QVector<Tile> line = getLine(i);
-			QVector<Tile> merged = mergeLine(moveLine(line));
+			std::vector<Tile *> line = getLine(i);
+			std::vector<Tile *> merged = mergeLine(moveLine(line));
 			setLine(i, merged);
 			if (!needAddTile && !compare(line, merged)) {
 				needAddTile = true;
