@@ -1,5 +1,5 @@
-## Please build port Qt 2 to modern system before compiling this project and then set the ${QT2_DIR} directory.
-## https://github.com/heliocastro/qt2
+# Qt 2 Port Modern Source Code
+# https://github.com/heliocastro/qt2
 
 cmake_minimum_required(VERSION 3.5)
 
