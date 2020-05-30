@@ -7,20 +7,12 @@
 #include <cmath>
 #include <cstddef>
 #include <cstdlib>
-
-// Найти .at()
-// Найти uint
-// Найти std::vector
-// Найти i++, x++,y++,t++
-// Инфа про virtual
-// Инфа про static_cast
-// Ссылки и указатели
-// Const везде
-// update или repaint?
+#include <ctime>
 
 struct Tile;
+
+typedef unsigned short int u16;
 typedef std::vector<Tile *> TileList;
-///typedef unsigned short uint8_t;
 
 const int HORIZONTAL = 4, VERTICAL = 4;
 const int BOARD_SIZE = HORIZONTAL * VERTICAL;
@@ -32,24 +24,24 @@ inline double DegreesToRadians(int angleDegrees) { return ((angleDegrees) * M_PI
 inline double MathRandom() { return rand() / static_cast<double>(RAND_MAX); }
 
 struct Tile {
-	size_t value;
+	u16 value;
 
-	Tile(size_t value) { this->value = value; }
+	Tile(u16 value) { this->value = value; }
 	bool empty() { return (value == 0); }
 	int foreground() { return (value < 16) ? 0x776E65 : 0xF9F6F2; }
 	int background() {
 		switch (value) {
-		    case    2: return 0xEEE4DA;
-		    case    4: return 0xEDE0C8;
-		    case    8: return 0xF2B179;
-		    case   16: return 0xF59563;
-		    case   32: return 0xF67C5F;
-		    case   64: return 0xF65E3B;
-		    case  128: return 0xEDCF72;
-		    case  256: return 0xEDCC61;
-		    case  512: return 0xEDC850;
-		    case 1024: return 0xEDC53F;
-		    case 2048: return 0xEDC22E;
+			case    2: return 0xEEE4DA;
+			case    4: return 0xEDE0C8;
+			case    8: return 0xF2B179;
+			case   16: return 0xF59563;
+			case   32: return 0xF67C5F;
+			case   64: return 0xF65E3B;
+			case  128: return 0xEDCF72;
+			case  256: return 0xEDCC61;
+			case  512: return 0xEDC850;
+			case 1024: return 0xEDC53F;
+			case 2048: return 0xEDC22E;
 		}
 		return 0xCDC1B4;
 	}
@@ -63,17 +55,17 @@ class Board : public QWidget {
 	int score;
 
 	void initialize(bool reset) {
-		for (size_t i = 0; i < BOARD_SIZE; ++i)
+		for (u16 i = 0; i < BOARD_SIZE; ++i)
 			if (!reset) board[i] = new Tile(0);
 			else board[i]->value = 0;
 	}
 	void freeVectorPointers(const TileList &list) {
-		size_t size = list.size();
+		const size_t size = list.size();
 		for (size_t i = 0; i < size; ++i)
 			delete list[i];
 	}
 	void deinitialize() {
-		for (size_t i = 0; i < BOARD_SIZE; ++i)
+		for (u16 i = 0; i < BOARD_SIZE; ++i)
 			delete board[i];
 	}
 	void resetGame(bool init) {
@@ -89,46 +81,45 @@ class Board : public QWidget {
 		if (!spaces.empty())
 			spaces[static_cast<size_t>((MathRandom() * size)) % size]->value = (MathRandom() < 0.9) ? 2 : 4;
 	}
-	TileList availableSpace() {
+	const TileList availableSpace() {
 		TileList spaces;
-		for (size_t i = 0; i < BOARD_SIZE; ++i)
+		for (u16 i = 0; i < BOARD_SIZE; ++i)
 			if (board[i]->empty())
 				spaces.push_back(board[i]);
 		return spaces;
 	}
 	bool canMove() {
-		if (!isFull())
+		if (!availableSpace().empty())
 			return true;
-		for (size_t x = 0; x < HORIZONTAL; ++x)
-			for (size_t y = 0; y < VERTICAL; ++y)
+		for (u16 x = 0; x < HORIZONTAL; ++x)
+			for (u16 y = 0; y < VERTICAL; ++y)
 				if ((x < 3 && tileAt(x, y)->value == tileAt(x + 1, y)->value) ||
 				    (y < 3 && tileAt(x, y)->value == tileAt(x, y + 1)->value))
 					return true;
 		return false;
 	}
-	Tile *tileAt(size_t x, size_t y) { return board[x + y * 4]; }
-	bool isFull() { return (availableSpace().size() == 0); }
-	TileList getLine(size_t index) {
+	Tile * tileAt(u16 x, u16 y) { return board[x + y * 4]; }
+	TileList getLine(u16 index) {
 		TileList line;
-		for (size_t i = 0; i < HORIZONTAL; ++i)
+		for (u16 i = 0; i < HORIZONTAL; ++i)
 			line.push_back(tileAt(i, index));
 		return line;
 	}
-	void copyTileLine(TileList &newLine, TileList &oldLine) {
-		size_t size = oldLine.size();
+	void copyTileLine(TileList &newLine, const TileList &oldLine) {
+		const size_t size = oldLine.size();
 		for (size_t i = 0; i < size; ++i)
 			newLine.push_back(new Tile(oldLine[i]->value));
 	}
-	TileList mergeLine(TileList oldLine) {
+	TileList mergeLine(const TileList &oldLine) {
 		TileList newLine;
-		for (size_t i = 0; i < HORIZONTAL && !oldLine[i]->empty(); ++i) {
-			size_t value = oldLine[i]->value;
+		for (u16 i = 0; i < HORIZONTAL && !oldLine[i]->empty(); ++i) {
+			u16 value = oldLine[i]->value;
 			if (i < 3 && oldLine[i]->value == oldLine[i + 1]->value) {
 				value *= 2;
 				score += value;
 				if (value == END_GAME_TARGET)
 					win = true;
-				i++;
+				++i;
 			}
 			newLine.push_back(new Tile(value));
 		}
@@ -146,9 +137,9 @@ class Board : public QWidget {
 		while (line.size() != size)
 			line.push_back(new Tile(0));
 	}
-	TileList moveLine(TileList oldLine) {
+	TileList moveLine(const TileList &oldLine) {
 		TileList newLine;
-		for (size_t i = 0; i < HORIZONTAL; ++i)
+		for (u16 i = 0; i < HORIZONTAL; ++i)
 			if (!oldLine[i]->empty())
 				newLine.push_back(new Tile(oldLine[i]->value));
 		if (newLine.empty()) {
@@ -159,41 +150,41 @@ class Board : public QWidget {
 			return newLine;
 		}
 	}
-	void setLineAndFreeOldPointers(size_t index, TileList line) {
-		for (size_t i = 0; i < HORIZONTAL; ++i) {
+	void setLineAndFreeOldPointers(u16 index, const TileList &line) {
+		for (u16 i = 0; i < HORIZONTAL; ++i) {
 			delete board[index * 4 + i];
 			board[index * 4 + i] = line[i];
 		}
 	}
-	bool compare(TileList lineFirst, TileList lineSecond) {
+	bool compare(const TileList &lineFirst, const TileList &lineSecond) {
 		if (lineFirst.size() != lineSecond.size())
 			return false;
-		for (size_t i = 0; i < HORIZONTAL; ++i)								/// TODO: ??? lineFirst.size()
+		for (u16 i = 0; i < HORIZONTAL; ++i)
 			if (lineFirst[i]->value != lineSecond[i]->value)
 				return false;
 		return true;
 	}
 	void rotate(int angle) {
 		Tile *newBoard[BOARD_SIZE];
-		size_t offsetX = 3, offsetY = 3;
+		u16 offsetX = 3, offsetY = 3;
 		if (angle == 90)
 			offsetY = 0;
 		else if (angle == 270)
 			offsetX = 0;
 		const double rad = DegreesToRadians(angle);
-		const size_t cos = static_cast<size_t>(::cos(rad)), sin = static_cast<size_t>(::sin(rad));
-		for (size_t x = 0; x < HORIZONTAL; ++x)
-			for (size_t y = 0; y < VERTICAL; ++y) {
-				size_t newX = (x * cos) - (y * sin) + offsetX, newY = (x * sin) + (y * cos) + offsetY;
+		const u16 cos = static_cast<u16>(::cos(rad)), sin = static_cast<u16>(::sin(rad));
+		for (u16 x = 0; x < HORIZONTAL; ++x)
+			for (u16 y = 0; y < VERTICAL; ++y) {
+				u16 newX = (x * cos) - (y * sin) + offsetX, newY = (x * sin) + (y * cos) + offsetY;
 				newBoard[newX + newY * 4] = tileAt(x, y);
 			}
-		for (size_t i = 0; i < BOARD_SIZE; ++i)
+		for (u16 i = 0; i < BOARD_SIZE; ++i)
 			board[i] = newBoard[i];
 	}
 	void left() {
 		bool needAddTile = false;
-		for (size_t i = 0; i < HORIZONTAL; ++i) {
-			TileList line = getLine(i), merged = mergeLine(moveLine(line));
+		for (u16 i = 0; i < HORIZONTAL; ++i) {
+			const TileList line = getLine(i), merged = mergeLine(moveLine(line));
 			setLineAndFreeOldPointers(i, merged);
 			if (!needAddTile && !compare(line, merged))
 				needAddTile = true;
@@ -204,19 +195,19 @@ class Board : public QWidget {
 	void right() { rotate(180); left(); rotate(180); }
 	void up() { rotate(270); left(); rotate(90); }
 	void down() { rotate(90); left(); rotate(270); }
-	int offsetCoords(int coord) { return coord * (TILE_MARGIN + TILE_SIZE) + TILE_MARGIN * 2; }
-	void drawTile(QPainter &painter, Tile *tile, int x, int y) {
-		const size_t value = tile->value;
-		const int xOffset = offsetCoords(x), yOffset = offsetCoords(y);
+	u16 offsetCoords(u16 coord) { return coord * (TILE_MARGIN + TILE_SIZE) + TILE_MARGIN * 2; }
+	void drawTile(QPainter &painter, Tile *const tile, u16 x, u16 y) {
+		const u16 value = tile->value;
+		const u16 xOffset = offsetCoords(x), yOffset = offsetCoords(y);
 		painter.setPen(QPen::NoPen);
 		painter.setBrush(QBrush(QColor(QRgb(tile->background()))));
 		painter.drawRoundRect(xOffset, yOffset, TILE_SIZE, TILE_SIZE, 20, 20);
 		if (value) {
-			const int size = (value < 100) ? 16 : (value < 1000) ? 10 : 8;
+			const u16 size = (value < 100) ? 16 : (value < 1000) ? 10 : 8;
 			const QString strValue = QString("%1").arg(value);
 			painter.setPen(QPen(QColor(QRgb(tile->foreground()))));
 			painter.setFont(QFont("Sans", size, QFont::Bold));
-			int w = QFontMetrics(painter.font()).width(strValue), h = (value < 100) ? size : size + 4;
+			const int w = QFontMetrics(painter.font()).width(strValue), h = (value < 100) ? size : size + 4;
 			painter.drawText(xOffset + (TILE_SIZE - w) / 2, yOffset + TILE_SIZE - (TILE_SIZE - h) / 2 - 2, strValue);
 		}
 	}
@@ -226,28 +217,28 @@ class Board : public QWidget {
 			painter.drawRect(0, 0, width(), height());
 			painter.setPen(QPen(QColor(0x4E8BCA)));
 			painter.setFont(QFont("Sans", 24, QFont::Bold));
-			QString center = ((win) ? "You won!" : (lose) ? "Game Over!" : "");
-			int w = QFontMetrics(painter.font()).width(center);
+			const QString center = ((win) ? "You won!" : (lose) ? "Game Over!" : "");
+			const int w = QFontMetrics(painter.font()).width(center);
 			painter.drawText(width() / 2 - w / 2, height() / 2, center);
 		}
 		painter.setPen(QColor(0x776E65));
 		painter.setFont(QFont("Sans", 10, QFont::Normal));
-		QString strScore = QString("Score: %1").arg(score);
-		int w = QFontMetrics(painter.font()).width(strScore);
+		const QString strScore = QString("Score: %1").arg(score);
+		const int w = QFontMetrics(painter.font()).width(strScore);
 		painter.drawText(TILE_MARGIN, height() - 10, "ESC to Restart!");
 		painter.drawText(width() - w - TILE_MARGIN, height() - 10, strScore);
 	}
 public:
-	Board(QWidget *parent = 0) : QWidget(parent) {	resetGame(true); }
+	Board(QWidget *parent = 0) : QWidget(parent) { resetGame(true); }
 	virtual ~Board() { deinitialize(); }
 protected:
-	virtual void keyPressEvent(QKeyEvent *kEvent) {
-		if (kEvent->key() == Key_Escape)
+	virtual void keyPressEvent(QKeyEvent *keyEvent) {
+		if (keyEvent->key() == Key_Escape)
 			resetGame(false);
 		if (!canMove())
 			lose = true;
 		if (!win && !lose)
-			switch (kEvent->key()) {
+			switch (keyEvent->key()) {
 				case Key_Left: left(); break;
 				case Key_Right: right(); break;
 				case Key_Down: down(); break;
@@ -255,25 +246,26 @@ protected:
 			}
 		if (!win && !canMove())
 			lose = true;
-		update(); // or repaint?
+		update();
 	}
 	virtual void paintEvent(QPaintEvent *) {
 		QPainter painter(this);
 		painter.fillRect(0, 0, width(), height(), QBrush(QColor(0xBBADA0)));
-		for (int y = 0; y < VERTICAL; y++)
-			for (int x = 0; x < HORIZONTAL; x++)
+		for (u16 y = 0; y < VERTICAL; ++y)
+			for (u16 x = 0; x < HORIZONTAL; ++x)
 				drawTile(painter, board[x + y * 4], x, y);
 		drawFinal(painter);
 	}
 };
 
 int main(int argc, char *argv[]) {
-	QApplication app(argc, argv);
-	Board board;
-	app.setMainWidget(&board);
-	board.resize(240, 240);
-	board.show();
-	return app.exec();
+	QApplication application(argc, argv);
+	srand(static_cast<u16>(time(NULL)));
+	Board boardWidget;
+	application.setMainWidget(&boardWidget);
+	boardWidget.resize(240, 240);
+	boardWidget.show();
+	return application.exec();
 }
 
 #include "2048-Qt2.moc"
