@@ -4,6 +4,8 @@
 #include <qapplication.h>
 #include <qvector.h>
 #include <qlist.h>
+#include <qfont.h>
+#include <qfontmetrics.h>
 
 #include <cstdlib>
 #include <cmath>
@@ -15,6 +17,10 @@ const int vertical = 4;
 const int horizontal = 4;
 const int boardSize = vertical * horizontal;
 const int ourTarget = 2048;
+
+const int BG_COLOR = 0xBBADA0;
+const int TILE_SIZE = 32;
+const int TILES_MARGIN = 16;
 
 double mathRandom() {
 	return rand() / (double) RAND_MAX;
@@ -246,6 +252,76 @@ class Board : public QWidget {
 		left();
 		myTiles = rotate(270);
 	}
+	void drawTile(QPainter &painter, Tile *tile, int x, int y) {
+		int value = tile->value;
+		int xOffset = offsetCoords(x);
+		int yOffset = offsetCoords(y);
+		painter.setBrush(QBrush(QColor(tile->getBackground())));
+		painter.drawRoundRect(xOffset, yOffset, TILE_SIZE, TILE_SIZE, 14, 14);
+		painter.setBrush(QBrush(QColor(tile->getForeground())));
+		const int size = (value < 100) ? 36 : (value < 1000) ? 32 : 24;
+		QFont sans("Sans", size, QFont::Bold);
+		painter.setFont(sans);
+
+		QString s = QString("%1").arg(value);
+
+		int w = QFontMetrics(sans).width(s);
+		int h = QFontMetrics(sans).height();
+
+		if (value != 0) {
+			painter.drawText(xOffset + (TILE_SIZE - w) / 2, yOffset + TILE_SIZE - (TILE_SIZE - h) / 2 - 2, s);
+		}
+	}
+	int offsetCoords(int arg) {
+		return arg * (TILES_MARGIN + TILE_SIZE) + TILES_MARGIN;
+	}
+	/*
+	private void drawTile(Graphics g2, Tile tile, int x, int y) {
+		Graphics2D g = ((Graphics2D) g2);
+		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_NORMALIZE);
+		int value = tile.value;
+		int xOffset = offsetCoors(x);
+		int yOffset = offsetCoors(y);
+		g.setColor(tile.getBackground());
+		g.fillRoundRect(xOffset, yOffset, TILE_SIZE, TILE_SIZE, 14, 14);
+		g.setColor(tile.getForeground());
+		final int size = value < 100 ? 36 : value < 1000 ? 32 : 24;
+		final Font font = new Font(FONT_NAME, Font.BOLD, size);
+		g.setFont(font);
+
+		String s = String.valueOf(value);
+		final FontMetrics fm = getFontMetrics(font);
+
+		final int w = fm.stringWidth(s);
+		final int h = -(int) fm.getLineMetrics(s, g).getBaselineOffsets()[2];
+
+		if (value != 0)
+		  g.drawString(s, xOffset + (TILE_SIZE - w) / 2, yOffset + TILE_SIZE - (TILE_SIZE - h) / 2 - 2);
+
+		if (myWin || myLose) {
+		  g.setColor(new Color(255, 255, 255, 30));
+		  g.fillRect(0, 0, getWidth(), getHeight());
+		  g.setColor(new Color(78, 139, 202));
+		  g.setFont(new Font(FONT_NAME, Font.BOLD, 48));
+		  if (myWin) {
+			g.drawString("You won!", 68, 150);
+		  }
+		  if (myLose) {
+			g.drawString("Game over!", 50, 130);
+			g.drawString("You lose!", 64, 200);
+		  }
+		  if (myWin || myLose) {
+			g.setFont(new Font(FONT_NAME, Font.PLAIN, 16));
+			g.setColor(new Color(128, 128, 128, 128));
+			g.drawString("Press ESC to play again", 80, getHeight() - 40);
+		  }
+		}
+		g.setFont(new Font(FONT_NAME, Font.PLAIN, 18));
+		g.drawString("Score: " + myScore, 200, 365);
+
+	  }
+	  */
 public:
 	Board(QWidget *parent = 0) : QWidget(parent) {
 		resize(240, 240);
@@ -253,13 +329,6 @@ public:
 	}
 	virtual ~Board() { }
 protected:
-	virtual void paintEvent(QPaintEvent *) {
-		QPainter painter(this);
-		painter.setBrush( colorGroup().foreground() );
-		//painter.save();
-		painter.drawText(20, 50, "AAAAAAAAAAAAAa");
-		//painter.restore();
-	}
 	virtual void keyPressEvent(QKeyEvent *kEvent) {
 		if (kEvent->key() == Key_Escape) {
 			resetGame();
@@ -279,6 +348,15 @@ protected:
 			myLose = true;
 		}
 		update(); // or repaint?
+	}
+	virtual void paintEvent(QPaintEvent *) {
+		QPainter painter(this);
+		painter.fillRect(0, 0, width(), height(), QBrush(QColor(BG_COLOR)));
+		for (int y = 0; y < vertical; y++) {
+			for (int x = 0; x < horizontal; x++) {
+				drawTile(painter, myTiles.at(x + y * 4), x, y);
+			}
+		}
 	}
 };
 
