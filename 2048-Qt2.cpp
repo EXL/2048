@@ -25,7 +25,7 @@ const int BG_COLOR = 0xBBADA0;
 const int TILE_SIZE = 32;
 const int TILES_MARGIN = 16;
 
-double mathRandom() {
+inline double mathRandom() {
 	return rand() / (double) RAND_MAX;
 }
 
@@ -70,30 +70,49 @@ class Board : public QWidget {
 	// TODO:
 	//QVector<Tile> myTiles;
 	Tile *myTiles[boardSize];
+	//Tile *myLine[horizontal];
 
 	bool myWin;
 	bool myLose;
 	int myScore;
 
-	void resetGame() {
+	void initialize(bool reset) {
+		for (uint i = 0; i < boardSize; ++i)
+			if (!reset) myTiles[i] = new Tile(0);
+			else myTiles[i]->value = 0;
+//		for (uint i = 0; i < horizontal; ++i)
+//			if (!reset) myLine[i] = new Tile(0);
+//			else myLine[i]->value = 0;
+	}
+	void freeVectorPointers(std::vector<Tile *> &vector) {
+		for (uint i = 0; i < vector.size(); ++i) {
+			delete vector[i];
+		}
+	}
+	void deinitialize() {
+		for (uint i = 0; i < boardSize; ++i)
+			delete myTiles[i];
+//		for (uint i = 0; i < horizontal; ++i)
+//			delete myLine[i];
+	}
+	void resetGame(bool init) {
 		myScore = 0;
 		myWin = false;
 		myLose = false;
 		// myTiles.resize(boardSize);
-		for (uint i = 0; i < boardSize; i++) {
-			myTiles[i] = new Tile(0);
-			// myTiles.insert(i, new Tile(0));
-		}
+		initialize(!init);
 		addTile();
 		addTile();
 	}
 	void addTile() {
 		std::vector<Tile *> vector = availableSpace();
-		if (!vector.empty()) {
-			uint index = (uint) (mathRandom() * vector.size()) % vector.size();
-			Tile *emptyTile = vector[index];
-			emptyTile->value = (mathRandom() < 0.9) ? 2 : 4;
-		}
+//		if (!vector.empty()) {
+//			uint index = (uint) (mathRandom() * vector.size()) % vector.size();
+//			Tile *emptyTile = vector[index];
+//			emptyTile->value = (mathRandom() < 0.9) ? 2 : 4;
+//		}
+		if (!vector.empty())
+			vector[(uint) (mathRandom() * vector.size()) % vector.size()]->value = (mathRandom() < 0.9) ? 2 : 4;
 	}
 	std::vector<Tile *> availableSpace() {
 		std::vector<Tile *> vector;
@@ -148,7 +167,11 @@ class Board : public QWidget {
 			vector.push_back(new Tile(num));
 		}
 		if (vector.size() == 0) {
-			return oldLine;
+			for (uint i = 0; i < oldLine.size(); ++i) {
+				vector.push_back(new Tile(oldLine[i]->value));
+			}
+			freeVectorPointers(oldLine);
+			return vector;
 		} else {
 			// QVector<Tile> vector(horizontal);
 			ensureSize(vector, horizontal);
@@ -156,6 +179,7 @@ class Board : public QWidget {
 			//	vector.insert(i, list.at(i));
 			//}
 			// list.toVector(&vector);
+			freeVectorPointers(oldLine);
 			return vector;
 		}
 	}
@@ -164,12 +188,12 @@ class Board : public QWidget {
 			v.push_back(new Tile(0));
 		}
 	}
-	std::vector<Tile *> moveLine(std::vector<Tile *> oldLine) {
+	std::vector<Tile *> moveLine(std::vector<Tile *> oldLine) { // Need to be free.
 		std::vector<Tile *> vector;
 		//QList<Tile> l;
 		for (uint i = 0; i < horizontal; i++) {
 			if (!oldLine[i]->isEmpty()) {
-				vector.push_back(oldLine[i]);
+				vector.push_back(new Tile(oldLine[i]->value));
 			}
 		}
 		///////////// ??????????????????????????????????????????????
@@ -179,7 +203,10 @@ class Board : public QWidget {
 //			l.append(reversed.at(i));
 //		}
 		if (vector.size() == 0) {
-			return oldLine;
+			for (uint i = 0; i < oldLine.size(); ++i) {
+				vector.push_back(new Tile(oldLine[i]->value));
+			}
+			return vector;
 		} else {
 			// QVector<Tile> newLine(horizontal);
 			ensureSize(vector, horizontal);
@@ -196,6 +223,7 @@ class Board : public QWidget {
 	}
 	void setLine(uint index, std::vector<Tile *> re) {
 		for (uint i = 0; i < horizontal; ++i) {
+			delete myTiles[index * 4 + i];
 			myTiles[index * 4 + i] = re[i];
 		}
 		/// System.arraycopy(re, 0, myTiles, index * 4, 4); ???
@@ -252,6 +280,7 @@ class Board : public QWidget {
 			if (!needAddTile && !compare(line, merged)) {
 				needAddTile = true;
 			}
+			//freeVectorPointers(merged);
 		}
 		if (needAddTile) {
 			addTile();
@@ -299,13 +328,13 @@ class Board : public QWidget {
 public:
 	Board(QWidget *parent = 0) : QWidget(parent) {
 		resize(240, 240);
-		resetGame();
+		resetGame(true);
 	}
-	virtual ~Board() { }
+	virtual ~Board() { deinitialize(); }
 protected:
 	virtual void keyPressEvent(QKeyEvent *kEvent) {
 		if (kEvent->key() == Key_Escape) {
-			resetGame();
+			resetGame(false);
 		}
 		if (!canMove()) {
 			myLose = true;
