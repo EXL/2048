@@ -6,3 +6,6 @@
 
 # Executable Binaries.
 a.out
+
+# Build directories.
+build-*
