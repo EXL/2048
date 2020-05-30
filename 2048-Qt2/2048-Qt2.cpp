@@ -134,11 +134,11 @@ class Board : public QWidget {
 		}
 		if (newLine.empty()) {
 			copyTileLine(newLine, oldLine);
-			//freeVectorPointers(oldLine);
+			freeVectorPointers(oldLine);
 			return newLine;
 		} else {
 			ensureLineSize(newLine, HORIZONTAL);
-			//freeVectorPointers(oldLine);
+			freeVectorPointers(oldLine);
 			return newLine;
 		}
 	}
@@ -161,7 +161,7 @@ class Board : public QWidget {
 	}
 	void setLineAndFreeOldPointers(size_t index, TileList line) {
 		for (size_t i = 0; i < HORIZONTAL; ++i) {
-			//delete board[index * 4 + i];
+			delete board[index * 4 + i];
 			board[index * 4 + i] = line[i];
 		}
 	}
@@ -179,7 +179,7 @@ class Board : public QWidget {
 		if (angle == 90)
 			offsetY = 0;
 		else if (angle == 270)
-			offsetY = 0;
+			offsetX = 0;
 		const double rad = DegreesToRadians(angle);
 		const size_t cos = static_cast<size_t>(::cos(rad)), sin = static_cast<size_t>(::sin(rad));
 		for (size_t x = 0; x < HORIZONTAL; ++x)
