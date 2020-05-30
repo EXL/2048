@@ -3,3 +3,6 @@
 
 # Qt MOC generated files.
 *.moc
+
+# Executable Binaries.
+a.out

@@ -26,7 +26,7 @@ const int TILE_SIZE = 32;
 const int TILES_MARGIN = 16;
 
 inline double mathRandom() {
-	return rand() / (double) RAND_MAX;
+	return rand() / static_cast<double>(RAND_MAX);
 }
 
 struct Tile {
@@ -112,7 +112,7 @@ class Board : public QWidget {
 //			emptyTile->value = (mathRandom() < 0.9) ? 2 : 4;
 //		}
 		if (!vector.empty())
-			vector[(uint) (mathRandom() * vector.size()) % vector.size()]->value = (mathRandom() < 0.9) ? 2 : 4;
+			vector[static_cast<uint>((mathRandom() * vector.size())) % vector.size()]->value = (mathRandom() < 0.9) ? 2 : 4;
 	}
 	std::vector<Tile *> availableSpace() {
 		std::vector<Tile *> vector;
@@ -154,7 +154,7 @@ class Board : public QWidget {
 	std::vector<Tile *> mergeLine(std::vector<Tile *> oldLine) {
 		// QList<Tile> list;
 		std::vector<Tile *> vector;
-		for (int i = 0; i < horizontal && !oldLine[i]->isEmpty(); i++) {
+		for (uint i = 0; i < horizontal && !oldLine[i]->isEmpty(); i++) {
 			int num = oldLine.at(i)->value;
 			if (i < 3 && oldLine.at(i)->value == oldLine.at(i + 1)->value) {
 				num *= 2;
@@ -258,13 +258,13 @@ class Board : public QWidget {
 
 		double rad = degreesToRadians(angle);
 		////////////////// ?????
-		int cos = (int) ::cos(rad);
-		int sin = (int) ::sin(rad);
+		int cos = static_cast<int>(::cos(rad));
+		int sin = static_cast<int>(::sin(rad));
 		for (int x = 0; x < horizontal; x++) {
 			for (int y = 0; y < vertical; y++ ) {
 				int newX = (x * cos) - (y * sin) + offsetX;
 				int newY = (x * sin) + (y * cos) + offsetY;
-				newTiles[(newX) + (newY) * 4] = tileAt(x, y);
+				newTiles[(newX) + (newY) * 4] = tileAt(static_cast<uint>(x), static_cast<uint>(y));
 			}
 		}
 		for (int i = 0; i < boardSize; ++i) {
@@ -273,7 +273,7 @@ class Board : public QWidget {
 	}
 	void left() {
 		bool needAddTile = false;
-		for (int i = 0; i < horizontal; i++) {
+		for (uint i = 0; i < horizontal; i++) {
 			std::vector<Tile *> line = getLine(i);
 			std::vector<Tile *> merged = mergeLine(moveLine(line));
 			setLine(i, merged);
@@ -306,9 +306,9 @@ class Board : public QWidget {
 		int xOffset = offsetCoords(x);
 		int yOffset = offsetCoords(y);
 		painter.setPen(QPen::NoPen);
-		painter.setBrush(QBrush(QColor(tile->getBackground())));
+		painter.setBrush(QBrush(QColor(QRgb(tile->getBackground()))));
 		painter.drawRoundRect(xOffset, yOffset, TILE_SIZE, TILE_SIZE, 20, 20);
-		painter.setPen(QPen(QColor(tile->getForeground())));
+		painter.setPen(QPen(QColor(QRgb(tile->getForeground()))));
 		const int size = (value < 100) ? 16 : (value < 1000) ? 10 : 8;
 		painter.setFont(QFont("Sans", size, QFont::Bold));
 
