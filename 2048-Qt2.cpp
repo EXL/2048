@@ -7,9 +7,10 @@
 #include <qfont.h>
 #include <qfontmetrics.h>
 
+#include <algorithm>
+
 #include <cstdlib>
 #include <cmath>
-#include <algorithm>
 
 #define degreesToRadians(angleDegrees) ((angleDegrees) * M_PI / 180.0)
 
@@ -159,18 +160,18 @@ class Board : public QWidget {
 		}
 	}
 	QVector<Tile> moveLine(QVector<Tile> oldLine) {
-		QList<Tile> reversed;
+		QList<Tile> l;
 		for (uint i = 0; i < horizontal; i++) {
 			if (!oldLine.at(i)->isEmpty()) {
-				reversed.append(oldLine.at(i));
+				l.append(oldLine.at(i));
 			}
 		}
 		///////////// ??????????????????????????????????????????????
-		QList<Tile> l;
-		uint reversedCnt = reversed.count();
-		for (int i = reversed.count() - 1; i >= 0; --i) {
-			l.append(reversed.at(i));
-		}
+//		QList<Tile> l;
+//		uint reversedCnt = reversed.count();
+//		for (int i = reversed.count() - 1; i >= 0; --i) {
+//			l.append(reversed.at(i));
+//		}
 		if (l.count() == 0) {
 			return oldLine;
 		} else {
