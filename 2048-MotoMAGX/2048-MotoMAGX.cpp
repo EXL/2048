@@ -5,14 +5,24 @@
 #include <ZPanel.h>
 #include <ZKeyDef.h>
 
-#include <qpainter.h>
-
 #include <vector>
 
 #include <cmath>
 #include <cstddef>
 #include <cstdlib>
 #include <ctime>
+
+#if defined(EZX_Z6) || defined (EZX_V8)
+#define KEYCODE_0                              EZX_KEY_0
+#define KEYCODE_2                              EZX_KEY_2
+#define KEYCODE_4                              EZX_KEY_4
+#define KEYCODE_6                              EZX_KEY_6
+#define KEYCODE_8                              EZX_KEY_8
+#define KEYCODE_UP                             EZX_KEY_UP
+#define KEYCODE_DOWN                           EZX_KEY_DOWN
+#define KEYCODE_LEFT                           EZX_KEY_LEFT
+#define KEYCODE_RIGHT                          EZX_KEY_RIGHT
+#endif
 
 struct Tile;
 
@@ -253,20 +263,11 @@ protected:
 			lose = true;
 		if (!win && !lose)
 			switch (keyEvent->key()) {
-				case KEYCODE_UP:
-				case KEYCODE_2:
-					up(); break;
-				case KEYCODE_DOWN:
-				case KEYCODE_8:
-					down(); break;
-				case KEYCODE_LEFT:
-				case KEYCODE_4:
-					left(); break;
-				case KEYCODE_RIGHT:
-				case KEYCODE_6:
-					right(); break;
-				default:
-					ZPanel::keyPressEvent(keyEvent); break;
+				case KEYCODE_UP: case KEYCODE_2: up(); break;
+				case KEYCODE_DOWN: case KEYCODE_8: down(); break;
+				case KEYCODE_LEFT: case KEYCODE_4: left(); break;
+				case KEYCODE_RIGHT: case KEYCODE_6: right(); break;
+				default: ZPanel::keyPressEvent(keyEvent); break;
 			}
 		if (!win && !canMove())
 			lose = true;
