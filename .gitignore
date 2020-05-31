@@ -8,6 +8,7 @@
 *.o
 *.obj
 a.out
+2048-MotoMAGX_*
 
 # Build directories.
 build-*
