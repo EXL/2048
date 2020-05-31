@@ -66,3 +66,63 @@ First building on various MotoMAGX platforms:
 * EM35
 
     All Ok!
+
+Some fixes for old MotoMAGX phones like Z6 and V8:
+
+1. Inconsistent keycodes.
+
+    ```
+    2048-MotoMAGX.cpp: In member function `virtual void Board::keyPressEvent(QKeyEvent*)':
+    2048-MotoMAGX.cpp:248: error: `KEYCODE_0' undeclared (first use this function)
+    2048-MotoMAGX.cpp:248: error: (Each undeclared identifier is reported only once for each function it appears in.)
+    2048-MotoMAGX.cpp:254: error: `KEYCODE_UP' undeclared (first use this function)
+    2048-MotoMAGX.cpp:254: error: `KEYCODE_2' undeclared (first use this function)
+    2048-MotoMAGX.cpp:255: error: `KEYCODE_DOWN' undeclared (first use this function)
+    2048-MotoMAGX.cpp:255: error: `KEYCODE_8' undeclared (first use this function)
+    2048-MotoMAGX.cpp:256: error: `KEYCODE_LEFT' undeclared (first use this function)
+    2048-MotoMAGX.cpp:256: error: `KEYCODE_4' undeclared (first use this function)
+    2048-MotoMAGX.cpp:257: error: `KEYCODE_RIGHT' undeclared (first use this function)
+    2048-MotoMAGX.cpp:257: error: `KEYCODE_6' undeclared (first use this function)
+    ```
+
+    Fix:
+
+    ```
+    #if defined(EZX_Z6) || defined (EZX_V8)
+    #define KEYCODE_0                              EZX_KEY_0
+    #define KEYCODE_2                              EZX_KEY_2
+    #define KEYCODE_4                              EZX_KEY_4
+    #define KEYCODE_6                              EZX_KEY_6
+    #define KEYCODE_8                              EZX_KEY_8
+    #define KEYCODE_UP                             EZX_KEY_UP
+    #define KEYCODE_DOWN                           EZX_KEY_DOWN
+    #define KEYCODE_LEFT                           EZX_KEY_LEFT
+    #define KEYCODE_RIGHT                          EZX_KEY_RIGHT
+    #endif
+    ```
+
+2. ZPanel constructor error:
+
+    ```
+    2048-MotoMAGX.cpp: In constructor `Board::Board(QWidget*, const char*)':
+    2048-MotoMAGX.cpp:239: error: no matching function for call to `ZPanel::ZPanel(QWidget*&, const char*&)'
+    /arm-eabi/lib/ezx-z6/include/ZPanel.h:9: note: candidates are: ZPanel::ZPanel(const ZPanel&)
+    /arm-eabi/lib/ezx-z6/include/ZPanel.h:13: note:                 ZPanel::ZPanel(QWidget*, const char*, unsigned int, ZSkinService::WidgetClsID)
+    ```
+
+    Fix, add zero WFlags:
+
+    ```cpp
+    Board(QWidget *parent = 0, const char *name = 0) : ZPanel(parent, name, /* WFlags */ 0) {
+    ```
+
+3. Linking ZPanel problem:
+
+    ```
+    2048-MotoMAGX.o: In function `Board::staticMetaObject()':
+    2048-MotoMAGX.cpp:(.text+0x160): undefined reference to `ZPanel::staticMetaObject()'
+    2048-MotoMAGX.o: In function `Board::initMetaObject()':
+    2048-MotoMAGX.cpp:(.text+0x21c): undefined reference to `ZPanel::className() const'
+    ```
+
+    Fix: Unknown. Probably MOC-file patching?
