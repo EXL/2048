@@ -126,3 +126,18 @@ Some fixes for old MotoMAGX phones like Z6 and V8:
     ```
 
     Fix: Unknown. Probably MOC-file patching?
+
+4. ZHeader inconsistent error:
+
+    ```
+    2048-MotoMAGX.cpp: In constructor `MainWidget::MainWidget(QWidget*, const char*, uint)':
+    2048-MotoMAGX.cpp:292: error: `MAINDISPLAY_HEADER' is not a member of `ZHeader'
+    ```
+
+    Fix:
+
+    ```
+    #ifdef EZX_V8
+    #define MAINDISPLAY_HEADER                     TINY_TYPE
+    #endif
+    ```
