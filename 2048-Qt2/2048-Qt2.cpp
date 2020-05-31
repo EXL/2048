@@ -215,7 +215,7 @@ class Board : public QWidget {
 		if (win || lose) {
 			painter.setBrush(QBrush(0x888888, Dense6Pattern));
 			painter.drawRect(0, 0, width(), height());
-			painter.setPen(QPen(QColor(0x4E8BCA)));
+			painter.setPen(QPen(QColor(0x800000)));
 			painter.setFont(QFont("Sans", 24, QFont::Bold));
 			const QString center = ((win) ? "You won!" : (lose) ? "Game Over!" : "");
 			const int w = QFontMetrics(painter.font()).width(center);
