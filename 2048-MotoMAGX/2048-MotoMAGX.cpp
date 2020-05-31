@@ -248,7 +248,7 @@ class Board : public ZPanel {
 		painter.drawText(width() - w - TILE_MARGIN, height() - 10, strScore);
 	}
 public:
-	Board(QWidget *parent = 0, const char *name = 0) : ZPanel(parent, name) {
+	Board(QWidget *parent = 0, const char *name = 0) : ZPanel(parent, name, /* WFlags */ 0) {
 		setFocusPolicy(QWidget::StrongFocus);
 		resetGame(true);
 	}
