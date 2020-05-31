@@ -4,7 +4,9 @@
 # Qt MOC generated files.
 *.moc
 
-# Executable Binaries.
+# Executable Binaries and Object code.
+*.o
+*.obj
 a.out
 
 # Build directories.
