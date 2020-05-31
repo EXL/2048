@@ -258,6 +258,11 @@ public:
 	virtual ~Board() { deinitialize(); }
 public slots:
 	void reset() { resetGame(false); }
+	void screenShot() {
+		QPixmap pixmap(width(), height());
+		bitBlt(&pixmap, 0, 0, this, 0, 0, width(), height(), Qt::CopyROP, true);
+		pixmap.save(QString("%1.png").arg(time(NULL)), "PNG");
+	}
 protected:
 	virtual void keyPressEvent(QKeyEvent *keyEvent) {
 		if (keyEvent->key() == KEYCODE_0)
