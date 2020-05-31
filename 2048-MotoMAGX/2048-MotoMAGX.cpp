@@ -201,7 +201,11 @@ class Board : public QWidget {
 		const u16 xOffset = offsetCoords(x), yOffset = offsetCoords(y);
 		painter.setPen(QPen::NoPen);
 		painter.setBrush(QBrush(QColor(QRgb(tile->background()))));
+#if defined(EZX_Z6W) || defined(EZX_ZN5) || defined(EZX_U9)
+		painter.drawRect(xOffset, yOffset, TILE_SIZE, TILE_SIZE);
+#else
 		painter.drawRoundRect(xOffset, yOffset, TILE_SIZE, TILE_SIZE, 20, 20);
+#endif
 		if (value) {
 			const u16 size = (value < 100) ? 16 : (value < 1000) ? 10 : 8;
 			const QString strValue = QString("%1").arg(value);
