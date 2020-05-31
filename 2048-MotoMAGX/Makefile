@@ -2,10 +2,10 @@
 #
 # App can compile for platform:
 #    PLATFORM=EZX-Z6
+#    PLATFORM=EZX-V8
 #    PLATFORM=EZX-Z6W
 #    PLATFORM=EZX-U9
 #    PLATFORM=EZX-ZN5 (default)
-#    PLATFORM=EZX-V8
 #    PLATFORM=EZX-E8
 #    PLATFORM=EZX-EM30
 #    PLATFORM=EZX-VE66
