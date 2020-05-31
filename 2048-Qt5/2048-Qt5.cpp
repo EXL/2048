@@ -151,11 +151,9 @@ class Board : public QWidget {
 			return newLine;
 		}
 	}
-	void setLineAndFreeOldPointers(u16 index, const TileList &line) {
-		for (u16 i = 0; i < HORIZONTAL; ++i) {
-			delete board[index * 4 + i];
-			board[index * 4 + i] = line[i];
-		}
+	void setLine(u16 index, const TileList &line) {
+		for (u16 i = 0; i < HORIZONTAL; ++i)
+			board[index * 4 + i]->value = line[i]->value;
 	}
 	bool compare(const TileList &lineFirst, const TileList &lineSecond) {
 		if (lineFirst.size() != lineSecond.size())
@@ -186,9 +184,11 @@ class Board : public QWidget {
 		bool needAddTile = false;
 		for (u16 i = 0; i < HORIZONTAL; ++i) {
 			const TileList line = getLine(i), merged = mergeLine(moveLine(line));
-			setLineAndFreeOldPointers(i, merged);
-			if (!needAddTile && !compare(line, merged))
+			bool result = compare(line, merged);
+			setLine(i, merged);
+			if (!needAddTile && !result)
 				needAddTile = true;
+			freeVectorPointers(merged);
 		}
 		if (needAddTile)
 			addTile();
