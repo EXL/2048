@@ -1,6 +1,11 @@
-#include <qwidget.h>
+#include <ZApplication.h>
+#include <ZKbMainWidget.h>
+#include <ZHeader.h>
+#include <ZSoftKey.h>
+#include <ZPanel.h>
+#include <ZKeyDef.h>
+
 #include <qpainter.h>
-#include <qapplication.h>
 
 #include <vector>
 
@@ -47,7 +52,7 @@ struct Tile {
 	}
 };
 
-class Board : public QWidget {
+class Board : public ZPanel {
 	Q_OBJECT
 
 	Tile *board[BOARD_SIZE];
@@ -229,24 +234,37 @@ class Board : public QWidget {
 		painter.setFont(QFont("Sans", 10, QFont::Normal));
 		const QString strScore = QString("Score: %1").arg(score);
 		const int w = QFontMetrics(painter.font()).width(strScore);
-		painter.drawText(TILE_MARGIN, height() - 10, "ESC to Restart!");
+		painter.drawText(TILE_MARGIN, height() - 10, "Press '0' to Restart!");
 		painter.drawText(width() - w - TILE_MARGIN, height() - 10, strScore);
 	}
 public:
-	Board(QWidget *parent = 0) : QWidget(parent) { resetGame(true); }
+	Board(QWidget *parent = 0, const char *name = 0) : ZPanel(parent, name) {
+		setFocusPolicy(QWidget::StrongFocus);
+		resetGame(true);
+	}
 	virtual ~Board() { deinitialize(); }
 protected:
 	virtual void keyPressEvent(QKeyEvent *keyEvent) {
-		if (keyEvent->key() == Key_Escape)
+		if (keyEvent->key() == KEYCODE_0)
 			resetGame(false);
 		if (!canMove())
 			lose = true;
 		if (!win && !lose)
 			switch (keyEvent->key()) {
-				case Key_Left: left(); break;
-				case Key_Right: right(); break;
-				case Key_Down: down(); break;
-				case Key_Up: up(); break;
+			case KEYCODE_UP:
+			case KEYCODE_2:
+				up(); break;
+			case KEYCODE_DOWN:
+			case KEYCODE_8:
+				down(); break;
+			case KEYCODE_LEFT:
+			case KEYCODE_4:
+				left(); break;
+			case KEYCODE_RIGHT:
+			case KEYCODE_6:
+				right(); break;
+			default:
+				ZPanel::keyPressEvent(keyEvent);
 			}
 		if (!win && !canMove())
 			lose = true;
@@ -262,13 +280,32 @@ protected:
 	}
 };
 
+class MainWidget : public ZKbMainWidget {
+	Q_OBJECT
+
+	Board *board;
+public:
+	MainWidget(QWidget *parent = 0, const char *name = 0, WFlags flags = 0) :
+		ZKbMainWidget(ZHeader::MAINDISPLAY_HEADER, parent, name, flags) {
+		setAppTitle(tr(name));
+
+		board = new Board(this, "board");
+		setContentWidget(board);
+
+		ZSoftKey *softKeys = getSoftKey();
+		softKeys->setText(ZSoftKey::RIGHT, "Exit");
+		softKeys->setClickedSlot(ZSoftKey::RIGHT, qApp, SLOT(quit()));
+		softKeys->setText(ZSoftKey::LEFT, "");
+		softKeys->disableClickedSlot(ZSoftKey::LEFT);
+	}
+};
+
 int main(int argc, char *argv[]) {
-	QApplication application(argc, argv);
+	ZApplication application(argc, argv);
 	srand(static_cast<u16>(time(NULL)));
-	Board boardWidget;
-	application.setMainWidget(&boardWidget);
-	boardWidget.resize(240, 240);
-	boardWidget.show();
+	MainWidget mainWidget(NULL, "2048");
+	application.setMainWidget(&mainWidget);
+	mainWidget.show();
 	return application.exec();
 }
 
