@@ -243,6 +243,8 @@ public:
 		resetGame(true);
 	}
 	virtual ~Board() { deinitialize(); }
+public slots:
+	void reset() { resetGame(false); }
 protected:
 	virtual void keyPressEvent(QKeyEvent *keyEvent) {
 		if (keyEvent->key() == KEYCODE_0)
@@ -251,20 +253,20 @@ protected:
 			lose = true;
 		if (!win && !lose)
 			switch (keyEvent->key()) {
-			case KEYCODE_UP:
-			case KEYCODE_2:
-				up(); break;
-			case KEYCODE_DOWN:
-			case KEYCODE_8:
-				down(); break;
-			case KEYCODE_LEFT:
-			case KEYCODE_4:
-				left(); break;
-			case KEYCODE_RIGHT:
-			case KEYCODE_6:
-				right(); break;
-			default:
-				ZPanel::keyPressEvent(keyEvent);
+				case KEYCODE_UP:
+				case KEYCODE_2:
+					up(); break;
+				case KEYCODE_DOWN:
+				case KEYCODE_8:
+					down(); break;
+				case KEYCODE_LEFT:
+				case KEYCODE_4:
+					left(); break;
+				case KEYCODE_RIGHT:
+				case KEYCODE_6:
+					right(); break;
+				default:
+					ZPanel::keyPressEvent(keyEvent); break;
 			}
 		if (!win && !canMove())
 			lose = true;
@@ -295,8 +297,8 @@ public:
 		ZSoftKey *softKeys = getSoftKey();
 		softKeys->setText(ZSoftKey::RIGHT, "Exit");
 		softKeys->setClickedSlot(ZSoftKey::RIGHT, qApp, SLOT(quit()));
-		softKeys->setText(ZSoftKey::LEFT, "");
-		softKeys->disableClickedSlot(ZSoftKey::LEFT);
+		softKeys->setText(ZSoftKey::LEFT, "Reset");
+		softKeys->setClickedSlot(ZSoftKey::LEFT, board, SLOT(reset()));
 	}
 };
 
