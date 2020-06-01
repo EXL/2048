@@ -2,7 +2,6 @@
 #include <ZKbMainWidget.h>
 #include <ZHeader.h>
 #include <ZSoftKey.h>
-#include <ZPanel.h>
 #include <ZKeyDef.h>
 
 #include <vector>
@@ -66,7 +65,7 @@ struct Tile {
 	}
 };
 
-class Board : public ZPanel {
+class Board : public QWidget {
 	Q_OBJECT
 
 	Tile *board[BOARD_SIZE];
@@ -252,7 +251,7 @@ class Board : public ZPanel {
 		painter.drawText(width() - w - TILE_MARGIN, height() - 10, strScore);
 	}
 public:
-	Board(QWidget *parent = 0, const char *name = 0) : ZPanel(parent, name, /* WFlags */ 0) {
+	Board(QWidget *parent = 0, const char *name = 0) : QWidget(parent, name, /* WFlags */ 0) {
 		setFocusPolicy(QWidget::StrongFocus);
 		resetGame(true);
 	}
