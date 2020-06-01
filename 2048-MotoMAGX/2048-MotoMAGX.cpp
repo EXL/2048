@@ -218,7 +218,7 @@ class Board : public ZPanel {
 		const u16 value = tile->value;
 		const u16 xOffset = offsetCoords(x), yOffset = offsetCoords(y);
 		painter.setPen(QPen::NoPen);
-		painter.setBrush(QBrush(QColor(QRgb(tile->background()))));
+		painter.setBrush(QColor(tile->background()));
 #if defined(EZX_Z6W) || defined(EZX_ZN5) || defined(EZX_U9)
 		painter.drawRect(xOffset, yOffset, TILE_SIZE, TILE_SIZE);
 #else
@@ -227,7 +227,7 @@ class Board : public ZPanel {
 		if (value) {
 			const u16 size = (value < 100) ? 16 : (value < 1000) ? 10 : 8;
 			const QString strValue = QString("%1").arg(value);
-			painter.setPen(QPen(QColor(QRgb(tile->foreground()))));
+			painter.setPen(QColor(tile->foreground()));
 			painter.setFont(QFont("Sans", size, QFont::Bold));
 			const int w = QFontMetrics(painter.font()).width(strValue), h = (value < 100) ? size : size + 4;
 			painter.drawText(xOffset + (TILE_SIZE - w) / 2, yOffset + TILE_SIZE - (TILE_SIZE - h) / 2 - 2, strValue);
@@ -237,7 +237,7 @@ class Board : public ZPanel {
 		if (win || lose) {
 			painter.setBrush(QBrush(0xFF888888, Dense6Pattern));
 			painter.drawRect(0, 0, width(), height());
-			painter.setPen(QPen(QColor(0xFF800000)));
+			painter.setPen(QColor(0xFF800000));
 			painter.setFont(QFont("Sans", 24, QFont::Bold));
 			const QString center = ((win) ? "You won!" : (lose) ? "Game Over!" : "");
 			const int w = QFontMetrics(painter.font()).width(center);
@@ -283,7 +283,7 @@ protected:
 	}
 	virtual void paintEvent(QPaintEvent *) {
 		QPainter painter(this);
-		painter.fillRect(0, 0, width(), height(), QBrush(QColor(0xFFBBADA0)));
+		painter.fillRect(0, 0, width(), height(), QColor(0xFFBBADA0));
 		for (u16 y = 0; y < VERTICAL; ++y)
 			for (u16 x = 0; x < HORIZONTAL; ++x)
 				drawTile(painter, board[x + y * 4], x, y);
