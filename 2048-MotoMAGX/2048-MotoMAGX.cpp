@@ -225,11 +225,11 @@ class Board : public ZPanel {
 		painter.drawRoundRect(xOffset, yOffset, TILE_SIZE, TILE_SIZE, 20, 20);
 #endif
 		if (value) {
-			const u16 size = (value < 100) ? 16 : (value < 1000) ? 10 : 8;
+			const u16 size = (value < 100) ? 18 : (value < 1000) ? 14 : 10;
 			const QString strValue = QString("%1").arg(value);
 			painter.setPen(QColor(tile->foreground()));
 			painter.setFont(QFont("Sans", size, QFont::Bold));
-			const int w = QFontMetrics(painter.font()).width(strValue), h = (value < 100) ? size : size + 4;
+			const int w = QFontMetrics(painter.font()).width(strValue), h = (value < 100) ? size - 4 : size - 3;
 			painter.drawText(xOffset + (TILE_SIZE - w) / 2, yOffset + TILE_SIZE - (TILE_SIZE - h) / 2 - 2, strValue);
 		}
 	}
@@ -244,7 +244,7 @@ class Board : public ZPanel {
 			painter.drawText(width() / 2 - w / 2, height() / 2, center);
 		}
 		painter.setPen(QColor(0xFF776E65));
-		painter.setFont(QFont("Sans", 10, QFont::Normal));
+		painter.setFont(QFont("Sans", 14, QFont::Normal));
 		const QString strScore = QString("Score: %1").arg(score);
 		const int w = QFontMetrics(painter.font()).width(strScore);
 		painter.drawText(TILE_MARGIN, height() - 10, "Press '0' to Restart!");
