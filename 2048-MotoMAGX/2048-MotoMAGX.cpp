@@ -46,22 +46,22 @@ struct Tile {
 
 	Tile(u16 value) { this->value = value; }
 	bool empty() { return (value == 0); }
-	int foreground() { return (value < 16) ? 0x776E65 : 0xF9F6F2; }
+	int foreground() { return (value < 16) ? 0xFF776E65 : 0xFFF9F6F2; }
 	int background() {
 		switch (value) {
-			case    2: return 0xEEE4DA;
-			case    4: return 0xEDE0C8;
-			case    8: return 0xF2B179;
-			case   16: return 0xF59563;
-			case   32: return 0xF67C5F;
-			case   64: return 0xF65E3B;
-			case  128: return 0xEDCF72;
-			case  256: return 0xEDCC61;
-			case  512: return 0xEDC850;
-			case 1024: return 0xEDC53F;
-			case 2048: return 0xEDC22E;
+			case    2: return 0xFFEEE4DA;
+			case    4: return 0xFFEDE0C8;
+			case    8: return 0xFFF2B179;
+			case   16: return 0xFFF59563;
+			case   32: return 0xFFF67C5F;
+			case   64: return 0xFFF65E3B;
+			case  128: return 0xFFEDCF72;
+			case  256: return 0xFFEDCC61;
+			case  512: return 0xFFEDC850;
+			case 1024: return 0xFFEDC53F;
+			case 2048: return 0xFFEDC22E;
 		}
-		return 0xCDC1B4;
+		return 0xFFCDC1B4;
 	}
 };
 
@@ -235,15 +235,15 @@ class Board : public ZPanel {
 	}
 	void drawFinal(QPainter &painter) {
 		if (win || lose) {
-			painter.setBrush(QBrush(0x888888, Dense6Pattern));
+			painter.setBrush(QBrush(0xFF888888, Dense6Pattern));
 			painter.drawRect(0, 0, width(), height());
-			painter.setPen(QPen(QColor(0x800000)));
+			painter.setPen(QPen(QColor(0xFF800000)));
 			painter.setFont(QFont("Sans", 24, QFont::Bold));
 			const QString center = ((win) ? "You won!" : (lose) ? "Game Over!" : "");
 			const int w = QFontMetrics(painter.font()).width(center);
 			painter.drawText(width() / 2 - w / 2, height() / 2, center);
 		}
-		painter.setPen(QColor(0x776E65));
+		painter.setPen(QColor(0xFF776E65));
 		painter.setFont(QFont("Sans", 10, QFont::Normal));
 		const QString strScore = QString("Score: %1").arg(score);
 		const int w = QFontMetrics(painter.font()).width(strScore);
@@ -283,7 +283,7 @@ protected:
 	}
 	virtual void paintEvent(QPaintEvent *) {
 		QPainter painter(this);
-		painter.fillRect(0, 0, width(), height(), QBrush(QColor(0xBBADA0)));
+		painter.fillRect(0, 0, width(), height(), QBrush(QColor(0xFFBBADA0)));
 		for (u16 y = 0; y < VERTICAL; ++y)
 			for (u16 x = 0; x < HORIZONTAL; ++x)
 				drawTile(painter, board[x + y * 4], x, y);
