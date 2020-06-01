@@ -257,7 +257,10 @@ public:
 	}
 	virtual ~Board() { deinitialize(); }
 public slots:
-	void reset() { resetGame(false); }
+	void reset() {
+		resetGame(false);
+		update();
+	}
 	void screenShot() {
 		QPixmap pixmap(width(), height());
 		bitBlt(&pixmap, 0, 0, this, 0, 0, width(), height(), Qt::CopyROP, true);
@@ -265,6 +268,7 @@ public slots:
 	}
 protected:
 	virtual void keyPressEvent(QKeyEvent *keyEvent) {
+		QWidget::keyPressEvent(keyEvent);
 		int key = keyEvent->key();
 		if (key == KEYCODE_0 || key == KEYCODE_CLEAR)
 			resetGame(false);
@@ -276,7 +280,6 @@ protected:
 				case KEYCODE_DOWN: case KEYCODE_8: down(); break;
 				case KEYCODE_LEFT: case KEYCODE_4: left(); break;
 				case KEYCODE_RIGHT: case KEYCODE_6: right(); break;
-				default: ZPanel::keyPressEvent(keyEvent); break;
 			}
 		if (!win && !canMove())
 			lose = true;
