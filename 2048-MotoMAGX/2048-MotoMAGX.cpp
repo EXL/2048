@@ -22,6 +22,7 @@
 	#define KEYCODE_DOWN                           EZX_KEY_DOWN
 	#define KEYCODE_LEFT                           EZX_KEY_LEFT
 	#define KEYCODE_RIGHT                          EZX_KEY_RIGHT
+	#define KEYCODE_CLEAR                          EZX_KEY_CLEAR
 	#ifdef EZX_V8
 	#define MAINDISPLAY_HEADER                     TINY_TYPE
 	#endif
@@ -247,7 +248,7 @@ class Board : public ZPanel {
 		painter.setFont(QFont("Sans", 14, QFont::Normal));
 		const QString strScore = QString("Score: %1").arg(score);
 		const int w = QFontMetrics(painter.font()).width(strScore);
-		painter.drawText(TILE_MARGIN, height() - 10, "Press '0' to Restart!");
+		painter.drawText(TILE_MARGIN, height() - 10, "Press '0' to Reset!");
 		painter.drawText(width() - w - TILE_MARGIN, height() - 10, strScore);
 	}
 public:
@@ -265,12 +266,13 @@ public slots:
 	}
 protected:
 	virtual void keyPressEvent(QKeyEvent *keyEvent) {
-		if (keyEvent->key() == KEYCODE_0)
+		int key = keyEvent->key();
+		if (key == KEYCODE_0 || key == KEYCODE_CLEAR)
 			resetGame(false);
 		if (!canMove())
 			lose = true;
 		if (!win && !lose)
-			switch (keyEvent->key()) {
+			switch (key) {
 				case KEYCODE_UP: case KEYCODE_2: up(); break;
 				case KEYCODE_DOWN: case KEYCODE_8: down(); break;
 				case KEYCODE_LEFT: case KEYCODE_4: left(); break;
@@ -303,11 +305,12 @@ public:
 		board = new Board(this, "board");
 		setContentWidget(board);
 
-		ZSoftKey *softKeys = getSoftKey();
+		ZSoftKey *softKeys = new ZSoftKey("CST_2", this, this);
 		softKeys->setText(ZSoftKey::RIGHT, "Exit");
 		softKeys->setClickedSlot(ZSoftKey::RIGHT, qApp, SLOT(quit()));
 		softKeys->setText(ZSoftKey::LEFT, "Reset");
 		softKeys->setClickedSlot(ZSoftKey::LEFT, board, SLOT(reset()));
+		setSoftKey(softKeys);
 	}
 };
 
