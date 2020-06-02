@@ -2,7 +2,6 @@
 #include <ZKbMainWidget.h>
 #include <ZHeader.h>
 #include <ZSoftKey.h>
-#include <ZPanel.h>
 #include <ZKeyDef.h>
 
 #include <vector>
@@ -22,6 +21,7 @@
 	#define KEYCODE_DOWN                           EZX_KEY_DOWN
 	#define KEYCODE_LEFT                           EZX_KEY_LEFT
 	#define KEYCODE_RIGHT                          EZX_KEY_RIGHT
+	#define KEYCODE_CLEAR                          EZX_KEY_CLEAR
 	#ifdef EZX_V8
 	#define MAINDISPLAY_HEADER                     TINY_TYPE
 	#endif
@@ -46,26 +46,26 @@ struct Tile {
 
 	Tile(u16 value) { this->value = value; }
 	bool empty() { return (value == 0); }
-	int foreground() { return (value < 16) ? 0x776E65 : 0xF9F6F2; }
+	int foreground() { return (value < 16) ? 0xFF776E65 : 0xFFF9F6F2; }
 	int background() {
 		switch (value) {
-			case    2: return 0xEEE4DA;
-			case    4: return 0xEDE0C8;
-			case    8: return 0xF2B179;
-			case   16: return 0xF59563;
-			case   32: return 0xF67C5F;
-			case   64: return 0xF65E3B;
-			case  128: return 0xEDCF72;
-			case  256: return 0xEDCC61;
-			case  512: return 0xEDC850;
-			case 1024: return 0xEDC53F;
-			case 2048: return 0xEDC22E;
+			case    2: return 0xFFEEE4DA;
+			case    4: return 0xFFEDE0C8;
+			case    8: return 0xFFF2B179;
+			case   16: return 0xFFF59563;
+			case   32: return 0xFFF67C5F;
+			case   64: return 0xFFF65E3B;
+			case  128: return 0xFFEDCF72;
+			case  256: return 0xFFEDCC61;
+			case  512: return 0xFFEDC850;
+			case 1024: return 0xFFEDC53F;
+			case 2048: return 0xFFEDC22E;
 		}
-		return 0xCDC1B4;
+		return 0xFFCDC1B4;
 	}
 };
 
-class Board : public ZPanel {
+class Board : public QWidget {
 	Q_OBJECT
 
 	Tile *board[BOARD_SIZE];
@@ -218,46 +218,49 @@ class Board : public ZPanel {
 		const u16 value = tile->value;
 		const u16 xOffset = offsetCoords(x), yOffset = offsetCoords(y);
 		painter.setPen(QPen::NoPen);
-		painter.setBrush(QBrush(QColor(QRgb(tile->background()))));
+		painter.setBrush(QColor(tile->background()));
 #if defined(EZX_Z6W) || defined(EZX_ZN5) || defined(EZX_U9)
 		painter.drawRect(xOffset, yOffset, TILE_SIZE, TILE_SIZE);
 #else
 		painter.drawRoundRect(xOffset, yOffset, TILE_SIZE, TILE_SIZE, 20, 20);
 #endif
 		if (value) {
-			const u16 size = (value < 100) ? 16 : (value < 1000) ? 10 : 8;
+			const u16 size = (value < 100) ? 18 : (value < 1000) ? 14 : 10;
 			const QString strValue = QString("%1").arg(value);
-			painter.setPen(QPen(QColor(QRgb(tile->foreground()))));
+			painter.setPen(QColor(tile->foreground()));
 			painter.setFont(QFont("Sans", size, QFont::Bold));
-			const int w = QFontMetrics(painter.font()).width(strValue), h = (value < 100) ? size : size + 4;
+			const int w = QFontMetrics(painter.font()).width(strValue), h = (value < 100) ? size - 4 : size - 3;
 			painter.drawText(xOffset + (TILE_SIZE - w) / 2, yOffset + TILE_SIZE - (TILE_SIZE - h) / 2 - 2, strValue);
 		}
 	}
 	void drawFinal(QPainter &painter) {
 		if (win || lose) {
-			painter.setBrush(QBrush(0x888888, Dense6Pattern));
+			painter.setBrush(QBrush(0xFF888888, Dense6Pattern));
 			painter.drawRect(0, 0, width(), height());
-			painter.setPen(QPen(QColor(0x800000)));
+			painter.setPen(QColor(0xFF800000));
 			painter.setFont(QFont("Sans", 24, QFont::Bold));
 			const QString center = ((win) ? "You won!" : (lose) ? "Game Over!" : "");
 			const int w = QFontMetrics(painter.font()).width(center);
 			painter.drawText(width() / 2 - w / 2, height() / 2, center);
 		}
-		painter.setPen(QColor(0x776E65));
-		painter.setFont(QFont("Sans", 10, QFont::Normal));
+		painter.setPen(QColor(0xFF776E65));
+		painter.setFont(QFont("Sans", 14, QFont::Normal));
 		const QString strScore = QString("Score: %1").arg(score);
 		const int w = QFontMetrics(painter.font()).width(strScore);
-		painter.drawText(TILE_MARGIN, height() - 10, "Press '0' to Restart!");
+		painter.drawText(TILE_MARGIN, height() - 10, "Press '0' to Reset!");
 		painter.drawText(width() - w - TILE_MARGIN, height() - 10, strScore);
 	}
 public:
-	Board(QWidget *parent = 0, const char *name = 0) : ZPanel(parent, name, /* WFlags */ 0) {
+	Board(QWidget *parent = 0, const char *name = 0) : QWidget(parent, name, /* WFlags */ 0) {
 		setFocusPolicy(QWidget::StrongFocus);
 		resetGame(true);
 	}
 	virtual ~Board() { deinitialize(); }
 public slots:
-	void reset() { resetGame(false); }
+	void reset() {
+		resetGame(false);
+		update();
+	}
 	void screenShot() {
 		QPixmap pixmap(width(), height());
 		bitBlt(&pixmap, 0, 0, this, 0, 0, width(), height(), Qt::CopyROP, true);
@@ -265,17 +268,18 @@ public slots:
 	}
 protected:
 	virtual void keyPressEvent(QKeyEvent *keyEvent) {
-		if (keyEvent->key() == KEYCODE_0)
+		QWidget::keyPressEvent(keyEvent);
+		int key = keyEvent->key();
+		if (key == KEYCODE_0 || key == KEYCODE_CLEAR)
 			resetGame(false);
 		if (!canMove())
 			lose = true;
 		if (!win && !lose)
-			switch (keyEvent->key()) {
+			switch (key) {
 				case KEYCODE_UP: case KEYCODE_2: up(); break;
 				case KEYCODE_DOWN: case KEYCODE_8: down(); break;
 				case KEYCODE_LEFT: case KEYCODE_4: left(); break;
 				case KEYCODE_RIGHT: case KEYCODE_6: right(); break;
-				default: ZPanel::keyPressEvent(keyEvent); break;
 			}
 		if (!win && !canMove())
 			lose = true;
@@ -283,7 +287,7 @@ protected:
 	}
 	virtual void paintEvent(QPaintEvent *) {
 		QPainter painter(this);
-		painter.fillRect(0, 0, width(), height(), QBrush(QColor(0xBBADA0)));
+		painter.fillRect(0, 0, width(), height(), QColor(0xFFBBADA0));
 		for (u16 y = 0; y < VERTICAL; ++y)
 			for (u16 x = 0; x < HORIZONTAL; ++x)
 				drawTile(painter, board[x + y * 4], x, y);
@@ -303,11 +307,12 @@ public:
 		board = new Board(this, "board");
 		setContentWidget(board);
 
-		ZSoftKey *softKeys = getSoftKey();
+		ZSoftKey *softKeys = new ZSoftKey("CST_2", this, this);
 		softKeys->setText(ZSoftKey::RIGHT, "Exit");
 		softKeys->setClickedSlot(ZSoftKey::RIGHT, qApp, SLOT(quit()));
 		softKeys->setText(ZSoftKey::LEFT, "Reset");
 		softKeys->setClickedSlot(ZSoftKey::LEFT, board, SLOT(reset()));
+		setSoftKey(softKeys);
 	}
 };
 
