@@ -14,11 +14,11 @@ struct Tile;
 typedef unsigned short int u16;
 typedef std::vector<Tile *> TileList;
 
-const int HORIZONTAL = 4, VERTICAL = 4;
-const int BOARD_SIZE = HORIZONTAL * VERTICAL;
-const int END_GAME_TARGET = 2048;
-const int TILE_SIZE = 32;
-const int TILE_MARGIN = 16;
+const u16 HORIZONTAL = 4, VERTICAL = 4;
+const u16 BOARD_SIZE = HORIZONTAL * VERTICAL;
+const u16 END_GAME_TARGET = 2048;
+const u16 TILE_SIZE = 32;
+const u16 TILE_MARGIN = 16;
 
 inline double DegreesToRadians(int angleDegrees) { return ((angleDegrees) * M_PI / 180.0); }
 inline double MathRandom() { return rand() / static_cast<double>(RAND_MAX); }
