@@ -3,6 +3,13 @@
 #include <ZHeader.h>
 #include <ZSoftKey.h>
 #include <ZKeyDef.h>
+#include <ZMessageDlg.h>
+#include <ZOptionsMenu.h>
+#include <ZGlobal.h>
+
+#include <RES_ICON_Reader.h>
+
+#include <qfileinfo.h>
 
 #include <vector>
 
@@ -24,6 +31,7 @@
 	#define KEYCODE_CLEAR                          EZX_KEY_CLEAR
 	#ifdef EZX_V8
 	#define MAINDISPLAY_HEADER                     TINY_TYPE
+	#define TypeOK                                 just_ok
 	#endif
 #endif
 
@@ -282,7 +290,18 @@ public slots:
 	void screenShot() {
 		QPixmap pixmap(width(), height());
 		bitBlt(&pixmap, 0, 0, this, 0, 0, width(), height(), Qt::CopyROP, true);
-		pixmap.save(QString("%1.png").arg(time(NULL)), "PNG");
+		const QString path = QString("%1/%2.png").arg(QFileInfo(qApp->argv()[0]).dirPath(true)).arg(time(NULL));
+		ZMessageDlg *msgDlg = new ZMessageDlg("", NULL, ZMessageDlg::TypeOK, 10*60*100);
+		if (pixmap.save(path, "PNG")) {
+			msgDlg->setTitle("Saved!");
+			msgDlg->setInstructText(QString("Screenshot Saved! Path: %1").arg(path));
+		} else {
+			msgDlg->setTitle("Error!");
+			msgDlg->setInstructText(QString("Error: Cannot Save Screenshot! Path: %1").arg(path));
+			msgDlg->setTitleIcon(RES_ICON_Reader().getIcon("error_pop", true));
+		}
+		msgDlg->exec();
+		delete msgDlg;
 	}
 protected:
 	virtual void keyPressEvent(QKeyEvent *keyEvent) {
