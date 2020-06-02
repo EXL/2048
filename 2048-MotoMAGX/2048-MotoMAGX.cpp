@@ -337,8 +337,8 @@ class MainWidget : public ZKbMainWidget {
 public slots:
 	void about() {
 		ZMessageDlg *msgDlg = new ZMessageDlg("About 2048", QString("2048 Game implementation "
-				"especially for MotoMAGX platform.\n\nVersion: 1.0, %1\nThx: Boxa, fill.sa, "
-				"VINRARUS\n© EXL (exl@bk.ru), 2020").arg(__DATE__), ZMessageDlg::TypeOK, 10*60*100);
+			"especially for MotoMAGX platform.\n\nVersion: 1.0, %1\nThx: Boxa, fill.sa, "
+			"VINRARUS\n© EXL (exl@bk.ru), 2020").arg(__DATE__), ZMessageDlg::TypeOK, 10*60*100);
 		const QString path = QString("%1/icon.png").arg(QFileInfo(qApp->argv()[0]).dirPath(true));
 		if (QFile(path).exists()) {
 			QPixmap icon(48, 48);
@@ -351,16 +351,23 @@ public slots:
 public:
 	MainWidget(QWidget *parent = 0, const char *name = 0, WFlags flags = 0) :
 		ZKbMainWidget(ZHeader::MAINDISPLAY_HEADER, parent, name, flags) {
-		setAppTitle(tr(name));
-
-		board = new Board(this, "board");
+		setAppTitle(name);
+		Board *board = new Board(this, "board");
 		setContentWidget(board);
-
-		ZSoftKey *softKeys = new ZSoftKey("CST_2", this, this);
-		softKeys->setText(ZSoftKey::RIGHT, "Exit");
+		ZSoftKey *softKeys = new ZSoftKey("CST_2A", this, this);
+		QRect menuRect = ZGlobal::getContentR();
+		ZOptionsMenu *menu = new ZOptionsMenu(menuRect, this, NULL, 0);
+		menu->insertItem("Take Screenshot", NULL, board, SLOT(screenShot()), true, false, false, 0, 0);
+		menu->insertItem("Reset Game", NULL, board, SLOT(reset()), true, false, false, 1, 1);
+		menu->insertItem("About", NULL, this, SLOT(about()), true, false, false, 2, 2);
+		menu->insertSeparator(3, 3);
+		menu->insertItem(tr("TXT_RID_SOFTKEY_EXIT", "Exit"), NULL, qApp, SLOT(quit()), true, false, false, 4, 4);
+		softKeys->setOptMenu(ZSoftKey::LEFT, menu);
+		softKeys->setTextForOptMenuHide(tr("TXT_RID_SOFTKEY_OPTIONS", "Options"));
+		softKeys->setTextForOptMenuShow(tr("TXT_RID_SOFTKEY_SELECT", "Select"), tr("TXT_RID_SOFTKEY_CANCEL", "Cancel"));
+		softKeys->setText(ZSoftKey::LEFT, tr("TXT_RID_SOFTKEY_OPTIONS", "Options"));
+		softKeys->setText(ZSoftKey::RIGHT, tr("TXT_RID_SOFTKEY_EXIT", "Exit"));
 		softKeys->setClickedSlot(ZSoftKey::RIGHT, qApp, SLOT(quit()));
-		softKeys->setText(ZSoftKey::LEFT, "Reset");
-		softKeys->setClickedSlot(ZSoftKey::LEFT, board, SLOT(reset()));
 		setSoftKey(softKeys);
 	}
 };
