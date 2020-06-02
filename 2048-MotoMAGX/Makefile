@@ -20,8 +20,7 @@
 
 ####### Config
 APPNAME     := 2048-MotoMAGX
-UPLOAD_PATH := /mmc/mmca1/
-#APP_DEFINES := -DDEBUG_LOG -DCONFIG_APPWRITE
+APP_DEFINES :=
 
 ####### SDK and Toolchains
 TOOLPREFIX  := /arm-eabi
@@ -36,7 +35,7 @@ endif
 ifeq ($(PLATFORM),EZX-Z6)
 QTDIR       := $(TOOLPREFIX)/lib/qt-2.3.8
 EZXDIR      := $(TOOLPREFIX)/lib/ezx-z6
-LINKLIB     := -lm -lqte-mt -lezxpm -ljpeg -lezxappbase -lezxtapi-xscale-r -llog_util -llighting
+LINKLIB     := -lm -lqte-mt -lezxpm -lezxappbase -llighting
 DIRECTIV    := -DEZX_Z6 $(APP_DEFINES)
 TARGET       = $(APPNAME)_Z6
 endif
@@ -46,7 +45,6 @@ EZXDIR      := $(TOOLPREFIX)/lib/ezx-v8
 LINKLIB     := -lm -lqte-mt -lezxpm -lezxappbase
 DIRECTIV    := -DEZX_V8 $(APP_DEFINES)
 TARGET       = $(APPNAME)_V8
-ZNEWCHECKBOX = 1
 endif
 ifeq ($(PLATFORM),EZX-E8)
 ARMLIB      := $(TOOLPREFIX)/arm-linux-gnueabi/lib_E8
@@ -68,7 +66,6 @@ endif
 ifeq ($(PLATFORM),EZX-U9)
 QTDIR       := $(TOOLPREFIX)/lib/qt-zn5
 EZXDIR      := $(TOOLPREFIX)/lib/ezx-u9
-EZXDIR2     := $(TOOLPREFIX)/lib/ezx-zn5
 LINKLIB     := -lm -lqte-mt -lezxappbase -llighting
 DIRECTIV    := -DEZX_U9 $(APP_DEFINES)
 TARGET       = $(APPNAME)_U9
@@ -105,46 +102,38 @@ TARGET       = $(APPNAME)_VE66
 endif
 
 ####### Build Tools and Options
+MOC          = $(QTDIR)/bin/moc
 CC           = $(TOOLPREFIX)/bin/arm-linux-gnueabi-gcc
 CXX          = $(TOOLPREFIX)/bin/arm-linux-gnueabi-g++
 LD           = $(TOOLPREFIX)/bin/arm-linux-gnueabi-g++
 STRIP        = $(TOOLPREFIX)/bin/arm-linux-strip
-CFLAGS       = -pipe -Wall -W -O2 -DNO_DEBUG $(INCPATH)
-CXXFLAGS     = -pipe -DQWS -fno-exceptions -fno-rtti -Wall -W -O2 -DNO_DEBUG $(DIRECTIV) $(INCPATH)
 INCPATH      = -I$(QTDIR)/include -I$(EZXDIR)/include -I $(TOOLPREFIX)/arm-linux-gnueabi/include
-LDFLAGS      = -s
-LINK         = $(TOOLPREFIX)/bin/arm-linux-gnueabi-gcc
-LFLAGS       = -Wl,-rpath-link,$(EZXDIR)/lib
-LIBS         = $(SUBLIBS) -L$(EZXDIR)/lib -L$(ARMLIB) -L$(QTDIR)/lib $(LINKLIB)
-MOC          = $(QTDIR)/bin/moc
-UIC          = $(QTDIR)/bin/uic
+CFLAGS       = -pipe -Wall -W -O2 -DNO_DEBUG $(DIRECTIV) $(INCPATH)
+CXXFLAGS     = -pipe -DQWS -fno-exceptions -fno-rtti -Wall -W -O2 -DNO_DEBUG $(DIRECTIV) $(INCPATH)
+LDLAGS       = -Wl,-rpath-link,$(EZXDIR)/lib
+LIBS         = -L$(EZXDIR)/lib -L$(ARMLIB) -L$(QTDIR)/lib $(LINKLIB)
 
 ####### Files
-HEADERS      = 2048-MotoMAGX.cpp
 SOURCES      = 2048-MotoMAGX.cpp
 OBJECTS      = 2048-MotoMAGX.o
 SRCMOC       = 2048-MotoMAGX.moc
 
-####### Targets
-TARGETS      = $(TARGET)
-INTERFACE_DECL_PATH = .
-
 all: $(SRCMOC) $(TARGET)
 
-$(TARGET): $(UICDECLS) $(OBJECTS) $(OBJMOC)
-	$(LINK) $(LFLAGS) -o $(TARGET) $(OBJECTS) $(OBJMOC) $(LIBS)
-	$(STRIP) -s $(MAKETO) $(TARGET)
+$(TARGET): $(OBJECTS)
+	$(LD) $(LDLAGS) -o $(TARGET) $(OBJECTS) $(OBJMOC) $(LIBS)
+	$(STRIP) -s $(TARGET)
 
 moc: $(SRCMOC)
 
 rmobj:
-	-rm -f $(OBJECTS) $(OBJMOC) $(SRCMOC) $(UICIMPLS) $(UICDECLS)
+	-rm -f $(OBJECTS) $(SRCMOC)
 	-rm -f *~ core
 	$(RM) *.o
 	$(RM) *.moc
 
 clean:
-	-rm -f $(OBJECTS) $(OBJMOC) $(SRCMOC) $(UICIMPLS) $(UICDECLS)
+	-rm -f $(OBJECTS) $(SRCMOC)
 	-rm -f *~ core
 	$(RM) *.o
 	$(RM) *.moc
