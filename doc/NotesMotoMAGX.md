@@ -1,9 +1,7 @@
-2048 Game Notes
-===============
+Porting 2048 Game on MotoMAGX Platform
+======================================
 
-### Porting 2048 on MotoMAGX
-
-First building on various MotoMAGX platforms:
+### First building on various MotoMAGX platforms
 
 * Z6
 
