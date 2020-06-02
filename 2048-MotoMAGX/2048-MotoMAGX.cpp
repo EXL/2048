@@ -188,10 +188,10 @@ class Board : public ZPanel {
 		else if (angle == 270)
 			offsetX = 0;
 		const double rad = DegreesToRadians(angle);
-		const u16 cos = static_cast<u16>(::cos(rad)), sin = static_cast<u16>(::sin(rad));
+		const short cos = static_cast<short>(::cos(rad)), sin = static_cast<short>(::sin(rad));
 		for (u16 x = 0; x < HORIZONTAL; ++x)
 			for (u16 y = 0; y < VERTICAL; ++y) {
-				u16 newX = (x * cos) - (y * sin) + offsetX, newY = (x * sin) + (y * cos) + offsetY;
+				short newX = (x * cos) - (y * sin) + offsetX, newY = (x * sin) + (y * cos) + offsetY;
 				newBoard[newX + newY * 4] = tileAt(x, y);
 			}
 		for (u16 i = 0; i < BOARD_SIZE; ++i)
