@@ -36,7 +36,11 @@ const int HORIZONTAL = 4, VERTICAL = 4;
 const int BOARD_SIZE = HORIZONTAL * VERTICAL;
 const int END_GAME_TARGET = 2048;
 const int TILE_SIZE = 32;
+#if defined(EZX_EM30) || defined (EZX_E8)
+const int TILE_MARGIN = 5;
+#else
 const int TILE_MARGIN = 16;
+#endif
 
 inline double DegreesToRadians(int angleDegrees) { return ((angleDegrees) * M_PI / 180.0); }
 inline double MathRandom() { return rand() / static_cast<double>(RAND_MAX); }
@@ -216,7 +220,11 @@ class Board : public QWidget {
 	u16 offsetCoords(u16 coord) { return coord * (TILE_MARGIN + TILE_SIZE) + TILE_MARGIN * 2; }
 	void drawTile(QPainter &painter, Tile *const tile, u16 x, u16 y) {
 		const u16 value = tile->value;
+#if defined(EZX_EM30) || defined(EZX_E8)
+		const int xOffset = offsetCoords(x) + width() / 4, yOffset = offsetCoords(y);
+#else
 		const u16 xOffset = offsetCoords(x), yOffset = offsetCoords(y);
+#endif
 		painter.setPen(QPen::NoPen);
 		painter.setBrush(QColor(tile->background()));
 #if defined(EZX_Z6W) || defined(EZX_ZN5) || defined(EZX_U9)
