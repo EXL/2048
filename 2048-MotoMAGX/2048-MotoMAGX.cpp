@@ -50,8 +50,8 @@ struct Tile {
 
 	Tile(u16 value) { this->value = value; }
 	bool empty() { return (value == 0); }
-	int foreground() { return (value < 16) ? 0xFF776E65 : 0xFFF9F6F2; }
-	int background() {
+	unsigned foreground() { return (value < 16) ? 0xFF776E65 : 0xFFF9F6F2; }
+	unsigned background() {
 		switch (value) {
 			case    2: return 0xFFEEE4DA;
 			case    4: return 0xFFEDE0C8;
@@ -73,7 +73,7 @@ class Board : public QWidget {
 	Q_OBJECT
 
 	Tile *board[BOARD_SIZE];
-	bool win, lose;
+	bool win, lose, paddingByte0, paddingByte1;
 	int score;
 
 	void initialize(bool reset) {
@@ -263,7 +263,7 @@ public:
 		setFocusPolicy(QWidget::StrongFocus);
 		resetGame(true);
 	}
-	virtual ~Board() { deinitialize(); }
+	virtual ~Board() { deinitialize(); Q_UNUSED(paddingByte0) Q_UNUSED(paddingByte1) }
 public slots:
 	void reset() {
 		resetGame(false);
