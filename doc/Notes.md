@@ -1,7 +1,7 @@
-2048 Notes
-==========
+2048 Game Notes
+===============
 
-# Porting 2048 on MotoMAGX
+### Porting 2048 on MotoMAGX
 
 First building on various MotoMAGX platforms:
 
@@ -20,6 +20,8 @@ First building on various MotoMAGX platforms:
     ```
     undefined reference to `QPainter::drawRoundRect(int, int, int, int, int, int)'
     ```
+
+    Dirty Fix: use `drawRect()` instead.
 
 * U9
 
@@ -43,6 +45,8 @@ First building on various MotoMAGX platforms:
     undefined reference to `QPainter::drawRoundRect(int, int, int, int, int, int)'
     ```
 
+    Dirty Fix: use `drawRect()` instead.
+
 * ZN5
 
     Link error:
@@ -50,6 +54,8 @@ First building on various MotoMAGX platforms:
     ```
     undefined reference to `QPainter::drawRoundRect(int, int, int, int, int, int)'
     ```
+
+    Dirty Fix: use `drawRect()` instead.
 
 * E8
 
@@ -67,7 +73,7 @@ First building on various MotoMAGX platforms:
 
     All Ok!
 
-Some fixes for old MotoMAGX phones like Z6 and V8:
+### Some fixes for old MotoMAGX phones like Z6 and V8
 
 1. Inconsistent keycodes.
 
@@ -125,7 +131,7 @@ Some fixes for old MotoMAGX phones like Z6 and V8:
     2048-MotoMAGX.cpp:(.text+0x21c): undefined reference to `ZPanel::className() const'
     ```
 
-    Fix: Unknown. Probably MOC-file patching?
+    Fix: Use just `QWidget` instead of `ZPanel` class.
 
 4. ZHeader inconsistent error:
 
