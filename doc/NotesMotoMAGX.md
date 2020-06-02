@@ -19,7 +19,9 @@ Porting 2048 Game on MotoMAGX Platform
     undefined reference to `QPainter::drawRoundRect(int, int, int, int, int, int)'
     ```
 
-    Dirty Fix: use `drawRect()` instead.
+    Dirty Fix: use `drawRect()` method instead.
+
+    Fix: Emulate `drawRoundRect()` method with `drawPie()` and `drawRect()` methods.
 
 * U9
 
@@ -43,7 +45,9 @@ Porting 2048 Game on MotoMAGX Platform
     undefined reference to `QPainter::drawRoundRect(int, int, int, int, int, int)'
     ```
 
-    Dirty Fix: use `drawRect()` instead.
+    Dirty Fix: use `drawRect()` method instead.
+
+    Fix: Emulate `drawRoundRect()` method with `drawPie()` and `drawRect()` methods.
 
 * ZN5
 
@@ -53,7 +57,9 @@ Porting 2048 Game on MotoMAGX Platform
     undefined reference to `QPainter::drawRoundRect(int, int, int, int, int, int)'
     ```
 
-    Dirty Fix: use `drawRect()` instead.
+    Dirty Fix: use `drawRect()` method instead.
+
+    Fix: Emulate `drawRoundRect()` method with `drawPie()` and `drawRect()` methods.
 
 * E8
 

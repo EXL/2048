@@ -228,7 +228,17 @@ class Board : public QWidget {
 		painter.setPen(QPen::NoPen);
 		painter.setBrush(QColor(tile->background()));
 #if defined(EZX_Z6W) || defined(EZX_ZN5) || defined(EZX_U9)
-		painter.drawRect(xOffset, yOffset, TILE_SIZE, TILE_SIZE);
+		// HACK: Emulating drawRoundRect() method in 9 calls.
+		const u16 w = TILE_SIZE / 2, dw = w * 2, qw = w / 4, rad = qw * 2, rw = rad * 3, rect = w - rad;
+		painter.drawPie(xOffset, yOffset, rect, rect, -16*180, -16*90);
+		painter.drawPie(xOffset + w + rad, yOffset, rect, rect, 16*90, -16*90);
+		painter.drawPie(xOffset, yOffset + w + rad, rect, rect, -16*90, -16*90);
+		painter.drawPie(xOffset + w + rad, yOffset + w + rad, rect, rect, 0, -16*90);
+		painter.drawRect(xOffset + qw, yOffset + qw, TILE_SIZE - rad, TILE_SIZE - rad);
+		painter.drawRect(xOffset, yOffset + qw, qw, rw);
+		painter.drawRect(xOffset + dw - qw, yOffset + qw, qw, rw);
+		painter.drawRect(xOffset + qw, yOffset, rw, qw);
+		painter.drawRect(xOffset + qw, yOffset + dw - qw, rw, qw);
 #else
 		painter.drawRoundRect(xOffset, yOffset, TILE_SIZE, TILE_SIZE, 20, 20);
 #endif
