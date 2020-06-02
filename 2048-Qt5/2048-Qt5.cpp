@@ -201,12 +201,12 @@ class Board : public QWidget {
 		const u16 value = tile->value;
 		const u16 xOffset = offsetCoords(x), yOffset = offsetCoords(y);
 		painter.setPen(Qt::NoPen);
-		painter.setBrush(QBrush(QColor(QRgb(tile->background()))));
+		painter.setBrush(QColor(QRgb(tile->background())));
 		painter.drawRoundedRect(xOffset, yOffset, TILE_SIZE, TILE_SIZE, 6, 6);
 		if (value) {
 			const u16 size = (value < 100) ? 24 : (value < 1000) ? 18 : 14;
 			const QString strValue = QString("%1").arg(value);
-			painter.setPen(QPen(QColor(QRgb(tile->foreground()))));
+			painter.setPen(QColor(QRgb(tile->foreground())));
 			painter.setFont(QFont("Sans", size, QFont::Bold));
 			const int w = QFontMetrics(painter.font()).horizontalAdvance(strValue), h = (value < 100) ? size + 4 : size + 4;
 			painter.drawText(xOffset + (TILE_SIZE - w) / 2, yOffset + TILE_SIZE - (TILE_SIZE - h) / 2 - 2, strValue);
@@ -216,7 +216,7 @@ class Board : public QWidget {
 		if (win || lose) {
 			painter.setBrush(QBrush(0x888888, Qt::Dense6Pattern));
 			painter.drawRect(0, 0, width(), height());
-			painter.setPen(QPen(QColor(0x800000)));
+			painter.setPen(QColor(0x800000));
 			painter.setFont(QFont("Sans", 24, QFont::Bold));
 			const QString center = ((win) ? "You won!" : (lose) ? "Game Over!" : "");
 			const int w = QFontMetrics(painter.font()).horizontalAdvance(center);
@@ -251,7 +251,7 @@ protected:
 	}
 	virtual void paintEvent(QPaintEvent *) {
 		QPainter painter(this);
-		painter.fillRect(0, 0, width(), height(), QBrush(QColor(0xBBADA0)));
+		painter.fillRect(0, 0, width(), height(), QColor(0xBBADA0));
 		for (u16 y = 0; y < VERTICAL; ++y)
 			for (u16 x = 0; x < HORIZONTAL; ++x)
 				drawTile(painter, board[x + y * 4], x, y);
