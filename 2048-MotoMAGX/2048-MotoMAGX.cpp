@@ -334,8 +334,20 @@ protected:
 
 class MainWidget : public ZKbMainWidget {
 	Q_OBJECT
-
-	Board *board;
+public slots:
+	void about() {
+		ZMessageDlg *msgDlg = new ZMessageDlg("About 2048", QString("2048 Game implementation "
+				"especially for MotoMAGX platform.\n\nVersion: 1.0, %1\nThx: Boxa, fill.sa, "
+				"VINRARUS\n© EXL (exl@bk.ru), 2020").arg(__DATE__), ZMessageDlg::TypeOK, 10*60*100);
+		const QString path = QString("%1/icon.png").arg(QFileInfo(qApp->argv()[0]).dirPath(true));
+		if (QFile(path).exists()) {
+			QPixmap icon(48, 48);
+			icon.load(path);
+			msgDlg->setTitleIcon(icon);
+		}
+		msgDlg->exec();
+		delete msgDlg;
+	}
 public:
 	MainWidget(QWidget *parent = 0, const char *name = 0, WFlags flags = 0) :
 		ZKbMainWidget(ZHeader::MAINDISPLAY_HEADER, parent, name, flags) {
