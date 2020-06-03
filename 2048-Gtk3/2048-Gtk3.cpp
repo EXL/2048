@@ -31,7 +31,7 @@ inline double B(int rgb) { return ((rgb >> 0) & 0xFF) / 255.0; }
 
 // Source: https://www.cairographics.org/samples/rounded_rectangle/
 static void draw_rounded_rectangle(cairo_t *cairo, double x, double y, double width, double height, double radius) {
-	double degrees = M_PI / 180.0;
+	const double degrees = M_PI / 180.0;
 	cairo_new_sub_path(cairo);
 	cairo_arc(cairo, x + width - radius, y + radius, radius, -90 * degrees, 0 * degrees);
 	cairo_arc(cairo, x + width - radius, y + height - radius, radius, 0 * degrees, 90 * degrees);
