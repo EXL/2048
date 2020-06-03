@@ -13,6 +13,6 @@ set(SOURCE_CODE 2048-Qt5.cpp)
 
 find_package(Qt5 COMPONENTS Widgets REQUIRED)
 
-add_executable(2048-Qt5 ${SOURCE_CODE})
+add_executable(${PROJECT_NAME} ${SOURCE_CODE})
 
-target_link_libraries(2048-Qt5 PRIVATE Qt5::Widgets)
+target_link_libraries(${PROJECT_NAME} PRIVATE Qt5::Widgets)
