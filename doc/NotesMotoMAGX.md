@@ -151,3 +151,18 @@ Porting 2048 Game on MotoMAGX Platform
     #define MAINDISPLAY_HEADER                     TINY_TYPE
     #endif
     ```
+
+5. ZHeader inconsistent error:
+
+    ```
+    2048-MotoMAGX.cpp: In member function `void Board::screenShot()':
+    2048-MotoMAGX.cpp:292: error: `TypeOK' is not a member of `ZMessageDlg'
+    ```
+
+    Fix:
+
+    ```
+    #ifdef EZX_V8
+    #define TypeOK                                 just_ok
+    #endif
+    ```
