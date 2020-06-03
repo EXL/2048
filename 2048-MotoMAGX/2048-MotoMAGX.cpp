@@ -43,11 +43,11 @@ typedef std::vector<Tile *> TileList;
 const u16 HORIZONTAL = 4, VERTICAL = 4;
 const u16 BOARD_SIZE = HORIZONTAL * VERTICAL;
 const u16 END_GAME_TARGET = 2048;
-const u16 TILE_SIZE = 32;
+const u16 TILE_SIZE = 48;
 #if defined(EZX_EM30) || defined (EZX_E8)
 const u16 TILE_MARGIN = 5;
 #else
-const u16 TILE_MARGIN = 16;
+const u16 TILE_MARGIN = 5;
 #endif
 
 inline double DegreesToRadians(int angleDegrees) { return ((angleDegrees) * M_PI / 180.0); }
@@ -231,7 +231,7 @@ class Board : public QWidget {
 #if defined(EZX_EM30) || defined(EZX_E8)
 		const int xOffset = offsetCoords(x) + width() / 4, yOffset = offsetCoords(y);
 #else
-		const u16 xOffset = offsetCoords(x), yOffset = offsetCoords(y);
+		const int xOffset = offsetCoords(x) + width() / 32, yOffset = offsetCoords(y);
 #endif
 		painter.setPen(QPen::NoPen);
 		painter.setBrush(QColor(tile->background()));

@@ -17,8 +17,8 @@ typedef std::vector<Tile *> TileList;
 const u16 HORIZONTAL = 4, VERTICAL = 4;
 const u16 BOARD_SIZE = HORIZONTAL * VERTICAL;
 const u16 END_GAME_TARGET = 2048;
-const u16 TILE_SIZE = 32;
-const u16 TILE_MARGIN = 16;
+const u16 TILE_SIZE = 48;
+const u16 TILE_MARGIN = 5;
 
 inline double DegreesToRadians(int angleDegrees) { return ((angleDegrees) * M_PI / 180.0); }
 inline double MathRandom() { return rand() / static_cast<double>(RAND_MAX); }
@@ -198,7 +198,7 @@ class Board : public QWidget {
 	u16 offsetCoords(u16 coord) { return coord * (TILE_MARGIN + TILE_SIZE) + TILE_MARGIN * 2; }
 	void drawTile(QPainter &painter, Tile *const tile, u16 x, u16 y) {
 		const u16 value = tile->value;
-		const u16 xOffset = offsetCoords(x), yOffset = offsetCoords(y);
+		const int xOffset = offsetCoords(x) + width() / 32, yOffset = offsetCoords(y);
 		painter.setPen(QPen::NoPen);
 		painter.setBrush(QColor(QRgb(tile->background())));
 		painter.drawRoundRect(xOffset, yOffset, TILE_SIZE, TILE_SIZE, 20, 20);
@@ -263,7 +263,7 @@ int main(int argc, char *argv[]) {
 	srand(static_cast<u16>(time(NULL)));
 	Board boardWidget;
 	application.setMainWidget(&boardWidget);
-	boardWidget.resize(240, 240);
+	boardWidget.resize(240, 260);
 	boardWidget.show();
 	return application.exec();
 }
