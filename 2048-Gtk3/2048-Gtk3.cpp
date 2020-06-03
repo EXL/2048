@@ -1,5 +1,7 @@
 #include <gtk/gtk.h>
 
+#include <cairo.h>
+
 #include <vector>
 
 #include <cmath>
@@ -13,7 +15,6 @@ class Board;
 typedef unsigned short int u16;
 typedef std::vector<Tile *> TileList;
 
-static cairo_surface_t *surface = NULL;
 static Board *board = nullptr;
 
 const u16 HORIZONTAL = 4, VERTICAL = 4;
@@ -94,7 +95,7 @@ class Board {
 		const TileList spaces = availableSpace();
 		const size_t size = spaces.size();
 		if (!spaces.empty())
-			spaces[static_cast<size_t>((MathRandom() * size)) % size]->value = (MathRandom() < 0.9) ? 128 : 4;
+			spaces[static_cast<size_t>((MathRandom() * size)) % size]->value = (MathRandom() < 0.9) ? 2 : 4;
 	}
 	const TileList availableSpace() {
 		TileList spaces;
@@ -275,88 +276,44 @@ public:
 			}
 		if (!win && !canMove())
 			lose = true;
-		paintEvent(widget);
 		gtk_widget_queue_draw(widget);
 	}
-	void paintEvent(GtkWidget *widget) {
-		cairo_t *cairo = cairo_create(surface);
+	void paintEvent(GtkWidget *widget, cairo_t *cairo) {
 		cairo_set_source_rgb(cairo, R(0xBBADA0), G(0xBBADA0), B(0xBBADA0));
 		cairo_paint(cairo);
 		for (u16 y = 0; y < VERTICAL; ++y)
 			for (u16 x = 0; x < HORIZONTAL; ++x)
 				drawTile(cairo, board[x + y * 4], x, y);
 		drawFinal(widget, cairo);
-		cairo_destroy(cairo);
 	}
 };
 
-static void clear_surface(void) {
-	cairo_t *cairo = cairo_create(surface);
-	cairo_set_source_rgb(cairo, 1.0, 1.0, 1.0);
-	cairo_paint(cairo);
-	cairo_destroy(cairo);
-}
-
-static gboolean configure_event_cb(GtkWidget *widget, GdkEventConfigure *event, gpointer data) {
-	if (surface)
-		cairo_surface_destroy(surface);
-	surface = gdk_window_create_similar_surface(gtk_widget_get_window(widget),
-	                                            CAIRO_CONTENT_COLOR,
-	                                            gtk_widget_get_allocated_width(widget),
-	                                            gtk_widget_get_allocated_height(widget));
-	clear_surface();
+static gboolean on_key_press_event(GtkWidget *widget, GdkEventKey *event, gpointer /*data*/) {
+	if (!GTK_IS_BIN(widget))
+		return FALSE;
+	board->keyPressEvent(gtk_bin_get_child(GTK_BIN(widget)), event->keyval);
 	return TRUE;
 }
 
-static gboolean draw_cb(GtkWidget *widget, cairo_t *cairo, gpointer data) {
-	cairo_set_source_surface(cairo, surface, 0, 0);
-	cairo_paint(cairo);
+static gboolean on_draw(GtkWidget *widget, cairo_t *cairo, gpointer /*data*/) {
+	board->paintEvent(widget, cairo);
 	return FALSE;
 }
 
-static void draw_brush(GtkWidget *widget, gdouble x, gdouble y) {
-	cairo_t *cairo = cairo_create(surface);
-	cairo_rectangle(cairo, x - 3, y - 3, 6, 6);
-	cairo_fill(cairo);
-	cairo_destroy(cairo);
-}
-
-static gboolean key_press_event_cb(GtkWidget *widget, GdkEventKey *event, gpointer data) {
-	if (surface == NULL || !GTK_IS_BIN(widget))
-		return FALSE;
-	GtkWidget *child = gtk_bin_get_child(GTK_BIN(widget));
-	//child
-	board->keyPressEvent(child, event->keyval);
-	return TRUE;
-}
-
-static void close_window(void) {
-	if (surface)
-		cairo_surface_destroy(surface);
-}
-
-static void activate(GtkApplication *application, gpointer user_data) {
+int main(int argc, char *argv[]) {
+	gtk_init(&argc, &argv);
+	srand(static_cast<u16>(time(nullptr)));
 	board = new Board();
-	GtkWidget *window = gtk_application_window_new(application);
-	GtkWidget *drawing_area = gtk_drawing_area_new();
+	GtkWidget *window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
 	gtk_window_set_title(GTK_WINDOW(window), "2048-Gtk3");
 	gtk_widget_set_size_request(GTK_WIDGET(window), 340, 400);
-	//gtk_window_set_default_size(GTK_WINDOW(window), 340, 400);
-	gtk_container_add(GTK_CONTAINER(window), drawing_area);
-	g_signal_connect(window, "destroy", G_CALLBACK(close_window), NULL);
-	g_signal_connect(drawing_area, "draw", G_CALLBACK(draw_cb), NULL);
-	g_signal_connect(drawing_area, "configure-event", G_CALLBACK(configure_event_cb), NULL);
-	g_signal_connect(window, "key-press-event", G_CALLBACK(key_press_event_cb), NULL);
+	GtkWidget *drawing = gtk_drawing_area_new();
+	gtk_container_add(GTK_CONTAINER(window), drawing);
+	g_signal_connect(G_OBJECT(drawing), "draw", G_CALLBACK(on_draw), NULL);
+	g_signal_connect(window, "key-press-event", G_CALLBACK(on_key_press_event), NULL);
+	g_signal_connect(G_OBJECT(window), "destroy", G_CALLBACK(gtk_main_quit), NULL);
 	gtk_widget_show_all(window);
-}
-
-int main(int argc, char *argv[]) {
-	GtkApplication *application = gtk_application_new("ru.exlmoto.game2048", G_APPLICATION_FLAGS_NONE);
-	srand(static_cast<u16>(time(nullptr)));
-	g_signal_connect(application, "activate", G_CALLBACK(activate), NULL);
-	int status = g_application_run(G_APPLICATION(application), argc, argv);
-	g_object_unref(application);
+	gtk_main();
 	delete board;
-	board = nullptr;
-	return status;
+	return 0;
 }
