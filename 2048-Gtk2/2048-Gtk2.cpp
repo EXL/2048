@@ -1,4 +1,5 @@
 #include <gtk/gtk.h>
+#include <gdk/gdkkeysyms.h>
 
 #include <cairo.h>
 
@@ -233,7 +234,8 @@ class Board {
 		}
 	}
 	void drawFinal(GtkWidget *widget, cairo_t *cairo) {
-		int width = gtk_widget_get_allocated_width(widget), height = gtk_widget_get_allocated_height(widget);
+		int width, height;
+		gtk_widget_get_size_request(widget, &width, &height);
 		u16 size = 26;
 		if (win || lose) {
 			cairo_set_source_rgba(cairo, R(0x888888), G(0x888888), B(0x888888), 0.5);
@@ -295,8 +297,8 @@ static gboolean on_key_press_event(GtkWidget *widget, GdkEventKey *event, gpoint
 	return TRUE;
 }
 
-static gboolean on_draw(GtkWidget *widget, cairo_t *cairo, gpointer /*data*/) {
-	board->paintEvent(widget, cairo);
+static gboolean on_expose_event(GtkWidget *widget, GdkEventExpose *event) {
+	board->paintEvent(widget, gdk_cairo_create(widget->window));
 	return FALSE;
 }
 
@@ -309,7 +311,7 @@ int main(int argc, char *argv[]) {
 	gtk_widget_set_size_request(GTK_WIDGET(window), 340, 400);
 	GtkWidget *drawing = gtk_drawing_area_new();
 	gtk_container_add(GTK_CONTAINER(window), drawing);
-	g_signal_connect(G_OBJECT(drawing), "draw", G_CALLBACK(on_draw), NULL);
+	g_signal_connect(G_OBJECT(drawing), "expose-event", G_CALLBACK(on_expose_event), NULL);
 	g_signal_connect(window, "key-press-event", G_CALLBACK(on_key_press_event), NULL);
 	g_signal_connect(G_OBJECT(window), "destroy", G_CALLBACK(gtk_main_quit), NULL);
 	gtk_widget_show_all(window);
