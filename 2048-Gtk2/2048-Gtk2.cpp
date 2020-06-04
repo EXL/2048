@@ -299,7 +299,9 @@ static gboolean on_key_press_event(GtkWidget *widget, GdkEventKey *event, gpoint
 }
 
 static gboolean on_expose_event(GtkWidget *widget, GdkEventExpose /**event*/) {
-	board->paintEvent(widget, gdk_cairo_create(widget->window));
+	cairo_t *cairo = gdk_cairo_create(widget->window);
+	board->paintEvent(widget, cairo);
+	cairo_destroy(cairo);
 	return FALSE;
 }
 
