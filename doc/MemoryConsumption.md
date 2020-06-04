@@ -97,7 +97,7 @@ HugetlbPages:  0 kB
 
 ### 2048-Gtk3
 
-GNOME System Monitor: 5.6 MiB
+GNOME System Monitor: 5.8 MiB
 
 ```
 VmPeak:   550516 kB
@@ -115,4 +115,27 @@ VmExe:        20 kB
 VmLib:     17856 kB
 VmPTE:       176 kB
 VmSwap:        0 kB
+```
+
+### 2048-Gtk2
+
+GNOME System Monitor: 2.3 MiB
+
+```
+VmPeak:   242316 kB
+VmSize:   242316 kB
+VmLck:         0 kB
+VmPin:         0 kB
+VmHWM:     17780 kB
+VmRSS:     17780 kB
+RssAnon:    2296 kB
+RssFile:   15484 kB
+RssShmem:      0 kB
+VmData:     1976 kB
+VmStk:       132 kB
+VmExe:        20 kB
+VmLib:     14668 kB
+VmPTE:       116 kB
+VmSwap:        0 kB
+HugetlbPages:  0 kB
 ```
