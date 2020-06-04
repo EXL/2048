@@ -5,6 +5,8 @@ Only release builds are tested by `cat /proc/`pidof bin`/status` command.
 
 ### 2048-Qt5
 
+GNOME System Monitor: 9.6 MiB
+
 ```
 VmPeak:   852396 kB
 VmSize:   852396 kB
@@ -26,6 +28,8 @@ HugetlbPages:  0 kB
 
 ### 2048-Qt2
 
+GNOME System Monitor: 1.4 MiB
+
 ```
 VmPeak:   241660 kB
 VmSize:   241660 kB
@@ -45,7 +49,32 @@ VmSwap:        0 kB
 HugetlbPages:  0 kB
 ```
 
+### 2048-Qt1
+
+GNOME System Monitor: 540.0 KiB
+
+```
+VmPeak:   222624 kB
+VmSize:   222480 kB
+VmLck:         0 kB
+VmPin:         0 kB
+VmHWM:      6036 kB
+VmRSS:      5988 kB
+RssAnon:     540 kB
+RssFile:    5448 kB
+RssShmem:      0 kB
+VmData:      464 kB
+VmStk:       136 kB
+VmExe:        24 kB
+VmLib:      4812 kB
+VmPTE:        72 kB
+VmSwap:        0 kB
+HugetlbPages:  0 kB
+```
+
 ### 2048-Gtk3
+
+GNOME System Monitor: 5.6 MiB
 
 ```
 VmPeak:   550516 kB
