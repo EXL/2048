@@ -1,6 +1,7 @@
 #include <qwidget.h>
 #include <qpainter.h>
 #include <qapplication.h>
+#include <qkeycode.h>
 
 #include <vector>
 
@@ -28,22 +29,22 @@ struct Tile {
 
 	Tile(u16 value) { this->value = value; }
 	bool empty() { return (value == 0); }
-	int foreground() { return (value < 16) ? 0x776E65 : 0xF9F6F2; }
-	int background() {
+	const char *foreground() { return (value < 16) ? "#776E65" : "#F9F6F2"; }
+	const char *background() {
 		switch (value) {
-			case    2: return 0xEEE4DA;
-			case    4: return 0xEDE0C8;
-			case    8: return 0xF2B179;
-			case   16: return 0xF59563;
-			case   32: return 0xF67C5F;
-			case   64: return 0xF65E3B;
-			case  128: return 0xEDCF72;
-			case  256: return 0xEDCC61;
-			case  512: return 0xEDC850;
-			case 1024: return 0xEDC53F;
-			case 2048: return 0xEDC22E;
+			case    2: return "#EEE4DA";
+			case    4: return "#EDE0C8";
+			case    8: return "#F2B179";
+			case   16: return "#F59563";
+			case   32: return "#F67C5F";
+			case   64: return "#F65E3B";
+			case  128: return "#EDCF72";
+			case  256: return "#EDCC61";
+			case  512: return "#EDC850";
+			case 1024: return "#EDC53F";
+			case 2048: return "#EDC22E";
 		}
-		return 0xCDC1B4;
+		return "#CDC1B4";
 	}
 };
 
@@ -199,13 +200,13 @@ class Board : public QWidget {
 	void drawTile(QPainter &painter, Tile *const tile, u16 x, u16 y) {
 		const u16 value = tile->value;
 		const int xOffset = offsetCoords(x) + width() / 32, yOffset = offsetCoords(y);
-		painter.setPen(QPen::NoPen);
-		painter.setBrush(QColor(QRgb(tile->background())));
+		painter.setPen(NoPen);
+		painter.setBrush(QColor(tile->background()));
 		painter.drawRoundRect(xOffset, yOffset, TILE_SIZE, TILE_SIZE, 20, 20);
 		if (value) {
 			const u16 size = (value < 100) ? 16 : (value < 1000) ? 10 : 8;
-			const QString strValue = QString("%1").arg(value);
-			painter.setPen(QColor(QRgb(tile->foreground())));
+			const QString strValue = QString().setNum(value);
+			painter.setPen(QColor(tile->foreground()));
 			painter.setFont(QFont("Sans", size, QFont::Bold));
 			const int w = QFontMetrics(painter.font()).width(strValue), h = (value < 100) ? size : size + 4;
 			painter.drawText(xOffset + (TILE_SIZE - w) / 2, yOffset + TILE_SIZE - (TILE_SIZE - h) / 2 - 2, strValue);
@@ -213,17 +214,17 @@ class Board : public QWidget {
 	}
 	void drawFinal(QPainter &painter) {
 		if (win || lose) {
-			painter.setBrush(QBrush(0x888888, Dense6Pattern));
+			painter.setBrush(QBrush("#888888", Dense6Pattern));
 			painter.drawRect(0, 0, width(), height());
-			painter.setPen(QColor(0x800000));
+			painter.setPen(QColor("#800000"));
 			painter.setFont(QFont("Sans", 24, QFont::Bold));
 			const QString center = ((win) ? "You won!" : (lose) ? "Game Over!" : "");
 			const int w = QFontMetrics(painter.font()).width(center);
 			painter.drawText(width() / 2 - w / 2, height() / 2, center);
 		}
-		painter.setPen(QColor(0x776E65));
+		painter.setPen(QColor("#776E65"));
 		painter.setFont(QFont("Sans", 10, QFont::Normal));
-		const QString strScore = QString("Score: %1").arg(score);
+		QString strScore = QString().sprintf("Score: %d", score);
 		const int w = QFontMetrics(painter.font()).width(strScore);
 		painter.drawText(TILE_MARGIN, height() - 10, "ESC to Restart!");
 		painter.drawText(width() - w - TILE_MARGIN, height() - 10, strScore);
@@ -246,11 +247,11 @@ protected:
 			}
 		if (!win && !canMove())
 			lose = true;
-		update();
+		repaint();
 	}
 	virtual void paintEvent(QPaintEvent *) {
 		QPainter painter(this);
-		painter.fillRect(0, 0, width(), height(), QColor(0xBBADA0));
+		painter.fillRect(0, 0, width(), height(), QColor("#BBADA0"));
 		for (u16 y = 0; y < VERTICAL; ++y)
 			for (u16 x = 0; x < HORIZONTAL; ++x)
 				drawTile(painter, board[x + y * 4], x, y);
@@ -268,4 +269,4 @@ int main(int argc, char *argv[]) {
 	return application.exec();
 }
 
-#include "2048-Qt2.moc"
+#include "2048-Qt1.moc"
