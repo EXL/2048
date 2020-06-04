@@ -8,9 +8,6 @@
 *.o
 *.obj
 a.out
-2048-Qt2
-2048-Qt5
-2048-MotoMAGX_*
 
 # Build directories.
 build-*
