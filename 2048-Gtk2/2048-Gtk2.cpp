@@ -234,8 +234,9 @@ class Board {
 		}
 	}
 	void drawFinal(GtkWidget *widget, cairo_t *cairo) {
-		int width, height;
-		gtk_widget_get_size_request(widget, &width, &height);
+		GtkAllocation allocation;
+		gtk_widget_get_allocation(widget, &allocation);
+		int width = allocation.width, height = allocation.height;
 		u16 size = 26;
 		if (win || lose) {
 			cairo_set_source_rgba(cairo, R(0x888888), G(0x888888), B(0x888888), 0.5);
@@ -297,7 +298,7 @@ static gboolean on_key_press_event(GtkWidget *widget, GdkEventKey *event, gpoint
 	return TRUE;
 }
 
-static gboolean on_expose_event(GtkWidget *widget, GdkEventExpose *event) {
+static gboolean on_expose_event(GtkWidget *widget, GdkEventExpose /**event*/) {
 	board->paintEvent(widget, gdk_cairo_create(widget->window));
 	return FALSE;
 }
@@ -307,7 +308,6 @@ int main(int argc, char *argv[]) {
 	srand(static_cast<u16>(time(nullptr)));
 	board = new Board();
 	GtkWidget *window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-	gtk_window_set_title(GTK_WINDOW(window), "2048-Gtk3");
 	gtk_widget_set_size_request(GTK_WIDGET(window), 340, 400);
 	GtkWidget *drawing = gtk_drawing_area_new();
 	gtk_container_add(GTK_CONTAINER(window), drawing);
