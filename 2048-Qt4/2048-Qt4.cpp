@@ -208,7 +208,7 @@ class Board : public QWidget {
 			const QString strValue = QString("%1").arg(value);
 			painter.setPen(QColor(QRgb(tile->foreground())));
 			painter.setFont(QFont("Sans", size, QFont::Bold));
-			const int w = QFontMetrics(painter.font()).horizontalAdvance(strValue);
+			const int w = QFontMetrics(painter.font()).width(strValue);
 			const int h = (value < 100) ? size + 4 : size + 4;
 			painter.drawText(xOffset + (TILE_SIZE - w) / 2, yOffset + TILE_SIZE - (TILE_SIZE - h) / 2 - 2, strValue);
 		}
@@ -220,18 +220,18 @@ class Board : public QWidget {
 			painter.setPen(QColor(0x800000));
 			painter.setFont(QFont("Sans", 24, QFont::Bold));
 			const QString center = ((win) ? "You won!" : (lose) ? "Game Over!" : "");
-			const int w = QFontMetrics(painter.font()).horizontalAdvance(center);
+			const int w = QFontMetrics(painter.font()).width(center);
 			painter.drawText(width() / 2 - w / 2, height() / 2, center);
 		}
 		painter.setPen(QColor(0x776E65));
 		painter.setFont(QFont("Sans", 14, QFont::Normal));
 		const QString strScore = QString("Score: %1").arg(score);
-		const int w = QFontMetrics(painter.font()).horizontalAdvance(strScore);
+		const int w = QFontMetrics(painter.font()).width(strScore);
 		painter.drawText(TILE_MARGIN, height() - 10, "ESC to Restart!");
 		painter.drawText(width() - w - TILE_MARGIN, height() - 10, strScore);
 	}
 public:
-	explicit Board(QWidget *parent = nullptr) : QWidget(parent) { resetGame(true); }
+	explicit Board(QWidget *parent = NULL) : QWidget(parent) { resetGame(true); }
 	virtual ~Board() { deinitialize(); }
 protected:
 	virtual void keyPressEvent(QKeyEvent *keyEvent) {
@@ -262,7 +262,7 @@ protected:
 
 int main(int argc, char *argv[]) {
 	QApplication application(argc, argv);
-	srand(static_cast<u16>(time(nullptr)));
+	srand(static_cast<u16>(time(NULL)));
 	Board boardWidget;
 	boardWidget.resize(340, 400);
 	boardWidget.show();

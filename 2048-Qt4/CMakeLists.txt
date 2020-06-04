@@ -10,8 +10,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(SOURCE_CODE 2048-Qt4.cpp)
 
-find_package(Qt4 REQUIRED)
+find_package(Qt4 REQUIRED QtGui)
 
 add_executable(${PROJECT_NAME} ${SOURCE_CODE})
 
-target_link_libraries(${PROJECT_NAME} ${QT_LIBRARIES})
+target_link_libraries(${PROJECT_NAME} Qt4::QtGui)
