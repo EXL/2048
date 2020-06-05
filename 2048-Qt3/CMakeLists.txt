@@ -22,4 +22,4 @@ add_custom_command(
 )
 
 add_executable(${PROJECT_NAME} ${SOURCE_CODE} ${MOC_FILE})
-target_link_libraries(${PROJECT_NAME} qt3)
+target_link_libraries(${PROJECT_NAME} qt-mt)

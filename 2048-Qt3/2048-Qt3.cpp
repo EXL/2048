@@ -1,7 +1,6 @@
-#include <QWidget>
-#include <QKeyEvent>
-#include <QApplication>
-#include <QPainter>
+#include <qwidget.h>
+#include <qpainter.h>
+#include <qapplication.h>
 
 #include <vector>
 
@@ -200,9 +199,9 @@ class Board : public QWidget {
 	void drawTile(QPainter &painter, Tile *const tile, u16 x, u16 y) {
 		const u16 value = tile->value;
 		const u16 xOffset = offsetCoords(x), yOffset = offsetCoords(y);
-		painter.setPen(Qt::NoPen);
+		painter.setPen(QPen::NoPen);
 		painter.setBrush(QColor(QRgb(tile->background())));
-		painter.drawRoundedRect(xOffset, yOffset, TILE_SIZE, TILE_SIZE, 6, 6);
+		painter.drawRoundRect(xOffset, yOffset, TILE_SIZE, TILE_SIZE, 20, 20);
 		if (value) {
 			const u16 size = (value < 100) ? 24 : (value < 1000) ? 18 : 14;
 			const QString strValue = QString("%1").arg(value);
@@ -214,7 +213,7 @@ class Board : public QWidget {
 	}
 	void drawFinal(QPainter &painter) {
 		if (win || lose) {
-			painter.setBrush(QBrush(0x888888, Qt::Dense6Pattern));
+			painter.setBrush(QBrush(0x888888, Dense6Pattern));
 			painter.drawRect(0, 0, width(), height());
 			painter.setPen(QColor(0x800000));
 			painter.setFont(QFont("Sans", 24, QFont::Bold));
@@ -230,20 +229,20 @@ class Board : public QWidget {
 		painter.drawText(width() - w - TILE_MARGIN, height() - 10, strScore);
 	}
 public:
-	explicit Board(QWidget *parent = NULL) : QWidget(parent) { resetGame(true); }
+	Board(QWidget *parent = 0) : QWidget(parent) { resetGame(true); }
 	virtual ~Board() { deinitialize(); }
 protected:
 	virtual void keyPressEvent(QKeyEvent *keyEvent) {
-		if (keyEvent->key() == Qt::Key_Escape)
+		if (keyEvent->key() == Key_Escape)
 			resetGame(false);
 		if (!canMove())
 			lose = true;
 		if (!win && !lose)
 			switch (keyEvent->key()) {
-				case Qt::Key_Left: left(); break;
-				case Qt::Key_Right: right(); break;
-				case Qt::Key_Down: down(); break;
-				case Qt::Key_Up: up(); break;
+				case Key_Left: left(); break;
+				case Key_Right: right(); break;
+				case Key_Down: down(); break;
+				case Key_Up: up(); break;
 			}
 		if (!win && !canMove())
 			lose = true;
@@ -263,6 +262,7 @@ int main(int argc, char *argv[]) {
 	QApplication application(argc, argv);
 	srand(static_cast<u16>(time(NULL)));
 	Board boardWidget;
+	application.setMainWidget(&boardWidget);
 	boardWidget.resize(340, 400);
 	boardWidget.show();
 	return application.exec();
