@@ -17,8 +17,8 @@ typedef std::vector<Tile *> TileList;
 const u16 HORIZONTAL = 4, VERTICAL = 4;
 const u16 BOARD_SIZE = HORIZONTAL * VERTICAL;
 const u16 END_GAME_TARGET = 2048;
-const u16 TILE_SIZE = 48;
-const u16 TILE_MARGIN = 5;
+const u16 TILE_SIZE = 64;
+const u16 TILE_MARGIN = 16;
 
 inline double DegreesToRadians(int angleDegrees) { return ((angleDegrees) * M_PI / 180.0); }
 inline double MathRandom() { return rand() / static_cast<double>(RAND_MAX); }
@@ -195,19 +195,19 @@ class Board : public QWidget {
 	void right() { rotate(180); left(); rotate(180); }
 	void up() { rotate(270); left(); rotate(90); }
 	void down() { rotate(90); left(); rotate(270); }
-	u16 offsetCoords(u16 coord) { return coord * (TILE_MARGIN + TILE_SIZE) + TILE_MARGIN * 2; }
+	u16 offsetCoords(u16 coord) { return coord * (TILE_MARGIN + TILE_SIZE) + TILE_MARGIN; }
 	void drawTile(QPainter &painter, Tile *const tile, u16 x, u16 y) {
 		const u16 value = tile->value;
-		const int xOffset = offsetCoords(x) + width() / 32, yOffset = offsetCoords(y);
+		const u16 xOffset = offsetCoords(x), yOffset = offsetCoords(y);
 		painter.setPen(QPen::NoPen);
 		painter.setBrush(QColor(QRgb(tile->background())));
 		painter.drawRoundRect(xOffset, yOffset, TILE_SIZE, TILE_SIZE, 20, 20);
 		if (value) {
-			const u16 size = (value < 100) ? 16 : (value < 1000) ? 10 : 8;
+			const u16 size = (value < 100) ? 24 : (value < 1000) ? 18 : 14;
 			const QString strValue = QString("%1").arg(value);
 			painter.setPen(QColor(QRgb(tile->foreground())));
 			painter.setFont(QFont("Sans", size, QFont::Bold));
-			const int w = QFontMetrics(painter.font()).width(strValue), h = (value < 100) ? size : size + 4;
+			const int w = QFontMetrics(painter.font()).width(strValue), h = size + 4;
 			painter.drawText(xOffset + (TILE_SIZE - w) / 2, yOffset + TILE_SIZE - (TILE_SIZE - h) / 2 - 2, strValue);
 		}
 	}
@@ -222,7 +222,7 @@ class Board : public QWidget {
 			painter.drawText(width() / 2 - w / 2, height() / 2, center);
 		}
 		painter.setPen(QColor(0x776E65));
-		painter.setFont(QFont("Sans", 10, QFont::Normal));
+		painter.setFont(QFont("Sans", 14, QFont::Normal));
 		const QString strScore = QString("Score: %1").arg(score);
 		const int w = QFontMetrics(painter.font()).width(strScore);
 		painter.drawText(TILE_MARGIN, height() - 10, "ESC to Restart!");
@@ -263,7 +263,7 @@ int main(int argc, char *argv[]) {
 	srand(static_cast<u16>(time(NULL)));
 	Board boardWidget;
 	application.setMainWidget(&boardWidget);
-	boardWidget.resize(240, 260);
+	boardWidget.resize(340, 400);
 	boardWidget.show();
 	return application.exec();
 }
