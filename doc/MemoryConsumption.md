@@ -49,6 +49,29 @@ VmSwap:        0 kB
 HugetlbPages:  0 kB
 ```
 
+### 2048-Qt3
+
+GNOME System Monitor: 2.1 MiB
+
+```
+VmPeak:   245040 kB
+VmSize:   245040 kB
+VmLck:         0 kB
+VmPin:         0 kB
+VmHWM:     15424 kB
+VmRSS:     15424 kB
+RssAnon:    2184 kB
+RssFile:   13240 kB
+RssShmem:      0 kB
+VmData:     1756 kB
+VmStk:       132 kB
+VmExe:        32 kB
+VmLib:     10512 kB
+VmPTE:       112 kB
+VmSwap:        0 kB
+HugetlbPages:  0 kB
+```
+
 ### 2048-Qt2
 
 GNOME System Monitor: 1.3 MiB
