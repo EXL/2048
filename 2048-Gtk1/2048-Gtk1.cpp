@@ -1,8 +1,6 @@
 #include <gtk/gtk.h>
 #include <gdk/gdkkeysyms.h>
 
-//#include <cairo.h>
-
 #include <vector>
 
 #include <cmath>
@@ -27,46 +25,15 @@ const u16 TILE_MARGIN = 16;
 
 inline double DegreesToRadians(int angleDegrees) { return ((angleDegrees) * M_PI / 180.0); }
 inline double MathRandom() { return rand() / static_cast<double>(RAND_MAX); }
-inline gushort R(int rgb) { return (rgb >> 16) & 0xFF; }
-inline gushort G(int rgb) { return (rgb >> 8) & 0xFF; }
-inline gushort B(int rgb) { return (rgb >> 0) & 0xFF; }
-
-// Source: https://www.cairographics.org/samples/rounded_rectangle/
-//static void draw_rounded_rectangle(cairo_t *cairo, double x, double y, double width, double height, double radius) {
-//	const double degrees = M_PI / 180.0;
-//	cairo_new_sub_path(cairo);
-//	cairo_arc(cairo, x + width - radius, y + radius, radius, -90 * degrees, 0 * degrees);
-//	cairo_arc(cairo, x + width - radius, y + height - radius, radius, 0 * degrees, 90 * degrees);
-//	cairo_arc(cairo, x + radius, y + height - radius, radius, 90 * degrees, 180 * degrees);
-//	cairo_arc(cairo, x + radius, y + radius, radius, 180 * degrees, 270 * degrees);
-//	cairo_close_path(cairo);
-//	cairo_fill(cairo);
-//}
-
-static void draw_rounded_rectangle(GtkWidget *widget, GdkGC *gc, gushort x, gushort y,
-								   gushort width, gushort height, gushort radius) {
-	const int degrees = int(M_PI / 180);
-	gdk_draw_arc(widget->window, gc, TRUE, x + width - radius, y + radius, radius, radius, 0, 360 * degrees);
-	gdk_draw_arc(widget->window, gc, TRUE, x + width - radius, y + height - radius, radius, radius, 0 * degrees, 90 * degrees);
-	gdk_draw_arc(widget->window, gc, TRUE, x + radius, y + height - radius, radius, radius, 90 * degrees, 180 * degrees);
-	gdk_draw_arc(widget->window, gc, TRUE, x + radius, y + radius, radius, radius, 180 * degrees, 270 * degrees);
-
-//	cairo_new_sub_path(cairo);
-//	cairo_arc(cairo, x + width - radius, y + radius, radius, -90 * degrees, 0 * degrees);
-//	cairo_arc(cairo, x + width - radius, y + height - radius, radius, 0 * degrees, 90 * degrees);
-//	cairo_arc(cairo, x + radius, y + height - radius, radius, 90 * degrees, 180 * degrees);
-//	cairo_arc(cairo, x + radius, y + radius, radius, 180 * degrees, 270 * degrees);
-//	cairo_close_path(cairo);
-//	cairo_fill(cairo);
-}
+inline guint FadeColor(guint rgb) {	return rgb - 0x222222; }
 
 struct Tile {
 	u16 value;
 
 	Tile(u16 value) { this->value = value; }
 	bool empty() { return (value == 0); }
-	int foreground() { return (value < 16) ? 0x776E65 : 0xF9F6F2; }
-	int background() {
+	guint foreground() { return (value < 16) ? 0x776E65 : 0xF9F6F2; }
+	guint background() {
 		switch (value) {
 			case    2: return 0xEEE4DA;
 			case    4: return 0xEDE0C8;
@@ -235,21 +202,9 @@ class Board {
 		const u16 value = tile->value;
 		const u16 xOffset = offsetCoords(x), yOffset = offsetCoords(y);
 		GdkColor tileColor;
-		tileColor.pixel = (gulong) tile->background();
+		tileColor.pixel = (win || lose) ? FadeColor(tile->background()) : tile->background();
 		gdk_gc_set_foreground(gc, &tileColor);
-		//gdk_draw_rectangle(widget->window, gc, 1, xOffset, yOffset, TILE_SIZE, TILE_SIZE);
-		//draw_rounded_rectangle(widget, gc, xOffset, yOffset, TILE_SIZE, TILE_SIZE, 1000);
-
-		//int radius = 24;
-		//gdk_draw_arc(widget->window, gc, TRUE, xOffset + TILE_SIZE - radius,
-	//				 yOffset + radius, radius, radius, 0, 360 * 9);
-
-//		gdk_draw_arc(widget->window, gc, TRUE,
-//					   0, 0,
-//					   100, 50,
-//					   0, 180*64);
-
-		// HACK: Emulating drawRoundRect() method in 9 calls.
+		// HACK: Emulating gdk_draw_ronded_rectangle() method in 9 calls.
 		const u16 w = TILE_SIZE / 2, dw = w * 2, qw = w / 4, rad = qw * 2, rw = rad * 3, rect = w - rad;
 		gdk_draw_arc(widget->window, gc, TRUE, xOffset, yOffset, rect, rect, -64*180, -64*90);
 		gdk_draw_arc(widget->window, gc, TRUE, xOffset + w + rad, yOffset, rect, rect, 64*90, -64*90);
@@ -260,89 +215,53 @@ class Board {
 		gdk_draw_rectangle(widget->window, gc, TRUE, xOffset + dw - qw + 1, yOffset + qw, qw, rw);
 		gdk_draw_rectangle(widget->window, gc, TRUE, xOffset + qw, yOffset, rw, qw);
 		gdk_draw_rectangle(widget->window, gc, TRUE, xOffset + qw, yOffset + dw - qw + 1, rw, qw);
-
-
-		//gdk_draw_rectangle(widget->window, gc, TRUE, xOffset + rad, yOffset + rad, TILE_SIZE - rad * 2, TILE_SIZE - rad * 2);
-		//gdk_draw_rectangle(widget->window, gc, TRUE, xOffset, yOffset + rad, rad, rw);
-		//gdk_draw_rectangle(widget->window, gc, TRUE, xOffset + dw - rad, yOffset + rad, rad, rw);
-		//gdk_draw_rectangle(widget->window, gc, TRUE, xOffset + rad, yOffset, rw, rad);
-		//gdk_draw_rectangle(widget->window, gc, TRUE, xOffset + rad, yOffset + dw - rad, rw, rad);
-
-		//const u16 w = TILE_SIZE / 2, dw = w * 2, rad = w / 4, rw = rad * 6, rect = w - rad;
-//		gdk_draw_arc(widget->window, gc, TRUE, xOffset, yOffset, rect, rect, -180*64, -64*90);
-//		gdk_draw_arc(widget->window, gc, TRUE, xOffset + w + rad, yOffset, rect, rect, 90, -64*90);
-//		gdk_draw_arc(widget->window, gc, TRUE, xOffset, yOffset + w + rad, rect, rect, -64*90, -64*90);
-//		gdk_draw_arc(widget->window, gc, TRUE, xOffset + w + rad, yOffset + w + rad, rect, rect, 0, -64*90);
-//		painter.drawRect(xOffset + rad, yOffset + rad, TILE_SIZE - rad * 2, TILE_SIZE - rad * 2);
-//		painter.drawRect(xOffset, yOffset + rad, rad, rw);
-//		painter.drawRect(xOffset + dw - rad, yOffset + rad, rad, rw);
-//		painter.drawRect(xOffset + rad, yOffset, rw, rad);
-//		painter.drawRect(xOffset + rad, yOffset + dw - rad, rw, rad);
-
-
 		if (value) {
-			const u16 size = (value < 100) ? 26 : (value < 1000) ? 22 : 16;
-			gchar *strFont = g_strdup_printf("-adobe-helvetica-bold-r-normal--*-%d0-*-*-*-*-*-*", size);
-			GdkFont *font = gdk_font_load("-adobe-helvetica-bold-r-normal--*-180-*-*-*-*-*-*");
-			g_free(strFont);
+			GdkFont *font = (value < 100) ?
+				gdk_font_load("-adobe-helvetica-bold-r-normal--34-240-100-100-p-182-iso8859-1") :
+				(value < 1000) ?
+					gdk_font_load("-adobe-helvetica-bold-r-normal--25-180-100-100-p-138-iso8859-1") :
+					gdk_font_load("-adobe-helvetica-bold-r-normal--20-140-100-100-p-105-iso8859-1");
+			if (!font)
+				font = widget->style->font;
 			gchar *strValue = g_strdup_printf("%d", value);
-			int w = 10, h = 14;
+			int w = gdk_string_width(font, strValue) - 3, h = gdk_string_height(font, strValue) + 2;
 			GdkColor tileColor;
-			tileColor.pixel = (gulong) tile->foreground();
+			tileColor.pixel = (win || lose) ? FadeColor(tile->foreground()) : tile->foreground();
 			gdk_gc_set_foreground(gc, &tileColor);
-			gdk_draw_text(widget->window, font, gc,
-						  xOffset + (TILE_SIZE - w) / 2, yOffset + TILE_SIZE - (TILE_SIZE - h) / 2 - 2, strValue, strlen(strValue));
+			gdk_draw_text(widget->window, font, gc, xOffset + (TILE_SIZE - w) / 2,
+				yOffset + TILE_SIZE - (TILE_SIZE - h) / 2 - 2, strValue,  static_cast<gint>(strlen(strValue)));
 			g_free(strValue);
-
 		}
-
-		// cairo_set_source_rgb(cairo, R(tile->background()), G(tile->background()), B(tile->background()));
-		// draw_rounded_rectangle(cairo, xOffset, yOffset, TILE_SIZE, TILE_SIZE, 6);
-
-
-//		cairo_select_font_face(cairo, "Sans", CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_BOLD);
-//		if (value) {
-//			const u16 size = (value < 100) ? 26 : (value < 1000) ? 22 : 16;
-//			gchar *strValue = g_strdup_printf("%d", value);
-//			cairo_set_source_rgb(cairo, R(tile->foreground()), G(tile->foreground()), B(tile->foreground()));
-//			cairo_select_font_face(cairo, "Sans", CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_BOLD);
-//			cairo_set_font_size(cairo, size);
-//			cairo_text_extents_t extents;
-//			cairo_text_extents(cairo, strValue, &extents);
-//			const int w = static_cast<int>(extents.width) + 2, h = size;
-//			cairo_move_to(cairo, xOffset + (TILE_SIZE - w) / 2, yOffset + TILE_SIZE - (TILE_SIZE - h) / 2 - 2);
-//			cairo_show_text(cairo, strValue);
-//			g_free(strValue);
-//		}
 	}
 	void drawFinal(GtkWidget *widget, GdkGC *gc) {
-		// GtkAllocation allocation;
-		// gtk_widget_get_allocation(widget, &allocation);
-//		int width = widget->allocation.width, height = widget->allocation.height;
-//		u16 size = 26;
-//		if (win || lose) {
-//			cairo_set_source_rgba(cairo, R(0x888888), G(0x888888), B(0x888888), 0.5);
-//			cairo_paint(cairo);
-//			cairo_set_source_rgb(cairo, R(0x800000), G(0x800000), B(0x800000));
-//			cairo_set_font_size(cairo, size);
-//			const gchar *center = ((win) ? "You won!" : (lose) ? "Game Over!" : "");
-//			cairo_text_extents_t extents;
-//			cairo_text_extents(cairo, center, &extents);
-//			cairo_move_to(cairo, width / 2 - static_cast<int>(extents.width) / 2, height / 2);
-//			cairo_show_text(cairo, center);
-//		}
-//		size = 18;
-//		cairo_select_font_face(cairo, "Sans", CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_NORMAL);
-//		cairo_set_source_rgb(cairo, R(0x776E65), G(0x776E65), B(0x776E65));
-//		cairo_set_font_size(cairo, size);
-//		gchar *strScore = g_strdup_printf("Score: %d", score);
-//		cairo_text_extents_t extents;
-//		cairo_text_extents(cairo, strScore, &extents);
-//		cairo_move_to(cairo, TILE_MARGIN, height - size);
-//		cairo_show_text(cairo, "ESC to Restart!");
-//		cairo_move_to(cairo, width - static_cast<int>(extents.width) - TILE_MARGIN, height - size);
-//		cairo_show_text(cairo, strScore);
-//		g_free(strScore);
+		if (win || lose) {
+			GdkColor foregroundColor;
+			foregroundColor.pixel = 0x800000;
+			gdk_gc_set_foreground(gc, &foregroundColor);
+			GdkFont *font = gdk_font_load("-adobe-helvetica-bold-r-normal--34-240-100-100-p-182-iso8859-1");
+			if (!font)
+				font = widget->style->font;
+			const gchar *center = ((win) ? "You won!" : (lose) ? "Game Over!" : "");
+			gdk_draw_text(widget->window, font, gc,
+				widget->allocation.width / 2 - (gdk_string_width(font, center) - 3) / 2,
+				widget->allocation.height / 2, center, static_cast<gint>(strlen(center)));
+		}
+		GdkFont *font = gdk_font_load("-adobe-helvetica-medium-r-normal--20-140-100-100-p-100-iso8859-1");
+		if (!font)
+			font = widget->style->font;
+		GdkColor textColor;
+		textColor.pixel = (win || lose) ? FadeColor(0x776E65) : 0x776E65;
+		gdk_gc_set_foreground(gc, &textColor);
+		const gchar *strReset = "ESC to Restart!";
+		gdk_draw_text(widget->window, font, gc, TILE_MARGIN,
+			widget->allocation.height - gdk_string_height(font, strReset),
+			strReset, static_cast<gint>(strlen(strReset)));
+		gchar *strScore = g_strdup_printf("Score: %d", score);
+		gdk_draw_text(widget->window, font, gc,
+			widget->allocation.width - (gdk_string_width(font, strScore) - 3) - TILE_MARGIN,
+			widget->allocation.height - gdk_string_height(font, strScore),
+			strScore, static_cast<gint>(strlen(strScore)));
+		g_free(strScore);
 	}
 public:
 	explicit Board() { resetGame(true); }
@@ -364,9 +283,9 @@ public:
 		gtk_widget_queue_draw(widget);
 	}
 	void paintEvent(GtkWidget *widget, GdkGC *gc) {
-		GdkColor background;
-		background.pixel = 0xBBADA0;
-		gdk_gc_set_foreground(gc, &background);
+		GdkColor backgroundColor;
+		backgroundColor.pixel = (win || lose) ? FadeColor(0xBBADA0) : 0xBBADA0;
+		gdk_gc_set_foreground(gc, &backgroundColor);
 		gdk_draw_rectangle(widget->window, gc, 1, 0, 0, widget->allocation.width, widget->allocation.height);
 		for (u16 y = 0; y < VERTICAL; ++y)
 			for (u16 x = 0; x < HORIZONTAL; ++x)
@@ -378,54 +297,14 @@ public:
 static gboolean on_key_press_event(GtkWidget *widget, GdkEventKey *event, gpointer /*data*/) {
 	if (!GTK_IS_BIN(widget))
 		return FALSE;
-	//gtk_bin_get_type()
 	board->keyPressEvent(GTK_BIN(widget)->child, event->keyval);
 	return TRUE;
 }
 
-static GdkColor* color(GtkWidget *widget, gushort red, gushort green, gushort blue) {
-	GdkColor *color = (GdkColor *) malloc(sizeof(GdkColor));
-	color->red = red * (65535 / 255);
-	color->green = green * (65535 / 255);
-	color->blue = blue * (65535 / 255);
-	color->pixel = (gulong)(red * 65536 + green * 256 + blue);
-	//gdk_color_alloc(gtk_widget_get_colormap(widget), color);
-	return color;
-}
-
 static gboolean on_expose_event(GtkWidget *widget, GdkEventExpose /**event*/) {
 	GdkGC *gc = gdk_gc_new(widget->window);
-	//cairo_surface_t *surface = cairo_cr
-	//cairo_t *cairo = cairo_create(surface);
-	//gdk_cair
-	//board->paintEvent(widget, cairo);
-	//cairo_destroy(cairo);
-
-//	int width, height;
-
-//	gdk_window_get_size(widget->window, &width, &height);
-
-//	GdkColor *y = color(widget, 0xFF, 0xFF, 0x00);
-
-//	gdk_gc_set_foreground(gc, y);
-
-//	gdk_draw_rectangle(widget->window, gc, 1, 0, 0, width, height);
-//	free(y);
-
-//	GdkColor *r = color(widget, 0xFF, 0x00, 0x00);
-
-//	gdk_gc_set_foreground(gc, r);
-
-//	//GdkFont font;
-//	gdk_draw_text(widget->window, widget->style->font, gc, 20, 20, "test", 4);
-//	free(r);
-
-//	//gdk_color_free(r);
-
 	board->paintEvent(widget, gc);
-
 	gdk_gc_destroy(gc);
-
 	return FALSE;
 }
 
@@ -435,8 +314,6 @@ int main(int argc, char *argv[]) {
 	board = new Board();
 	GtkWidget *window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
 	gtk_widget_set_usize(GTK_WIDGET(window), 340, 400);
-	// gtk_widget_set_size_request(GTK_WIDGET(window), 340, 400);
-	//gtk_widget_set
 	GtkWidget *drawing = gtk_drawing_area_new();
 	gtk_container_add(GTK_CONTAINER(window), drawing);
 	gtk_signal_connect(GTK_OBJECT(drawing), "expose-event", GTK_SIGNAL_FUNC(on_expose_event), NULL);
