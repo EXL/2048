@@ -208,8 +208,7 @@ class Board : public QWidget {
 			const QString strValue = QString("%1").arg(value);
 			painter.setPen(QColor(QRgb(tile->foreground())));
 			painter.setFont(QFont("Sans", size, QFont::Bold));
-			const int w = QFontMetrics(painter.font()).horizontalAdvance(strValue);
-			const int h = (value < 100) ? size + 4 : size + 4;
+			const int w = QFontMetrics(painter.font()).horizontalAdvance(strValue), h = size + 4;
 			painter.drawText(xOffset + (TILE_SIZE - w) / 2, yOffset + TILE_SIZE - (TILE_SIZE - h) / 2 - 2, strValue);
 		}
 	}
