@@ -17,4 +17,3 @@ add_definitions(${GTK3_CFLAGS_OTHER})
 add_executable(${PROJECT_NAME} 2048-Gtk3.cpp)
 
 target_link_libraries(${PROJECT_NAME} ${GTK3_LIBRARIES})
-

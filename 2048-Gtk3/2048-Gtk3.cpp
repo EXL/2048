@@ -305,7 +305,7 @@ int main(int argc, char *argv[]) {
 	srand(static_cast<u16>(time(nullptr)));
 	board = new Board();
 	GtkWidget *window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-	gtk_widget_set_size_request(GTK_WIDGET(window), 340, 400);
+	gtk_window_set_default_size(GTK_WINDOW(window), 340, 400);
 	GtkWidget *drawing = gtk_drawing_area_new();
 	gtk_container_add(GTK_CONTAINER(window), drawing);
 	g_signal_connect(G_OBJECT(drawing), "draw", G_CALLBACK(on_draw), NULL);
