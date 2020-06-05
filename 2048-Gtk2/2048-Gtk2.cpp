@@ -16,7 +16,7 @@ class Board;
 typedef unsigned short int u16;
 typedef std::vector<Tile *> TileList;
 
-static Board *board = nullptr;
+static Board *board = NULL;
 
 const u16 HORIZONTAL = 4, VERTICAL = 4;
 const u16 BOARD_SIZE = HORIZONTAL * VERTICAL;
@@ -307,7 +307,7 @@ static gboolean on_expose_event(GtkWidget *widget, GdkEventExpose /**event*/) {
 
 int main(int argc, char *argv[]) {
 	gtk_init(&argc, &argv);
-	srand(static_cast<u16>(time(nullptr)));
+	srand(static_cast<u16>(time(NULL)));
 	board = new Board();
 	GtkWidget *window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
 	gtk_widget_set_size_request(GTK_WIDGET(window), 340, 400);
