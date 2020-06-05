@@ -140,3 +140,26 @@ VmPTE:       112 kB
 VmSwap:        0 kB
 HugetlbPages:  0 kB
 ```
+
+### 2048-Gtk1
+
+GNOME System Monitor: 612.0 KiB
+
+```
+VmPeak:    18224 kB
+VmSize:    18224 kB
+VmLck:         0 kB
+VmPin:         0 kB
+VmHWM:      5952 kB
+VmRSS:      5868 kB
+RssAnon:     612 kB
+RssFile:    5256 kB
+RssShmem:      0 kB
+VmData:      708 kB
+VmStk:       136 kB
+VmExe:        16 kB
+VmLib:      5260 kB
+VmPTE:        64 kB
+VmSwap:        0 kB
+HugetlbPages:  0 kB
+```
