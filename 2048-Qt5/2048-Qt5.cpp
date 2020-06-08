@@ -52,9 +52,11 @@ class Board : public QWidget {
 	Q_OBJECT
 
 	Tile *board[BOARD_SIZE];
-	Tile *boardLine[HORIZONTAL];
-	Tile *middleLine[HORIZONTAL];
-	Tile *finalLine[HORIZONTAL];
+	Tile *lineBackReg[HORIZONTAL];
+	Tile *lineFrontReg[HORIZONTAL];
+//	Tile *boardLine[HORIZONTAL];
+//	Tile *middleLine[HORIZONTAL];
+//	Tile *finalLine[HORIZONTAL];
 	bool win, lose;
 	int score;
 
@@ -67,11 +69,17 @@ class Board : public QWidget {
 	void resetStates(bool reset) {
 		for (u16 i = 0; i < HORIZONTAL; ++i)
 			if (!reset) {
-				boardLine[i] = new Tile(0);
-				middleLine[i] = new Tile(0);
-				finalLine[i] = new Tile(0);
+				lineBackReg[i] = new Tile(0);
+				lineFrontReg[i] = new Tile(0);
+//				boardLine[i] = new Tile(0);
+//				middleLine[i] = new Tile(0);
+//				finalLine[i] = new Tile(0);
 			} else
-				boardLine[i]->value = middleLine[i]->value = finalLine[i]->value = 0;
+				lineBackReg[i]->value = lineFrontReg[i]->value = 0;
+	}
+	void resetLineBackReg() {
+		for (u16 i = 0; i < HORIZONTAL; ++i)
+			lineBackReg[i]->value = 0;
 	}
 //	void freeVectorPointers(Tile **list) {
 //		//const size_t size = list.size();
@@ -83,9 +91,8 @@ class Board : public QWidget {
 		for (u16 i = 0; i < BOARD_SIZE; ++i)
 			delete board[i];
 		for (u16 i = 0; i < HORIZONTAL; ++i) {
-			delete boardLine[i];
-			delete middleLine[i];
-			delete finalLine[i];
+			delete lineBackReg[i];
+			delete lineFrontReg[i];
 		}
 	}
 	void resetGame(bool init) {
@@ -119,10 +126,10 @@ class Board : public QWidget {
 		return false;
 	}
 	Tile * tileAt(u16 x, u16 y) { return board[x + y * 4]; }
-	void getLine(u16 index) {
+	void getLine(u16 index, Tile **line) {
 		//TileList line;
 		for (u16 i = 0; i < HORIZONTAL; ++i)
-			boardLine[i]->value = tileAt(i, index)->value;
+			line[i]->value = tileAt(i, index)->value;
 			// line.push_back(tileAt(i, index));
 		//return line;
 		// return boardLine;
@@ -135,6 +142,7 @@ class Board : public QWidget {
 	}
 	void mergeLine(Tile **oldLine) {
 		/// TileList newLine;
+		resetLineBackReg();
 		u16 j = 0;
 		for (u16 i = 0; i < HORIZONTAL && !oldLine[i]->empty(); ++i) {
 			u16 value = oldLine[i]->value;
@@ -145,11 +153,11 @@ class Board : public QWidget {
 					win = true;
 				++i;
 			}
-			finalLine[j++]->value = value;
+			lineBackReg[j++]->value = value;
 			// newLine.push_back(new Tile(value));
 		}
 		if (!j) {
-			copyTileLine(finalLine, oldLine);
+			copyTileLine(lineBackReg, oldLine);
 			//freeVectorPointers(oldLine);
 			//return finalLine;
 		} else {
@@ -170,10 +178,10 @@ class Board : public QWidget {
 		u16 j = 0;
 		for (u16 i = 0; i < HORIZONTAL; ++i)
 			if (!oldLine[i]->empty())
-				middleLine[j++]->value = oldLine[i]->value;
+				lineFrontReg[j++]->value = oldLine[i]->value;
 				//newLine.push_back(new Tile(oldLine[i]->value));
 		if (!j) {
-			copyTileLine(middleLine, oldLine);
+			copyTileLine(lineFrontReg, oldLine);
 			// return middleLine;
 		} else {
 			// ensureLineSize(middleLine, HORIZONTAL);
@@ -213,12 +221,13 @@ class Board : public QWidget {
 		bool needAddTile = false;
 		for (u16 i = 0; i < HORIZONTAL; ++i) {
 			resetStates(true);
-			getLine(i);
-			moveLine(boardLine);
-			mergeLine(middleLine);
+			getLine(i, lineBackReg);
+			moveLine(lineBackReg);
+			mergeLine(lineFrontReg);
+			getLine(i, lineFrontReg);
 			//Tile **line = getLine(i), **merged = mergeLine(moveLine(line));
-			bool result = compare(boardLine, finalLine);
-			setLine(i, finalLine);
+			bool result = compare(lineFrontReg, lineBackReg);
+			setLine(i, lineBackReg);
 			if (!needAddTile && !result)
 				needAddTile = true;
 			//freeVectorPointers(merged);
