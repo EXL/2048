@@ -1,9 +1,9 @@
+#include "2048.h"
+
 #include <QWidget>
 #include <QKeyEvent>
 #include <QApplication>
 #include <QPainter>
-
-#include "2048.h"
 
 const int TILE_SIZE = 64;
 const int TILE_MARGIN = 16;

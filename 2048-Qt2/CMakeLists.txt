@@ -5,6 +5,8 @@ cmake_minimum_required(VERSION 3.5)
 
 project(2048-Qt2 LANGUAGES CXX)
 
+add_subdirectory(../src/ ${PROJECT_BINARY_DIR}/src/)
+
 set(CMAKE_CXX_STANDARD 98)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
@@ -13,7 +15,7 @@ set(MOC_FILE 2048-Qt2.moc)
 
 set(QT2_DIR "/home/exl/Projects/qt2")
 set(MOC_BIN "${QT2_DIR}/src/moc/moc-qt2")
-include_directories("${QT2_DIR}/include")
+include_directories(../src/ "${QT2_DIR}/include")
 link_directories("${QT2_DIR}/src")
 
 add_custom_command(
@@ -22,4 +24,4 @@ add_custom_command(
 )
 
 add_executable(${PROJECT_NAME} ${SOURCE_CODE} ${MOC_FILE})
-target_link_libraries(${PROJECT_NAME} qt2)
+target_link_libraries(${PROJECT_NAME} qt2 2048)
