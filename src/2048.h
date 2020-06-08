@@ -1,9 +1,10 @@
 #ifndef H_2048
 #define H_2048
 
-const int HORIZONTAL = 4, VERTICAL = 4;
-const int BOARD_SIZE = HORIZONTAL * VERTICAL;
-const int END_GAME_TARGET = 2048;
+#define HORIZONTAL         4
+#define VERTICAL           4
+#define BOARD_SIZE         HORIZONTAL * VERTICAL
+#define END_GAME_TARGET    2048
 
 extern void reset();
 extern void left();
