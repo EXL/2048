@@ -52,8 +52,10 @@ class Board : public QWidget {
 	Q_OBJECT
 
 	Tile *board[BOARD_SIZE];
+	Tile *availableSpace[BOARD_SIZE];
 	Tile *lineBackReg[HORIZONTAL];
 	Tile *lineFrontReg[HORIZONTAL];
+// u16 availableSpaceSize;
 //	Tile *boardLine[HORIZONTAL];
 //	Tile *middleLine[HORIZONTAL];
 //	Tile *finalLine[HORIZONTAL];
@@ -61,9 +63,11 @@ class Board : public QWidget {
 	int score;
 
 	void initialize(bool reset) {
-		for (u16 i = 0; i < BOARD_SIZE; ++i)
+		for (u16 i = 0; i < BOARD_SIZE; ++i) {
+			availableSpace[i] = NULL;
 			if (!reset) board[i] = new Tile(0);
 			else board[i]->value = 0;
+		}
 		resetStates(reset);
 	}
 	void resetStates(bool reset) {
@@ -103,20 +107,22 @@ class Board : public QWidget {
 		addTile();
 	}
 	void addTile() {
-		const TileList spaces = availableSpace();
-		const size_t size = spaces.size();
-		if (!spaces.empty())
-			spaces[static_cast<size_t>((MathRandom() * size)) % size]->value = (MathRandom() < 0.9) ? 2 : 4;
+		const u16 size = updateAvailableSpace();
+		// const TileList spaces = availableSpace();
+		// const size_t size = spaces.size();
+		if (size)
+			availableSpace[static_cast<size_t>((MathRandom() * size)) % size]->value = (MathRandom() < 0.9) ? 2 : 4;
 	}
-	const TileList availableSpace() {
-		TileList spaces;
+	u16 updateAvailableSpace() {
+		u16 j = 0;
 		for (u16 i = 0; i < BOARD_SIZE; ++i)
 			if (board[i]->empty())
-				spaces.push_back(board[i]);
-		return spaces;
+				availableSpace[j++] = board[i];
+		return j;
+		// availableSpaceSize = j;
 	}
 	bool canMove() {
-		if (!availableSpace().empty())
+		if (updateAvailableSpace())
 			return true;
 		for (u16 x = 0; x < HORIZONTAL; ++x)
 			for (u16 y = 0; y < VERTICAL; ++y)
