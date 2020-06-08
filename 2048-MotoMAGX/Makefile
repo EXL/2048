@@ -105,23 +105,22 @@ endif
 MOC          = $(QTDIR)/bin/moc
 CC           = $(TOOLPREFIX)/bin/arm-linux-gnueabi-gcc
 CXX          = $(TOOLPREFIX)/bin/arm-linux-gnueabi-g++
-LD           = $(TOOLPREFIX)/bin/arm-linux-gnueabi-g++
 STRIP        = $(TOOLPREFIX)/bin/arm-linux-strip
-INCPATH      = -I$(QTDIR)/include -I$(EZXDIR)/include -I $(TOOLPREFIX)/arm-linux-gnueabi/include
+INCPATH      = -I../src/ -I$(QTDIR)/include -I$(EZXDIR)/include -I $(TOOLPREFIX)/arm-linux-gnueabi/include
 CFLAGS       = -pipe -Wall -W -O2 -DNO_DEBUG $(DIRECTIV) $(INCPATH)
 CXXFLAGS     = -pipe -DQWS -fno-exceptions -fno-rtti -Wall -W -O2 -DNO_DEBUG $(DIRECTIV) $(INCPATH)
 LDLAGS       = -Wl,-rpath-link,$(EZXDIR)/lib
 LIBS         = -L$(EZXDIR)/lib -L$(ARMLIB) -L$(QTDIR)/lib $(LINKLIB)
 
 ####### Files
-SOURCES      = 2048-MotoMAGX.cpp
-OBJECTS      = 2048-MotoMAGX.o
+SOURCES      = 2048-MotoMAGX.cpp ../src/2048.c
+OBJECTS      = 2048-MotoMAGX.o 2048.o
 SRCMOC       = 2048-MotoMAGX.moc
 
 all: $(SRCMOC) $(TARGET)
 
 $(TARGET): $(OBJECTS)
-	$(LD) $(LDLAGS) -o $(TARGET) $(OBJECTS) $(OBJMOC) $(LIBS)
+	$(CXX) $(LDLAGS) -o $(TARGET) $(OBJECTS) $(OBJMOC) $(LIBS)
 	$(STRIP) -s $(TARGET)
 
 moc: $(SRCMOC)
@@ -138,6 +137,9 @@ clean:
 	$(RM) *.o
 	$(RM) *.moc
 	$(RM) $(TARGET) $(APPNAME)_*
+
+2048.o:
+	$(CC) -c $(CFLAGS) ../src/2048.c -o 2048.o
 
 #--------- moc's -----------------------------
 2048-MotoMAGX.moc: 2048-MotoMAGX.cpp

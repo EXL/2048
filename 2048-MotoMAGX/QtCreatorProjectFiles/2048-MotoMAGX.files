@@ -1,2 +1,3 @@
 ../Makefile
 ../2048-MotoMAGX.cpp
+../../src/2048.c
