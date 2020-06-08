@@ -18,13 +18,13 @@ static inline double math_random() { return rand() / (double) RAND_MAX; }
 static inline double degrees_to_radians(int degrees) { return ((degrees) * M_PI / 180.0); }
 static inline int tile_at(int x, int y) { return board[x + y * 4]; }
 
-int *e_board() { return board; }
-int e_win() { return win; }
-int e_lose() { return lose; }
-int e_score() { return score; }
-unsigned e_foreground(int value) { return (value < 16) ? 0x00776E65 : 0x00F9F6F2; }
+extern int *e_board() { return board; }
+extern int e_win() { return win; }
+extern int e_lose() { return lose; }
+extern int e_score() { return score; }
 
-unsigned e_background(int value) {
+extern unsigned e_foreground(int value) { return (value < 16) ? 0x00776E65 : 0x00F9F6F2; }
+extern unsigned e_background(int value) {
 	switch (value) {
 		case    2: return 0x00EEE4DA;
 		case    4: return 0x00EDE0C8;
@@ -41,7 +41,7 @@ unsigned e_background(int value) {
 	return 0x00CDC1B4;
 }
 
-void e_init(int escape, int left, int right, int up, int down) {
+extern void e_init(int escape, int left, int right, int up, int down) {
 	K_ESCAPE = escape;
 	K_LEFT = left;
 	K_RIGHT = right;
@@ -50,30 +50,30 @@ void e_init(int escape, int left, int right, int up, int down) {
 	srand(time(NULL));
 }
 
-void set_line(int index, int *line) {
+static void set_line(int index, int *line) {
 	forl
 		board[index * 4 + i] = line[i];
 }
 
-int compare(int *line_first, int *line_second) {
+static int compare(int *line_first, int *line_second) {
 	forl
 		if (line_first[i] != line_second[i])
 			return 0;
 	return 1;
 }
 
-int *get_line(int index, int *reg) {
+static int *get_line(int index, int *reg) {
 	forl
 		reg[i] = tile_at(i, index);
 	return reg;
 }
 
-void copy_line(int *dest, int *src) {
+static void copy_line(int *dest, int *src) {
 	forl
 		dest[i] = src[i];
 }
 
-int *move_line(int *line) {
+static int *move_line(int *line) {
 	int size = 0;
 	forl
 		if (line[i])
@@ -83,12 +83,12 @@ int *move_line(int *line) {
 	return f_reg;
 }
 
-void reset_b_reg() {
+static void reset_b_reg() {
 	forl
 		b_reg[i] = 0;
 }
 
-int *merge_line(int *line) {
+static int *merge_line(int *line) {
 	reset_b_reg();
 	int i = 0, size = 0;
 	for (; i < HORIZONTAL && line[i]; ++i) {
@@ -107,12 +107,12 @@ int *merge_line(int *line) {
 	return b_reg;
 }
 
-void reset_space() {
+static void reset_space() {
 	forb
 		space[i] = NULL;
 }
 
-int update_space() {
+static int update_space() {
 	reset_space();
 	int size = 0;
 	forb
@@ -121,18 +121,18 @@ int update_space() {
 	return size;
 }
 
-void add_tile() {
+static void add_tile() {
 	const int size = update_space();
 	if (size)
 		*space[(int)(math_random() * size) % size] = (math_random() < 0.9) ? 2 : 4;
 }
 
-void reset_regs() {
+static void reset_regs() {
 	forl
 		b_reg[i] = f_reg[i] = 0;
 }
 
-void e_reset() {
+extern void e_reset() {
 	score = win = lose = 0;
 	forb
 		board[i] = 0;
@@ -142,7 +142,7 @@ void e_reset() {
 	add_tile();
 }
 
-void rotate(int angle) {
+static void rotate(int angle) {
 	int new_board[BOARD_SIZE];
 	int offset_x = 3, offset_y = 3, x = 0;
 	if (angle == 90)
@@ -162,7 +162,7 @@ void rotate(int angle) {
 		board[i] = new_board[i];
 }
 
-void left() {
+static void left() {
 	int need_add_tile = 0;
 	forl {
 		reset_regs();
@@ -177,25 +177,25 @@ void left() {
 		add_tile();
 }
 
-void right() {
+static void right() {
 	rotate(180);
 	left();
 	rotate(180);
 }
 
-void up() {
+static void up() {
 	rotate(270);
 	left();
 	rotate(90);
 }
 
-void down() {
+static void down() {
 	rotate(90);
 	left();
 	rotate(270);
 }
 
-int can_move() {
+static int can_move() {
 	if (update_space())
 		return 1;
 	int x = 0;
@@ -208,7 +208,7 @@ int can_move() {
 	return 0;
 }
 
-void e_key_event(int key) {
+extern void e_key_event(int key) {
 	if (key == K_ESCAPE)
 		e_reset();
 	if (!can_move())

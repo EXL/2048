@@ -12,21 +12,17 @@ extern "C" {
 
 extern void e_init(int escape, int left, int right, int up, int down);
 extern void e_reset();
-//extern void left();
-//extern void right();
-//extern void up();
-//extern void down();
 
-extern unsigned e_foreground(int value);
-extern unsigned e_background(int value);
-
-extern int *e_board();
 extern int e_win();
 extern int e_lose();
 extern int e_score();
+
+extern int *e_board();
+
 extern void e_key_event(int key);
-//extern void set_win(int res);
-//extern void set_lose(int res);
+
+extern unsigned e_foreground(int value);
+extern unsigned e_background(int value);
 
 #ifdef __cplusplus
 }

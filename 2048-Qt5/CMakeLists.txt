@@ -2,7 +2,6 @@ cmake_minimum_required(VERSION 3.5)
 
 project(2048-Qt5 LANGUAGES CXX)
 
-include_directories(../src/)
 add_subdirectory(../src/ ${PROJECT_BINARY_DIR}/src/)
 
 set(CMAKE_CXX_STANDARD 11)
@@ -12,6 +11,7 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 set(SOURCE_CODE 2048-Qt5.cpp)
+include_directories(../src/)
 
 find_package(Qt5 COMPONENTS Widgets REQUIRED)
 
