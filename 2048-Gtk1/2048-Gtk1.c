@@ -11,7 +11,7 @@ static const int TILE_SIZE = 64;
 static const int TILE_MARGIN = 16;
 
 static inline int offset_coords(int coord) { return coord * (TILE_MARGIN + TILE_SIZE) + TILE_MARGIN; }
-static inline guint fade_color(guint rgb) { return rgb - 0x222222; }
+static inline guint fade_color(guint rgb) { return rgb - 0x00222222; }
 
 static void draw_tile(GtkWidget *widget, GdkGC *gc, int value, int x, int y, int win, int lose) {
 	const unsigned bkg = e_background(value), frg = e_foreground(value);

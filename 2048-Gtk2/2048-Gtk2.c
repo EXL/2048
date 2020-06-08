@@ -13,9 +13,9 @@ static const int TILE_SIZE = 64;
 static const int TILE_MARGIN = 16;
 
 static inline int offset_coords(int coord) { return coord * (TILE_MARGIN + TILE_SIZE) + TILE_MARGIN; }
-static inline double R(int rgb) { return ((rgb >> 16) & 0xFF) / 255.0; }
-static inline double G(int rgb) { return ((rgb >> 8) & 0xFF) / 255.0; }
-static inline double B(int rgb) { return ((rgb >> 0) & 0xFF) / 255.0; }
+static inline double R(unsigned rgb) { return ((rgb >> 16) & 0xFF) / 255.0; }
+static inline double G(unsigned rgb) { return ((rgb >> 8) & 0xFF) / 255.0; }
+static inline double B(unsigned rgb) { return ((rgb >> 0) & 0xFF) / 255.0; }
 
 // Source: https://www.cairographics.org/samples/rounded_rectangle/
 static void draw_rounded_rectangle(cairo_t *cairo, double x, double y, double width, double height, double radius) {
