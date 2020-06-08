@@ -11,7 +11,9 @@ const int TILE_MARGIN = 16;
 class Widget : public QWidget {
 	Q_OBJECT
 
-	int offsetCoords(int coord) { return coord * (TILE_MARGIN + TILE_SIZE) + TILE_MARGIN; }
+	int *board;
+
+	inline int offsetCoords(int coord) { return coord * (TILE_MARGIN + TILE_SIZE) + TILE_MARGIN; }
 	void drawTile(QPainter &painter, int value, int x, int y) {
 		const int xOffset = offsetCoords(x), yOffset = offsetCoords(y);
 		painter.setPen(Qt::NoPen);
@@ -27,7 +29,7 @@ class Widget : public QWidget {
 		}
 	}
 	void drawFinal(QPainter &painter) {
-		bool win = e_win(), lose = e_lose();
+		const bool win = e_win(), lose = e_lose();
 		if (win || lose) {
 			painter.setBrush(QBrush(0x888888, Qt::Dense6Pattern));
 			painter.drawRect(0, 0, width(), height());
@@ -46,8 +48,7 @@ class Widget : public QWidget {
 	}
 public:
 	explicit Widget(QWidget *parent = nullptr) : QWidget(parent) {
-		e_init(Qt::Key_Escape, Qt::Key_Left, Qt::Key_Right, Qt::Key_Up, Qt::Key_Down);
-		e_reset();
+		board = e_init_board(Qt::Key_Escape, Qt::Key_Left, Qt::Key_Right, Qt::Key_Up, Qt::Key_Down);
 	}
 protected:
 	virtual void keyPressEvent(QKeyEvent *keyEvent) {
@@ -55,7 +56,6 @@ protected:
 		update();
 	}
 	virtual void paintEvent(QPaintEvent *) {
-		int *board = e_board();
 		QPainter painter(this);
 		painter.fillRect(0, 0, width(), height(), QColor(0xBBADA0));
 		for (int y = 0; y < VERTICAL; ++y)
