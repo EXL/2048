@@ -1,6 +1,7 @@
 #include "2048.h"
 
 #include <gtk/gtk.h>
+#include <gdk/gdkkeysyms.h>
 
 #include <cairo.h>
 
@@ -51,7 +52,9 @@ static void draw_tile(cairo_t *cairo, int value, int x, int y) {
 
 static void draw_final(GtkWidget *widget, cairo_t *cairo) {
 	const int win = e_win(), lose = e_lose();
-	int width = gtk_widget_get_allocated_width(widget), height = gtk_widget_get_allocated_height(widget);
+	GtkAllocation allocation;
+	gtk_widget_get_allocation(widget, &allocation);
+	const int width = allocation.width, height = allocation.height;
 	int size = 26;
 	if (win || lose) {
 		cairo_set_source_rgba(cairo, R(0x888888), G(0x888888), B(0x888888), 0.5);
@@ -78,7 +81,8 @@ static void draw_final(GtkWidget *widget, cairo_t *cairo) {
 	g_free(strScore);
 }
 
-static gboolean on_draw(GtkWidget *widget, cairo_t *cairo, G_GNUC_UNUSED gpointer data) {
+static gboolean on_expose_event(GtkWidget *widget, G_GNUC_UNUSED GdkEventExpose *event) {
+	cairo_t *cairo = gdk_cairo_create(widget->window);
 	cairo_set_source_rgb(cairo, R(0xBBADA0), G(0xBBADA0), B(0xBBADA0));
 	cairo_paint(cairo);
 	int y = 0;
@@ -88,6 +92,7 @@ static gboolean on_draw(GtkWidget *widget, cairo_t *cairo, G_GNUC_UNUSED gpointe
 			draw_tile(cairo, board[x + y * 4], x, y);
 	}
 	draw_final(widget, cairo);
+	cairo_destroy(cairo);
 	return FALSE;
 }
 
@@ -103,10 +108,10 @@ int main(int argc, char *argv[]) {
 	gtk_init(&argc, &argv);
 	board = e_init_board(GDK_KEY_Escape, GDK_KEY_Left, GDK_KEY_Right, GDK_KEY_Up, GDK_KEY_Down);
 	GtkWidget *window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-	gtk_window_set_default_size(GTK_WINDOW(window), 340, 400);
+	gtk_widget_set_size_request(GTK_WIDGET(window), 340, 400);
 	GtkWidget *drawing = gtk_drawing_area_new();
 	gtk_container_add(GTK_CONTAINER(window), drawing);
-	g_signal_connect(G_OBJECT(drawing), "draw", G_CALLBACK(on_draw), NULL);
+	g_signal_connect(G_OBJECT(drawing), "expose-event", G_CALLBACK(on_expose_event), NULL);
 	g_signal_connect(window, "key-press-event", G_CALLBACK(on_key_press_event), NULL);
 	g_signal_connect(G_OBJECT(window), "destroy", G_CALLBACK(gtk_main_quit), NULL);
 	gtk_widget_show_all(window);
