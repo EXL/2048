@@ -10,7 +10,6 @@
 int board[BOARD_SIZE];
 int *space[BOARD_SIZE];
 int b_reg[HORIZONTAL], f_reg[HORIZONTAL];
-
 int win, lose, score;
 int K_ESCAPE, K_LEFT, K_RIGHT, K_UP, K_DOWN;
 
