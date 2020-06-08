@@ -125,13 +125,13 @@ class Board : public QWidget {
 					return true;
 		return false;
 	}
-	Tile * tileAt(u16 x, u16 y) { return board[x + y * 4]; }
-	void getLine(u16 index, Tile **line) {
+	Tile *tileAt(u16 x, u16 y) { return board[x + y * 4]; }
+	Tile **getLine(u16 index, Tile **line) {
 		//TileList line;
 		for (u16 i = 0; i < HORIZONTAL; ++i)
 			line[i]->value = tileAt(i, index)->value;
 			// line.push_back(tileAt(i, index));
-		//return line;
+		return line;
 		// return boardLine;
 	}
 	void copyTileLine(Tile **newLine, Tile **oldLine) {
@@ -140,7 +140,7 @@ class Board : public QWidget {
 			newLine[i]->value = oldLine[i]->value;
 			//newLine.push_back(new Tile(oldLine[i]->value));
 	}
-	void mergeLine(Tile **oldLine) {
+	Tile **mergeLine(Tile **oldLine) {
 		/// TileList newLine;
 		resetLineBackReg();
 		u16 j = 0;
@@ -165,6 +165,7 @@ class Board : public QWidget {
 			//freeVectorPointers(oldLine);
 			//return finalLine;
 		}
+		return lineBackReg;
 	}
 //	void ensureLineSize(Tile **line, size_t size) {
 //		for (u16 i = 0; i < size; ++i)
@@ -173,7 +174,7 @@ class Board : public QWidget {
 //		//while (line.size() != size)
 //		//	line.push_back(new Tile(0));
 //	}
-	void moveLine(Tile **oldLine) {
+	Tile **moveLine(Tile **oldLine) {
 		// TileList newLine;
 		u16 j = 0;
 		for (u16 i = 0; i < HORIZONTAL; ++i)
@@ -187,6 +188,7 @@ class Board : public QWidget {
 			// ensureLineSize(middleLine, HORIZONTAL);
 			// return middleLine;
 		}
+		return lineFrontReg;
 	}
 	void setLine(u16 index, Tile **line) {
 		for (u16 i = 0; i < HORIZONTAL; ++i)
@@ -221,13 +223,14 @@ class Board : public QWidget {
 		bool needAddTile = false;
 		for (u16 i = 0; i < HORIZONTAL; ++i) {
 			resetStates(true);
-			getLine(i, lineBackReg);
-			moveLine(lineBackReg);
-			mergeLine(lineFrontReg);
-			getLine(i, lineFrontReg);
+			Tile **line = getLine(i, lineBackReg), **merged = mergeLine(moveLine(line));
+			//getLine(i, lineBackReg);
+			//moveLine(lineBackReg);
+			//mergeLine(lineFrontReg);
+			line = getLine(i, lineFrontReg);
 			//Tile **line = getLine(i), **merged = mergeLine(moveLine(line));
-			bool result = compare(lineFrontReg, lineBackReg);
-			setLine(i, lineBackReg);
+			bool result = compare(line, merged);
+			setLine(i, merged);
 			if (!needAddTile && !result)
 				needAddTile = true;
 			//freeVectorPointers(merged);
