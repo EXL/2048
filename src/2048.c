@@ -18,7 +18,6 @@ static inline double math_random() { return rand() / (double) RAND_MAX; }
 static inline double degrees_to_radians(int degrees) { return ((degrees) * M_PI / 180.0); }
 static inline int tile_at(int x, int y) { return board[x + y * 4]; }
 
-extern int *e_board() { return board; }
 extern int e_win() { return win; }
 extern int e_lose() { return lose; }
 extern int e_score() { return score; }
@@ -39,15 +38,6 @@ extern unsigned e_background(int value) {
 		case 2048: return 0x00EDC22E;
 	}
 	return 0x00CDC1B4;
-}
-
-extern void e_init(int escape, int left, int right, int up, int down) {
-	K_ESCAPE = escape;
-	K_LEFT = left;
-	K_RIGHT = right;
-	K_UP = up;
-	K_DOWN = down;
-	srand(time(NULL));
 }
 
 static void set_line(int index, int *line) {
@@ -132,7 +122,7 @@ static void reset_regs() {
 		b_reg[i] = f_reg[i] = 0;
 }
 
-extern void e_reset() {
+static void reset() {
 	score = win = lose = 0;
 	forb
 		board[i] = 0;
@@ -177,6 +167,19 @@ static void left() {
 		add_tile();
 }
 
+static int can_move() {
+	if (update_space())
+		return 1;
+	int x = 0;
+	for (; x < HORIZONTAL; ++x) {
+		int y = 0;
+		for (; y < VERTICAL; ++y)
+			if ((x < 3 && tile_at(x, y) == tile_at(x + 1, y)) || (y < 3 && tile_at(x, y) == tile_at(x, y + 1)))
+				return 1;
+	}
+	return 0;
+}
+
 static void right() {
 	rotate(180);
 	left();
@@ -195,22 +198,9 @@ static void down() {
 	rotate(270);
 }
 
-static int can_move() {
-	if (update_space())
-		return 1;
-	int x = 0;
-	for (; x < HORIZONTAL; ++x) {
-		int y = 0;
-		for (; y < VERTICAL; ++y)
-			if ((x < 3 && tile_at(x, y) == tile_at(x + 1, y)) || (y < 3 && tile_at(x, y) == tile_at(x, y + 1)))
-				return 1;
-	}
-	return 0;
-}
-
 extern void e_key_event(int key) {
 	if (key == K_ESCAPE)
-		e_reset();
+		reset();
 	if (!can_move())
 		lose = 1;
 	if (!win && !lose) {
@@ -221,4 +211,15 @@ extern void e_key_event(int key) {
 	}
 	if (!win && !can_move())
 		lose = 1;
+}
+
+extern int *e_init_board(int esc_keycode, int left_keycode, int right_keycode, int up_keycode, int down_keycode) {
+	srand(time(NULL));
+	K_ESCAPE = esc_keycode;
+	K_LEFT = left_keycode;
+	K_RIGHT = right_keycode;
+	K_UP = up_keycode;
+	K_DOWN = down_keycode;
+	reset();
+	return board;
 }

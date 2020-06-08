@@ -10,14 +10,11 @@ extern "C" {
 #define BOARD_SIZE         HORIZONTAL * VERTICAL
 #define END_GAME_TARGET    2048
 
-extern void e_init(int escape, int left, int right, int up, int down);
-extern void e_reset();
+extern int *e_init_board(int esc_keycode, int left_keycode, int right_keycode, int up_keycode, int down_keycode);
 
 extern int e_win();
 extern int e_lose();
 extern int e_score();
-
-extern int *e_board();
 
 extern void e_key_event(int key);
 
