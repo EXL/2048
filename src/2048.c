@@ -7,11 +7,11 @@
 #define forl int i = 0; for (; i < HORIZONTAL; ++i)
 #define forb int i = 0; for (; i < BOARD_SIZE; ++i)
 
-int board[BOARD_SIZE];
-int *space[BOARD_SIZE];
-int b_reg[HORIZONTAL], f_reg[HORIZONTAL];
-int win, lose, score;
-int K_ESCAPE, K_LEFT, K_RIGHT, K_UP, K_DOWN;
+static int board[BOARD_SIZE];
+static int *space[BOARD_SIZE];
+static int b_reg[HORIZONTAL], f_reg[HORIZONTAL];
+static int win, lose, score;
+static int K_ESCAPE, K_LEFT, K_RIGHT, K_UP, K_DOWN;
 
 static inline double math_random() { return rand() / (double) RAND_MAX; }
 static inline double degrees_to_radians(int degrees) { return ((degrees) * M_PI / 180.0); }
