@@ -4,8 +4,8 @@
 #include <qpainter.h>
 #include <qapplication.h>
 
-const int TILE_SIZE = 64;
-const int TILE_MARGIN = 16;
+static const int TILE_SIZE = 64;
+static const int TILE_MARGIN = 16;
 
 class Widget : public QWidget {
 	Q_OBJECT
