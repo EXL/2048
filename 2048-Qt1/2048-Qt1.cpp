@@ -36,15 +36,15 @@ class Widget : public QWidget {
 	void drawFinal(QPainter &painter) {
 		const bool win = e_win(), lose = e_lose();
 		if (win || lose) {
-			painter.setBrush(QBrush(QColor(R(0x00888888), G(0x00888888), B(0x00888888)), Dense6Pattern));
+			painter.setBrush(QBrush(QColor(R(0xFF888888), G(0xFF888888), B(0xFF888888)), Dense6Pattern));
 			painter.drawRect(0, 0, width(), height());
-			painter.setPen(QColor(R(0x00800000), G(0x00800000), B(0x00800000)));
+			painter.setPen(QColor(R(0xFF800000), G(0xFF800000), B(0xFF800000)));
 			painter.setFont(QFont("Sans", 24, QFont::Bold));
 			const QString center = ((win) ? "You won!" : (lose) ? "Game Over!" : "");
 			const int w = QFontMetrics(painter.font()).width(center);
 			painter.drawText(width() / 2 - w / 2, height() / 2, center);
 		}
-		painter.setPen(QColor(R(0x00776E65), G(0x00776E65), B(0x00776E65)));
+		painter.setPen(QColor(R(0xFF776E65), G(0xFF776E65), B(0xFF776E65)));
 		painter.setFont(QFont("Sans", 14, QFont::Normal));
 		QString strScore = QString().sprintf("Score: %d", e_score());
 		const int w = QFontMetrics(painter.font()).width(strScore);
@@ -62,7 +62,7 @@ protected:
 	}
 	virtual void paintEvent(QPaintEvent *) {
 		QPainter painter(this);
-		painter.fillRect(0, 0, width(), height(), QColor(R(0x00BBADA0), G(0x00BBADA0), B(0x00BBADA0)));
+		painter.fillRect(0, 0, width(), height(), QColor(R(0xFFBBADA0), G(0xFFBBADA0), B(0xFFBBADA0)));
 		for (int y = 0; y < VERTICAL; ++y)
 			for (int x = 0; x < HORIZONTAL; ++x)
 				drawTile(painter, board[x + y * 4], x, y);
