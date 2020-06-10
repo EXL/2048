@@ -7,14 +7,23 @@ Dependencies were obtained by using `ldd` command.
 
 ```
 $ ls -lh 2048-*
--rwxrwxr-x. 1 exl exl 19K Jun 10 00:57 2048-Gtk1
--rwxrwxr-x. 1 exl exl 19K Jun 10 00:57 2048-Gtk2
--rwxrwxr-x. 1 exl exl 19K Jun 10 00:58 2048-Gtk3
--rwxrwxr-x. 1 exl exl 28K Jun 10 00:58 2048-Qt1
--rwxrwxr-x. 1 exl exl 36K Jun 10 00:59 2048-Qt2
--rwxrwxr-x. 1 exl exl 45K Jun 10 00:59 2048-Qt3
--rwxrwxr-x. 1 exl exl 28K Jun 10 01:00 2048-Qt4
--rwxrwxr-x. 1 exl exl 28K Jun 10 01:00 2048-Qt5
+-rwxrwxr-x. 1 exl exl 19K Jun 10 23:06 2048-Gtk1
+-rwxrwxr-x. 1 exl exl 19K Jun 10 23:08 2048-Gtk2
+-rwxrwxr-x. 1 exl exl 19K Jun 10 23:09 2048-Gtk3
+-rwxrwxr-x. 1 exl exl 34K Jun 10 23:12 2048-MotoMAGX_E8
+-rwxrwxr-x. 1 exl exl 34K Jun 10 23:12 2048-MotoMAGX_EM30
+-rwxrwxr-x. 1 exl exl 34K Jun 10 23:12 2048-MotoMAGX_EM35
+-rwxrwxr-x. 1 exl exl 33K Jun 10 23:12 2048-MotoMAGX_U9
+-rwxrwxr-x. 1 exl exl 33K Jun 10 23:12 2048-MotoMAGX_V8
+-rwxrwxr-x. 1 exl exl 34K Jun 10 23:12 2048-MotoMAGX_VE66
+-rwxrwxr-x. 1 exl exl 33K Jun 10 23:12 2048-MotoMAGX_Z6
+-rwxrwxr-x. 1 exl exl 33K Jun 10 23:12 2048-MotoMAGX_Z6W
+-rwxrwxr-x. 1 exl exl 33K Jun 10 23:12 2048-MotoMAGX_ZN5
+-rwxrwxr-x. 1 exl exl 28K Jun 10 23:09 2048-Qt1
+-rwxrwxr-x. 1 exl exl 36K Jun 10 23:09 2048-Qt2
+-rwxrwxr-x. 1 exl exl 45K Jun 10 23:09 2048-Qt3
+-rwxrwxr-x. 1 exl exl 28K Jun 10 23:11 2048-Qt4
+-rwxrwxr-x. 1 exl exl 28K Jun 10 23:11 2048-Qt5
 ```
 
 ### 2048-Qt5
