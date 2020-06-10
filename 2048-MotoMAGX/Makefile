@@ -1,4 +1,4 @@
-# This Makefile edited by EXL, 31-May-2020
+# This Makefile edited by EXL, 10-Jun-2020
 #
 # App can compile for platform:
 #    PLATFORM=EZX-Z6
@@ -6,8 +6,8 @@
 #    PLATFORM=EZX-Z6W
 #    PLATFORM=EZX-U9
 #    PLATFORM=EZX-ZN5 (default)
-#    PLATFORM=EZX-E8
 #    PLATFORM=EZX-EM30
+#    PLATFORM=EZX-E8
 #    PLATFORM=EZX-VE66
 #    PLATFORM=EZX-EM35
 #
@@ -46,13 +46,26 @@ LINKLIB     := -lm -lqte-mt -lezxpm -lezxappbase
 DIRECTIV    := -DEZX_V8 $(APP_DEFINES)
 TARGET       = $(APPNAME)_V8
 endif
-ifeq ($(PLATFORM),EZX-E8)
-ARMLIB      := $(TOOLPREFIX)/arm-linux-gnueabi/lib_E8
-QTDIR       := $(TOOLPREFIX)/lib/qt-e8
-EZXDIR      := $(TOOLPREFIX)/lib/ezx-e8
+ifeq ($(PLATFORM),EZX-Z6W)
+QTDIR       := $(TOOLPREFIX)/lib/qt-z6w
+EZXDIR      := $(TOOLPREFIX)/lib/ezx-z6w
 LINKLIB     := -lm -lqte-mt -lezxappbase
-DIRECTIV    := -DEZX_E8 $(APP_DEFINES)
-TARGET       = $(APPNAME)_E8
+DIRECTIV    := -DEZX_Z6W $(APP_DEFINES)
+TARGET       = $(APPNAME)_Z6W
+endif
+ifeq ($(PLATFORM),EZX-U9)
+QTDIR       := $(TOOLPREFIX)/lib/qt-zn5
+EZXDIR      := $(TOOLPREFIX)/lib/ezx-u9
+LINKLIB     := -lm -lqte-mt -lezxappbase -llighting
+DIRECTIV    := -DEZX_U9 $(APP_DEFINES)
+TARGET       = $(APPNAME)_U9
+endif
+ifeq ($(PLATFORM),EZX-ZN5)
+QTDIR       := $(TOOLPREFIX)/lib/qt-zn5
+EZXDIR      := $(TOOLPREFIX)/lib/ezx-zn5
+LINKLIB     := -lm -lqte-mt -lezxappbase
+DIRECTIV    := -DEZX_ZN5 $(APP_DEFINES)
+TARGET       = $(APPNAME)_ZN5
 endif
 ifeq ($(PLATFORM),EZX-EM30)
 ARMLIB      := $(TOOLPREFIX)/arm-linux-gnueabi/lib_E8
@@ -63,34 +76,13 @@ LINKLIB     := -lm -lqte-mt -lezxappbase
 DIRECTIV    := -DEZX_EM30 $(APP_DEFINES)
 TARGET       = $(APPNAME)_EM30
 endif
-ifeq ($(PLATFORM),EZX-U9)
-QTDIR       := $(TOOLPREFIX)/lib/qt-zn5
-EZXDIR      := $(TOOLPREFIX)/lib/ezx-u9
-LINKLIB     := -lm -lqte-mt -lezxappbase -llighting
-DIRECTIV    := -DEZX_U9 $(APP_DEFINES)
-TARGET       = $(APPNAME)_U9
-endif
-ifeq ($(PLATFORM),EZX-Z6W)
-QTDIR       := $(TOOLPREFIX)/lib/qt-z6w
-EZXDIR      := $(TOOLPREFIX)/lib/ezx-z6w
-LINKLIB     := -lm -lqte-mt -lezxappbase
-DIRECTIV    := -DEZX_Z6W $(APP_DEFINES)
-TARGET       = $(APPNAME)_Z6W
-endif
-ifeq ($(PLATFORM),EZX-ZN5)
-QTDIR       := $(TOOLPREFIX)/lib/qt-zn5
-EZXDIR      := $(TOOLPREFIX)/lib/ezx-zn5
-LINKLIB     := -lm -lqte-mt -lezxappbase
-DIRECTIV    := -DEZX_ZN5 $(APP_DEFINES)
-TARGET       = $(APPNAME)_ZN5
-endif
-ifeq ($(PLATFORM),EZX-EM35)
+ifeq ($(PLATFORM),EZX-E8)
 ARMLIB      := $(TOOLPREFIX)/arm-linux-gnueabi/lib_E8
-QTDIR       := $(TOOLPREFIX)/lib/qt-em35
-EZXDIR      := $(TOOLPREFIX)/lib/ezx-em35
+QTDIR       := $(TOOLPREFIX)/lib/qt-e8
+EZXDIR      := $(TOOLPREFIX)/lib/ezx-e8
 LINKLIB     := -lm -lqte-mt -lezxappbase
-DIRECTIV    := -DEZX_EM35 $(APP_DEFINES)
-TARGET       = $(APPNAME)_EM35
+DIRECTIV    := -DEZX_E8 $(APP_DEFINES)
+TARGET       = $(APPNAME)_E8
 endif
 ifeq ($(PLATFORM),EZX-VE66)
 ARMLIB      := $(TOOLPREFIX)/arm-linux-gnueabi/lib_E8
@@ -99,6 +91,14 @@ EZXDIR      := $(TOOLPREFIX)/lib/ezx-ve66
 LINKLIB     := -lm -lqte-mt -lezxappbase
 DIRECTIV    := -DEZX_VE66 $(APP_DEFINES)
 TARGET       = $(APPNAME)_VE66
+endif
+ifeq ($(PLATFORM),EZX-EM35)
+ARMLIB      := $(TOOLPREFIX)/arm-linux-gnueabi/lib_E8
+QTDIR       := $(TOOLPREFIX)/lib/qt-em35
+EZXDIR      := $(TOOLPREFIX)/lib/ezx-em35
+LINKLIB     := -lm -lqte-mt -lezxappbase
+DIRECTIV    := -DEZX_EM35 $(APP_DEFINES)
+TARGET       = $(APPNAME)_EM35
 endif
 
 ####### Build Tools and Options
@@ -131,15 +131,12 @@ rmobj:
 	$(RM) *.o
 	$(RM) *.moc
 
-clean:
-	-rm -f $(OBJECTS) $(SRCMOC)
-	-rm -f *~ core
-	$(RM) *.o
-	$(RM) *.moc
+clean: rmobj
 	$(RM) $(TARGET) $(APPNAME)_*
 
-2048.o:
-	$(CC) -c $(CFLAGS) ../src/2048.c -o 2048.o
+#--------- c's -------------------------------
+2048.o: ../src/2048.c
+	$(CC) $(CFLAGS) -c -o 2048.o ../src/2048.c
 
 #--------- moc's -----------------------------
 2048-MotoMAGX.moc: 2048-MotoMAGX.cpp
