@@ -13,6 +13,7 @@
 #include <RES_ICON_Reader.h>
 
 #include <qfileinfo.h>
+#include <qtextcodec.h>
 
 #include <ctime>
 
@@ -184,13 +185,12 @@ class MainWidget : public ZKbMainWidget {
 	Q_OBJECT
 public slots:
 	void about() {
-		ZMessageDlg *msgDlg = new ZMessageDlg("About 2048", QString("2048 Game implementation "
-			"especially for MotoMAGX platform.\n\nVersion: 1.0, %1\nThx: Boxa, fill.sa, "
-			"VINRARUS\n(C) EXL (exl@bk.ru), 2020").arg(__DATE__), ZMessageDlg::TypeOK, 10*60*100);
-		const QString path = QString("%1/icon.png").arg(QFileInfo(qApp->argv()[0]).dirPath(true));
-		if (QFile(path).exists()) {
+		ZMessageDlg *msgDlg = new ZMessageDlg("About 2048", QTextCodec::codecForName("UTF-8")->toUnicode(
+			"2048 Game implementation especially for MotoMAGX platform.\n\nVersion: 1.0, %1\nThx: Boxa, fill.sa, "
+			"VINRARUS\n© EXL (exl@bk.ru), 2020").arg(__DATE__), ZMessageDlg::TypeOK, 10*60*100);
+		if (QFile("icon.png").exists()) {
 			QPixmap icon(48, 48);
-			icon.load(path);
+			icon.load("icon.png");
 			msgDlg->setTitleIcon(icon);
 		}
 		msgDlg->exec();
