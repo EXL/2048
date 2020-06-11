@@ -46,6 +46,8 @@ class Widget : public QWidget {
 
 	int *board;
 
+	ZOptionsMenu *menu;
+
 	inline int offsetCoords(int coord) { return coord * (TILE_MARGIN + TILE_SIZE) + TILE_MARGIN * 2; }
 	void drawTile(QPainter &painter, int value, int x, int y) {
 		const int xOffset = offsetCoords(x) + width() / FIELD_OFFSET_SCALE, yOffset = offsetCoords(y);
@@ -94,7 +96,8 @@ class Widget : public QWidget {
 		painter.drawText(width() - w - TILE_MARGIN, height() - 10, strScore);
 	}
 public:
-	Widget(QWidget *parent = 0, const char *name = 0) : QWidget(parent, name, /* WFlags */ 0) {
+	Widget(ZOptionsMenu *menu, QWidget *parent = 0, const char *name = 0) : QWidget(parent, name, /* WFlags */ 0) {
+		this->menu = menu;
 		setFocusPolicy(QWidget::StrongFocus);
 		board = e_init_board(KEYCODE_CLEAR, KEYCODE_LEFT, KEYCODE_RIGHT, KEYCODE_UP, KEYCODE_DOWN);
 	}
@@ -104,6 +107,7 @@ public slots:
 		update();
 	}
 	void screenShot() {
+		menu->hide();
 		QPixmap pixmap(width(), height());
 		bitBlt(&pixmap, 0, 0, this, 0, 0, width(), height(), Qt::CopyROP, true);
 		const QString path = QString("%1/%2.png").arg(QFileInfo(qApp->argv()[0]).dirPath(true)).arg(time(NULL));
@@ -156,7 +160,7 @@ public slots:
 	void about() {
 		ZMessageDlg *msgDlg = new ZMessageDlg("About 2048", QString("2048 Game implementation "
 			"especially for MotoMAGX platform.\n\nVersion: 1.0, %1\nThx: Boxa, fill.sa, "
-			"VINRARUS\n© EXL (exl@bk.ru), 2020").arg(__DATE__), ZMessageDlg::TypeOK, 10*60*100);
+			"VINRARUS\n(C) EXL (exl@bk.ru), 2020").arg(__DATE__), ZMessageDlg::TypeOK, 10*60*100);
 		const QString path = QString("%1/icon.png").arg(QFileInfo(qApp->argv()[0]).dirPath(true));
 		if (QFile(path).exists()) {
 			QPixmap icon(48, 48);
@@ -170,8 +174,6 @@ public:
 	MainWidget(QWidget *parent = 0, const char *name = 0, WFlags flags = 0) :
 		ZKbMainWidget(ZHeader::MAINDISPLAY_HEADER, parent, name, flags) {
 		setAppTitle(name);
-		Widget *widget = new Widget(this, "widget");
-		setContentWidget(widget);
 		ZSoftKey *softKeys = new ZSoftKey("CST_2A", this, this);
 		QRect menuRect = ZGlobal::getContentR();
 		ZOptionsMenu *menu = new ZOptionsMenu(menuRect, this, NULL, 0);
@@ -187,6 +189,8 @@ public:
 		softKeys->setText(ZSoftKey::RIGHT, tr("TXT_RID_SOFTKEY_EXIT", "Exit"));
 		softKeys->setClickedSlot(ZSoftKey::RIGHT, qApp, SLOT(quit()));
 		setSoftKey(softKeys);
+		Widget *widget = new Widget(menu, this, "widget");
+		setContentWidget(widget);
 	}
 };
 
