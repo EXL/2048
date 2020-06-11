@@ -8,6 +8,7 @@
 #include <ZMessageDlg.h>
 #include <ZOptionsMenu.h>
 #include <ZGlobal.h>
+#include <ZNoticeDlg.h>
 
 #include <RES_ICON_Reader.h>
 
@@ -45,7 +46,6 @@ class Widget : public QWidget {
 	Q_OBJECT
 
 	int *board;
-
 	ZOptionsMenu *menu;
 
 	inline int offsetCoords(int coord) { return coord * (TILE_MARGIN + TILE_SIZE) + TILE_MARGIN * 2; }
@@ -98,8 +98,8 @@ class Widget : public QWidget {
 public:
 	Widget(ZOptionsMenu *menu, QWidget *parent = 0, const char *name = 0) : QWidget(parent, name, /* WFlags */ 0) {
 		this->menu = menu;
-		setFocusPolicy(QWidget::StrongFocus);
 		board = e_init_board(KEYCODE_CLEAR, KEYCODE_LEFT, KEYCODE_RIGHT, KEYCODE_UP, KEYCODE_DOWN);
+		setFocusPolicy(QWidget::StrongFocus);
 	}
 public slots:
 	void reset() {
@@ -122,6 +122,32 @@ public slots:
 		}
 		msgDlg->exec();
 		delete msgDlg;
+	}
+	void save() {
+		QString res = QString("Cannot create save.dat file.");
+		QFile save("save.dat");
+		if (save.open(IO_WriteOnly)) {
+			QDataStream dataStream(&save);
+			dataStream << QDateTime::currentDateTime();
+			for (int i = 0; i < BOARD_SIZE; ++i)
+				dataStream << (Q_INT32) board[i];
+			res = QString("Game saved!");
+		}
+	}
+	void load() {
+		QString res = QString("Cannot load save.dat file.");
+		QFile save("save.dat");
+		if (save.open(IO_ReadOnly)) {
+			QDateTime loadDateTime;
+			QDataStream dataStream(&save);
+			dataStream >> loadDateTime;
+			Q_INT32 value;
+			for (int i = 0; i < BOARD_SIZE; ++i) {
+				dataStream >> value;
+				board[i] = value;
+			}
+			res = QString("Game loaded!\n\nState on: %1.").arg(loadDateTime.toString());
+		}
 	}
 protected:
 	virtual void keyPressEvent(QKeyEvent *keyEvent) {
@@ -178,10 +204,12 @@ public:
 		QRect menuRect = ZGlobal::getContentR();
 		ZOptionsMenu *menu = new ZOptionsMenu(menuRect, this, NULL, 0);
 		menu->insertItem("Take Screenshot", NULL, widget, SLOT(screenShot()), true, false, false, 0, 0);
-		menu->insertItem("Reset Game", NULL, widget, SLOT(reset()), true, false, false, 1, 1);
-		menu->insertItem("About", NULL, this, SLOT(about()), true, false, false, 2, 2);
-		menu->insertSeparator(3, 3);
-		menu->insertItem(tr("TXT_RID_SOFTKEY_EXIT", "Exit"), NULL, qApp, SLOT(quit()), true, false, false, 4, 4);
+		menu->insertItem("Save Game", NULL, widget, SLOT(save()), true, false, false, 1, 1);
+		menu->insertItem("Load Game", NULL, widget, SLOT(load()), true, false, false, 2, 2);
+		menu->insertItem("Reset Game", NULL, widget, SLOT(reset()), true, false, false, 3, 3);
+		menu->insertItem("About", NULL, this, SLOT(about()), true, false, false, 4, 4);
+		menu->insertSeparator(5, 5);
+		menu->insertItem(tr("TXT_RID_SOFTKEY_EXIT", "Exit"), NULL, qApp, SLOT(quit()), true, false, false, 6, 6);
 		softKeys->setOptMenu(ZSoftKey::LEFT, menu);
 		softKeys->setTextForOptMenuHide(tr("TXT_RID_SOFTKEY_OPTIONS", "Options"));
 		softKeys->setTextForOptMenuShow(tr("TXT_RID_SOFTKEY_SELECT", "Select"), tr("TXT_RID_SOFTKEY_CANCEL", "Cancel"));
