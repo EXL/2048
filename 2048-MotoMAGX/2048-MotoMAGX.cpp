@@ -125,18 +125,17 @@ public slots:
 		delete msgDlg;
 	}
 	void save() {
-		QString res = QString("Cannot create save.dat file.");
 		QFile save("save.dat");
 		if (save.open(IO_WriteOnly)) {
 			QDataStream dataStream(&save);
 			dataStream << QDateTime::currentDateTime();
 			for (int i = 0; i < BOARD_SIZE; ++i)
 				dataStream << (Q_INT32) board[i];
-			res = QString("Game saved!");
-		}
+			ZNoticeDlg::information("Game Saved!");
+		} else
+			ZNoticeDlg::information("Cannot create save.dat file.", "Save Error!", QString::null, "error_pop");
 	}
 	void load() {
-		QString res = QString("Cannot load save.dat file.");
 		QFile save("save.dat");
 		if (save.open(IO_ReadOnly)) {
 			QDateTime loadDateTime;
@@ -147,8 +146,9 @@ public slots:
 				dataStream >> value;
 				board[i] = value;
 			}
-			res = QString("Game loaded!\n\nState on: %1.").arg(loadDateTime.toString());
-		}
+			ZNoticeDlg::information(QString("Game loaded!\n\nState on: %1.").arg(loadDateTime.toString()));
+		} else
+			ZNoticeDlg::information("Cannot load save.dat file.", "Load Error!", QString::null, "error_pop");
 	}
 protected:
 	virtual void keyPressEvent(QKeyEvent *keyEvent) {
