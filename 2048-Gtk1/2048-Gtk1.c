@@ -19,7 +19,7 @@ static void draw_tile(GtkWidget *widget, GdkGC *gc, int value, int x, int y, int
 	GdkColor tileColor;
 	tileColor.pixel = (win || lose) ? fade_color(bkg) : bkg;
 	gdk_gc_set_foreground(gc, &tileColor);
-	// HACK: Emulating gdk_draw_ronded_rectangle() method in 9 calls.
+	// HACK: Emulating gdk_draw_rounded_rectangle() method in 9 calls.
 	const int w = TILE_SIZE / 2, dw = w * 2, qw = w / 4, rad = qw * 2, rw = rad * 3, rect = w - rad;
 	gdk_draw_arc(widget->window, gc, TRUE, xOffset, yOffset, rect, rect, -64*180, -64*90);
 	gdk_draw_arc(widget->window, gc, TRUE, xOffset + w + rad, yOffset, rect, rect, 64*90, -64*90);
