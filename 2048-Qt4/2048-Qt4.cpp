@@ -31,15 +31,15 @@ class Widget : public QWidget {
 	void drawFinal(QPainter &painter) {
 		const bool win = e_win(), lose = e_lose();
 		if (win || lose) {
-			painter.setBrush(QBrush(0xFF888888, Qt::Dense6Pattern));
+			painter.setBrush(QBrush(COLOR_OVERLAY, Qt::Dense6Pattern));
 			painter.drawRect(0, 0, width(), height());
-			painter.setPen(QColor(0xFF800000));
+			painter.setPen(QColor(COLOR_FINAL));
 			painter.setFont(QFont("Sans", 24, QFont::Bold));
 			const QString center = ((win) ? "You won!" : (lose) ? "Game Over!" : "");
 			const int w = QFontMetrics(painter.font()).width(center);
 			painter.drawText(width() / 2 - w / 2, height() / 2, center);
 		}
-		painter.setPen(QColor(0xFF776E65));
+		painter.setPen(QColor(COLOR_TEXT));
 		painter.setFont(QFont("Sans", 14, QFont::Normal));
 		const QString strScore = QString("Score: %1").arg(e_score());
 		const int w = QFontMetrics(painter.font()).width(strScore);
@@ -57,7 +57,7 @@ protected:
 	}
 	virtual void paintEvent(QPaintEvent *) {
 		QPainter painter(this);
-		painter.fillRect(0, 0, width(), height(), QColor(0xFFBBADA0));
+		painter.fillRect(0, 0, width(), height(), QColor(COLOR_BOARD));
 		for (int y = 0; y < VERTICAL; ++y)
 			for (int x = 0; x < HORIZONTAL; ++x)
 				drawTile(painter, board[x + y * 4], x, y);

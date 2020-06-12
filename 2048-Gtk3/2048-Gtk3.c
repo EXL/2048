@@ -54,9 +54,9 @@ static void draw_final(GtkWidget *widget, cairo_t *cairo) {
 	int width = gtk_widget_get_allocated_width(widget), height = gtk_widget_get_allocated_height(widget);
 	int size = 26;
 	if (win || lose) {
-		cairo_set_source_rgba(cairo, R(0xFF888888), G(0xFF888888), B(0xFF888888), 0.5);
+		cairo_set_source_rgba(cairo, R(COLOR_OVERLAY), G(COLOR_OVERLAY), B(COLOR_OVERLAY), 0.5);
 		cairo_paint(cairo);
-		cairo_set_source_rgb(cairo, R(0xFF800000), G(0xFF800000), B(0xFF800000));
+		cairo_set_source_rgb(cairo, R(COLOR_FINAL), G(COLOR_FINAL), B(COLOR_FINAL));
 		cairo_set_font_size(cairo, size);
 		const gchar *center = ((win) ? "You won!" : (lose) ? "Game Over!" : "");
 		cairo_text_extents_t extents;
@@ -66,7 +66,7 @@ static void draw_final(GtkWidget *widget, cairo_t *cairo) {
 	}
 	size = 18;
 	cairo_select_font_face(cairo, "Sans", CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_NORMAL);
-	cairo_set_source_rgb(cairo, R(0xFF776E65), G(0xFF776E65), B(0xFF776E65));
+	cairo_set_source_rgb(cairo, R(COLOR_TEXT), G(COLOR_TEXT), B(COLOR_TEXT));
 	cairo_set_font_size(cairo, size);
 	gchar *strScore = g_strdup_printf("Score: %d", e_score());
 	cairo_text_extents_t extents;
@@ -79,7 +79,7 @@ static void draw_final(GtkWidget *widget, cairo_t *cairo) {
 }
 
 static gboolean on_draw(GtkWidget *widget, cairo_t *cairo, G_GNUC_UNUSED gpointer data) {
-	cairo_set_source_rgb(cairo, R(0xFFBBADA0), G(0xFFBBADA0), B(0xFFBBADA0));
+	cairo_set_source_rgb(cairo, R(COLOR_BOARD), G(COLOR_BOARD), B(COLOR_BOARD));
 	cairo_paint(cairo);
 	int y = 0;
 	for (; y < VERTICAL; ++y) {

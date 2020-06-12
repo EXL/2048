@@ -11,7 +11,7 @@ static const int TILE_SIZE = 64;
 static const int TILE_MARGIN = 16;
 
 static inline int offset_coords(int coord) { return coord * (TILE_MARGIN + TILE_SIZE) + TILE_MARGIN; }
-static inline guint fade_color(guint rgb) { return rgb - 0xFF222222; }
+static inline guint fade_color(guint rgb) { return rgb - COLOR_FADE; }
 
 static void draw_tile(GtkWidget *widget, GdkGC *gc, int value, int x, int y, int win, int lose) {
 	const unsigned bkg = e_background(value), frg = e_foreground(value);
@@ -52,7 +52,7 @@ static void draw_tile(GtkWidget *widget, GdkGC *gc, int value, int x, int y, int
 static void draw_final(GtkWidget *widget, GdkGC *gc, int win, int lose) {
 	if (win || lose) {
 		GdkColor foregroundColor;
-		foregroundColor.pixel = 0xFF800000;
+		foregroundColor.pixel = COLOR_FINAL;
 		gdk_gc_set_foreground(gc, &foregroundColor);
 		GdkFont *font = gdk_font_load("-adobe-helvetica-bold-r-normal--34-240-100-100-p-182-iso8859-1");
 		if (!font)
@@ -66,7 +66,7 @@ static void draw_final(GtkWidget *widget, GdkGC *gc, int win, int lose) {
 	if (!font)
 		font = widget->style->font;
 	GdkColor textColor;
-	textColor.pixel = (win || lose) ? fade_color(0xFF776E65) : 0xFF776E65;
+	textColor.pixel = (win || lose) ? fade_color(COLOR_TEXT) : COLOR_TEXT;
 	gdk_gc_set_foreground(gc, &textColor);
 	const gchar *strReset = "ESC to Restart!";
 	gdk_draw_text(widget->window, font, gc, TILE_MARGIN,
@@ -84,7 +84,7 @@ static gboolean on_expose_event(GtkWidget *widget, G_GNUC_UNUSED GdkEventExpose 
 	GdkGC *gc = gdk_gc_new(widget->window);
 	const int win = e_win(), lose = e_lose();
 	GdkColor background_color;
-	background_color.pixel = (win || lose) ? fade_color(0xFFBBADA0) : 0xFFBBADA0;
+	background_color.pixel = (win || lose) ? fade_color(COLOR_BOARD) : COLOR_BOARD;
 	gdk_gc_set_foreground(gc, &background_color);
 	gdk_draw_rectangle(widget->window, gc, 1, 0, 0, widget->allocation.width, widget->allocation.height);
 	int y = 0;
