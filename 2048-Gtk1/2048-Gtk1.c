@@ -19,17 +19,14 @@ static void draw_tile(GtkWidget *widget, GdkGC *gc, int value, int x, int y, int
 	GdkColor tileColor;
 	tileColor.pixel = (win || lose) ? fade_color(bkg) : bkg;
 	gdk_gc_set_foreground(gc, &tileColor);
-	// HACK: Emulating gdk_draw_rounded_rectangle() method in 9 calls.
-	const int w = TILE_SIZE / 2, dw = w * 2, qw = w / 4, rad = qw * 2, rw = rad * 3, rect = w - rad;
+	// HACK: Emulating gdk_draw_rounded_rectangle() method in 6 calls.
+	const int w = TILE_SIZE / 2, qw = w / 4, rad = qw * 2, rw = rad * 3, rect = w - rad;
 	gdk_draw_arc(widget->window, gc, TRUE, xOffset, yOffset, rect, rect, -64*180, -64*90);
 	gdk_draw_arc(widget->window, gc, TRUE, xOffset + w + rad, yOffset, rect, rect, 64*90, -64*90);
 	gdk_draw_arc(widget->window, gc, TRUE, xOffset, yOffset + w + rad, rect, rect, -64*90, -64*90);
 	gdk_draw_arc(widget->window, gc, TRUE, xOffset + w + rad, yOffset + w + rad, rect, rect, 0, -64*90);
-	gdk_draw_rectangle(widget->window, gc, TRUE, xOffset + qw, yOffset + qw, TILE_SIZE - rad + 1, TILE_SIZE - rad + 1);
-	gdk_draw_rectangle(widget->window, gc, TRUE, xOffset, yOffset + qw, qw, rw);
-	gdk_draw_rectangle(widget->window, gc, TRUE, xOffset + dw - qw + 1, yOffset + qw, qw, rw);
-	gdk_draw_rectangle(widget->window, gc, TRUE, xOffset + qw, yOffset, rw, qw);
-	gdk_draw_rectangle(widget->window, gc, TRUE, xOffset + qw, yOffset + dw - qw + 1, rw, qw);
+	gdk_draw_rectangle(widget->window, gc, TRUE, xOffset, yOffset + qw, TILE_SIZE, rw);
+	gdk_draw_rectangle(widget->window, gc, TRUE, xOffset + qw, yOffset, rw, TILE_SIZE);
 	if (value) {
 		GdkFont *font = (value < 100) ?
 			gdk_font_load("-adobe-helvetica-bold-r-normal--34-240-100-100-p-182-iso8859-1") :

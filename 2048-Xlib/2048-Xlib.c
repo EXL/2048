@@ -26,18 +26,14 @@ static void draw_tile(Display *display, int screen, Window window, int value, in
 	const unsigned bkg = e_background(value), frg = e_foreground(value);
 	const int xOffset = offset_coords(x), yOffset = offset_coords(y);
 	XSetForeground(display, DefaultGC(display, screen), (win || lose) ? fade_color(bkg) : bkg);
-	// HACK: Emulating XFillRoundedRectangle() method in 9 calls, similar to GTK+1 version.
-	const int w = TILE_SIZE / 2, dw = w * 2, qw = w / 4, rad = qw * 2, rw = rad * 3, rect = w - rad;
+	// HACK: Emulating XFillRoundedRectangle() method in 6 calls, similar to GTK+1 version.
+	const int w = TILE_SIZE / 2, qw = w / 4, rad = qw * 2, rw = rad * 3, rect = w - rad;
 	XFillArc(display, window, DefaultGC(display, screen), xOffset, yOffset, rect, rect, -64*180, -64*90);
 	XFillArc(display, window, DefaultGC(display, screen), xOffset + w + rad, yOffset, rect, rect, 64*90, -64*90);
 	XFillArc(display, window, DefaultGC(display, screen), xOffset, yOffset + w + rad, rect, rect, -64*90, -64*90);
 	XFillArc(display, window, DefaultGC(display, screen), xOffset + w + rad, yOffset + w + rad, rect, rect, 0, -64*90);
-	XFillRectangle(display, window, DefaultGC(display, screen),
-		xOffset + qw, yOffset + qw, TILE_SIZE - rad + 1, TILE_SIZE - rad + 1);
-	XFillRectangle(display, window, DefaultGC(display, screen), xOffset, yOffset + qw, qw, rw);
-	XFillRectangle(display, window, DefaultGC(display, screen), xOffset + dw - qw + 1, yOffset + qw, qw, rw);
-	XFillRectangle(display, window, DefaultGC(display, screen), xOffset + qw, yOffset, rw, qw);
-	XFillRectangle(display, window, DefaultGC(display, screen), xOffset + qw, yOffset + dw - qw + 1, rw, qw);
+	XFillRectangle(display, window, DefaultGC(display, screen), xOffset, yOffset + qw, TILE_SIZE, rw);
+	XFillRectangle(display, window, DefaultGC(display, screen), xOffset + qw, yOffset, rw, TILE_SIZE);
 	if (value) {
 		XFontStruct *current_font = NULL;
 		if (font_small && font_middle && font_large)
