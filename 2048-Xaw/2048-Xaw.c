@@ -97,9 +97,14 @@ static void expose_event(Widget widget, _X_UNUSED XtPointer client, _X_UNUSED XE
 }
 
 static void key_press_event(Widget widget, _X_UNUSED XtPointer client, XKeyPressedEvent *event) {
-	e_key_event(XtGetActionKeysym((XEvent *) event, NULL));
-	event->type = Expose;
-	XtDispatchEventToWidget(widget, (XEvent *) event);
+	KeySym keysym = XtGetActionKeysym((XEvent *) event, NULL);
+	if (keysym == XK_q)
+		quit();
+	else {
+		e_key_event(keysym);
+		event->type = Expose;
+		XtDispatchEventToWidget(widget, (XEvent *) event);
+	}
 }
 
 static void client_message_event(_X_UNUSED Widget widget, _X_UNUSED XtPointer client, XEvent *event) {
