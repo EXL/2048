@@ -55,17 +55,14 @@ class Widget : public QWidget {
 		painter.setPen(QPen::NoPen);
 		painter.setBrush(QColor(e_background(value)));
 #if defined(EZX_Z6W) || defined(EZX_ZN5) || defined(EZX_U9)
-		// HACK: Emulating drawRoundRect() method in 9 calls.
-		const int w = TILE_SIZE / 2, dw = w * 2, qw = w / 4, rad = qw * 2, rw = rad * 3, rect = w - rad;
+		// HACK: Emulating drawRoundRect() method in 6 calls.
+		const int w = TILE_SIZE / 2, qw = w / 4, rad = qw * 2, rw = rad * 3, rect = w - rad;
 		painter.drawPie(xOffset, yOffset, rect, rect, -16*180, -16*90);
 		painter.drawPie(xOffset + w + rad - 1, yOffset, rect, rect, 16*90, -16*90);
 		painter.drawPie(xOffset, yOffset + w + rad, rect, rect, -16*90, -16*90);
 		painter.drawPie(xOffset + w + rad - 1, yOffset + w + rad, rect, rect, 0, -16*90);
-		painter.drawRect(xOffset + qw, yOffset + qw, TILE_SIZE - rad, TILE_SIZE - rad);
-		painter.drawRect(xOffset, yOffset + qw, qw, rw);
-		painter.drawRect(xOffset + dw - qw - 2, yOffset + qw, qw, rw);
-		painter.drawRect(xOffset + qw - 1, yOffset, rw + 1, qw);
-		painter.drawRect(xOffset + qw, yOffset + dw - qw - 1, rw + 1, qw);
+		painter.drawRect(xOffset, yOffset + qw, TILE_SIZE - 2, rw);
+		painter.drawRect(xOffset + qw - 1, yOffset, rw + 1, TILE_SIZE - 1);
 #else
 		painter.drawRoundRect(xOffset, yOffset, TILE_SIZE, TILE_SIZE, 20, 20);
 #endif
