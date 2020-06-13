@@ -14,10 +14,7 @@ static const int TILE_SIZE = 64;
 static const int TILE_MARGIN = 16;
 
 static int *board = NULL;
-static XFontStruct *font_small = NULL;
-static XFontStruct *font_middle = NULL;
-static XFontStruct *font_normal = NULL;
-static XFontStruct *font_large = NULL;
+static XFontStruct *font_small = NULL, *font_middle = NULL, *font_normal = NULL, *font_large = NULL;
 
 static inline int offset_coords(int coord) { return coord * (TILE_MARGIN + TILE_SIZE) + TILE_MARGIN; }
 static inline unsigned fade_color(unsigned rgb) { return rgb - COLOR_FADE; }
