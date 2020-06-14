@@ -14,6 +14,7 @@
 
 #include <qfileinfo.h>
 #include <qtextcodec.h>
+#include <qtimer.h>
 
 #include <ctime>
 
@@ -98,6 +99,7 @@ public:
 		setFocusPolicy(QWidget::StrongFocus);
 	}
 public slots:
+	void screenShotTimer() { QTimer::singleShot(500, this, SLOT(screenShot())); }
 	void reset() {
 		e_key_event(KEYCODE_CLEAR);
 		update();
@@ -202,7 +204,7 @@ public:
 		ZSoftKey *softKeys = new ZSoftKey("CST_2A", this, this);
 		QRect menuRect = ZGlobal::getContentR();
 		ZOptionsMenu *menu = new ZOptionsMenu(menuRect, this, NULL, 0);
-		menu->insertItem("Take Screenshot", NULL, widget, SLOT(screenShot()), true, false, false, 0, 0);
+		menu->insertItem("Take Screenshot", NULL, widget, SLOT(screenShotTimer()), true, false, false, 0, 0);
 		menu->insertSeparator(1, 1);
 		menu->insertItem("Save Game", NULL, widget, SLOT(save()), true, false, false, 2, 2);
 		menu->insertItem("Load Game", NULL, widget, SLOT(load()), true, false, false, 3, 3);
