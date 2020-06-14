@@ -14,6 +14,7 @@
 
 #include <qfileinfo.h>
 #include <qtextcodec.h>
+#include <qtimer.h>
 
 #include <ctime>
 
