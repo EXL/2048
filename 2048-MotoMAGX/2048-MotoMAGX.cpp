@@ -152,6 +152,7 @@ public slots:
 			e_set(score, win, lose);
 			ZNoticeDlg::information(QString("State on:\n%1").arg(loadDateTime.toString()), "Game loaded!",
 				QString::null, "ok_pop");
+			update();
 		} else
 			ZNoticeDlg::information("Cannot find save.dat file.", "Load Error!", QString::null, "error_pop");
 	}
