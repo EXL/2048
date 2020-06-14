@@ -1,3 +1,6 @@
+// https://ergodic.ugr.es/cphys_pedro/unix/athena8.html
+// https://ergodic.ugr.es/cphys_pedro/unix/athena9.html
+
 #include "2048.h"
 
 #include <X11/Xaw/Box.h>
@@ -32,7 +35,7 @@ static void draw_tile(Display *display, Window window, int value, int x, int y, 
 	const unsigned bkg = e_background(value), frg = e_foreground(value);
 	const int xOffset = offset_coords(x), yOffset = offset_coords(y);
 	XSetForeground(display, gc, (win || lose) ? fade_color(bkg) : bkg);
-	// HACK: Emulating XFillRoundedRectangle() method in 6 calls, similar to GTK+1 version.
+	// HACK: Emulating XFillRoundedRectangle() method in 6 calls, similar to Xlib version.
 	const int w = TILE_SIZE / 2, qw = w / 4, rad = qw * 2, rw = rad * 3, rect = w - rad;
 	XFillArc(display, window, gc, xOffset, yOffset, rect, rect, -64*180, -64*90);
 	XFillArc(display, window, gc, xOffset + w + rad, yOffset, rect, rect, 64*90, -64*90);
