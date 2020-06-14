@@ -39,6 +39,12 @@ extern unsigned e_background(int value) {
 	return 0xFFCDC1B4;
 }
 
+extern void e_set(int e_score, int e_win, int e_lose) {
+	score = e_score;
+	win = e_win;
+	lose = e_lose;
+}
+
 static void set_line(int index, int *line) {
 	forl
 		board[index * 4 + i] = line[i];

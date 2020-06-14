@@ -14,7 +14,6 @@
 
 #include <qfileinfo.h>
 #include <qtextcodec.h>
-#include <qtimer.h>
 
 #include <ctime>
 
@@ -128,6 +127,9 @@ public slots:
 			dataStream << saveDateTime;
 			for (int i = 0; i < BOARD_SIZE; ++i)
 				dataStream << (Q_INT32) board[i];
+			dataStream << e_score();
+			dataStream << e_win();
+			dataStream << e_lose();
 			ZNoticeDlg::information(QString("State on:\n%1").arg(saveDateTime.toString()), "Game Saved!",
 				QString::null, "ok_pop");
 		} else
@@ -139,11 +141,15 @@ public slots:
 			QDateTime loadDateTime;
 			QDataStream dataStream(&save);
 			dataStream >> loadDateTime;
-			Q_INT32 value;
+			Q_INT32 value, score, win, lose;
 			for (int i = 0; i < BOARD_SIZE; ++i) {
 				dataStream >> value;
 				board[i] = value;
 			}
+			dataStream >> score;
+			dataStream >> win;
+			dataStream >> lose;
+			e_set(score, win, lose);
 			ZNoticeDlg::information(QString("State on:\n%1").arg(loadDateTime.toString()), "Game loaded!",
 				QString::null, "ok_pop");
 		} else

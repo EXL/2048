@@ -21,6 +21,7 @@ extern int *e_init_board(int esc_keycode, int left_keycode, int right_keycode, i
 extern int e_win();
 extern int e_lose();
 extern int e_score();
+extern void e_set(int e_score, int e_win, int e_lose);
 
 extern void e_key_event(int key);
 
