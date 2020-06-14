@@ -47,7 +47,6 @@ class Widget : public QWidget {
 	Q_OBJECT
 
 	int *board;
-	ZOptionsMenu *menu;
 
 	inline int offsetCoords(int coord) { return coord * (TILE_MARGIN + TILE_SIZE) + TILE_MARGIN * 2; }
 	void drawTile(QPainter &painter, int value, int x, int y) {
@@ -98,16 +97,12 @@ public:
 		board = e_init_board(KEYCODE_CLEAR, KEYCODE_LEFT, KEYCODE_RIGHT, KEYCODE_UP, KEYCODE_DOWN);
 		setFocusPolicy(QWidget::StrongFocus);
 	}
-	void setMenu(ZOptionsMenu *menu) {
-		this->menu = menu;
-	}
 public slots:
 	void reset() {
 		e_key_event(KEYCODE_CLEAR);
 		update();
 	}
 	void screenShot() {
-		menu->hide();
 		QPixmap pixmap(width(), height());
 		bitBlt(&pixmap, 0, 0, this, 0, 0, width(), height(), Qt::CopyROP, true);
 		const QString path = QString("%1/%2.png").arg(QFileInfo(qApp->argv()[0]).dirPath(true)).arg(time(NULL));
@@ -215,7 +210,6 @@ public:
 		menu->insertSeparator(5, 5);
 		menu->insertItem("About", NULL, this, SLOT(about()), true, false, false, 6, 6);
 		menu->insertItem(tr("TXT_RID_SOFTKEY_EXIT", "Exit"), NULL, qApp, SLOT(quit()), true, false, false, 7, 7);
-		widget->setMenu(menu);
 		softKeys->setOptMenu(ZSoftKey::LEFT, menu);
 		softKeys->setTextForOptMenuHide(tr("TXT_RID_SOFTKEY_OPTIONS", "Options"));
 		softKeys->setTextForOptMenuShow(tr("TXT_RID_SOFTKEY_SELECT", "Select"), tr("TXT_RID_SOFTKEY_CANCEL", "Cancel"));
