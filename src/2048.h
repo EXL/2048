@@ -23,8 +23,8 @@ extern int e_lose;
 extern int e_score;
 extern int e_board[BOARD_SIZE];
 
-static inline unsigned e_foreground(int value) { return (value < 16) ? COLOR_TEXT : 0xFFF9F6F2; }
-static inline unsigned e_background(int value) {
+inline unsigned e_foreground(int value) { return (value < 16) ? COLOR_TEXT : 0xFFF9F6F2; }
+inline unsigned e_background(int value) {
 	switch (value) {
 		case    2: return 0xFFEEE4DA;
 		case    4: return 0xFFEDE0C8;
