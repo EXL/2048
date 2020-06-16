@@ -18,6 +18,25 @@ static inline double math_random() { return rand() / (double) RAND_MAX; }
 
 static inline int tile_at(int x, int y) { return e_board[x + y * LINE_SIZE]; }
 
+extern unsigned e_foreground(int value) { return (value < 16) ? COLOR_TEXT : 0xFFF9F6F2; }
+
+extern unsigned e_background(int value) {
+	switch (value) {
+		case    2: return 0xFFEEE4DA;
+		case    4: return 0xFFEDE0C8;
+		case    8: return 0xFFF2B179;
+		case   16: return 0xFFF59563;
+		case   32: return 0xFFF67C5F;
+		case   64: return 0xFFF65E3B;
+		case  128: return 0xFFEDCF72;
+		case  256: return 0xFFEDCC61;
+		case  512: return 0xFFEDC850;
+		case 1024: return 0xFFEDC53F;
+		case 2048: return 0xFFEDC22E;
+	}
+	return 0xFFCDC1B4;
+}
+
 static void set_line(int index, int *line) {
 	forl
 		e_board[index * LINE_SIZE + i] = line[i];
