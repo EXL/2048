@@ -15,8 +15,6 @@ static inline unsigned B(unsigned rgb) { return (rgb >> 0) & 0xFF; }
 class Widget : public QWidget {
 	Q_OBJECT
 
-	int *board;
-
 	inline int offsetCoords(int coord) { return coord * (TILE_MARGIN + TILE_SIZE) + TILE_MARGIN; }
 	void drawTile(QPainter &painter, int value, int x, int y) {
 		const unsigned bkg = e_background(value), frg = e_foreground(value);
@@ -34,38 +32,35 @@ class Widget : public QWidget {
 		}
 	}
 	void drawFinal(QPainter &painter) {
-		const bool win = e_win(), lose = e_lose();
-		if (win || lose) {
+		if (e_win || e_lose) {
 			painter.setBrush(QBrush(QColor(R(COLOR_OVERLAY), G(COLOR_OVERLAY), B(COLOR_OVERLAY)), Dense6Pattern));
 			painter.drawRect(0, 0, width(), height());
 			painter.setPen(QColor(R(COLOR_FINAL), G(COLOR_FINAL), B(COLOR_FINAL)));
 			painter.setFont(QFont("Sans", 24, QFont::Bold));
-			const QString center = ((win) ? "You won!" : (lose) ? "Game Over!" : "");
+			const QString center = (e_win) ? "You won!" : "Game Over!";
 			const int w = QFontMetrics(painter.font()).width(center);
 			painter.drawText(width() / 2 - w / 2, height() / 2, center);
 		}
 		painter.setPen(QColor(R(COLOR_TEXT), G(COLOR_TEXT), B(COLOR_TEXT)));
 		painter.setFont(QFont("Sans", 14, QFont::Normal));
-		QString strScore = QString().sprintf("Score: %d", e_score());
+		QString strScore = QString().sprintf("Score: %d", e_score);
 		const int w = QFontMetrics(painter.font()).width(strScore);
 		painter.drawText(TILE_MARGIN, height() - 10, "ESC to Restart!");
 		painter.drawText(width() - w - TILE_MARGIN, height() - 10, strScore);
 	}
 public:
-	Widget(QWidget *parent = 0) : QWidget(parent) {
-		board = e_init_board(Key_Escape, Key_Left, Key_Right, Key_Up, Key_Down);
-	}
+	Widget(QWidget *parent = 0) : QWidget(parent) { e_init(Key_Escape, Key_Left, Key_Right, Key_Up, Key_Down); }
 protected:
 	virtual void keyPressEvent(QKeyEvent *keyEvent) {
-		e_key_event(keyEvent->key());
+		e_key(keyEvent->key());
 		repaint();
 	}
 	virtual void paintEvent(QPaintEvent *) {
 		QPainter painter(this);
 		painter.fillRect(0, 0, width(), height(), QColor(R(COLOR_BOARD), G(COLOR_BOARD), B(COLOR_BOARD)));
-		for (int y = 0; y < VERTICAL; ++y)
-			for (int x = 0; x < HORIZONTAL; ++x)
-				drawTile(painter, board[x + y * 4], x, y);
+		for (int y = 0; y < LINE_SIZE; ++y)
+			for (int x = 0; x < LINE_SIZE; ++x)
+				drawTile(painter, e_board[x + y * LINE_SIZE], x, y);
 		drawFinal(painter);
 	}
 };

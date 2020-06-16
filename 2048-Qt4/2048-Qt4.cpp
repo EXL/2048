@@ -11,8 +11,6 @@ static const int TILE_MARGIN = 16;
 class Widget : public QWidget {
 	Q_OBJECT
 
-	int *board;
-
 	inline int offsetCoords(int coord) { return coord * (TILE_MARGIN + TILE_SIZE) + TILE_MARGIN; }
 	void drawTile(QPainter &painter, int value, int x, int y) {
 		const int xOffset = offsetCoords(x), yOffset = offsetCoords(y);
@@ -29,38 +27,37 @@ class Widget : public QWidget {
 		}
 	}
 	void drawFinal(QPainter &painter) {
-		const bool win = e_win(), lose = e_lose();
-		if (win || lose) {
+		if (e_win || e_lose) {
 			painter.setBrush(QBrush(COLOR_OVERLAY, Qt::Dense6Pattern));
 			painter.drawRect(0, 0, width(), height());
 			painter.setPen(QColor(COLOR_FINAL));
 			painter.setFont(QFont("Sans", 24, QFont::Bold));
-			const QString center = ((win) ? "You won!" : (lose) ? "Game Over!" : "");
+			const QString center = (e_win) ? "You won!" : "Game Over!";
 			const int w = QFontMetrics(painter.font()).width(center);
 			painter.drawText(width() / 2 - w / 2, height() / 2, center);
 		}
 		painter.setPen(QColor(COLOR_TEXT));
 		painter.setFont(QFont("Sans", 14, QFont::Normal));
-		const QString strScore = QString("Score: %1").arg(e_score());
+		const QString strScore = QString("Score: %1").arg(e_score);
 		const int w = QFontMetrics(painter.font()).width(strScore);
 		painter.drawText(TILE_MARGIN, height() - 10, "ESC to Restart!");
 		painter.drawText(width() - w - TILE_MARGIN, height() - 10, strScore);
 	}
 public:
 	explicit Widget(QWidget *parent = NULL) : QWidget(parent) {
-		board = e_init_board(Qt::Key_Escape, Qt::Key_Left, Qt::Key_Right, Qt::Key_Up, Qt::Key_Down);
+		e_init(Qt::Key_Escape, Qt::Key_Left, Qt::Key_Right, Qt::Key_Up, Qt::Key_Down);
 	}
 protected:
 	virtual void keyPressEvent(QKeyEvent *keyEvent) {
-		e_key_event(keyEvent->key());
+		e_key(keyEvent->key());
 		update();
 	}
 	virtual void paintEvent(QPaintEvent *) {
 		QPainter painter(this);
 		painter.fillRect(0, 0, width(), height(), QColor(COLOR_BOARD));
-		for (int y = 0; y < VERTICAL; ++y)
-			for (int x = 0; x < HORIZONTAL; ++x)
-				drawTile(painter, board[x + y * 4], x, y);
+		for (int y = 0; y < LINE_SIZE; ++y)
+			for (int x = 0; x < LINE_SIZE; ++x)
+				drawTile(painter, e_board[x + y * LINE_SIZE], x, y);
 		drawFinal(painter);
 	}
 };
