@@ -2,6 +2,7 @@
 
 #include <time.h>
 #include <stdlib.h>
+#include <string.h>
 
 #define forl int i = 0; for (; i < LINE_SIZE; ++i)
 #define forb int i = 0; for (; i < BOARD_SIZE; ++i)
@@ -9,7 +10,7 @@
 int e_board[BOARD_SIZE];
 int e_win, e_lose, e_score;
 
-static int *space[BOARD_SIZE];
+static int *f_space[BOARD_SIZE];
 static int b_reg[LINE_SIZE], f_reg[LINE_SIZE];
 static int K_ESCAPE, K_LEFT, K_RIGHT, K_UP, K_DOWN;
 
@@ -34,25 +35,17 @@ static int *get_line(int index, int *reg) {
 	return reg;
 }
 
-static void copy_line(int *dest, int *src) {
-	forl
-		dest[i] = src[i];
-}
-
 static int *move_line(int *line) {
 	int size = 0;
 	forl
 		if (line[i])
 			f_reg[size++] = line[i];
 	if (!size)
-		copy_line(f_reg, line);
+		memcpy(f_reg, line, LINE_SIZE * sizeof(int));
 	return f_reg;
 }
 
-static void reset_b_reg() {
-	forl
-		b_reg[i] = 0;
-}
+static void reset_b_reg() { memset(b_reg, 0, LINE_SIZE * sizeof(int)); }
 
 static int *merge_line(int *line) {
 	reset_b_reg();
@@ -69,13 +62,13 @@ static int *merge_line(int *line) {
 		b_reg[size++] = value;
 	}
 	if (!size)
-		copy_line(b_reg, line);
+		memcpy(b_reg, line, LINE_SIZE * sizeof(int));
 	return b_reg;
 }
 
 static void reset_space() {
 	forb
-		space[i] = NULL;
+		f_space[i] = NULL;
 }
 
 static int update_space() {
@@ -83,25 +76,24 @@ static int update_space() {
 	int size = 0;
 	forb
 		if (!e_board[i])
-			space[size++] = &e_board[i];
+			f_space[size++] = &e_board[i];
 	return size;
 }
 
 static void add_tile() {
 	const int size = update_space();
 	if (size)
-		*space[(int)(math_random() * size) % size] = (math_random() < 0.9) ? 2 : 4;
+		*f_space[(int)(math_random() * size) % size] = (math_random() < 0.9) ? 2 : 4;
 }
 
 static void reset_regs() {
-	forl
-		b_reg[i] = f_reg[i] = 0;
+	memset(b_reg, 0, LINE_SIZE * sizeof(int));
+	memset(f_reg, 0, LINE_SIZE * sizeof(int));
 }
 
 static void reset() {
 	e_score = e_win = e_lose = 0;
-	forb
-		e_board[i] = 0;
+	memset(e_board, 0, BOARD_SIZE * sizeof(int));
 	reset_space();
 	reset_regs();
 	add_tile();
@@ -113,8 +105,7 @@ static void rotate_90() {
 	for (; x < LINE_SIZE; ++x)
 		for (y = 0; y < LINE_SIZE; ++y)
 			rotated[x * LINE_SIZE + y] = e_board[(LINE_SIZE - y - 1) * LINE_SIZE + x];
-	forb
-		e_board[i] = rotated[i];
+	memcpy(e_board, rotated, BOARD_SIZE * sizeof(int));
 }
 
 static void left() {
