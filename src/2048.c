@@ -100,12 +100,14 @@ static void reset() {
 	add_tile();
 }
 
-static void rotate_90() {
-	int rotated[BOARD_SIZE], x = 0, y;
-	for (; x < LINE_SIZE; ++x)
-		for (y = 0; y < LINE_SIZE; ++y)
-			rotated[x * LINE_SIZE + y] = e_board[(LINE_SIZE - y - 1) * LINE_SIZE + x];
-	memcpy(e_board, rotated, BOARD_SIZE * sizeof(int));
+static void rotate(int a) {
+	for (; a >= 90; a -= 90) {
+		int rotated[BOARD_SIZE], x = 0, y;
+		for (; x < LINE_SIZE; ++x)
+			for (y = 0; y < LINE_SIZE; ++y)
+				rotated[x * LINE_SIZE + y] = e_board[(LINE_SIZE - y - 1) * LINE_SIZE + x];
+		memcpy(e_board, rotated, BOARD_SIZE * sizeof(int));
+	}
 }
 
 static void left() {
@@ -138,21 +140,21 @@ static int can_move() {
 }
 
 static void right() {
-	rotate_90(); rotate_90();              // 180
+	rotate(180);
 	left();
-	rotate_90(); rotate_90();              // 180
+	rotate(180);
 }
 
 static void up() {
-	rotate_90(); rotate_90(); rotate_90(); // 270
+	rotate(270);
 	left();
-	rotate_90();                           // 90
+	rotate(90);
 }
 
 static void down() {
-	rotate_90();                           // 90
+	rotate(90);
 	left();
-	rotate_90(); rotate_90(); rotate_90(); // 270
+	rotate(270);
 }
 
 extern void e_key(int keycode) {
