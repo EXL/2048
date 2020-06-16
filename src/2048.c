@@ -15,6 +15,7 @@ static int b_reg[LINE_SIZE], f_reg[LINE_SIZE];
 static int K_ESCAPE, K_LEFT, K_RIGHT, K_UP, K_DOWN;
 
 static inline double math_random() { return rand() / (double) RAND_MAX; }
+
 static inline int tile_at(int x, int y) { return e_board[x + y * LINE_SIZE]; }
 
 static void set_line(int index, int *line) {
@@ -80,10 +81,13 @@ static int update_space() {
 	return size;
 }
 
-static void add_tile() {
-	const int size = update_space();
-	if (size)
-		*f_space[(int)(math_random() * size) % size] = (math_random() < 0.9) ? 2 : 4;
+static void add_tile(int n) {
+	int i = 0;
+	for (; i < n; ++i) {
+		const int size = update_space();
+		if (size)
+			*f_space[(int)(math_random() * size) % size] = (math_random() < 0.9) ? 2 : 4;
+	}
 }
 
 static void reset_regs() {
@@ -96,8 +100,7 @@ static void reset() {
 	memset(e_board, 0, BOARD_SIZE * sizeof(int));
 	reset_space();
 	reset_regs();
-	add_tile();
-	add_tile();
+	add_tile(2);
 }
 
 static void rotate(int a) {
@@ -122,20 +125,18 @@ static void left() {
 			need_add_tile = 1;
 	}
 	if (need_add_tile)
-		add_tile();
+		add_tile(1);
 }
 
 static int can_move() {
 	if (update_space())
 		return 1;
-	int x = 0;
-	for (; x < LINE_SIZE; ++x) {
-		int y = 0;
-		for (; y < LINE_SIZE; ++y)
+	int x = 0, y;
+	for (; x < LINE_SIZE; ++x)
+		for (y = 0; y < LINE_SIZE; ++y)
 			if ((x < (LINE_SIZE - 1) && tile_at(x, y) == tile_at(x + 1, y)) ||
 			    (y < (LINE_SIZE - 1) && tile_at(x, y) == tile_at(x, y + 1)))
 				return 1;
-	}
 	return 0;
 }
 
