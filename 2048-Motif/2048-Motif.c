@@ -106,10 +106,9 @@ static void general_callback(Widget widget, _X_UNUSED XtPointer client_data, XtP
 		XSetForeground(display, gc, (e_win || e_lose) ? fade_color(COLOR_BOARD) : COLOR_BOARD);
 		XFillRectangle(display, pixmap, gc, 0, 0, WIDTH, HEIGHT);
 		int y = 0, x;
-		for (; y < LINE_SIZE; ++y) {
+		for (; y < LINE_SIZE; ++y)
 			for (x = 0; x < LINE_SIZE; ++x)
 				draw_tile(display, pixmap, gc, e_board[x + y * LINE_SIZE], x, y, e_win, e_lose);
-		}
 		draw_final(display, pixmap, gc, e_win, e_lose);
 		XCopyArea(display, pixmap, window, gc, 0, 0, WIDTH, HEIGHT, 0, 0);
 	}

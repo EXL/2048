@@ -47,8 +47,6 @@ const int TILE_MARGIN = 5;
 class Widget : public QWidget {
 	Q_OBJECT
 
-	int *board;
-
 	inline int offsetCoords(int coord) { return coord * (TILE_MARGIN + TILE_SIZE) + TILE_MARGIN * 2; }
 	void drawTile(QPainter &painter, int value, int x, int y) {
 		const int xOffset = offsetCoords(x) + width() / FIELD_OFFSET_SCALE, yOffset = offsetCoords(y);
@@ -76,32 +74,31 @@ class Widget : public QWidget {
 		}
 	}
 	void drawFinal(QPainter &painter) {
-		const bool win = e_win(), lose = e_lose();
-		if (win || lose) {
+		if (e_win || e_lose) {
 			painter.setBrush(QBrush(COLOR_OVERLAY, Dense6Pattern));
 			painter.drawRect(0, 0, width(), height());
 			painter.setPen(QColor(COLOR_FINAL));
 			painter.setFont(QFont("Sans", 24, QFont::Bold));
-			const QString center = ((win) ? "You won!" : (lose) ? "Game Over!" : "");
+			const QString center = (e_win) ? "You won!" : "Game Over!";
 			const int w = QFontMetrics(painter.font()).width(center);
 			painter.drawText(width() / 2 - w / 2, height() / 2, center);
 		}
 		painter.setPen(QColor(COLOR_TEXT));
 		painter.setFont(QFont("Sans", 14, QFont::Normal));
-		const QString strScore = QString("Score: %1").arg(e_score());
+		const QString strScore = QString("Score: %1").arg(e_score);
 		const int w = QFontMetrics(painter.font()).width(strScore);
 		painter.drawText(TILE_MARGIN, height() - 10, "Press '0' to Reset!");
 		painter.drawText(width() - w - TILE_MARGIN, height() - 10, strScore);
 	}
 public:
 	Widget(QWidget *parent = 0, const char *name = 0) : QWidget(parent, name, /* WFlags */ 0) {
-		board = e_init_board(KEYCODE_CLEAR, KEYCODE_LEFT, KEYCODE_RIGHT, KEYCODE_UP, KEYCODE_DOWN);
+		e_init(KEYCODE_CLEAR, KEYCODE_LEFT, KEYCODE_RIGHT, KEYCODE_UP, KEYCODE_DOWN);
 		setFocusPolicy(QWidget::StrongFocus);
 	}
 public slots:
 	void screenShotTimer() { QTimer::singleShot(500, this, SLOT(screenShot())); }
 	void reset() {
-		e_key_event(KEYCODE_CLEAR);
+		e_key(KEYCODE_CLEAR);
 		update();
 	}
 	void screenShot() {
@@ -127,10 +124,8 @@ public slots:
 			QDataStream dataStream(&save);
 			dataStream << saveDateTime;
 			for (int i = 0; i < BOARD_SIZE; ++i)
-				dataStream << (Q_INT32) board[i];
-			dataStream << e_score();
-			dataStream << e_win();
-			dataStream << e_lose();
+				dataStream << (Q_INT32) e_board[i];
+			dataStream << e_score; dataStream << e_win; dataStream << e_lose;
 			ZNoticeDlg::information(QString("State on:\n%1").arg(saveDateTime.toString()), "Game Saved!",
 				QString::null, "ok_pop");
 		} else
@@ -145,12 +140,10 @@ public slots:
 			Q_INT32 value, score, win, lose;
 			for (int i = 0; i < BOARD_SIZE; ++i) {
 				dataStream >> value;
-				board[i] = value;
+				e_board[i] = value;
 			}
-			dataStream >> score;
-			dataStream >> win;
-			dataStream >> lose;
-			e_set(score, win, lose);
+			dataStream >> score; dataStream >> win; dataStream >> lose;
+			e_score = score; e_win = win; e_lose = lose;
 			ZNoticeDlg::information(QString("State on:\n%1").arg(loadDateTime.toString()), "Game loaded!",
 				QString::null, "ok_pop");
 			update();
@@ -162,28 +155,25 @@ protected:
 		QWidget::keyPressEvent(keyEvent);
 		int key = keyEvent->key();
 		if (key == KEYCODE_0)
-			e_key_event(KEYCODE_CLEAR);
+			e_key(KEYCODE_CLEAR);
 		else if (key == KEYCODE_4)
-			e_key_event(KEYCODE_LEFT);
+			e_key(KEYCODE_LEFT);
 		else if (key == KEYCODE_6)
-			e_key_event(KEYCODE_RIGHT);
+			e_key(KEYCODE_RIGHT);
 		else if (key == KEYCODE_2)
-			e_key_event(KEYCODE_UP);
+			e_key(KEYCODE_UP);
 		else if (key == KEYCODE_8)
-			e_key_event(KEYCODE_DOWN);
+			e_key(KEYCODE_DOWN);
 		else
-			e_key_event(key);
+			e_key(key);
 		update();
 	}
 	virtual void paintEvent(QPaintEvent *) {
 		QPainter painter(this);
 		painter.fillRect(0, 0, width(), height(), QColor(COLOR_BOARD));
-		int y = 0;
-		for (; y < VERTICAL; ++y) {
-			int x = 0;
-			for (; x < HORIZONTAL; ++x)
-				drawTile(painter, board[x + y * 4], x, y);
-		}
+		for (int y = 0; y < LINE_SIZE; ++y)
+			for (int x = 0; x < LINE_SIZE; ++x)
+				drawTile(painter, e_board[x + y * LINE_SIZE], x, y);
 		drawFinal(painter);
 	}
 };

@@ -82,10 +82,9 @@ static gboolean on_expose_event(GtkWidget *widget, G_GNUC_UNUSED GdkEventExpose 
 	gdk_gc_set_foreground(gc, &background_color);
 	gdk_draw_rectangle(widget->window, gc, 1, 0, 0, widget->allocation.width, widget->allocation.height);
 	int y = 0, x;
-	for (; y < LINE_SIZE; ++y) {
+	for (; y < LINE_SIZE; ++y)
 		for (x = 0; x < LINE_SIZE; ++x)
 			draw_tile(widget, gc, e_board[x + y * LINE_SIZE], x, y, e_win, e_lose);
-	}
 	draw_final(widget, gc, e_win, e_lose);
 	gdk_gc_destroy(gc);
 	return FALSE;
