@@ -13,7 +13,6 @@ static const int HEIGHT = 400;
 static const int TILE_SIZE = 64;
 static const int TILE_MARGIN = 16;
 
-static int *board = NULL;
 static XFontStruct *font_small = NULL, *font_middle = NULL, *font_normal = NULL, *font_large = NULL;
 
 static inline int offset_coords(int coord) { return coord * (TILE_MARGIN + TILE_SIZE) + TILE_MARGIN; }
@@ -53,7 +52,7 @@ static void draw_final(Display *display, int screen, Window window, int win, int
 		XSetForeground(display, DefaultGC(display, screen), COLOR_FINAL);
 		if (font_large)
 			XSetFont(display, DefaultGC(display, screen), font_large->fid);
-		const char *center = ((win) ? "You won!" : (lose) ? "Game Over!" : "");
+		const char *center = (win) ? "You won!" : "Game Over!";
 		const int w = (font_large) ? XTextWidth(font_large, center, strlen(center)) : 50;
 		XDrawString(display, window, DefaultGC(display, screen), WIDTH / 2 - (w - 3) / 2, HEIGHT / 2,
 			center, strlen(center));
@@ -66,27 +65,24 @@ static void draw_final(Display *display, int screen, Window window, int win, int
 	XDrawString(display, window, DefaultGC(display, screen), TILE_MARGIN, HEIGHT - h,
 		strReset, strlen(strReset));
 	char strScore[16];
-	snprintf(strScore, 16, "Score: %d", e_score());
+	snprintf(strScore, 16, "Score: %d", e_score);
 	const int w = (font_normal) ? XTextWidth(font_normal, strScore, strlen(strScore)) : 50;
 	XDrawString(display, window, DefaultGC(display, screen), WIDTH - (w - 3) - TILE_MARGIN, HEIGHT - h,
 		strScore, strlen(strScore));
 }
 
 static void draw(Display *display, int screen, Window window) {
-	const int win = e_win(), lose = e_lose();
-	XSetForeground(display, DefaultGC(display, screen), (win || lose) ? fade_color(COLOR_BOARD) : COLOR_BOARD);
+	XSetForeground(display, DefaultGC(display, screen), (e_win || e_lose) ? fade_color(COLOR_BOARD) : COLOR_BOARD);
 	XFillRectangle(display, window, DefaultGC(display, screen), 0, 0, WIDTH, HEIGHT);
-	int y = 0;
-	for (; y < VERTICAL; ++y) {
-		int x = 0;
-		for (; x < HORIZONTAL; ++x)
-			draw_tile(display, screen, window, board[x + y * 4], x, y, win, lose);
-	}
-	draw_final(display, screen, window, win, lose);
+	int y = 0, x;
+	for (; y < LINE_SIZE; ++y)
+		for (x = 0; x < LINE_SIZE; ++x)
+			draw_tile(display, screen, window, e_board[x + y * LINE_SIZE], x, y, e_win, e_lose);
+	draw_final(display, screen, window, e_win, e_lose);
 }
 
 int main(void) {
-	board = e_init_board(XK_Escape, XK_Left, XK_Right, XK_Up, XK_Down);
+	e_init(XK_Escape, XK_Left, XK_Right, XK_Up, XK_Down);
 
 	Display *display = XOpenDisplay(NULL);
 	const int screen = DefaultScreen(display);
@@ -114,7 +110,7 @@ int main(void) {
 			KeySym key = XLookupKeysym(&event.xkey, 0);
 			if (key == XK_q)
 				break;
-			e_key_event(key);
+			e_key(key);
 			event.type = Expose;
 			XSendEvent(display, window, True, ExposureMask, &event);
 		}

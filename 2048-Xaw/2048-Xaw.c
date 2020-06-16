@@ -17,7 +17,6 @@ static const int HEIGHT = 400;
 static const int TILE_SIZE = 64;
 static const int TILE_MARGIN = 16;
 
-static int *board = NULL;
 static GC gc = NULL;
 static Atom wm_delete_window = 0;
 static XtAppContext context = NULL;
@@ -65,7 +64,7 @@ static void draw_final(Display *display, Window window, int win, int lose) {
 		XSetForeground(display, gc, COLOR_FINAL);
 		if (font_large)
 			XSetFont(display, gc, font_large->fid);
-		const char *center = ((win) ? "You won!" : (lose) ? "Game Over!" : "");
+		const char *center = (win) ? "You won!" : "Game Over!";
 		const int w = (font_large) ? XTextWidth(font_large, center, strlen(center)) : 50;
 		XDrawString(display, window, gc, WIDTH / 2 - (w - 3) / 2, HEIGHT / 2,
 			center, strlen(center));
@@ -78,7 +77,7 @@ static void draw_final(Display *display, Window window, int win, int lose) {
 	XDrawString(display, window, gc, TILE_MARGIN, HEIGHT - h,
 		strReset, strlen(strReset));
 	char strScore[16];
-	snprintf(strScore, 16, "Score: %d", e_score());
+	snprintf(strScore, 16, "Score: %d", e_score);
 	const int w = (font_normal) ? XTextWidth(font_normal, strScore, strlen(strScore)) : 50;
 	XDrawString(display, window, gc, WIDTH - (w - 3) - TILE_MARGIN, HEIGHT - h,
 		strScore, strlen(strScore));
@@ -87,16 +86,13 @@ static void draw_final(Display *display, Window window, int win, int lose) {
 static void expose_event(Widget widget, _X_UNUSED XtPointer client, _X_UNUSED XExposeEvent *event) {
 	Display *display = XtDisplay(widget);
 	Window window = XtWindow(widget);
-	const int win = e_win(), lose = e_lose();
-	XSetForeground(display, gc, (win || lose) ? fade_color(COLOR_BOARD) : COLOR_BOARD);
+	XSetForeground(display, gc, (e_win || e_lose) ? fade_color(COLOR_BOARD) : COLOR_BOARD);
 	XFillRectangle(display, window, gc, 0, 0, WIDTH, HEIGHT);
-	int y = 0;
-	for (; y < VERTICAL; ++y) {
-		int x = 0;
-		for (; x < HORIZONTAL; ++x)
-			draw_tile(display, window, board[x + y * 4], x, y, win, lose);
-	}
-	draw_final(display, window, win, lose);
+	int y = 0, x;
+	for (; y < LINE_SIZE; ++y)
+		for (x = 0; x < LINE_SIZE; ++x)
+			draw_tile(display, window, e_board[x + y * LINE_SIZE], x, y, e_win, e_lose);
+	draw_final(display, window, e_win, e_lose);
 }
 
 static void key_press_event(Widget widget, _X_UNUSED XtPointer client, XKeyPressedEvent *event) {
@@ -104,7 +100,7 @@ static void key_press_event(Widget widget, _X_UNUSED XtPointer client, XKeyPress
 	if (keysym == XK_q)
 		quit();
 	else {
-		e_key_event(keysym);
+		e_key(keysym);
 		event->type = Expose;
 		XtDispatchEventToWidget(widget, (XEvent *) event);
 	}
@@ -116,7 +112,7 @@ static void client_message_event(_X_UNUSED Widget widget, _X_UNUSED XtPointer cl
 }
 
 int main(int argc, char *argv[]) {
-	board = e_init_board(XK_Escape, XK_Left, XK_Right, XK_Up, XK_Down);
+	e_init(XK_Escape, XK_Left, XK_Right, XK_Up, XK_Down);
 
 	Arg box_args[2];
 	Arg core_args[4];

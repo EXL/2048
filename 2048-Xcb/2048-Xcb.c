@@ -16,7 +16,6 @@ static const int HEIGHT = 400;
 static const int TILE_SIZE = 64;
 static const int TILE_MARGIN = 16;
 
-static int *board = NULL;
 static xcb_gc_t font_small, font_middle, font_normal, font_large;
 static xcb_font_t font_small_fid, font_middle_fid, font_normal_fid, font_large_fid;
 
@@ -144,7 +143,7 @@ static void draw_tile(xcb_connection_t *connection, xcb_window_t window, xcb_gco
 
 static void draw_final(xcb_connection_t *connection, xcb_window_t window, int win, int lose) {
 	if (win || lose) {
-		const char *center = ((win) ? "You won!" : (lose) ? "Game Over!" : "");
+		const char *center = (win) ? "You won!" : "Game Over!";
 		int w, h, len = strlen(center);
 		measure_str(connection, center, len, font_large_fid, &w, &h);
 		draw_string_transparent(connection, window, font_large, 0, COLOR_FINAL,
@@ -154,7 +153,7 @@ static void draw_final(xcb_connection_t *connection, xcb_window_t window, int wi
 	const unsigned frg = ((win || lose) ? fade_color(COLOR_TEXT) : COLOR_TEXT);
 	const char *strReset = "ESC to Restart!";
 	char strScore[16];
-	snprintf(strScore, 16, "Score: %d", e_score());
+	snprintf(strScore, 16, "Score: %d", e_score);
 	int w, h, len = strlen(strScore);
 	measure_str(connection, strScore, len, font_normal, &w, &h);
 	draw_string(connection, window, font_normal, bkg, frg, TILE_MARGIN, HEIGHT - h, strReset, strlen(strReset));
@@ -162,22 +161,19 @@ static void draw_final(xcb_connection_t *connection, xcb_window_t window, int wi
 }
 
 static void draw(xcb_connection_t *connection, xcb_window_t window, xcb_gcontext_t gcontext) {
-	const int win = e_win(), lose = e_lose();
-	const unsigned color = (win || lose) ? fade_color(COLOR_BOARD) : COLOR_BOARD;
+	const unsigned color = (e_win || e_lose) ? fade_color(COLOR_BOARD) : COLOR_BOARD;
 	xcb_change_gc(connection, gcontext, XCB_GC_FOREGROUND, &color);
 	xcb_rectangle_t screen_rect = { 0, 0, WIDTH, HEIGHT };
 	xcb_poly_fill_rectangle(connection, window, gcontext, 1, &screen_rect);
-	int y = 0;
-	for (; y < VERTICAL; ++y) {
-		int x = 0;
-		for (; x < HORIZONTAL; ++x)
-			draw_tile(connection, window, gcontext, board[x + y * 4], x, y, win, lose);
-	}
-	draw_final(connection, window, win, lose);
+	int y = 0, x;
+	for (; y < LINE_SIZE; ++y)
+		for (x = 0; x < LINE_SIZE; ++x)
+			draw_tile(connection, window, gcontext, e_board[x + y * LINE_SIZE], x, y, e_win, e_lose);
+	draw_final(connection, window, e_win, e_lose);
 }
 
 int main(void) {
-	board = e_init_board(XK_Escape, XK_Left, XK_Right, XK_Up, XK_Down);
+	e_init(XK_Escape, XK_Left, XK_Right, XK_Up, XK_Down);
 
 	xcb_connection_t *connection = xcb_connect(NULL, NULL);
 	xcb_screen_t *screen = xcb_setup_roots_iterator(xcb_get_setup(connection)).data;
@@ -228,7 +224,7 @@ int main(void) {
 						done = 1;
 						break;
 					default:
-						e_key_event(keysym);
+						e_key(keysym);
 						break;
 				}
 				invalidate(connection, window);

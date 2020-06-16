@@ -15,7 +15,6 @@ static const int HEIGHT = 400;
 static const int TILE_SIZE = 64;
 static const int TILE_MARGIN = 16;
 
-static int *board = NULL;
 static XtAppContext context = NULL;
 static Pixmap pixmap = 0;
 static XFontStruct *font_small = NULL, *font_middle = NULL, *font_normal = NULL, *font_large = NULL;
@@ -62,7 +61,7 @@ static void draw_final(Display *display, Pixmap pixmap, GC gc, int win, int lose
 		XSetForeground(display, gc, COLOR_FINAL);
 		if (font_large)
 			XSetFont(display, gc, font_large->fid);
-		const char *center = ((win) ? "You won!" : (lose) ? "Game Over!" : "");
+		const char *center = (win) ? "You won!" : "Game Over!";
 		const int w = (font_large) ? XTextWidth(font_large, center, strlen(center)) : 50;
 		XDrawString(display, pixmap, gc, WIDTH / 2 - (w - 3) / 2, HEIGHT / 2,
 			center, strlen(center));
@@ -75,7 +74,7 @@ static void draw_final(Display *display, Pixmap pixmap, GC gc, int win, int lose
 	XDrawString(display, pixmap, gc, TILE_MARGIN, HEIGHT - h,
 		strReset, strlen(strReset));
 	char strScore[16];
-	snprintf(strScore, 16, "Score: %d", e_score());
+	snprintf(strScore, 16, "Score: %d", e_score);
 	const int w = (font_normal) ? XTextWidth(font_normal, strScore, strlen(strScore)) : 50;
 	XDrawString(display, pixmap, gc, WIDTH - (w - 3) - TILE_MARGIN, HEIGHT - h,
 		strScore, strlen(strScore));
@@ -91,7 +90,7 @@ static void general_callback(Widget widget, _X_UNUSED XtPointer client_data, XtP
 			if (keysym == XK_q)
 				quit();
 			else {
-				e_key_event(keysym);
+				e_key(keysym);
 				// Source: http://users.polytech.unice.fr/~buffa/cours/X11_Motif/motif-faq/part6/faq-doc-2.html
 				XmDrawingAreaCallbackStruct da_struct;
 				da_struct.reason = XmCR_EXPOSE;
@@ -104,22 +103,20 @@ static void general_callback(Widget widget, _X_UNUSED XtPointer client_data, XtP
 		Display *display = event->xany.display;
 		GC gc;
 		XtVaGetValues(widget, XmNuserData, &gc, NULL);
-		const int win = e_win(), lose = e_lose();
-		XSetForeground(display, gc, (win || lose) ? fade_color(COLOR_BOARD) : COLOR_BOARD);
+		XSetForeground(display, gc, (e_win || e_lose) ? fade_color(COLOR_BOARD) : COLOR_BOARD);
 		XFillRectangle(display, pixmap, gc, 0, 0, WIDTH, HEIGHT);
-		int y = 0;
-		for (; y < VERTICAL; ++y) {
-			int x = 0;
-			for (; x < HORIZONTAL; ++x)
-				draw_tile(display, pixmap, gc, board[x + y * 4], x, y, win, lose);
+		int y = 0, x;
+		for (; y < LINE_SIZE; ++y) {
+			for (x = 0; x < LINE_SIZE; ++x)
+				draw_tile(display, pixmap, gc, e_board[x + y * LINE_SIZE], x, y, e_win, e_lose);
 		}
-		draw_final(display, pixmap, gc, win, lose);
+		draw_final(display, pixmap, gc, e_win, e_lose);
 		XCopyArea(display, pixmap, window, gc, 0, 0, WIDTH, HEIGHT, 0, 0);
 	}
 }
 
 int main(int argc, char *argv[]) {
-	board = e_init_board(XK_Escape, XK_Left, XK_Right, XK_Up, XK_Down);
+	e_init(XK_Escape, XK_Left, XK_Right, XK_Up, XK_Down);
 
 	XtSetLanguageProc(NULL, NULL, NULL);
 	Widget top = XtVaOpenApplication(&context, "2048-Motif", NULL, 0, &argc, argv, NULL, sessionShellWidgetClass,
