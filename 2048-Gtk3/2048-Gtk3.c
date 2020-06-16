@@ -6,8 +6,6 @@
 
 #include <math.h>
 
-static int* board = NULL;
-
 static const int TILE_SIZE = 64;
 static const int TILE_MARGIN = 16;
 
@@ -50,15 +48,14 @@ static void draw_tile(cairo_t *cairo, int value, int x, int y) {
 }
 
 static void draw_final(GtkWidget *widget, cairo_t *cairo) {
-	const int win = e_win(), lose = e_lose();
 	int width = gtk_widget_get_allocated_width(widget), height = gtk_widget_get_allocated_height(widget);
 	int size = 26;
-	if (win || lose) {
+	if (e_win || e_lose) {
 		cairo_set_source_rgba(cairo, R(COLOR_OVERLAY), G(COLOR_OVERLAY), B(COLOR_OVERLAY), 0.5);
 		cairo_paint(cairo);
 		cairo_set_source_rgb(cairo, R(COLOR_FINAL), G(COLOR_FINAL), B(COLOR_FINAL));
 		cairo_set_font_size(cairo, size);
-		const gchar *center = ((win) ? "You won!" : (lose) ? "Game Over!" : "");
+		const gchar *center = (e_win) ? "You won!" : "Game Over!";
 		cairo_text_extents_t extents;
 		cairo_text_extents(cairo, center, &extents);
 		cairo_move_to(cairo, width / 2 - (int) (extents.width) / 2, height / 2);
@@ -68,7 +65,7 @@ static void draw_final(GtkWidget *widget, cairo_t *cairo) {
 	cairo_select_font_face(cairo, "Sans", CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_NORMAL);
 	cairo_set_source_rgb(cairo, R(COLOR_TEXT), G(COLOR_TEXT), B(COLOR_TEXT));
 	cairo_set_font_size(cairo, size);
-	gchar *strScore = g_strdup_printf("Score: %d", e_score());
+	gchar *strScore = g_strdup_printf("Score: %d", e_score);
 	cairo_text_extents_t extents;
 	cairo_text_extents(cairo, strScore, &extents);
 	cairo_move_to(cairo, TILE_MARGIN, height - size);
@@ -81,12 +78,10 @@ static void draw_final(GtkWidget *widget, cairo_t *cairo) {
 static gboolean on_draw(GtkWidget *widget, cairo_t *cairo, G_GNUC_UNUSED gpointer data) {
 	cairo_set_source_rgb(cairo, R(COLOR_BOARD), G(COLOR_BOARD), B(COLOR_BOARD));
 	cairo_paint(cairo);
-	int y = 0;
-	for (; y < VERTICAL; ++y) {
-		int x = 0;
-		for (; x < HORIZONTAL; ++x)
-			draw_tile(cairo, board[x + y * 4], x, y);
-	}
+	int y = 0, x;
+	for (; y < LINE_SIZE; ++y)
+		for (x = 0; x < LINE_SIZE; ++x)
+			draw_tile(cairo, e_board[x + y * LINE_SIZE], x, y);
 	draw_final(widget, cairo);
 	return FALSE;
 }
@@ -94,14 +89,14 @@ static gboolean on_draw(GtkWidget *widget, cairo_t *cairo, G_GNUC_UNUSED gpointe
 static gboolean on_key_press_event(GtkWidget *widget, GdkEventKey *event, G_GNUC_UNUSED gpointer data) {
 	if (!GTK_IS_BIN(widget))
 		return FALSE;
-	e_key_event(event->keyval);
+	e_key(event->keyval);
 	gtk_widget_queue_draw(gtk_bin_get_child(GTK_BIN(widget)));
 	return TRUE;
 }
 
 int main(int argc, char *argv[]) {
 	gtk_init(&argc, &argv);
-	board = e_init_board(GDK_KEY_Escape, GDK_KEY_Left, GDK_KEY_Right, GDK_KEY_Up, GDK_KEY_Down);
+	e_init(GDK_KEY_Escape, GDK_KEY_Left, GDK_KEY_Right, GDK_KEY_Up, GDK_KEY_Down);
 	GtkWidget *window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
 	gtk_window_set_default_size(GTK_WINDOW(window), 340, 400);
 	GtkWidget *drawing = gtk_drawing_area_new();

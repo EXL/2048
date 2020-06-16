@@ -13,4 +13,4 @@ include_directories(../src/ ${GTK3_INCLUDE_DIRS})
 link_directories(${GTK3_LIBRARY_DIRS})
 
 add_executable(${PROJECT_NAME} ${SOURCE_CODE})
-target_link_libraries(${PROJECT_NAME} ${GTK3_LIBRARIES} 2048 m)
+target_link_libraries(${PROJECT_NAME} ${GTK3_LIBRARIES} 2048)

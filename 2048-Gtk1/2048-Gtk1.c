@@ -5,8 +5,6 @@
 
 #include <string.h>
 
-static int* board = NULL;
-
 static const int TILE_SIZE = 64;
 static const int TILE_MARGIN = 16;
 
@@ -54,7 +52,7 @@ static void draw_final(GtkWidget *widget, GdkGC *gc, int win, int lose) {
 		GdkFont *font = gdk_font_load("-adobe-helvetica-bold-r-normal--34-240-100-100-p-182-iso8859-1");
 		if (!font)
 			font = widget->style->font;
-		const gchar *center = ((win) ? "You won!" : (lose) ? "Game Over!" : "");
+		const gchar *center = (win) ? "You won!" : "Game Over!";
 		gdk_draw_text(widget->window, font, gc,
 			widget->allocation.width / 2 - (gdk_string_width(font, center) - 3) / 2,
 			widget->allocation.height / 2, center, strlen(center));
@@ -69,7 +67,7 @@ static void draw_final(GtkWidget *widget, GdkGC *gc, int win, int lose) {
 	gdk_draw_text(widget->window, font, gc, TILE_MARGIN,
 		widget->allocation.height - gdk_string_height(font, strReset),
 		strReset, strlen(strReset));
-	gchar *strScore = g_strdup_printf("Score: %d", e_score());
+	gchar *strScore = g_strdup_printf("Score: %d", e_score);
 	gdk_draw_text(widget->window, font, gc,
 		widget->allocation.width - (gdk_string_width(font, strScore) - 3) - TILE_MARGIN,
 		widget->allocation.height - gdk_string_height(font, strScore),
@@ -79,18 +77,16 @@ static void draw_final(GtkWidget *widget, GdkGC *gc, int win, int lose) {
 
 static gboolean on_expose_event(GtkWidget *widget, G_GNUC_UNUSED GdkEventExpose *event) {
 	GdkGC *gc = gdk_gc_new(widget->window);
-	const int win = e_win(), lose = e_lose();
 	GdkColor background_color;
-	background_color.pixel = (win || lose) ? fade_color(COLOR_BOARD) : COLOR_BOARD;
+	background_color.pixel = (e_win || e_lose) ? fade_color(COLOR_BOARD) : COLOR_BOARD;
 	gdk_gc_set_foreground(gc, &background_color);
 	gdk_draw_rectangle(widget->window, gc, 1, 0, 0, widget->allocation.width, widget->allocation.height);
-	int y = 0;
-	for (; y < VERTICAL; ++y) {
-		int x = 0;
-		for (; x < HORIZONTAL; ++x)
-			draw_tile(widget, gc, board[x + y * 4], x, y, win, lose);
+	int y = 0, x;
+	for (; y < LINE_SIZE; ++y) {
+		for (x = 0; x < LINE_SIZE; ++x)
+			draw_tile(widget, gc, e_board[x + y * LINE_SIZE], x, y, e_win, e_lose);
 	}
-	draw_final(widget, gc, win, lose);
+	draw_final(widget, gc, e_win, e_lose);
 	gdk_gc_destroy(gc);
 	return FALSE;
 }
@@ -98,14 +94,14 @@ static gboolean on_expose_event(GtkWidget *widget, G_GNUC_UNUSED GdkEventExpose 
 static gboolean on_key_press_event(GtkWidget *widget, GdkEventKey *event, G_GNUC_UNUSED gpointer data) {
 	if (!GTK_IS_BIN(widget))
 		return FALSE;
-	e_key_event(event->keyval);
+	e_key(event->keyval);
 	gtk_widget_queue_draw(GTK_BIN(widget)->child);
 	return TRUE;
 }
 
 int main(int argc, char *argv[]) {
 	gtk_init(&argc, &argv);
-	board = e_init_board(GDK_Escape, GDK_Left, GDK_Right, GDK_Up, GDK_Down);
+	e_init(GDK_Escape, GDK_Left, GDK_Right, GDK_Up, GDK_Down);
 	GtkWidget *window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
 	gtk_widget_set_usize(GTK_WIDGET(window), 340, 400);
 	GtkWidget *drawing = gtk_drawing_area_new();
