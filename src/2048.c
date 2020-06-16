@@ -1,53 +1,24 @@
 #include "2048.h"
 
-#include <math.h>
 #include <time.h>
 #include <stdlib.h>
 
-#define forl int i = 0; for (; i < HORIZONTAL; ++i)
+#define forl int i = 0; for (; i < LINE_SIZE; ++i)
 #define forb int i = 0; for (; i < BOARD_SIZE; ++i)
 
-static int board[BOARD_SIZE];
+int e_board[BOARD_SIZE];
+int e_win, e_lose, e_score;
+
 static int *space[BOARD_SIZE];
-static int b_reg[HORIZONTAL], f_reg[HORIZONTAL];
-static int win, lose, score;
+static int b_reg[LINE_SIZE], f_reg[LINE_SIZE];
 static int K_ESCAPE, K_LEFT, K_RIGHT, K_UP, K_DOWN;
 
 static inline double math_random() { return rand() / (double) RAND_MAX; }
-static inline double degrees_to_radians(int degrees) { return ((degrees) * M_PI / 180.0); }
-static inline int tile_at(int x, int y) { return board[x + y * 4]; }
-
-extern int e_win() { return win; }
-extern int e_lose() { return lose; }
-extern int e_score() { return score; }
-
-extern unsigned e_foreground(int value) { return (value < 16) ? 0xFF776E65 : 0xFFF9F6F2; }
-extern unsigned e_background(int value) {
-	switch (value) {
-		case    2: return 0xFFEEE4DA;
-		case    4: return 0xFFEDE0C8;
-		case    8: return 0xFFF2B179;
-		case   16: return 0xFFF59563;
-		case   32: return 0xFFF67C5F;
-		case   64: return 0xFFF65E3B;
-		case  128: return 0xFFEDCF72;
-		case  256: return 0xFFEDCC61;
-		case  512: return 0xFFEDC850;
-		case 1024: return 0xFFEDC53F;
-		case 2048: return 0xFFEDC22E;
-	}
-	return 0xFFCDC1B4;
-}
-
-extern void e_set(int e_score, int e_win, int e_lose) {
-	score = e_score;
-	win = e_win;
-	lose = e_lose;
-}
+static inline int tile_at(int x, int y) { return e_board[x + y * LINE_SIZE]; }
 
 static void set_line(int index, int *line) {
 	forl
-		board[index * 4 + i] = line[i];
+		e_board[index * LINE_SIZE + i] = line[i];
 }
 
 static int compare(int *line_first, int *line_second) {
@@ -86,13 +57,13 @@ static void reset_b_reg() {
 static int *merge_line(int *line) {
 	reset_b_reg();
 	int i = 0, size = 0;
-	for (; i < HORIZONTAL && line[i]; ++i) {
+	for (; i < LINE_SIZE && line[i]; ++i) {
 		int value = line[i];
-		if (i < 3 && line[i] == line[i + 1]) {
+		if (i < (LINE_SIZE - 1) && line[i] == line[i + 1]) {
 			value *= 2;
-			score += value;
+			e_score += value;
 			if (value == END_GAME_TARGET)
-				win = 1;
+				e_win = 1;
 			++i;
 		}
 		b_reg[size++] = value;
@@ -111,8 +82,8 @@ static int update_space() {
 	reset_space();
 	int size = 0;
 	forb
-		if (!board[i])
-			space[size++] = &board[i];
+		if (!e_board[i])
+			space[size++] = &e_board[i];
 	return size;
 }
 
@@ -128,33 +99,22 @@ static void reset_regs() {
 }
 
 static void reset() {
-	score = win = lose = 0;
+	e_score = e_win = e_lose = 0;
 	forb
-		board[i] = 0;
+		e_board[i] = 0;
 	reset_space();
 	reset_regs();
 	add_tile();
 	add_tile();
 }
 
-static void rotate(int angle) {
-	int new_board[BOARD_SIZE];
-	int offset_x = 3, offset_y = 3, x = 0;
-	if (angle == 90)
-		offset_y = 0;
-	else if (angle == 270)
-		offset_x = 0;
-	const double rad = degrees_to_radians(angle);
-	const int cs = (int) cos(rad), sn = (int) sin(rad);
-	for (; x < HORIZONTAL; ++x) {
-		int y = 0;
-		for (; y < VERTICAL; ++y) {
-			int new_x = (x * cs) - (y * sn) + offset_x, new_y = (x * sn) + (y * cs) + offset_y;
-			new_board[new_x + new_y * 4] = tile_at(x, y);
-		}
-	}
+static void rotate_90() {
+	int rotated[BOARD_SIZE], x = 0, y;
+	for (; x < LINE_SIZE; ++x)
+		for (y = 0; y < LINE_SIZE; ++y)
+			rotated[x * LINE_SIZE + y] = e_board[(LINE_SIZE - y - 1) * LINE_SIZE + x];
 	forb
-		board[i] = new_board[i];
+		e_board[i] = rotated[i];
 }
 
 static void left() {
@@ -176,49 +136,50 @@ static int can_move() {
 	if (update_space())
 		return 1;
 	int x = 0;
-	for (; x < HORIZONTAL; ++x) {
+	for (; x < LINE_SIZE; ++x) {
 		int y = 0;
-		for (; y < VERTICAL; ++y)
-			if ((x < 3 && tile_at(x, y) == tile_at(x + 1, y)) || (y < 3 && tile_at(x, y) == tile_at(x, y + 1)))
+		for (; y < LINE_SIZE; ++y)
+			if ((x < (LINE_SIZE - 1) && tile_at(x, y) == tile_at(x + 1, y)) ||
+			    (y < (LINE_SIZE - 1) && tile_at(x, y) == tile_at(x, y + 1)))
 				return 1;
 	}
 	return 0;
 }
 
 static void right() {
-	rotate(180);
+	rotate_90(); rotate_90();              // 180
 	left();
-	rotate(180);
+	rotate_90(); rotate_90();              // 180
 }
 
 static void up() {
-	rotate(270);
+	rotate_90(); rotate_90(); rotate_90(); // 270
 	left();
-	rotate(90);
+	rotate_90();                           // 90
 }
 
 static void down() {
-	rotate(90);
+	rotate_90();                           // 90
 	left();
-	rotate(270);
+	rotate_90(); rotate_90(); rotate_90(); // 270
 }
 
-extern void e_key_event(int key) {
-	if (key == K_ESCAPE)
+extern void e_key(int keycode) {
+	if (keycode == K_ESCAPE)
 		reset();
 	if (!can_move())
-		lose = 1;
-	if (!win && !lose) {
-		if (key == K_LEFT) left();
-		else if (key == K_RIGHT) right();
-		else if (key == K_UP) up();
-		else if (key == K_DOWN) down();
+		e_lose = 1;
+	if (!e_win && !e_lose) {
+		if (keycode == K_LEFT) left();
+		else if (keycode == K_RIGHT) right();
+		else if (keycode == K_UP) up();
+		else if (keycode == K_DOWN) down();
 	}
-	if (!win && !can_move())
-		lose = 1;
+	if (!e_win && !can_move())
+		e_lose = 1;
 }
 
-extern int *e_init_board(int esc_keycode, int left_keycode, int right_keycode, int up_keycode, int down_keycode) {
+extern void e_init(int esc_keycode, int left_keycode, int right_keycode, int up_keycode, int down_keycode) {
 	srand(time(NULL));
 	K_ESCAPE = esc_keycode;
 	K_LEFT = left_keycode;
@@ -226,5 +187,4 @@ extern int *e_init_board(int esc_keycode, int left_keycode, int right_keycode, i
 	K_UP = up_keycode;
 	K_DOWN = down_keycode;
 	reset();
-	return board;
 }
