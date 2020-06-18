@@ -1,0 +1,5 @@
+../src/2048.c
+../src/2048.h
+2048-Serenity.files
+Makefile
+main.cpp
