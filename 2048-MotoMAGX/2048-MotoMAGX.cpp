@@ -48,6 +48,10 @@ class Widget : public QWidget {
 	Q_OBJECT
 
 	QPixmap *pix;
+	QFont *font_large;
+	QFont *font_middle;
+	QFont *font_normal;
+	QFont *font_small;
 
 	inline int offsetCoords(int coord) { return coord * (TILE_MARGIN + TILE_SIZE) + TILE_MARGIN * 2; }
 	void drawTile(QPainter &painter, int value, int x, int y) {
@@ -68,10 +72,11 @@ class Widget : public QWidget {
 #endif
 		if (value) {
 			const int size = (value < 100) ? 18 : (value < 1000) ? 14 : 10;
+			const QFont &font = *((value < 100) ? font_large : (value < 1000) ? font_middle : font_small);
 			const QString strValue = QString("%1").arg(value);
 			painter.setPen(QColor(e_foreground(value)));
-			painter.setFont(QFont("Sans", size, QFont::Bold));
-			const int w = QFontMetrics(painter.font()).width(strValue), h = (value < 100) ? size - 4 : size - 3;
+			painter.setFont(font);
+			const int w = QFontMetrics(font).width(strValue), h = (value < 100) ? size - 4 : size - 3;
 			painter.drawText(xOffset + (TILE_SIZE - w) / 2, yOffset + TILE_SIZE - (TILE_SIZE - h) / 2 - 2, strValue);
 		}
 	}
@@ -80,15 +85,15 @@ class Widget : public QWidget {
 			painter.setBrush(QBrush(COLOR_OVERLAY, Dense6Pattern));
 			painter.drawRect(0, 0, width(), height());
 			painter.setPen(QColor(COLOR_FINAL));
-			painter.setFont(QFont("Sans", 24, QFont::Bold));
+			painter.setFont(*font_large);
 			const QString center = (e_win) ? "You won!" : "Game Over!";
-			const int w = QFontMetrics(painter.font()).width(center);
+			const int w = QFontMetrics(*font_large).width(center);
 			painter.drawText(width() / 2 - w / 2, height() / 2, center);
 		}
 		painter.setPen(QColor(COLOR_TEXT));
-		painter.setFont(QFont("Sans", 14, QFont::Normal));
+		painter.setFont(*font_normal);
 		const QString strScore = QString("Score: %1").arg(e_score);
-		const int w = QFontMetrics(painter.font()).width(strScore);
+		const int w = QFontMetrics(*font_normal).width(strScore);
 		painter.drawText(TILE_MARGIN, height() - 10, "Press '0' to Reset!");
 		painter.drawText(width() - w - TILE_MARGIN, height() - 10, strScore);
 	}
@@ -96,9 +101,13 @@ public:
 	Widget(QWidget *parent = 0, const char *name = 0) : QWidget(parent, name, /* WFlags */ 0) {
 		e_init(KEYCODE_CLEAR, KEYCODE_LEFT, KEYCODE_RIGHT, KEYCODE_UP, KEYCODE_DOWN);
 		pix = NULL;
+		font_large = new QFont("Sans", 18, QFont::Bold);
+		font_middle = new QFont("Sans", 14, QFont::Bold);
+		font_normal = new QFont("Sans", 14, QFont::Normal);
+		font_small = new QFont("Sans", 10, QFont::Bold);
 		setFocusPolicy(QWidget::StrongFocus);
 	}
-	~Widget() { delete pix; }
+	~Widget() { delete pix; delete font_large; delete font_middle; delete font_normal; delete font_small; }
 public slots:
 	void screenShotTimer() { QTimer::singleShot(500, this, SLOT(screenShot())); }
 	void reset() {
