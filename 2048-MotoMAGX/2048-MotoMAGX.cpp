@@ -122,7 +122,7 @@ public slots:
 		delete msgDlg;
 	}
 	void save() {
-		QFile save("save.dat");
+		QFile save(QString("%1/save.dat").arg(QFileInfo(qApp->argv()[0]).dirPath(true)));
 		if (save.open(IO_WriteOnly)) {
 			QDateTime saveDateTime = QDateTime::currentDateTime();
 			QDataStream dataStream(&save);
@@ -136,7 +136,7 @@ public slots:
 			ZNoticeDlg::information("Cannot create save.dat file.", "Save Error!", QString::null, "error_pop");
 	}
 	void load() {
-		QFile save("save.dat");
+		QFile save(QString("%1/save.dat").arg(QFileInfo(qApp->argv()[0]).dirPath(true)));
 		if (save.open(IO_ReadOnly)) {
 			QDateTime loadDateTime;
 			QDataStream dataStream(&save);
