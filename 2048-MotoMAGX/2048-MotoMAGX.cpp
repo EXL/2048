@@ -47,6 +47,8 @@ const int TILE_MARGIN = 5;
 class Widget : public QWidget {
 	Q_OBJECT
 
+	QPixmap *pix;
+
 	inline int offsetCoords(int coord) { return coord * (TILE_MARGIN + TILE_SIZE) + TILE_MARGIN * 2; }
 	void drawTile(QPainter &painter, int value, int x, int y) {
 		const int xOffset = offsetCoords(x) + width() / FIELD_OFFSET_SCALE, yOffset = offsetCoords(y);
@@ -93,8 +95,10 @@ class Widget : public QWidget {
 public:
 	Widget(QWidget *parent = 0, const char *name = 0) : QWidget(parent, name, /* WFlags */ 0) {
 		e_init(KEYCODE_CLEAR, KEYCODE_LEFT, KEYCODE_RIGHT, KEYCODE_UP, KEYCODE_DOWN);
+		pix = NULL;
 		setFocusPolicy(QWidget::StrongFocus);
 	}
+	~Widget() { delete pix; }
 public slots:
 	void screenShotTimer() { QTimer::singleShot(500, this, SLOT(screenShot())); }
 	void reset() {
@@ -166,15 +170,20 @@ protected:
 			e_key(KEYCODE_DOWN);
 		else
 			e_key(key);
-		update();
+		repaint();
 	}
 	virtual void paintEvent(QPaintEvent *) {
-		QPainter painter(this);
+		if (!pix)
+			pix = new QPixmap(width(), height());
+		QPainter painter;
+		painter.begin(pix, this);
 		painter.fillRect(0, 0, width(), height(), QColor(COLOR_BOARD));
 		for (int y = 0; y < LINE_SIZE; ++y)
 			for (int x = 0; x < LINE_SIZE; ++x)
 				drawTile(painter, e_board[x + y * LINE_SIZE], x, y);
 		drawFinal(painter);
+		painter.end();
+		bitBlt(this, 0, 0, pix);
 	}
 };
 
