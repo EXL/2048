@@ -54,8 +54,8 @@ class Widget : public QWidget {
 	QFont *font_small;
 
 	inline int offsetCoords(int coord) { return coord * (TILE_MARGIN + TILE_SIZE) + TILE_MARGIN * 2; }
-	void drawTile(QPainter &painter, int value, int x, int y) {
-		const int xOffset = offsetCoords(x) + width() / FIELD_OFFSET_SCALE, yOffset = offsetCoords(y);
+	void drawTile(QPainter &painter, int value, int x, int y, int ww) {
+		const int xOffset = offsetCoords(x) + ww / FIELD_OFFSET_SCALE, yOffset = offsetCoords(y);
 		painter.setPen(QPen::NoPen);
 		painter.setBrush(QColor(e_background(value)));
 #if defined(EZX_Z6W) || defined(EZX_ZN5) || defined(EZX_U9)
@@ -80,22 +80,22 @@ class Widget : public QWidget {
 			painter.drawText(xOffset + (TILE_SIZE - w) / 2, yOffset + TILE_SIZE - (TILE_SIZE - h) / 2 - 2, strValue);
 		}
 	}
-	void drawFinal(QPainter &painter) {
+	void drawFinal(QPainter &painter, int ww, int hh) {
 		if (e_win || e_lose) {
 			painter.setBrush(QBrush(COLOR_OVERLAY, Dense6Pattern));
-			painter.drawRect(0, 0, width(), height());
+			painter.drawRect(0, 0, ww, hh);
 			painter.setPen(QColor(COLOR_FINAL));
 			painter.setFont(*font_large);
 			const QString center = (e_win) ? "You won!" : "Game Over!";
 			const int w = QFontMetrics(*font_large).width(center);
-			painter.drawText(width() / 2 - w / 2, height() / 2, center);
+			painter.drawText(ww / 2 - w / 2, hh / 2, center);
 		}
 		painter.setPen(QColor(COLOR_TEXT));
 		painter.setFont(*font_normal);
 		const QString strScore = QString("Score: %1").arg(e_score);
 		const int w = QFontMetrics(*font_normal).width(strScore);
-		painter.drawText(TILE_MARGIN, height() - 10, "Press '0' to Reset!");
-		painter.drawText(width() - w - TILE_MARGIN, height() - 10, strScore);
+		painter.drawText(TILE_MARGIN, hh - 10, "Press '0' to Reset!");
+		painter.drawText(ww - w - TILE_MARGIN, hh - 10, strScore);
 	}
 public:
 	Widget(QWidget *parent = 0, const char *name = 0) : QWidget(parent, name, /* WFlags */ 0) {
@@ -115,8 +115,9 @@ public slots:
 		update();
 	}
 	void screenShot() {
-		QPixmap pixmap(width(), height());
-		bitBlt(&pixmap, 0, 0, this, 0, 0, width(), height(), Qt::CopyROP, true);
+		const int ww = width(), hh = height();
+		QPixmap pixmap(ww, hh);
+		bitBlt(&pixmap, 0, 0, this, 0, 0, ww, hh, Qt::CopyROP, true);
 		const QString path = QString("%1/%2.png").arg(QFileInfo(qApp->argv()[0]).dirPath(true)).arg(time(NULL));
 		ZMessageDlg *msgDlg = new ZMessageDlg("", NULL, ZMessageDlg::TypeOK, 10*60*100);
 		if (pixmap.save(path, "PNG")) {
@@ -182,15 +183,16 @@ protected:
 		repaint();
 	}
 	virtual void paintEvent(QPaintEvent *) {
+		const int ww = width(), hh = height();
 		if (!pix)
-			pix = new QPixmap(width(), height());
+			pix = new QPixmap(ww, hh);
 		QPainter painter;
 		painter.begin(pix, this);
-		painter.fillRect(0, 0, width(), height(), QColor(COLOR_BOARD));
+		painter.fillRect(0, 0, ww, hh, QColor(COLOR_BOARD));
 		for (int y = 0; y < LINE_SIZE; ++y)
 			for (int x = 0; x < LINE_SIZE; ++x)
-				drawTile(painter, e_board[x + y * LINE_SIZE], x, y);
-		drawFinal(painter);
+				drawTile(painter, e_board[x + y * LINE_SIZE], x, y, ww);
+		drawFinal(painter, ww, hh);
 		painter.end();
 		bitBlt(this, 0, 0, pix);
 	}
