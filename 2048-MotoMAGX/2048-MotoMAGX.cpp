@@ -47,14 +47,12 @@ const int TILE_MARGIN = 5;
 class Widget : public QWidget {
 	Q_OBJECT
 
-	QPixmap *pix;
-	QFont *font_large;
-	QFont *font_middle;
-	QFont *font_normal;
-	QFont *font_small;
+	QPixmap *fb;
+	QFont *font_large, *font_middle, *font_normal, *font_small;
+	int ww, hh;
 
 	inline int offsetCoords(int coord) { return coord * (TILE_MARGIN + TILE_SIZE) + TILE_MARGIN * 2; }
-	void drawTile(QPainter &painter, int value, int x, int y, int ww) {
+	void drawTile(QPainter &painter, int value, int x, int y) {
 		const int xOffset = offsetCoords(x) + ww / FIELD_OFFSET_SCALE, yOffset = offsetCoords(y);
 		painter.setPen(QPen::NoPen);
 		painter.setBrush(QColor(e_background(value)));
@@ -80,7 +78,7 @@ class Widget : public QWidget {
 			painter.drawText(xOffset + (TILE_SIZE - w) / 2, yOffset + TILE_SIZE - (TILE_SIZE - h) / 2 - 2, strValue);
 		}
 	}
-	void drawFinal(QPainter &painter, int ww, int hh) {
+	void drawFinal(QPainter &painter) {
 		if (e_win || e_lose) {
 			painter.setBrush(QBrush(COLOR_OVERLAY, Dense6Pattern));
 			painter.drawRect(0, 0, ww, hh);
@@ -100,14 +98,14 @@ class Widget : public QWidget {
 public:
 	Widget(QWidget *parent = 0, const char *name = 0) : QWidget(parent, name, /* WFlags */ 0) {
 		e_init(KEYCODE_CLEAR, KEYCODE_LEFT, KEYCODE_RIGHT, KEYCODE_UP, KEYCODE_DOWN);
-		pix = NULL;
+		fb = NULL;
 		font_large = new QFont("Sans", 18, QFont::Bold);
 		font_middle = new QFont("Sans", 14, QFont::Bold);
 		font_normal = new QFont("Sans", 14, QFont::Normal);
 		font_small = new QFont("Sans", 10, QFont::Bold);
 		setFocusPolicy(QWidget::StrongFocus);
 	}
-	~Widget() { delete pix; delete font_large; delete font_middle; delete font_normal; delete font_small; }
+	~Widget() { delete fb; delete font_large; delete font_middle; delete font_normal; delete font_small; }
 public slots:
 	void screenShotTimer() { QTimer::singleShot(500, this, SLOT(screenShot())); }
 	void reset() {
@@ -115,7 +113,6 @@ public slots:
 		update();
 	}
 	void screenShot() {
-		const int ww = width(), hh = height();
 		QPixmap pixmap(ww, hh);
 		bitBlt(&pixmap, 0, 0, this, 0, 0, ww, hh, Qt::CopyROP, true);
 		const QString path = QString("%1/%2.png").arg(QFileInfo(qApp->argv()[0]).dirPath(true)).arg(time(NULL));
@@ -183,18 +180,18 @@ protected:
 		repaint();
 	}
 	virtual void paintEvent(QPaintEvent *) {
-		const int ww = width(), hh = height();
+		ww = width(); hh = height();
 		if (!pix)
 			pix = new QPixmap(ww, hh);
 		QPainter painter;
-		painter.begin(pix, this);
+		painter.begin(fb, this);
 		painter.fillRect(0, 0, ww, hh, QColor(COLOR_BOARD));
 		for (int y = 0; y < LINE_SIZE; ++y)
 			for (int x = 0; x < LINE_SIZE; ++x)
-				drawTile(painter, e_board[x + y * LINE_SIZE], x, y, ww);
-		drawFinal(painter, ww, hh);
+				drawTile(painter, e_board[x + y * LINE_SIZE], x, y);
+		drawFinal(painter);
 		painter.end();
-		bitBlt(this, 0, 0, pix);
+		bitBlt(this, 0, 0, fb);
 	}
 };
 
