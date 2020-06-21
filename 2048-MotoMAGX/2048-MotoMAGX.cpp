@@ -103,6 +103,7 @@ public:
 		font_middle = new QFont("Sans", 14, QFont::Bold);
 		font_normal = new QFont("Sans", 14, QFont::Normal);
 		font_small = new QFont("Sans", 10, QFont::Bold);
+		setWFlags(getWFlags() | Qt::WRepaintNoErase);
 		setFocusPolicy(QWidget::StrongFocus);
 	}
 	~Widget() { delete fb; delete font_large; delete font_middle; delete font_normal; delete font_small; }
@@ -181,8 +182,8 @@ protected:
 	}
 	virtual void paintEvent(QPaintEvent *) {
 		ww = width(); hh = height();
-		if (!pix)
-			pix = new QPixmap(ww, hh);
+		if (!fb)
+			fb = new QPixmap(ww, hh);
 		QPainter painter;
 		painter.begin(fb, this);
 		painter.fillRect(0, 0, ww, hh, QColor(COLOR_BOARD));
