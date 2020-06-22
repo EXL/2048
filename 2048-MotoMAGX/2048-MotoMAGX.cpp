@@ -96,14 +96,15 @@ class Widget : public QWidget {
 		painter.drawText(ww - w - TILE_MARGIN, hh - 10, strScore);
 	}
 public:
-	Widget(QWidget *parent = 0, const char *name = 0) : QWidget(parent, name, /* WFlags */ 0) {
+	Widget(QWidget *parent = 0, const char *name = 0) : QWidget(parent, name, WRepaintNoErase | WResizeNoErase) {
 		e_init(KEYCODE_CLEAR, KEYCODE_LEFT, KEYCODE_RIGHT, KEYCODE_UP, KEYCODE_DOWN);
 		fb = NULL;
 		font_large = new QFont("Sans", 18, QFont::Bold);
 		font_middle = new QFont("Sans", 14, QFont::Bold);
 		font_normal = new QFont("Sans", 14, QFont::Normal);
 		font_small = new QFont("Sans", 10, QFont::Bold);
-		setWFlags(getWFlags() | Qt::WRepaintNoErase);
+		QPixmap::setDefaultOptimization(QPixmap::NormalOptim);
+		setBackgroundMode(NoBackground);
 		setFocusPolicy(QWidget::StrongFocus);
 	}
 	~Widget() { delete fb; delete font_large; delete font_middle; delete font_normal; delete font_small; }
@@ -192,7 +193,7 @@ protected:
 				drawTile(painter, e_board[x + y * LINE_SIZE], x, y);
 		drawFinal(painter);
 		painter.end();
-		bitBlt(this, 0, 0, fb);
+		bitBlt(this, 0, 0, fb, 0, 0, ww, hh, Qt::CopyROP, true);
 	}
 };
 
