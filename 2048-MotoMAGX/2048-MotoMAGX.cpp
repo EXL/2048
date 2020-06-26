@@ -207,8 +207,8 @@ class MainWidget : public ZKbMainWidget {
 public slots:
 	void about() {
 		ZMessageDlg *msgDlg = new ZMessageDlg("About 2048", QTextCodec::codecForName("UTF-8")->toUnicode(
-			"2048 Game implementation especially for MotoMAGX platform.\n\nVersion: 1.0, %1\nThx: Boxa, fill.sa, "
-			"VINRARUS\n© EXL (exl@bk.ru), 2020\nhttps://github.com/EXL/2048").arg(__DATE__),
+			"2048 Game implementation especially for MotoMAGX platform.\n\nVersion: 1.0, %1\nThanks to: Boxa, fill.sa, "
+			"VINRARUS\n© EXL (exl@bk.ru), 2020\nSource code: https://github.com/EXL/2048").arg(__DATE__),
 			ZMessageDlg::TypeOK, 10*60*100);
 		QString iconPath = QString::null;
 		setIconPath(iconPath, "/mmc/mmca1/mgxbox/2048/icon_usr.png");
