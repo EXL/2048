@@ -23,8 +23,8 @@ static void draw_tile(GtkWidget *widget, GdkGC *gc, int value, int x, int y, int
 	gdk_draw_arc(widget->window, gc, TRUE, xOffset + w + rad, yOffset, rect, rect, 64*90, -64*90);
 	gdk_draw_arc(widget->window, gc, TRUE, xOffset, yOffset + w + rad, rect, rect, -64*90, -64*90);
 	gdk_draw_arc(widget->window, gc, TRUE, xOffset + w + rad, yOffset + w + rad, rect, rect, 0, -64*90);
-	gdk_draw_rectangle(widget->window, gc, TRUE, xOffset, yOffset + qw, TILE_SIZE, rw);
-	gdk_draw_rectangle(widget->window, gc, TRUE, xOffset + qw, yOffset, rw, TILE_SIZE);
+	gdk_draw_rectangle(widget->window, gc, TRUE, xOffset, yOffset + qw, TILE_SIZE + 1, rw);
+	gdk_draw_rectangle(widget->window, gc, TRUE, xOffset + qw, yOffset, rw, TILE_SIZE + 1);
 	if (value) {
 		GdkFont *font = (value < 100) ?
 			gdk_font_load("-adobe-helvetica-bold-r-normal--34-240-100-100-p-182-iso8859-1") :

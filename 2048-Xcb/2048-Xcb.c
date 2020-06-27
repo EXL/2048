@@ -126,8 +126,8 @@ static void draw_tile(xcb_connection_t *connection, xcb_window_t window, xcb_gco
 	};
 	xcb_poly_fill_arc(connection, window, gcontext, 4, arcs);
 	xcb_rectangle_t rects[2] =  {
-		{ xOffset, yOffset + qw, TILE_SIZE, rw },
-		{ xOffset + qw, yOffset, rw, TILE_SIZE }
+		{ xOffset, yOffset + qw, TILE_SIZE + 1, rw },
+		{ xOffset + qw, yOffset, rw, TILE_SIZE + 1 }
 	};
 	xcb_poly_fill_rectangle(connection, window, gcontext, 2, rects);
 	if (value) {

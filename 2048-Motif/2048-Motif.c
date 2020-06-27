@@ -37,8 +37,8 @@ static void draw_tile(Display *display, Pixmap pixmap, GC gc, int value, int x, 
 	XFillArc(display, pixmap, gc, xOffset + w + rad, yOffset, rect, rect, 64*90, -64*90);
 	XFillArc(display, pixmap, gc, xOffset, yOffset + w + rad, rect, rect, -64*90, -64*90);
 	XFillArc(display, pixmap, gc, xOffset + w + rad, yOffset + w + rad, rect, rect, 0, -64*90);
-	XFillRectangle(display, pixmap, gc, xOffset, yOffset + qw, TILE_SIZE, rw);
-	XFillRectangle(display, pixmap, gc, xOffset + qw, yOffset, rw, TILE_SIZE);
+	XFillRectangle(display, pixmap, gc, xOffset, yOffset + qw, TILE_SIZE + 1, rw);
+	XFillRectangle(display, pixmap, gc, xOffset + qw, yOffset, rw, TILE_SIZE + 1);
 	if (value) {
 		XFontStruct *current_font = NULL;
 		if (font_small && font_middle && font_large)
