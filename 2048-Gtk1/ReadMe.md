@@ -8,9 +8,7 @@
 CentOS 7 Recipe:
 
 ```sh
-sudo yum -y localinstall --nogpgcheck \
-    https://download1.rpmfusion.org/free/el/rpmfusion-free-release-7.noarch.rpm \
-    https://download1.rpmfusion.org/nonfree/el/rpmfusion-nonfree-release-7.noarch.rpm
+sudo yum -y install epel-release
 
 sudo yum -y install @development
 sudo yum -y install cmake3
