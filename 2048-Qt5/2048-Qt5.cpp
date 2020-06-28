@@ -5,6 +5,12 @@
 #include <QApplication>
 #include <QPainter>
 
+#if QT_VERSION < QT_VERSION_CHECK(5, 11, 0)
+#define fontW width
+#else
+#define fontW horizontalAdvance
+#endif
+
 static const int TILE_SIZE = 64;
 static const int TILE_MARGIN = 16;
 
@@ -22,7 +28,7 @@ class Widget : public QWidget {
 			const QString strValue = QString("%1").arg(value);
 			painter.setPen(QColor(e_foreground(value)));
 			painter.setFont(QFont("Sans", size, QFont::Bold));
-			const int w = QFontMetrics(painter.font()).horizontalAdvance(strValue), h = size + 4;
+			const int w = QFontMetrics(painter.font()).fontW(strValue), h = size + 4;
 			painter.drawText(xOffset + (TILE_SIZE - w) / 2, yOffset + TILE_SIZE - (TILE_SIZE - h) / 2 - 2, strValue);
 		}
 	}
@@ -33,13 +39,13 @@ class Widget : public QWidget {
 			painter.setPen(QColor(COLOR_FINAL));
 			painter.setFont(QFont("Sans", 24, QFont::Bold));
 			const QString center = (e_win) ? "You won!" : "Game Over!";
-			const int w = QFontMetrics(painter.font()).horizontalAdvance(center);
+			const int w = QFontMetrics(painter.font()).fontW(center);
 			painter.drawText(width() / 2 - w / 2, height() / 2, center);
 		}
 		painter.setPen(QColor(COLOR_TEXT));
 		painter.setFont(QFont("Sans", 14, QFont::Normal));
 		const QString strScore = QString("Score: %1").arg(e_score);
-		const int w = QFontMetrics(painter.font()).horizontalAdvance(strScore);
+		const int w = QFontMetrics(painter.font()).fontW(strScore);
 		painter.drawText(TILE_MARGIN, height() - 10, "ESC to Restart!");
 		painter.drawText(width() - w - TILE_MARGIN, height() - 10, strScore);
 	}
