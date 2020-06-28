@@ -176,6 +176,10 @@ int main(void) {
 	e_init(XK_Escape, XK_Left, XK_Right, XK_Up, XK_Down);
 
 	xcb_connection_t *connection = xcb_connect(NULL, NULL);
+	if (xcb_connection_has_error(connection)) {
+		fprintf(stderr, "Cannot open display.\n");
+		return 1;
+	}
 	xcb_screen_t *screen = xcb_setup_roots_iterator(xcb_get_setup(connection)).data;
 	xcb_gcontext_t gcontext = xcb_generate_id(connection);
 
