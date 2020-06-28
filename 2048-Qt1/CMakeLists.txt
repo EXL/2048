@@ -13,7 +13,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(SOURCE_CODE 2048-Qt1.cpp)
 set(MOC_FILE 2048-Qt1.moc)
 
-set(QT1_DIR "/home/exl/Projects/qt1")
+set(QT1_DIR "$ENV{HOME}/Projects/qt1")
 set(MOC_BIN "${QT1_DIR}/src/moc/moc-qt1")
 include_directories(../src/ "${QT1_DIR}/include")
 link_directories("${QT1_DIR}/src")

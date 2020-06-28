@@ -13,7 +13,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(SOURCE_CODE 2048-Qt2.cpp)
 set(MOC_FILE 2048-Qt2.moc)
 
-set(QT2_DIR "/home/exl/Projects/qt2")
+set(QT2_DIR "$ENV{HOME}/Projects/qt2")
 set(MOC_BIN "${QT2_DIR}/src/moc/moc-qt2")
 include_directories(../src/ "${QT2_DIR}/include")
 link_directories("${QT2_DIR}/src")
