@@ -12,7 +12,7 @@ sudo yum -y install epel-release
 
 sudo yum -y install @development
 sudo yum -y install cmake3
-sudo yum -y install xlib-devel
+sudo yum -y install libX11-devel
 sudo yum -y install xorg-x11-fonts-ISO8859-1-100dpi
 
 cd ~/Projects/

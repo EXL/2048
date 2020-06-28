@@ -85,6 +85,10 @@ int main(void) {
 	e_init(XK_Escape, XK_Left, XK_Right, XK_Up, XK_Down);
 
 	Display *display = XOpenDisplay(NULL);
+	if (!display) {
+		fprintf(stderr, "Cannot open display.\n");
+		return 1;
+	}
 	const int screen = DefaultScreen(display);
 	const Window window = XCreateSimpleWindow(display, RootWindow(display, screen), 50, 50, WIDTH, HEIGHT, 1,
 		BlackPixel(display, screen), WhitePixel(display, screen));
