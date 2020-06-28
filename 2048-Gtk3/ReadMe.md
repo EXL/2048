@@ -14,7 +14,7 @@ sudo yum -y install @development
 sudo yum -y install cmake3
 sudo yum -y install gtk3-devel
 
-cd ~/Projects
+cd ~/Projects/
 git clone https://github.com/EXL/2048
 cd 2048/2048-Gtk3/
 cmake3 -DCMAKE_BUILD_TYPE=Release .
