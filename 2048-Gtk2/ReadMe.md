@@ -1,7 +1,7 @@
-2048-Gtk1
+2048-Gtk2
 =========
 
-![2048-Gtk1 Fedora 32 Screenshot](../image/2048-Gtk1-Screenshot.png)
+![2048-Gtk2 Fedora 32 Screenshot](../image/2048-Gtk2-Screenshot.png)
 
 ## Build & Run
 
@@ -14,15 +14,14 @@ sudo yum -y localinstall --nogpgcheck \
 
 sudo yum -y install @development
 sudo yum -y install cmake3
-sudo yum -y install gtk1-devel
-sudo yum -y install xorg-x11-fonts-ISO8859-1-100dpi
+sudo yum -y install gtk2-devel
 
 cd ~/Projects
 git clone https://github.com/EXL/2048
-cd 2048/2048-Gtk1/
+cd 2048/2048-Gtk2/
 cmake3 -DCMAKE_BUILD_TYPE=Release .
 make VERBOSE=1
-strip -s 2048-Gtk1
+strip -s 2048-Gtk2
 
-./2048-Gtk1
+./2048-Gtk2
 ```
