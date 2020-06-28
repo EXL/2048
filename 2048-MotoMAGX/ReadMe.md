@@ -20,7 +20,7 @@ sudo yum -y install p7zip
 
 sudo mkdir /opt/toolchains/
 sudo tar -C /opt/toolchains/ -xzvf ~/Downloads/motomagx-toolchains*.tar.gz*
-sudo ln -s -d /opt/toolchains/motomagx/arm-eabi -t /
+sudo ln -s -d /opt/toolchains/motomagx/arm-eabi/ -t /
 sudo cp /opt/toolchains/motomagx/arm-eabi/lib/ezx-zn5/include/morphing_mode.h /opt/toolchains/motomagx/arm-eabi/lib/ezx-u9/include/
 sudo ln -sf /opt/toolchains/motomagx/arm-eabi/lib/ezx-zn5/lib/liblighting.so.1.0.0 /opt/toolchains/motomagx/arm-eabi/lib/ezx-u9/lib/liblighting.so
 
