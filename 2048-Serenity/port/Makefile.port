@@ -1,0 +1,32 @@
+CC = i686-pc-serenity-gcc
+CXX = i686-pc-serenity-g++
+
+PROGRAM = 2048-Serenity
+OBJS = ../../src/2048.o ../main.o
+CFLAGS = -I../../src/ -O2
+CXXFLAGS = -I../../src/ -fno-rtti -O2
+LDFLAGS = -lgui -lgfx -lcore -lipc
+
+all: $(PROGRAM)
+
+$(PROGRAM): $(OBJS)
+	$(CXX) -o $@ $(OBJS) $(LDFLAGS)
+
+%.o: %.cpp
+	$(CXX) $(CXXFLAGS) -o $@ -c $<
+
+%.o: %.c
+	$(CC) $(CFLAGS) -o $@ -c $<
+
+clean:
+	rm $(OBJS) $(PROGRAM)
+
+install:
+	mkdir -p $(DESTDIR)/bin/
+	cp $(PROGRAM) $(DESTDIR)/bin/
+	mkdir -p $(DESTDIR)/res/icons/16x16/
+	cp ../../image/icon/app-2048-16.png $(DESTDIR)/res/icons/16x16/
+	mkdir -p $(DESTDIR)/res/icons/32x32/
+	cp ../../image/icon/app-2048-32.png $(DESTDIR)/res/icons/32x32/
+	mkdir -p $(DESTDIR)/res/apps/
+	cp 2048.af $(DESTDIR)/res/apps/
