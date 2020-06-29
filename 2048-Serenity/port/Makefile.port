@@ -1,5 +1,6 @@
 CC = i686-pc-serenity-gcc
 CXX = i686-pc-serenity-g++
+STRIP = i686-pc-serenity-strip
 
 PROGRAM = 2048-Serenity
 OBJS = ../../src/2048.o ../main.o
@@ -22,6 +23,7 @@ clean:
 	rm $(OBJS) $(PROGRAM)
 
 install:
+	$(STRIP) -s $(PROGRAM)
 	mkdir -p $(DESTDIR)/bin/
 	cp $(PROGRAM) $(DESTDIR)/bin/
 	mkdir -p $(DESTDIR)/res/icons/16x16/

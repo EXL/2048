@@ -1,3 +1,8 @@
+# There is no compiler optimization flags because of these bugs:
+#
+# https://github.com/SerenityOS/serenity/issues/2580
+# https://github.com/SerenityOS/serenity/issues/2597
+
 CC = gcc
 CXX = g++
 
