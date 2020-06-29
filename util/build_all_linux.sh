@@ -15,6 +15,14 @@ LinuxPorts="
 	2048-Xlib
 "
 
+function cmake_determine {
+	if [ -x "$(command -v cmake3)" ]; then
+		cmake3 $*
+	else
+		cmake $*
+	fi
+}
+
 function clean {
 	git clean -fdx
 	git checkout -- .
@@ -22,7 +30,7 @@ function clean {
 
 function build_port {
 	cd $1
-	cmake -DCMAKE_BUILD_TYPE=Release .
+	cmake_determine -DCMAKE_BUILD_TYPE=Release .
 	make VERBOSE=1
 	strip -s $1
 	mv $1 ../build
