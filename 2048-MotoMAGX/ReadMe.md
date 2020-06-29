@@ -46,4 +46,4 @@ mv 2048.7z 2048_MotoMAGX_ZN5_v1.0_28-Jul-2020.mgx
 
 MOTODEV Studio for Linux:
 
-![MOTODEV Studio for Linux Screenshot](../image/MOTODEV-Studio-Screenshot.png)
+![MOTODEV Studio for Linux Screenshot](../image/MOTODEV-Studio-Windows-XP-Screenshot.png)

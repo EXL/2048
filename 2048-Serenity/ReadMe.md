@@ -64,4 +64,4 @@ make
 
 HackStudio for Serenity OS:
 
-![HackStudio for Serenity OS Screenshot](../image/HackStudio-Screenshot.png)
+![HackStudio for Serenity OS Screenshot](../image/HackStudio-Serenity-Screenshot.png)

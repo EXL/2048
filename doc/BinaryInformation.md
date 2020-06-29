@@ -10,27 +10,28 @@ Dependencies were obtained:
 
 ```sh
 ls -lh 2048-*
--rwxrwxr-x. 1 exl exl 15K Jun 29 02:11 2048-Gtk1
--rwxrwxr-x. 1 exl exl 15K Jun 29 02:20 2048-Gtk2
--rwxrwxr-x. 1 exl exl 15K Jun 29 02:30 2048-Gtk3
--rwxrwxr-x. 1 exl exl 15K Jun 29 02:41 2048-Motif
--rwxrwxr-x. 1 exl exl 40K Jun 29 02:56 2048-MotoMAGX_E8
--rwxrwxr-x. 1 exl exl 40K Jun 29 02:56 2048-MotoMAGX_EM30
--rwxrwxr-x. 1 exl exl 40K Jun 29 02:58 2048-MotoMAGX_EM35
--rwxrwxr-x. 1 exl exl 40K Jun 29 02:57 2048-MotoMAGX_U9
--rwxrwxr-x. 1 exl exl 40K Jun 29 02:57 2048-MotoMAGX_V8
--rwxrwxr-x. 1 exl exl 40K Jun 29 02:57 2048-MotoMAGX_VE66
--rwxrwxr-x. 1 exl exl 40K Jun 29 02:57 2048-MotoMAGX_Z6
--rwxrwxr-x. 1 exl exl 40K Jun 29 02:57 2048-MotoMAGX_Z6W
--rwxrwxr-x. 1 exl exl 40K Jun 29 02:57 2048-MotoMAGX_ZN5
--rwxrwxr-x. 1 exl exl 23K Jun 29 03:12 2048-Qt1
--rwxrwxr-x. 1 exl exl 32K Jun 29 03:27 2048-Qt2
--rwxrwxr-x. 1 exl exl 32K Jun 29 03:37 2048-Qt3
--rwxrwxr-x. 1 exl exl 23K Jun 29 03:56 2048-Qt4
--rwxrwxr-x. 1 exl exl 23K Jun 29 04:41 2048-Qt5
--rwxrwxr-x. 1 exl exl 15K Jun 29 04:56 2048-Xaw
--rwxrwxr-x. 1 exl exl 15K Jun 29 05:32 2048-Xcb
--rwxrwxr-x. 1 exl exl 15K Jun 29 05:14 2048-Xlib
+-rwxrwxr-x. 1 exl exl  15K Jun 29 02:11 2048-Gtk1
+-rwxrwxr-x. 1 exl exl  15K Jun 29 02:20 2048-Gtk2
+-rwxrwxr-x. 1 exl exl  15K Jun 29 02:30 2048-Gtk3
+-rwxrwxr-x. 1 exl exl  15K Jun 29 02:41 2048-Motif
+-rwxrwxr-x. 1 exl exl  40K Jun 29 02:56 2048-MotoMAGX_E8
+-rwxrwxr-x. 1 exl exl  40K Jun 29 02:56 2048-MotoMAGX_EM30
+-rwxrwxr-x. 1 exl exl  40K Jun 29 02:58 2048-MotoMAGX_EM35
+-rwxrwxr-x. 1 exl exl  40K Jun 29 02:57 2048-MotoMAGX_U9
+-rwxrwxr-x. 1 exl exl  40K Jun 29 02:57 2048-MotoMAGX_V8
+-rwxrwxr-x. 1 exl exl  40K Jun 29 02:57 2048-MotoMAGX_VE66
+-rwxrwxr-x. 1 exl exl  40K Jun 29 02:57 2048-MotoMAGX_Z6
+-rwxrwxr-x. 1 exl exl  40K Jun 29 02:57 2048-MotoMAGX_Z6W
+-rwxrwxr-x. 1 exl exl  40K Jun 29 02:57 2048-MotoMAGX_ZN5
+-rwxrwxr-x. 1 exl exl  23K Jun 29 03:12 2048-Qt1
+-rwxrwxr-x. 1 exl exl  32K Jun 29 03:27 2048-Qt2
+-rwxrwxr-x. 1 exl exl  32K Jun 29 03:37 2048-Qt3
+-rwxrwxr-x. 1 exl exl  23K Jun 29 03:56 2048-Qt4
+-rwxrwxr-x. 1 exl exl  23K Jun 29 04:41 2048-Qt5
+-rwxrwxr-x. 1 exl exl 599K Jun 29 11:11 2048-Serenity
+-rwxrwxr-x. 1 exl exl  15K Jun 29 04:56 2048-Xaw
+-rwxrwxr-x. 1 exl exl  15K Jun 29 05:32 2048-Xcb
+-rwxrwxr-x. 1 exl exl  15K Jun 29 05:14 2048-Xlib
 ```
 
 ### File Types
@@ -55,6 +56,7 @@ file 2048-*
 2048-Qt3:           ELF 64-bit LSB executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, for GNU/Linux 2.6.32, BuildID[sha1]=edd129ee866c83866462f000a2a5306a3bbe0589, stripped
 2048-Qt4:           ELF 64-bit LSB executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, for GNU/Linux 2.6.32, BuildID[sha1]=d324b2fe03d109808de3ff90f47553475975d95a, stripped
 2048-Qt5:           ELF 64-bit LSB executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, for GNU/Linux 2.6.32, BuildID[sha1]=7da9d6ccf943837f4959848ec48627af8ca48057, stripped
+2048-Serenity:      ELF 32-bit LSB executable, Intel 80386, version 1 (SYSV), statically linked, stripped
 2048-Xaw:           ELF 64-bit LSB executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, for GNU/Linux 2.6.32, BuildID[sha1]=ba5a835587570124bd83fa6817037a7a41cc08ca, stripped
 2048-Xcb:           ELF 64-bit LSB executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, for GNU/Linux 2.6.32, BuildID[sha1]=61678390a147614615efb014f2a77a244005c859, stripped
 2048-Xlib:          ELF 64-bit LSB executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, for GNU/Linux 2.6.32, BuildID[sha1]=5f2e9cd754c409602721b83f018139c9545348b1, stripped
@@ -602,3 +604,7 @@ ldd 2048-Xcb | wc -l
   NEEDED      libgcc_s.so.1
   NEEDED      libc.so.6
 ```
+
+### 2048-Serenity
+
+Static executable, linked with `-lgui -lgfx -lcore -lipc` libraries.

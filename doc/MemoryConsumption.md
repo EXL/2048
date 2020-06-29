@@ -4,6 +4,7 @@ Memory Consumption on Various Platform
 Information were obtained:
 
 1. By using `cat /proc/`pidof bin`/status` command on Fedora 32 and MotoMAGX platform.
+2. By using "System Monitor" programm on Serenity OS.
 
 ### 2048-Qt5
 
@@ -293,3 +294,16 @@ VmExe:        36 kB
 VmLib:      9508 kB
 VmPTE:        26 kB
 ```
+
+### 2048-Serenity
+
+```
+Virtual:    5988 kB
+Physical:   1688 kB
+DirtyP:      720 kB
+CleanI:      428 kB
+PurgV:       168 kB
+PurgN:      1048 kB
+```
+
+![System Monitor on Serenity OS Screenshot](../image/System-Monitor-Serenity-Screenshot.png)
