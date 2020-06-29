@@ -1,6 +1,8 @@
 Porting 2048 Game on MotoMAGX Platform
 ======================================
 
+See [2048-MotoMAGX/ReadMe.md](../2048-MotoMAGX/ReadMe.md) document for building information.
+
 ### First building on various MotoMAGX platforms
 
 * Z6
@@ -34,7 +36,7 @@ Porting 2048 Game on MotoMAGX Platform
 
     Fixing:
 
-    ```
+    ```sh
     sudo cp /opt/toolchains/motomagx/arm-eabi/lib/ezx-zn5/include/morphing_mode.h /opt/toolchains/motomagx/arm-eabi/lib/ezx-u9/include/
     sudo ln -sf /opt/toolchains/motomagx/arm-eabi/lib/ezx-zn5/lib/liblighting.so /opt/toolchains/motomagx/arm-eabi/lib/ezx-u9/lib/liblighting.so
     ```
