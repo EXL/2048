@@ -103,6 +103,7 @@ int main(int argc, char *argv[]) {
 	e_init(GDK_Escape, GDK_Left, GDK_Right, GDK_Up, GDK_Down);
 	GtkWidget *window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
 	gtk_widget_set_usize(GTK_WIDGET(window), 340, 400);
+	gtk_window_set_policy(GTK_WINDOW(window), FALSE, FALSE, FALSE);
 	GtkWidget *drawing = gtk_drawing_area_new();
 	gtk_container_add(GTK_CONTAINER(window), drawing);
 	gtk_signal_connect(GTK_OBJECT(drawing), "expose-event", GTK_SIGNAL_FUNC(on_expose_event), NULL);

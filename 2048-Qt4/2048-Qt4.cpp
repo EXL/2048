@@ -65,7 +65,7 @@ protected:
 int main(int argc, char *argv[]) {
 	QApplication application(argc, argv);
 	Widget widget;
-	widget.resize(340, 400);
+	widget.setFixedSize(340, 400);
 	widget.show();
 	return application.exec();
 }

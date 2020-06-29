@@ -70,7 +70,7 @@ int main(int argc, char *argv[]) {
 	QApplication application(argc, argv);
 	Widget widget;
 	widget.setWindowTitle("2048-Qt5");
-	widget.resize(340, 400);
+	widget.setFixedSize(340, 400);
 	widget.show();
 	return application.exec();
 }

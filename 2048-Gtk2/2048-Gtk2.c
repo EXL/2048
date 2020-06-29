@@ -104,6 +104,7 @@ int main(int argc, char *argv[]) {
 	e_init(GDK_KEY_Escape, GDK_KEY_Left, GDK_KEY_Right, GDK_KEY_Up, GDK_KEY_Down);
 	GtkWidget *window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
 	gtk_widget_set_size_request(GTK_WIDGET(window), 340, 400);
+	gtk_window_set_resizable(GTK_WINDOW(window), FALSE);
 	GtkWidget *drawing = gtk_drawing_area_new();
 	gtk_container_add(GTK_CONTAINER(window), drawing);
 	g_signal_connect(G_OBJECT(drawing), "expose-event", G_CALLBACK(on_expose_event), NULL);
