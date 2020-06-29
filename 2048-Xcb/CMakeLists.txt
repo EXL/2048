@@ -9,4 +9,4 @@ set(SOURCE_CODE 2048-Xcb.c)
 include_directories(../src/)
 
 add_executable(${PROJECT_NAME} ${SOURCE_CODE})
-target_link_libraries(${PROJECT_NAME} xcb xcb-keysyms 2048)
+target_link_libraries(${PROJECT_NAME} xcb xcb-keysyms xcb-icccm 2048)

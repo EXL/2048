@@ -30,6 +30,14 @@ static void quit() {
 	exit(0);
 }
 
+static void set_window_settings(Display *display, Window window, int width, int height) {
+	XSizeHints sizeHints;
+	sizeHints.flags = PMinSize | PMaxSize;
+	sizeHints.min_width = sizeHints.max_width = width;
+	sizeHints.min_height = sizeHints.max_height = height;
+	XSetWMNormalHints(display, window, &sizeHints);
+}
+
 static void draw_tile(Display *display, Window window, int value, int x, int y, int win, int lose) {
 	const unsigned bkg = e_background(value), frg = e_foreground(value);
 	const int xOffset = offset_coords(x), yOffset = offset_coords(y);
@@ -143,7 +151,7 @@ int main(int argc, char *argv[]) {
 	font_large = XLoadQueryFont(display, "-adobe-helvetica-bold-r-normal--34-240-100-100-p-182-iso8859-1");
 
 	XtRealizeWidget(top);
-
+	set_window_settings(display, XtWindow(top), WIDTH, HEIGHT);
 	XtSetKeyboardFocus(top, drawing);
 
 	wm_delete_window = XInternAtom(display, "WM_DELETE_WINDOW", False);

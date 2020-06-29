@@ -2,6 +2,7 @@
 
 #include <xcb/xcb.h>
 #include <xcb/xcb_keysyms.h>
+#include <xcb/xcb_icccm.h>
 
 #include <X11/keysym.h>
 
@@ -209,6 +210,11 @@ int main(void) {
 		strlen(window_title), window_title);
 
 	xcb_map_window(connection, window);
+	// See: https://stackoverflow.com/a/27771295
+	xcb_size_hints_t size_hints;
+	xcb_icccm_size_hints_set_min_size(&size_hints, WIDTH, HEIGHT);
+	xcb_icccm_size_hints_set_max_size(&size_hints, WIDTH, HEIGHT);
+	xcb_icccm_set_wm_size_hints(connection, window, XCB_ATOM_WM_NORMAL_HINTS, &size_hints);
 	xcb_flush(connection);
 
 	xcb_key_symbols_t *key_symbols = xcb_key_symbols_alloc(connection);
