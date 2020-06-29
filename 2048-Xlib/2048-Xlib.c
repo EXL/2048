@@ -19,7 +19,11 @@ static XFontStruct *font_small = NULL, *font_middle = NULL, *font_normal = NULL,
 static inline int offset_coords(int coord) { return coord * (TILE_MARGIN + TILE_SIZE) + TILE_MARGIN; }
 static inline unsigned fade_color(unsigned rgb) { return rgb - COLOR_FADE; }
 
-static void set_window_settings(Display *display, Window window, int width, int height) {
+static void set_window_settings(Display *display, Window window, char *name, int width, int height) {
+	XClassHint classHint;
+	classHint.res_name = name;
+	classHint.res_class = name;
+	XSetClassHint(display, window, &classHint);
 	XSizeHints sizeHints;
 	sizeHints.flags = PMinSize | PMaxSize;
 	sizeHints.min_width = sizeHints.max_width = width;
@@ -102,7 +106,7 @@ int main(void) {
 	const Window window = XCreateSimpleWindow(display, RootWindow(display, screen), 50, 50, WIDTH, HEIGHT, 1,
 		BlackPixel(display, screen), WhitePixel(display, screen));
 	XStoreName(display, window, "2048-Xlib");
-	set_window_settings(display, window, WIDTH, HEIGHT);
+	set_window_settings(display, window, "2048-Xlib", WIDTH, HEIGHT);
 	XSelectInput(display, window, ExposureMask | KeyPressMask);
 	XMapWindow(display, window);
 

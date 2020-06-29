@@ -205,9 +205,13 @@ int main(void) {
 	font_large = create_font_gcontext(connection, window, &font_large_fid,
 		"-adobe-helvetica-bold-r-normal--34-240-100-100-p-182-iso8859-1");
 
+	// See: https://github.com/krypt-n/bar/pull/29/files
 	const char *window_title = "2048-Xcb";
+	const char *window_class = "2048-Xcb""\0""2048-Xcb";
 	xcb_change_property(connection, XCB_PROP_MODE_REPLACE, window, XCB_ATOM_WM_NAME, XCB_ATOM_STRING, 8,
 		strlen(window_title), window_title);
+	xcb_change_property(connection, XCB_PROP_MODE_REPLACE, window, XCB_ATOM_WM_CLASS, XCB_ATOM_STRING, 8,
+		strlen(window_title) * 2 + 1, window_class);
 
 	xcb_map_window(connection, window);
 	// See: https://stackoverflow.com/a/27771295
