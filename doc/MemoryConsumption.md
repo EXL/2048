@@ -8,46 +8,46 @@ Information were obtained:
 
 ### 2048-Qt5
 
-GNOME System Monitor: 10.8 MiB
+GNOME System Monitor: 9.8 MiB
 
 ```
-VmPeak:  1062532 kB
-VmSize:  1005672 kB
+VmPeak:  1063488 kB
+VmSize:  1002036 kB
 VmLck:         0 kB
 VmPin:         0 kB
-VmHWM:     53548 kB
-VmRSS:     53548 kB
-RssAnon:   11040 kB
-RssFile:   40564 kB
-RssShmem:   1944 kB
-VmData:    85800 kB
+VmHWM:     50984 kB
+VmRSS:     50984 kB
+RssAnon:   10036 kB
+RssFile:   40412 kB
+RssShmem:    536 kB
+VmData:    84656 kB
 VmStk:       132 kB
 VmExe:        20 kB
-VmLib:     42184 kB
-VmPTE:       336 kB
+VmLib:     42540 kB
+VmPTE:       328 kB
 VmSwap:        0 kB
 HugetlbPages:  0 kB
 ```
 
 ### 2048-Qt4
 
-GNOME System Monitor: 5.0 MiB
+GNOME System Monitor: 3.0 MiB
 
 ```
-VmPeak:   304896 kB
-VmSize:   304896 kB
+VmPeak:   289748 kB
+VmSize:   289748 kB
 VmLck:         0 kB
 VmPin:         0 kB
-VmHWM:     35832 kB
-VmRSS:     35832 kB
-RssAnon:    5164 kB
-RssFile:   30136 kB
+VmHWM:     25204 kB
+VmRSS:     25204 kB
+RssAnon:    3080 kB
+RssFile:   21592 kB
 RssShmem:    532 kB
-VmData:     4240 kB
+VmData:     2556 kB
 VmStk:       132 kB
 VmExe:        20 kB
-VmLib:     28212 kB
-VmPTE:       192 kB
+VmLib:     20540 kB
+VmPTE:       156 kB
 VmSwap:        0 kB
 HugetlbPages:  0 kB
 ```
@@ -57,16 +57,16 @@ HugetlbPages:  0 kB
 GNOME System Monitor: 2.1 MiB
 
 ```
-VmPeak:   245108 kB
-VmSize:   245108 kB
+VmPeak:   245084 kB
+VmSize:   245084 kB
 VmLck:         0 kB
 VmPin:         0 kB
-VmHWM:     15232 kB
-VmRSS:     15232 kB
-RssAnon:    2168 kB
-RssFile:   13064 kB
+VmHWM:     15216 kB
+VmRSS:     15216 kB
+RssAnon:    2144 kB
+RssFile:   13072 kB
 RssShmem:      0 kB
-VmData:     1772 kB
+VmData:     1748 kB
 VmStk:       132 kB
 VmExe:        28 kB
 VmLib:     10460 kB
@@ -80,39 +80,39 @@ HugetlbPages:  0 kB
 GNOME System Monitor: 1.2 MiB
 
 ```
-VmPeak:   240792 kB
-VmSize:   240792 kB
+VmPeak:   240780 kB
+VmSize:   240780 kB
 VmLck:         0 kB
 VmPin:         0 kB
-VmHWM:     11792 kB
-VmRSS:     11708 kB
-RssAnon:    1268 kB
-RssFile:   10440 kB
+VmHWM:     11900 kB
+VmRSS:     11816 kB
+RssAnon:    1248 kB
+RssFile:   10568 kB
 RssShmem:      0 kB
-VmData:      896 kB
+VmData:      884 kB
 VmStk:       132 kB
 VmExe:        28 kB
 VmLib:      9744 kB
-VmPTE:       108 kB
+VmPTE:       112 kB
 VmSwap:        0 kB
 HugetlbPages:  0 kB
 ```
 
 ### 2048-Qt1
 
-GNOME System Monitor: 528.0 KiB
+GNOME System Monitor: 512.0 KiB
 
 ```
-VmPeak:   222664 kB
-VmSize:   222512 kB
+VmPeak:   222656 kB
+VmSize:   222504 kB
 VmLck:         0 kB
 VmPin:         0 kB
-VmHWM:      6020 kB
-VmRSS:      5948 kB
-RssAnon:     528 kB
-RssFile:    5420 kB
+VmHWM:      6100 kB
+VmRSS:      6028 kB
+RssAnon:     512 kB
+RssFile:    5516 kB
 RssShmem:      0 kB
-VmData:      464 kB
+VmData:      456 kB
 VmStk:       132 kB
 VmExe:        20 kB
 VmLib:      4804 kB
@@ -123,114 +123,114 @@ HugetlbPages:  0 kB
 
 ### 2048-Gtk3
 
-GNOME System Monitor: 5.6 MiB
+GNOME System Monitor: 4.6 MiB
 
 ```
-VmPeak:   605196 kB
-VmSize:   549312 kB
+VmPeak:   458176 kB
+VmSize:   398432 kB
 VmLck:         0 kB
 VmPin:         0 kB
-VmHWM:     29576 kB
-VmRSS:     29576 kB
-RssAnon:    5764 kB
-RssFile:   22552 kB
-RssShmem:   1260 kB
-VmData:    38364 kB
+VmHWM:     25536 kB
+VmRSS:     25536 kB
+RssAnon:    4696 kB
+RssFile:   20840 kB
+RssShmem:      0 kB
+VmData:    20832 kB
 VmStk:       132 kB
 VmExe:        12 kB
-VmLib:     17036 kB
-VmPTE:       180 kB
+VmLib:     17284 kB
+VmPTE:       152 kB
 VmSwap:        0 kB
 HugetlbPages:  0 kB
 ```
 
 ### 2048-Gtk2
 
-GNOME System Monitor: 2.3 MiB
+GNOME System Monitor: 2.2 MiB
 
 ```
-VmPeak:   240316 kB
-VmSize:   240304 kB
+VmPeak:   240204 kB
+VmSize:   240204 kB
 VmLck:         0 kB
 VmPin:         0 kB
-VmHWM:     17240 kB
-VmRSS:     17240 kB
-RssAnon:    2336 kB
-RssFile:   14904 kB
+VmHWM:     17116 kB
+VmRSS:     17116 kB
+RssAnon:    2268 kB
+RssFile:   14848 kB
 RssShmem:      0 kB
-VmData:     1988 kB
+VmData:     1888 kB
 VmStk:       132 kB
 VmExe:        12 kB
 VmLib:     13616 kB
-VmPTE:       116 kB
+VmPTE:       112 kB
 VmSwap:        0 kB
 HugetlbPages:  0 kB
 ```
 
 ### 2048-Gtk1
 
-GNOME System Monitor: 516.0 KiB
+GNOME System Monitor: 480.0 KiB
 
 ```
-VmPeak:    15976 kB
-VmSize:    15976 kB
+VmPeak:    15980 kB
+VmSize:    15980 kB
 VmLck:         0 kB
 VmPin:         0 kB
-VmHWM:      4964 kB
-VmRSS:      4880 kB
-RssAnon:     516 kB
-RssFile:    4364 kB
+VmHWM:      4776 kB
+VmRSS:      4668 kB
+RssAnon:     480 kB
+RssFile:    4188 kB
 RssShmem:      0 kB
-VmData:      536 kB
+VmData:      540 kB
 VmStk:       132 kB
 VmExe:        12 kB
 VmLib:      4192 kB
-VmPTE:        64 kB
+VmPTE:        60 kB
 VmSwap:        0 kB
 HugetlbPages:  0 kB
 ```
 
 ### 2048-Motif
 
-GNOME System Monitor: 848.0 KiB
+GNOME System Monitor: 832.0 KiB
 
 ```
-VmPeak:   225040 kB
-VmSize:   224888 kB
+VmPeak:   225024 kB
+VmSize:   224872 kB
 VmLck:         0 kB
 VmPin:         0 kB
-VmHWM:      7204 kB
-VmRSS:      7104 kB
-RssAnon:     848 kB
-RssFile:    6256 kB
+VmHWM:      7140 kB
+VmRSS:      7040 kB
+RssAnon:     832 kB
+RssFile:    6208 kB
 RssShmem:      0 kB
-VmData:      828 kB
+VmData:      812 kB
 VmStk:       132 kB
 VmExe:        12 kB
 VmLib:      6620 kB
-VmPTE:        80 kB
+VmPTE:        92 kB
 VmSwap:        0 kB
 HugetlbPages:  0 kB
 ```
 
 ### 2048-Xaw
 
-GNOME System Monitor: 348.0 KiB
+GNOME System Monitor: 332.0 KiB
 
 ```
-VmPeak:     5372 kB
-VmSize:     5372 kB
+VmPeak:     5380 kB
+VmSize:     5380 kB
 VmLck:         0 kB
 VmPin:         0 kB
-VmHWM:     3 412 kB
-VmRSS:     3 412 kB
-RssAnon:     348 kB
-RssFile:    3064 kB
+VmHWM:      3576 kB
+VmRSS:      3576 kB
+RssAnon:     332 kB
+RssFile:    3244 kB
 RssShmem:      0 kB
-VmData:      464 kB
+VmData:      472 kB
 VmStk:       132 kB
 VmExe:        12 kB
-VmLib:     2 900 kB
+VmLib:      2900 kB
 VmPTE:        48 kB
 VmSwap:        0 kB
 HugetlbPages:  0 kB
@@ -245,38 +245,38 @@ VmPeak:     3896 kB
 VmSize:     3876 kB
 VmLck:         0 kB
 VmPin:         0 kB
-VmHWM:       992 kB
-VmRSS:       992 kB
+VmHWM:       932 kB
+VmRSS:       932 kB
 RssAnon:     116 kB
-RssFile:     876 kB
+RssFile:     816 kB
 RssShmem:      0 kB
 VmData:      216 kB
 VmStk:       132 kB
 VmExe:        12 kB
-VmLib:     2 160 kB
-VmPTE:        52 kB
+VmLib:      2160 kB
+VmPTE:        48 kB
 VmSwap:        0 kB
 HugetlbPages:  0 kB
 ```
 
 ### 2048-Xcb
 
-GNOME System Monitor: 88.0 KiB
+GNOME System Monitor: 96.0 KiB
 
 ```
-VmPeak:     2584 kB
-VmSize:     2564 kB
+VmPeak:     2608 kB
+VmSize:     2588 kB
 VmLck:         0 kB
 VmPin:         0 kB
-VmHWM:       780 kB
-VmRSS:       780 kB
-RssAnon:      88 kB
-RssFile:     692 kB
+VmHWM:       744 kB
+VmRSS:       744 kB
+RssAnon:      96 kB
+RssFile:     648 kB
 RssShmem:      0 kB
 VmData:      204 kB
 VmStk:       132 kB
 VmExe:        12 kB
-VmLib:     1 580 kB
+VmLib:      1588 kB
 VmPTE:        48 kB
 VmSwap:        0 kB
 HugetlbPages:  0 kB
