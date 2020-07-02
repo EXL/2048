@@ -4,9 +4,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-//#define forl int i = 0; for (; i < LINE_SIZE; ++i)
-//#define forb int i = 0; for (; i < BOARD_SIZE; ++i)
-
 int e_board[BOARD_SIZE];
 int e_win, e_lose, e_score;
 
@@ -105,8 +102,8 @@ static int update_space() {
 }
 
 static void add_tile(int n) {
-	int i = 0;
-	for (; i < n; ++i) {
+	int i;
+	for (i = 0; i < n; ++i) {
 		const int size = update_space();
 		if (size)
 			*f_space[(int)(math_random() * size) % size] = (math_random() < 0.9) ? 2 : 4;
@@ -128,8 +125,8 @@ static void reset() {
 
 static void rotate(int a) {
 	for (; a >= 90; a -= 90) {
-		int rotated[BOARD_SIZE], x = 0, y;
-		for (; x < LINE_SIZE; ++x)
+		int rotated[BOARD_SIZE], x, y;
+		for (x = 0; x < LINE_SIZE; ++x)
 			for (y = 0; y < LINE_SIZE; ++y)
 				rotated[x * LINE_SIZE + y] = e_board[(LINE_SIZE - y - 1) * LINE_SIZE + x];
 		memcpy(e_board, rotated, BOARD_SIZE * sizeof(int));
@@ -137,7 +134,7 @@ static void rotate(int a) {
 }
 
 static void left() {
-	int need_add_tile = 0, i, *line, *merged, res;
+	int *line, *merged, res, need_add_tile = 0, i;
 	for (i = 0; i < LINE_SIZE; ++i) {
 		reset_regs();
 		line = get_line(i, b_reg);
