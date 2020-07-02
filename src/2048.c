@@ -4,8 +4,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define forl int i = 0; for (; i < LINE_SIZE; ++i)
-#define forb int i = 0; for (; i < BOARD_SIZE; ++i)
+//#define forl int i = 0; for (; i < LINE_SIZE; ++i)
+//#define forb int i = 0; for (; i < BOARD_SIZE; ++i)
 
 int e_board[BOARD_SIZE];
 int e_win, e_lose, e_score;
@@ -38,26 +38,29 @@ extern unsigned e_background(int value) {
 }
 
 static void set_line(int index, int *line) {
-	forl
+	int i;
+	for (i = 0; i < LINE_SIZE; ++i)
 		e_board[index * LINE_SIZE + i] = line[i];
 }
 
 static int compare(int *line_first, int *line_second) {
-	forl
+	int i;
+	for (i = 0; i < LINE_SIZE; ++i)
 		if (line_first[i] != line_second[i])
 			return 0;
 	return 1;
 }
 
 static int *get_line(int index, int *reg) {
-	forl
+	int i;
+	for (i = 0; i < LINE_SIZE; ++i)
 		reg[i] = tile_at(i, index);
 	return reg;
 }
 
 static int *move_line(int *line) {
-	int size = 0;
-	forl
+	int size = 0, i;
+	for (i = 0; i < LINE_SIZE; ++i)
 		if (line[i])
 			f_reg[size++] = line[i];
 	if (!size)
@@ -68,9 +71,9 @@ static int *move_line(int *line) {
 static void reset_b_reg() { memset(b_reg, 0, LINE_SIZE * sizeof(int)); }
 
 static int *merge_line(int *line) {
+	int size = 0, i;
 	reset_b_reg();
-	int i = 0, size = 0;
-	for (; i < LINE_SIZE && line[i]; ++i) {
+	for (i = 0; i < LINE_SIZE && line[i]; ++i) {
 		int value = line[i];
 		if (i < (LINE_SIZE - 1) && line[i] == line[i + 1]) {
 			value *= 2;
@@ -87,14 +90,15 @@ static int *merge_line(int *line) {
 }
 
 static void reset_space() {
-	forb
+	int i;
+	for (i = 0; i < BOARD_SIZE; ++i)
 		f_space[i] = NULL;
 }
 
 static int update_space() {
+	int size = 0, i;
 	reset_space();
-	int size = 0;
-	forb
+	for (i = 0; i < BOARD_SIZE; ++i)
 		if (!e_board[i])
 			f_space[size++] = &e_board[i];
 	return size;
@@ -133,12 +137,13 @@ static void rotate(int a) {
 }
 
 static void left() {
-	int need_add_tile = 0;
-	forl {
+	int need_add_tile = 0, i, *line, *merged, res;
+	for (i = 0; i < LINE_SIZE; ++i) {
 		reset_regs();
-		int *line = get_line(i, b_reg), *merged = merge_line(move_line(line));
+		line = get_line(i, b_reg);
+		merged = merge_line(move_line(line));
 		line = get_line(i, f_reg);
-		int res = compare(line, merged);
+		res = compare(line, merged);
 		set_line(i, merged);
 		if (!need_add_tile && !res)
 			need_add_tile = 1;
@@ -148,10 +153,10 @@ static void left() {
 }
 
 static int can_move() {
+	int x, y;
 	if (update_space())
 		return 1;
-	int x = 0, y;
-	for (; x < LINE_SIZE; ++x)
+	for (x = 0; x < LINE_SIZE; ++x)
 		for (y = 0; y < LINE_SIZE; ++y)
 			if ((x < (LINE_SIZE - 1) && tile_at(x, y) == tile_at(x + 1, y)) ||
 			    (y < (LINE_SIZE - 1) && tile_at(x, y) == tile_at(x, y + 1)))
