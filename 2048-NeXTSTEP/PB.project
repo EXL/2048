@@ -1,0 +1,25 @@
+INSTALLDIR = "$(HOME)/Apps";
+FILESTABLE = {
+    C_FILES = (2048.c);
+    OTHER_LIBS = (Media_s, NeXT_s);
+    PSW_FILES = (SortWraps.psw);
+    CLASSES = (GameController.m, GameView.m);
+    OTHER_SOURCES = (Makefile.preamble, Makefile, Makefile.postamble);
+    H_FILES = (2048.h, GameController.h, GameView.h, Keycodes.h);
+    INTERFACES = ("2048-NeXTSTEP.nib");
+    OTHER_LINKED = ();
+    M_FILES = ("2048-NeXTSTEP_main.m");
+};
+GENERATEMAIN = YES;
+DOCICONFILES = ();
+APPCLASS = Application;
+MAINNIB = "2048-NeXTSTEP";
+DOCEXTENSIONS = ();
+PROJECTTYPE = Application;
+PROJECTVERSION = 1.1;
+LOCALIZABLE_FILES = {
+    "2048-NeXTSTEP.nib";
+};
+PROJECTNAME = "2048-NeXTSTEP";
+SYSTEMEXTENSIONS = ();
+LANGUAGE = English;

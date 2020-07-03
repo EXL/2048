@@ -1,0 +1,97 @@
+ 
+/* Collection of PSwrap functions for animating sorting activity.
+ * 
+ * Author: Julie Zelenski, NeXT Developer Support
+ * You may freely copy, distribute and reuse the code in this example.  
+ * NeXT disclaims any warranty of any kind, expressed or implied, as to 
+ * its fitness for any particular use.
+ */
+
+
+
+/* PSWswapRects sets the gray to white, fills the white rectangle, sets the 
+ * gray to black, fills the black rectangle, and flushes the drawing to 
+ * the screen immediately.
+ */
+defineps PSWswapRects (float x1, y1, x2, y2, width, height)
+    0.0 setgray
+    x1 y1 width height rectfill
+    1.0 setgray
+    x2 y2 width height rectfill
+    flushgraphics
+endps
+
+
+/* PSWmoveRects sets the gray appropriately (gray value is passed as parameter)
+ * fills the rectangle and flushes the drawing to the screen immediately.
+ */
+defineps PSWmoveRect (float x, y, width, height, gray)
+    gray setgray
+    x y width height rectfill
+    flushgraphics
+endps
+
+
+/* PSWcompareRects turns on instance drawing, sets the gray to light gray,
+ * fills the two rectangles being compared and turns off instance drawing.
+ */
+defineps PSWcompareRects (float x1,y1,width,height1,x2,y2,height2)   
+    true setinstance
+    .667 setgray    
+    x1 y1 width height1 rectfill
+    x2 y2 width height2 rectfill    
+    false setinstance
+endps
+
+
+/* PSWfade simply sovers a semi-transparent white rectangle onto the view to
+ * "fade" the background. 
+ */
+defineps PSWfade(float r, g, b, a, width, height)
+    r g b setrgbcolor
+    a setalpha
+    0 0 width height Sover compositerect
+endps
+
+defineps PSWdrawColoredRoundedRectangle(float r, g, b, x, y, width, height)
+endps
+    
+    
+/* PSWdrawBorder strokes the rectangle border in black.
+ */
+defineps PSWdrawBorder(float width, height)	
+    0.0 setgray
+    1.0 setalpha
+    1.0 setlinewidth
+    0.0 0.0 width height rectstroke
+endps
+
+
+/* PSWdrawName shows the sort name at the specified location.
+ */
+defineps PSWdrawName(float r, g, b, x, y; char *name)
+    r g b setrgbcolor
+    1.0 setalpha
+    x y moveto
+   (name) show
+endps
+
+
+/* PSWdrawStrings is used to draw four right-aligned strings at a 
+ * specific height.
+ */
+defineps PSWdrawStrings (char *s1, *s2, *s3, *s4; float height)
+    /rightShow {dup stringwidth pop neg 0 rmoveto show} def
+    0.0 1.0 0.0 setrgbcolor
+    0.5 setalpha
+    140.0 height moveto
+    (s1) rightShow
+    270.0 height moveto
+    (s2) rightShow
+    370.0 height moveto
+    (s3) rightShow
+    480.0 height moveto
+    (s4) rightShow
+endps
+
+    
