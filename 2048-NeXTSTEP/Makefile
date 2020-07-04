@@ -16,13 +16,13 @@ LOCAL_RESOURCES = 2048-NeXTSTEP.nib
 
 CLASSES = GameController.m GameView.m
 
-HFILES = 2048.h GameController.h GameView.h Keycodes.h
+HFILES = 2048.h GameController.h GameView.h KeyCodes.h
 
 MFILES = 2048-NeXTSTEP_main.m
 
 CFILES = 2048.c
 
-PSWFILES = SortWraps.psw
+PSWFILES = PostScriptWraps.psw
 
 OTHERSRCS = Makefile.preamble Makefile Makefile.postamble
 

@@ -1,0 +1,12 @@
+defineps PSWfade(float r, g, b, a, width, height)
+    r g b setrgbcolor
+    a setalpha
+    0 0 width height Sover compositerect
+endps
+
+defineps PSWdrawText(float r, g, b, x, y; char *text)
+    r g b setrgbcolor
+    1.0 setalpha
+    x y moveto
+   (text) show
+endps

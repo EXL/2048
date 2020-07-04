@@ -1,12 +1,20 @@
 GameController = {
     ACTIONS = {
 	"appDidInit:" = "appDidInit:"; 
-	"resetGame:" = "resetGame:"; 
 	"showInfoView:" = "showInfoView:"; 
 	"windowWillClose:" = "windowWillClose:"; 
     }; 
-    OUTLETS = {gameView = gameView; infoView = infoView; }; 
+    OUTLETS = {gameView = gameView; }; 
     SUPERCLASS = Object; 
 };
 FirstResponder = {ACTIONS = {}; SUPERCLASS = Object; };
-GameView = {ACTIONS = {"resetGame:" = "resetGame:"; }; SUPERCLASS = View; };
+GameView = {
+    ACTIONS = {"resetGame:" = "resetGame:"; }; 
+    OUTLETS = {
+	largeFont = largeFont; 
+	middleFont = middleFont; 
+	normalFont = normalFont; 
+	smallFont = smallFont; 
+    }; 
+    SUPERCLASS = View; 
+};

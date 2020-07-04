@@ -5,11 +5,9 @@
 #import <appkit/appkit.h>
 
 void main(int argc, char *argv[]) {
-
-    [Application new];
-    if ([NXApp loadNibSection:"2048-NeXTSTEP.nib" owner:NXApp withNames:NO])
-	    [NXApp run];
-	    
-    [NXApp free];
-    exit(0);
+	[Application new];
+	if ([NXApp loadNibSection:"2048-NeXTSTEP.nib" owner:NXApp withNames:NO])
+		[NXApp run];
+	[NXApp free];
+	exit(0);
 }
