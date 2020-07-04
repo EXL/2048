@@ -27,8 +27,7 @@ class Widget : public QWidget {
 	}
 	void drawFinal(QPainter &painter) {
 		if (e_win || e_lose) {
-			painter.setBrush(QBrush(COLOR_OVERLAY, Dense6Pattern));
-			painter.drawRect(0, 0, width(), height());
+			painter.fillRect(0, 0, width(), height(), QBrush(COLOR_OVERLAY, Dense6Pattern));
 			painter.setPen(QColor(COLOR_FINAL));
 			painter.setFont(QFont("Sans", 24, QFont::Bold));
 			const QString center = (e_win) ? "You won!" : "Game Over!";

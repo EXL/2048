@@ -33,8 +33,8 @@ class Widget : public QWidget {
 	}
 	void drawFinal(QPainter &painter) {
 		if (e_win || e_lose) {
-			painter.setBrush(QBrush(QColor(R(COLOR_OVERLAY), G(COLOR_OVERLAY), B(COLOR_OVERLAY)), Dense6Pattern));
-			painter.drawRect(0, 0, width(), height());
+			painter.fillRect(0, 0, width(), height(),
+				QBrush(QColor(R(COLOR_OVERLAY), G(COLOR_OVERLAY), B(COLOR_OVERLAY)), Dense6Pattern));
 			painter.setPen(QColor(R(COLOR_FINAL), G(COLOR_FINAL), B(COLOR_FINAL)));
 			painter.setFont(QFont("Sans", 24, QFont::Bold));
 			const QString center = (e_win) ? "You won!" : "Game Over!";

@@ -55,7 +55,7 @@ class Widget final : public GUI::Widget {
 	void draw_final(GUI::Painter &painter, const Gfx::IntRect &rect) {
 		if (e_win || e_lose) {
 			auto bkg = Color::from_rgb(COLOR_OVERLAY);
-			bkg.set_alpha(0x80);
+			bkg.set_alpha(0x80); // ~50%
 			painter.fill_rect(rect, bkg);
 			const String center = (e_win) ? "You won!" : "Game Over!";
 			auto font = GUI::FontDatabase::the().get_by_name("Liza Bold 36");
