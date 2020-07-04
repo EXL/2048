@@ -10,7 +10,9 @@
 #include <string.h>
 #include <stdio.h>
 
-#define VALUE_MAX_SIZE 5 // "2048\0"
+#define VALUE_MAX_SIZE 5  // "2048\0"
+#define SCORE_MAX_SIZE 16 // "Score: 999999..."
+#define TEXT8_MAX_SIZE 256
 
 static const int WIDTH  = 340;
 static const int HEIGHT = 400;
@@ -53,7 +55,7 @@ static void draw_string_transparent(xcb_connection_t *connection, xcb_window_t w
 	struct {
 		uint8_t nchars;
 		int8_t delta;
-		uint8_t text[256];
+		uint8_t text[TEXT8_MAX_SIZE];
 	} item;
 	item.nchars = len;
 	item.delta = 0;
@@ -153,8 +155,8 @@ static void draw_final(xcb_connection_t *connection, xcb_window_t window, int wi
 	const unsigned bkg = ((win || lose) ? fade_color(COLOR_BOARD) : COLOR_BOARD);
 	const unsigned frg = ((win || lose) ? fade_color(COLOR_TEXT) : COLOR_TEXT);
 	const char *strReset = "ESC to Restart!";
-	char strScore[16];
-	snprintf(strScore, 16, "Score: %d", e_score);
+	char strScore[SCORE_MAX_SIZE];
+	snprintf(strScore, SCORE_MAX_SIZE, "Score: %d", e_score);
 	int w, h, len = strlen(strScore);
 	measure_str(connection, strScore, len, font_normal, &w, &h);
 	draw_string(connection, window, font_normal, bkg, frg, TILE_MARGIN, HEIGHT - h, strReset, strlen(strReset));

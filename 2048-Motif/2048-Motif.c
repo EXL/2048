@@ -9,6 +9,7 @@
 #include <stdio.h>
 
 #define VALUE_MAX_SIZE 5 // "2048\0"
+#define SCORE_MAX_SIZE 16 // "Score: 999999..."
 
 static const int WIDTH  = 340;
 static const int HEIGHT = 400;
@@ -81,8 +82,8 @@ static void draw_final(Display *display, Pixmap pixmap, GC gc, int win, int lose
 	const int h = 20;
 	XDrawString(display, pixmap, gc, TILE_MARGIN, HEIGHT - h,
 		strReset, strlen(strReset));
-	char strScore[16];
-	snprintf(strScore, 16, "Score: %d", e_score);
+	char strScore[SCORE_MAX_SIZE];
+	snprintf(strScore, SCORE_MAX_SIZE, "Score: %d", e_score);
 	const int w = (font_normal) ? XTextWidth(font_normal, strScore, strlen(strScore)) : 50;
 	XDrawString(display, pixmap, gc, WIDTH - (w - 3) - TILE_MARGIN, HEIGHT - h,
 		strScore, strlen(strScore));
