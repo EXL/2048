@@ -22,7 +22,8 @@ class Widget final : public GUI::Widget {
 
 	inline int offsetCoords(int coord) { return coord * (TILE_MARGIN + TILE_SIZE) + TILE_MARGIN; }
 	// There are some HACKS for properly rounded rectangles.
-	// See this method with clean code and additional information here: https://github.com/SerenityOS/serenity/issues/2582
+	// See this method with clean code and additional information here:
+	// https://github.com/SerenityOS/serenity/issues/2582
 	void fill_rounded_rect(GUI::Painter &painter, const Gfx::IntRect &rect, const Gfx::Color &color) {
 		auto path = Gfx::Path();
 		const float left = rect.left(), right = rect.right() - 1, top = rect.top(), bottom = rect.bottom() - 1, rad = 5;
