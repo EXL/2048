@@ -9,7 +9,11 @@ GameController = {
 };
 FirstResponder = {ACTIONS = {}; SUPERCLASS = Object; };
 GameView = {
-    ACTIONS = {"resetGame:" = "resetGame:"; }; 
+    ACTIONS = {
+	"resetGame:" = "resetGame:"; 
+	"setRectangleTiles:" = "setRectangleTiles:"; 
+	"setRoundedTiles:" = "setRoundedTiles:"; 
+    }; 
     OUTLETS = {
 	largeFont = largeFont; 
 	middleFont = middleFont; 

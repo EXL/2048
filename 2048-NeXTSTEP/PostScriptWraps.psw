@@ -1,12 +1,57 @@
+/* PostScript Wrap Functions */
+
+/*
+	Draw Rounded Rectangle function. Additional information:
+		1. https://nacho4d-nacho4d.blogspot.com/2011/05/bezier-paths-rounded-corners-rectangles.html
+		2. http://spencermortensen.com/articles/bezier-circle/
+		3. https://stackoverflow.com/a/27863181
+	C++/Qt5 equivalent method:
+
+		```
+		void drawRoundedRect(QPainter &painter, const QColor &color, const QRect &rect, int rad) {
+			int left = rect.left(), right = rect.right(), top = rect.top(), bottom = rect.bottom();
+			float offset = rad * (1 - 0.551915024494);
+			QPainterPath p;
+			p.moveTo(left + rad, top);
+			p.lineTo(right - rad, top);
+			p.cubicTo(right - offset, top, right, top + offset, right, top + rad);
+			p.lineTo(right, bottom - rad);
+			p.cubicTo(right, bottom - offset, right - offset, bottom, right - rad, bottom);
+			p.lineTo(left + rad, bottom);
+			p.cubicTo(left + offset, bottom, left, bottom - offset, left, bottom - rad);
+			p.lineTo(left, top + rad);
+			p.cubicTo(left, top + offset, left + offset, top, left + rad, top);
+			p.closeSubpath();
+			painter.fillPath(p, color);
+		}
+		```
+*/
+
+defineps PSWdrawRectRounded(float r, g, b, left, right, top, bottom, rad)
+	/off 1 0.551915024494 sub rad mul def
+	r g b setrgbcolor
+	1.0 setalpha
+	left rad add top moveto
+	right rad sub top lineto
+	right off sub top right top off add right top rad add curveto
+	right bottom rad sub lineto
+	right bottom off sub right off sub bottom right rad sub bottom curveto
+	left rad add bottom lineto
+	left off add bottom left bottom off sub left bottom rad sub curveto
+	left top rad add lineto
+	left top off add left off add top left rad add top curveto
+	fill
+endps
+
 defineps PSWfade(float r, g, b, a, width, height)
-    r g b setrgbcolor
-    a setalpha
-    0 0 width height Sover compositerect
+	r g b setrgbcolor
+	a setalpha
+	0 0 width height Sover compositerect
 endps
 
 defineps PSWdrawText(float r, g, b, x, y; char *text)
-    r g b setrgbcolor
-    1.0 setalpha
-    x y moveto
-   (text) show
+	r g b setrgbcolor
+	1.0 setalpha
+	x y moveto
+	(text) show
 endps

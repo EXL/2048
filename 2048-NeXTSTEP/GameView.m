@@ -26,13 +26,19 @@ static inline int offsetCoords(int coord, int size, int offset) {
 	return coord * (TILE_MARGIN + TILE_SIZE) + start - offset;
 }
 
-@implementation GameView:View
+@implementation GameView : View
 
-- (void)drawTile:(int)value:(int)x:(int)y {
+- (void)drawTile:(int)value :(int)x :(int)y {
 	const int xOffset = offsetCoords(x, ww, 0), yOffset = offsetCoords(y, hh, TILE_MARGIN * 2);
-	NXRect tileRect = { {xOffset, yOffset}, {TILE_SIZE, TILE_SIZE} };
-	NXSetColor(NXConvertRGBToColor(R(e_background(value)), G(e_background(value)), B(e_background(value))));
-	NXRectFill(&tileRect);
+	const unsigned bkg = e_background(value), frg = e_foreground(value);
+	NXRect tile = { {xOffset, yOffset}, {TILE_SIZE, TILE_SIZE} };
+	if (roundedTiles)
+		PSWdrawRectRounded(R(bkg), G(bkg), B(bkg),
+			tile.origin.x, tile.origin.x + tile.size.width, tile.origin.y, tile.origin.y + tile.size.height, 8.0f);
+	else {
+		NXSetColor(NXConvertRGBToColor(R(bkg), G(bkg), B(bkg)));
+		NXRectFill(&tile);
+	}
 	if (value) {
 		id currentFont = (value < 100) ? largeFont : (value < 1000) ? middleFont : smallFont;
 		int w, h = (int) [currentFont pointSize];
@@ -40,7 +46,7 @@ static inline int offsetCoords(int coord, int size, int offset) {
 		sprintf(str_value, "%d", value);
 		[currentFont set];
 		w = [currentFont getWidthOf:str_value];
-		PSWdrawText(R(e_foreground(value)), G(e_foreground(value)), B(e_foreground(value)), 
+		PSWdrawText(R(frg), G(frg), B(frg),
 			xOffset + (TILE_SIZE - w) / 2, yOffset + TILE_SIZE - (TILE_SIZE - h) / 2 - 4, str_value);
 	}
 }
@@ -53,7 +59,7 @@ static inline int offsetCoords(int coord, int size, int offset) {
 		PSWfade(R(COLOR_OVERLAY), G(COLOR_OVERLAY), B(COLOR_OVERLAY), 0.5f, ww, hh);
 		[largeFont set];
 		w = [largeFont getWidthOf:center];
-		PSWdrawText(R(COLOR_FINAL), G(COLOR_FINAL), B(COLOR_FINAL), ww / 2 - w / 2, hh / 2, center);	
+		PSWdrawText(R(COLOR_FINAL), G(COLOR_FINAL), B(COLOR_FINAL), ww / 2 - w / 2, hh / 2, center);
 	}
 	sprintf(str_score, "Score: %d", e_score);
 	[normalFont set];
@@ -93,19 +99,33 @@ static inline int offsetCoords(int coord, int size, int offset) {
 	return self;
 }
 
-- initFrame:(const NXRect *)form {
-	[super initFrame:form];
+- setRoundedTiles:sender {
+	roundedTiles = YES;
+	[self update];
+	return self;
+}
+
+- setRectangleTiles:sender {
+	roundedTiles = NO;
+	[self update];
+	return self;
+}
+
+- initFrame:(const NXRect *)frameRect {
+	[super initFrame:frameRect];
 
 	e_init(NX_KEY_ESC, NX_KEY_LEFT, NX_KEY_RIGHT, NX_KEY_UP, NX_KEY_DOWN);
 
 	[self allocateGState];
 	[self setClipping:NO];
 	[self setFlipped:YES];
-	
+
 	smallFont = [Font boldSystemFontOfSize:14.0f matrix:NX_FLIPPEDMATRIX];
-	middleFont = [Font boldSystemFontOfSize:18.0f matrix:NX_FLIPPEDMATRIX];	
-	normalFont = [Font systemFontOfSize:18.0f matrix:NX_FLIPPEDMATRIX];	
+	middleFont = [Font boldSystemFontOfSize:18.0f matrix:NX_FLIPPEDMATRIX];
+	normalFont = [Font systemFontOfSize:18.0f matrix:NX_FLIPPEDMATRIX];
 	largeFont = [Font boldSystemFontOfSize:24.0f matrix:NX_FLIPPEDMATRIX];
+
+	roundedTiles = YES;
 
 	return self;
 }
