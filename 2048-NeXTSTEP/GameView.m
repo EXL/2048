@@ -5,6 +5,7 @@
 #import "GameView.h"
 
 #import <appkit/appkit.h>
+#import <appkit/Application.h>
 
 #include <stdio.h>
 
@@ -101,12 +102,14 @@ static inline int offsetCoords(int coord, int size, int offset) {
 
 - setRoundedTiles:sender {
 	roundedTiles = YES;
+	NXWriteDefault([NXApp appName], "rectType", "0");
 	[self update];
 	return self;
 }
 
 - setRectangleTiles:sender {
 	roundedTiles = NO;
+	NXWriteDefault([NXApp appName], "rectType", "1");
 	[self update];
 	return self;
 }

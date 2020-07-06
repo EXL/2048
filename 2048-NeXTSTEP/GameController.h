@@ -10,4 +10,6 @@
 - appDidInit:sender;
 - windowWillClose:sender;
 
+- prefReadRectType;
+
 @end
