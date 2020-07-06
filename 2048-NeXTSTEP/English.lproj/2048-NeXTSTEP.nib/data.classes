@@ -10,7 +10,9 @@ GameController = {
 FirstResponder = {ACTIONS = {}; SUPERCLASS = Object; };
 GameView = {
     ACTIONS = {
+	"load:" = "load:"; 
 	"resetGame:" = "resetGame:"; 
+	"save:" = "save:"; 
 	"setRectangleTiles:" = "setRectangleTiles:"; 
 	"setRoundedTiles:" = "setRoundedTiles:"; 
     }; 

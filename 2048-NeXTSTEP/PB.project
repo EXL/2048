@@ -1,7 +1,7 @@
 INSTALLDIR = "$(HOME)/Apps";
 FILESTABLE = {
     C_FILES = (2048.c);
-    OTHER_LIBS = (Media_s, NeXT_s);
+    OTHER_LIBS = (Foundation_s, Media_s, NeXT_s);
     PSW_FILES = (PostScriptWraps.psw);
     CLASSES = (GameController.m, GameView.m);
     OTHER_SOURCES = (Makefile.preamble, Makefile, Makefile.postamble);

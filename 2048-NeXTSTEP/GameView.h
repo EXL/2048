@@ -20,4 +20,7 @@
 - setRoundedTiles:sender;
 - setRectangleTiles:sender;
 
+- save:sender;
+- load:sender;
+
 @end

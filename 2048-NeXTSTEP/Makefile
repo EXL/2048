@@ -35,7 +35,7 @@ SOURCEMODE = 444
 
 ICONSECTIONS =	-sectcreate __ICON app /usr/lib/NextStep/Workspace.app/application.tiff
 
-LIBS = -lMedia_s -lNeXT_s
+LIBS = -lFoundation_s -lMedia_s -lNeXT_s
 DEBUG_LIBS = $(LIBS)
 PROF_LIBS = $(LIBS)
 

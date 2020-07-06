@@ -3,6 +3,7 @@
 #include "PostScriptWraps.h"
 
 #import "GameView.h"
+#import "GameController.h"
 
 #import <appkit/appkit.h>
 #import <appkit/Application.h>
@@ -11,9 +12,6 @@
 
 #define ww bounds.size.width
 #define hh bounds.size.height
-
-#define VALUE_MAX_SIZE 5  // "2048\0"
-#define SCORE_MAX_SIZE 16 // "Score: 999999"
 
 static const int TILE_SIZE = 64;
 static const int TILE_MARGIN = 16;
@@ -43,7 +41,7 @@ static inline int offsetCoords(int coord, int size, int offset) {
 	if (value) {
 		id currentFont = (value < 100) ? largeFont : (value < 1000) ? middleFont : smallFont;
 		int w, h = (int) [currentFont pointSize];
-		char str_value[VALUE_MAX_SIZE];
+		char str_value[VALUE_MAX_SIZE] = { '\0' };
 		sprintf(str_value, "%d", value);
 		[currentFont set];
 		w = [currentFont getWidthOf:str_value];
@@ -54,7 +52,7 @@ static inline int offsetCoords(int coord, int size, int offset) {
 
 - (void)drawFinal {
 	int w;
-	char str_score[SCORE_MAX_SIZE];
+	char str_score[SCORE_MAX_SIZE] = { '\0' };
 	if (e_win || e_lose) {
 		const char *center = (e_win) ? "You won!" : "Game Over!";
 		PSWfade(R(COLOR_OVERLAY), G(COLOR_OVERLAY), B(COLOR_OVERLAY), 0.5f, ww, hh);
@@ -110,6 +108,25 @@ static inline int offsetCoords(int coord, int size, int offset) {
 - setRectangleTiles:sender {
 	roundedTiles = NO;
 	NXWriteDefault([NXApp appName], "rectType", "1");
+	[self update];
+	return self;
+}
+
+- save:sender {
+	char str_state[STATE_MAX_SIZE] = { '\0' };
+	if ([GameController saveState:str_state :e_board :BOARD_SIZE :e_score :e_win :e_lose])
+		NXRunAlertPanel("Game Saved!", str_state, NULL, NULL, NULL);
+	else
+		NXRunAlertPanel("Save Error!", "Sorry, cannot save game state.", NULL, NULL, NULL);
+	return self;
+}
+
+- load:sender {
+	char str_state[STATE_MAX_SIZE] = { '\0' };
+	if ([GameController loadState:str_state :e_board :BOARD_SIZE :&e_score :&e_win :&e_lose])
+		NXRunAlertPanel("Game Loaded!", str_state, NULL, NULL, NULL);
+	else
+		NXRunAlertPanel("Load Error!", "Sorry, cannot load game state.", NULL, NULL, NULL);
 	[self update];
 	return self;
 }
