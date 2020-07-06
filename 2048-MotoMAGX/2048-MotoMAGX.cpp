@@ -156,7 +156,7 @@ public slots:
 			}
 			dataStream >> score; dataStream >> win; dataStream >> lose;
 			e_score = score; e_win = win; e_lose = lose;
-			ZNoticeDlg::information(QString("State on:\n%1").arg(loadDateTime.toString()), "Game loaded!",
+			ZNoticeDlg::information(QString("State on:\n%1").arg(loadDateTime.toString()), "Game Loaded!",
 				QString::null, "ok_pop");
 			update();
 		} else
