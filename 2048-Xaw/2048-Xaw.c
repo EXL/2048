@@ -56,7 +56,7 @@ static void draw_tile(Display *display, Window window, int value, int x, int y, 
 		if (font_small && font_middle && font_large)
 			current_font = (value < 100) ? font_large : (value < 1000) ? font_middle : font_small;
 		const int size = (value < 100) ? 24 : (value < 1000) ? 18 : 14;
-		char str_value[VALUE_MAX_SIZE];
+		char str_value[VALUE_MAX_SIZE] = { '\0' };
 		snprintf(str_value, VALUE_MAX_SIZE, "%d", value);
 		if (current_font)
 			XSetFont(display, gc, current_font->fid);
@@ -85,7 +85,7 @@ static void draw_final(Display *display, Window window, int win, int lose) {
 	const int h = 20;
 	XDrawString(display, window, gc, TILE_MARGIN, HEIGHT - h,
 		strReset, strlen(strReset));
-	char strScore[SCORE_MAX_SIZE];
+	char strScore[SCORE_MAX_SIZE] = { '\0' };
 	snprintf(strScore, SCORE_MAX_SIZE, "Score: %d", e_score);
 	const int w = (font_normal) ? XTextWidth(font_normal, strScore, strlen(strScore)) : 50;
 	XDrawString(display, window, gc, WIDTH - (w - 3) - TILE_MARGIN, HEIGHT - h,

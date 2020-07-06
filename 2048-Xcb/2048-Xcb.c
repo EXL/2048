@@ -135,7 +135,7 @@ static void draw_tile(xcb_connection_t *connection, xcb_window_t window, xcb_gco
 	xcb_poly_fill_rectangle(connection, window, gcontext, 2, rects);
 	if (value) {
 		const xcb_gc_t font_gc = (value < 100) ? font_large : (value < 1000) ? font_middle : font_small;
-		char str_value[VALUE_MAX_SIZE];
+		char str_value[VALUE_MAX_SIZE] = { '\0' };
 		snprintf(str_value, VALUE_MAX_SIZE, "%d", value);
 		int w, h, len = strlen(str_value);
 		measure_str_computed(len, &w, &h);
@@ -155,7 +155,7 @@ static void draw_final(xcb_connection_t *connection, xcb_window_t window, int wi
 	const unsigned bkg = ((win || lose) ? fade_color(COLOR_BOARD) : COLOR_BOARD);
 	const unsigned frg = ((win || lose) ? fade_color(COLOR_TEXT) : COLOR_TEXT);
 	const char *strReset = "ESC to Restart!";
-	char strScore[SCORE_MAX_SIZE];
+	char strScore[SCORE_MAX_SIZE] = { '\0' };
 	snprintf(strScore, SCORE_MAX_SIZE, "Score: %d", e_score);
 	int w, h, len = strlen(strScore);
 	measure_str(connection, strScore, len, font_normal, &w, &h);
