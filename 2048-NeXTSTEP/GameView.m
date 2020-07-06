@@ -13,7 +13,7 @@
 #define ww bounds.size.width
 #define hh bounds.size.height
 
-static const int TILE_SIZE = 64;
+static const int TILE_SIZE   = 64;
 static const int TILE_MARGIN = 16;
 
 static inline float R(unsigned rgb) { return ((rgb >> 16) & 0xFF) / 255.0f; }
