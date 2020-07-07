@@ -27,7 +27,8 @@ CFILES = 2048.c
 
 PSWFILES = PostScriptWraps.psw
 
-OTHERSRCS = Makefile.preamble Makefile Makefile.postamble ReadMe.md
+OTHERSRCS = Makefile.preamble Makefile Makefile.postamble ReadMe.md\
+            2048-NeXTSTEP.info
 
 
 MAKEFILEDIR = /NextDeveloper/Makefiles/app

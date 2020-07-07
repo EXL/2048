@@ -1,19 +1,19 @@
 INSTALLDIR = "$(HOME)/Apps";
+APPICON = icon48.tiff;
+GENERATEMAIN = YES;
+DOCICONFILES = ();
 FILESTABLE = {
     C_FILES = (2048.c);
     OTHER_LIBS = (Foundation_s, NeXT_s);
     PSW_FILES = (PostScriptWraps.psw);
     CLASSES = (GameController.m, GameView.m);
-    OTHER_SOURCES = (Makefile.preamble, Makefile, Makefile.postamble, ReadMe.md);
+    OTHER_SOURCES = (Makefile.preamble, Makefile, Makefile.postamble, ReadMe.md, "2048-NeXTSTEP.info");
     H_FILES = (2048.h, GameController.h, GameView.h, KeyCodes.h);
     INTERFACES = ("2048-Info.nib", "2048-NeXTSTEP.nib");
     IMAGES = (avatar.tiff, icon150.tiff, icon48.tiff);
     OTHER_LINKED = ();
     M_FILES = ("2048-NeXTSTEP_main.m");
 };
-APPICON = icon48.tiff;
-GENERATEMAIN = YES;
-DOCICONFILES = ();
 APPCLASS = Application;
 MAINNIB = "2048-NeXTSTEP";
 DOCEXTENSIONS = ();

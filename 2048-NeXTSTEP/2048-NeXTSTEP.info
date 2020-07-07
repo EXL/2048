@@ -1,0 +1,20 @@
+# The info file for the 2048-NeXTSTEP package.
+
+# These are the fields that will be displayed in the Info view.
+Title                  2048-NeXTSTEP
+Version                1.0  08-Jul-2020
+Description            Simple implementation of popular logic game "2048" especially for NeXTSTEP.
+# These fields determine where the installed package will go.
+DefaultLocation        ~/Apps
+Relocatable            YES
+
+# This field is a pattern that matches the floppy disk labels
+DiskName               2048-NeXTSTEP
+
+# This field states whether the package is a NEXTSTEP application
+Application            YES
+
+# User is prompted with this field before deleting the package.
+DeleteWarning          Deleting this package will cause the 2048-NeXTSTEP application to stop working.
+
+# end of 2048-NeXTSTEP.info
