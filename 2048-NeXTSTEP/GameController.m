@@ -62,6 +62,7 @@
 
 - appDidInit:sender {
 	[self prefReadRectType];
+	[[gameView window] setMiniwindowIcon:"icon48.tiff"];
 	[[gameView window] makeKeyAndOrderFront:self];
 	[[gameView window] makeFirstResponder:gameView];
 	return self;
@@ -71,8 +72,10 @@
 	return [NXApp terminate:self];
 }
 
-- showInfoView:sender {
-	// TODO: show info
+- showGameInfo:sender {
+	if (!gameInfo)
+		gameInfo = [NXApp loadNibSection:"2048-Info.nib" owner:self withNames:NO];
+	[gameInfo makeKeyAndOrderFront:sender];
 	return self;
 }
 

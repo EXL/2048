@@ -12,7 +12,10 @@ NAME = 2048-NeXTSTEP
 PROJECTVERSION = 1.1
 LANGUAGE = English
 
-LOCAL_RESOURCES = 2048-NeXTSTEP.nib
+APPICON = icon48.tiff
+LOCAL_RESOURCES = 2048-Info.nib 2048-NeXTSTEP.nib
+
+GLOBAL_RESOURCES = avatar.tiff icon150.tiff icon48.tiff
 
 CLASSES = GameController.m GameView.m
 
@@ -24,7 +27,7 @@ CFILES = 2048.c
 
 PSWFILES = PostScriptWraps.psw
 
-OTHERSRCS = Makefile.preamble Makefile Makefile.postamble
+OTHERSRCS = Makefile.preamble Makefile Makefile.postamble ReadMe.md
 
 
 MAKEFILEDIR = /NextDeveloper/Makefiles/app
@@ -33,9 +36,9 @@ INSTALLDIR = $(HOME)/Apps
 INSTALLFLAGS = -c -s -m 755
 SOURCEMODE = 444
 
-ICONSECTIONS =	-sectcreate __ICON app /usr/lib/NextStep/Workspace.app/application.tiff
+ICONSECTIONS =	-sectcreate __ICON app icon48.tiff
 
-LIBS = -lFoundation_s -lMedia_s -lNeXT_s
+LIBS = -lFoundation_s -lNeXT_s
 DEBUG_LIBS = $(LIBS)
 PROF_LIBS = $(LIBS)
 

@@ -1,10 +1,10 @@
 GameController = {
     ACTIONS = {
 	"appDidInit:" = "appDidInit:"; 
-	"showInfoView:" = "showInfoView:"; 
+	"showGameInfo:" = "showGameInfo:"; 
 	"windowWillClose:" = "windowWillClose:"; 
     }; 
-    OUTLETS = {gameView = gameView; }; 
+    OUTLETS = {gameInfo = gameInfo; gameView = gameView; }; 
     SUPERCLASS = Object; 
 };
 FirstResponder = {ACTIONS = {}; SUPERCLASS = Object; };

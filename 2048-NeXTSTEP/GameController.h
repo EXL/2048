@@ -7,14 +7,14 @@
 #define STATE_MAX_SIZE 128 // "State on: <date>"
 
 @interface GameController : Object {
-	// id infoView;
+	id gameInfo;
 	id gameView;
 }
 
 + (BOOL)saveState:(char *)str_state :(const int *)board :(int)boardSize :(int)score :(int)win :(int)lose;
 + (BOOL)loadState:(char *)str_state :(int *)board :(int)boardSize :(int *)score :(int *)win :(int *)lose;
 
-- showInfoView:sender;
+- showGameInfo:sender;
 
 - appDidInit:sender;
 - windowWillClose:sender;
