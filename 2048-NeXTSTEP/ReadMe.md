@@ -1,7 +1,7 @@
 2048-NeXTSTEP
 =============
 
-![2048-NeXTSTEP NeXTSTEP Screenshot](../image/2048-NeXTSTEP.png)
+![2048-NeXTSTEP NeXTSTEP Screenshot](../image/2048-NeXTSTEP-Screenshot.png)
 
 ## Developer Tools
 
@@ -12,7 +12,7 @@ Install Developer Tools Packages from **NeXTSTEP_3.3_Developer.iso** CD:
 3. NextCD/Packages/DeveloperDoc.pkg
 4. NextCD/Packages/GNUSource.pkg (optional)
 
-## Create MS-DOS Floppy Disk Image file with Source Code
+## Create MS-DOS Floppy Disk Image with Source Code
 
 Host CentOS 7 Packing Recipe:
 
@@ -32,26 +32,26 @@ sudo umount /mnt/
 
 Now insert **floppy.img** to your emulator or virtual machine floppy drive.
 
-## Transfer Source Code to NeXTSTEP
+## Transfer Source Code to the NeXTSTEP
 
 Guest NeXTSTEP Unpacking Recipe:
 
-Choose *Workspace => Disk => Check for Disks* and open Terminal application from **NextApps/Terminal.app**:
+Choose **Workspace => Disk => Check for Disks** and open Terminal application from **NextApps/Terminal.app**:
 
 ```csh
 mkdirs ~/Projects/2048/
 cd ~/Projects/2048/
 cp /src/2048.tar .
 tar -xvf 2048.tar
-touch image/*.tiff image/icon/*.tiff # Reset to system date.
+find . -type f -exec touch {} \; # Recursive reset files to system date.
 rm 2048.tar
 ```
 
 ## Building via Project Builder
 
-1. Go to the *~/Projects/2048/2048-NeXTSTEP* directory and double click on **PB.project** file.
-2. Click on the *Builder* button in the Project Builder application.
-3. Choose *Target: install* and click on the *Build* orange button.
+1. Go to the **~/Projects/2048/2048-NeXTSTEP** directory and double click on **PB.project** file.
+2. Click on the **Builder** button in the Project Builder application.
+3. Choose **Target: install** and click on the **Build** orange button.
 
 ## Building via Makefile
 
@@ -62,11 +62,11 @@ make TARGET_ARCHS="m68k i386 hppa sparc" install
 
 ## Run
 
-Go to the *~/Apps/* directory and double click on the **2048-NeXTSTEP.app** entity.
+Go to the **~/Apps/** directory and double click on the **2048-NeXTSTEP.app** application.
 
 ## Create Package
 
-Build application for all 4 CPU architectures first and install it to the *~/Apps/* directory.
+Build application for all 4 CPU architectures first and install it to the **~/Apps/** directory (see previous items).
 
 ```csh
 mkdirs ~/Root/
@@ -75,11 +75,11 @@ mv ~/Apps/2048-NeXTSTEP.app ~/Root/
 mv 2048-NeXTSTEP.pkg ~/Root/
 ```
 
-Get **2048-NeXTSTEP.pkg** package in current directory.
+Get **2048-NeXTSTEP.pkg** package in the **~/Root/** directory.
 
 ## Write Application and Package to the Floppy Disk Image
 
-Build application and create package for all 4 CPU architectures first.
+Build application and create package for all 4 CPU architectures first and move entities to the **~/Root/** directory (see previous items).
 
 ```csh
 cd ~/Root/
@@ -87,7 +87,7 @@ tar -cvf pack.tar 2048-NeXTSTEP.app 2048-NeXTSTEP.pkg
 mv pack.tar /src/
 ```
 
-Choose *Workspace => Disk => Eject* menu item.
+Choose **Workspace => Disk => Eject** menu item.
 
 ## NeXTSTEP Development Environment
 
