@@ -43,6 +43,7 @@ mkdirs ~/Projects/2048/
 cd ~/Projects/2048/
 cp /src/2048.tar .
 tar -xvf 2048.tar
+touch image/*.tiff image/icon/*.tiff # Reset to system date.
 rm 2048.tar
 ```
 
@@ -71,6 +72,7 @@ Build application for all 4 CPU architectures first and install it to the *~/App
 mkdirs ~/Root/
 mv ~/Apps/2048-NeXTSTEP.app ~/Root/
 /NextAdmin/Installer.app/package ~/Root/ ~/Projects/2048/2048-NeXTSTEP/2048-NeXTSTEP.info ~/Projects/2048/image/icon/icon48.tiff -d .
+mv 2048-NeXTSTEP.pkg ~/Root/
 ```
 
 Get **2048-NeXTSTEP.pkg** package in current directory.
@@ -80,15 +82,12 @@ Get **2048-NeXTSTEP.pkg** package in current directory.
 Build application and create package for all 4 CPU architectures first.
 
 ```csh
-mkdirs ~/Root/
-mv ~/Apps/2048-NeXTSTEP.app ~/Root/
-mv ~/2048-NeXTSTEP.pkg ~/Root/
 cd ~/Root/
 tar -cvf pack.tar 2048-NeXTSTEP.app 2048-NeXTSTEP.pkg
 mv pack.tar /src/
 ```
 
-Unmount TODO:
+Choose *Workspace => Disk => Eject* menu item.
 
 ## NeXTSTEP Development Environment
 
