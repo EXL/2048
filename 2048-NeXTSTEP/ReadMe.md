@@ -26,7 +26,7 @@ tar -cvf 2048.tar 2048-NeXTSTEP/ src/ image/icon/icon48.tiff image/icon/icon150.
 
 mkfs.msdos -C floppy.img 1440 -n "SRC"
 sudo mount floppy.img /mnt/
-sudo mv 2048.tar /mnt/ # "Skip mv: failed to preserve ownership for '2048.tar': Permission denied" error.
+sudo mv 2048.tar /mnt/ # Skip "mv: failed to preserve ownership for '/mnt/2048.tar': Operation not permitted" error.
 sudo umount /mnt/
 ```
 
