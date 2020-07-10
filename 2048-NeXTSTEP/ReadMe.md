@@ -49,7 +49,7 @@ rm 2048.tar
 
 ## Building via Project Builder
 
-1. Go to the **~/Projects/2048/2048-NeXTSTEP** directory and double click on **PB.project** file.
+1. Go to the **~/Projects/2048/2048-NeXTSTEP/** directory and double click on **PB.project** file.
 2. Click on the **Builder** button in the Project Builder application.
 3. Choose **Target: install** and click on the **Build** orange button.
 
