@@ -2,6 +2,8 @@
 #
 # https://github.com/SerenityOS/serenity/issues/2580
 # https://github.com/SerenityOS/serenity/issues/2597
+#
+# Please use ports for host compiler optimizations.
 
 CC = gcc
 CXX = g++
