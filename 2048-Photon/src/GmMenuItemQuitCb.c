@@ -14,19 +14,16 @@
 #include "abimport.h"
 #include "proto.h"
 
-/* Game headers */
-#include "2048.h"
 
 /* Callbacks */
 int
-GmMenuItemResetCallback( PtWidget_t *widget, ApInfo_t *apinfo, PtCallbackInfo_t *cbinfo )
+GmMenuItemQuitCb( PtWidget_t *widget, ApInfo_t *apinfo, PtCallbackInfo_t *cbinfo )
 
 	{
 	/* eliminate 'unreferenced' warnings */
 	widget = widget, apinfo = apinfo, cbinfo = cbinfo;
 
-	e_key( Pk_Escape );
-	PtDamageWidget( GmRawWidget );
+	PtExit( EXIT_SUCCESS );
 
 	return( Pt_CONTINUE );
 	}

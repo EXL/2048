@@ -81,7 +81,7 @@ GmFontsSetAntialias( int antialias )
 
 /* Callbacks */
 int
-GmRawInit( PtWidget_t *widget )
+GmRawInitCb( PtWidget_t *widget )
 
 	{
 	/* Save global Game Raw Widget pointer. */

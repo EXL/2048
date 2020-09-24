@@ -4,17 +4,23 @@
 /* GmMenuItemQuitCallback.c */
 int GmMenuItemQuitCallback ( PtWidget_t *widget , ApInfo_t *apinfo , PtCallbackInfo_t *cbinfo );
 
+/* GmMenuItemQuitCb.c */
+int GmMenuItemQuitCb ( PtWidget_t *widget , ApInfo_t *apinfo , PtCallbackInfo_t *cbinfo );
+
 /* GmMenuItemResetCallback.c */
 int GmMenuItemResetCallback ( PtWidget_t *widget , ApInfo_t *apinfo , PtCallbackInfo_t *cbinfo );
 
-/* GmRawDraw.c */
-void GmRawDraw ( PtWidget_t *widget , PhTile_t *damage );
+/* GmMenuItemResetCb.c */
+int GmMenuItemResetCb ( PtWidget_t *widget , ApInfo_t *apinfo , PtCallbackInfo_t *cbinfo );
 
-/* GmRawInit.c */
+/* GmRawDrawCb.c */
+void GmRawDrawCb ( PtWidget_t *widget , PhTile_t *damage );
+
+/* GmRawInitCb.c */
 void GmFontsSetAntialias ( int antialias );
-int GmRawInit ( PtWidget_t *widget );
+int GmRawInitCb ( PtWidget_t *widget );
 
-/* GmWindowKeysCallback.c */
-int GmWindowKeysCallback ( PtWidget_t *widget , ApInfo_t *apinfo , PtCallbackInfo_t *cbinfo );
+/* GmWindowKeyEventCb.c */
+int GmWindowKeyEventCb ( PtWidget_t *widget , ApInfo_t *apinfo , PtCallbackInfo_t *cbinfo );
 
 /* abmain.c */

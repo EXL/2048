@@ -17,8 +17,9 @@
 /* Game headers */
 #include "2048.h"
 
+/* Callbacks */
 int
-GmWindowKeysCallback( PtWidget_t *widget, ApInfo_t *apinfo, PtCallbackInfo_t *cbinfo )
+GmWindowKeyEventCb( PtWidget_t *widget, ApInfo_t *apinfo, PtCallbackInfo_t *cbinfo )
 
 	{
 	/* eliminate 'unreferenced' warnings */

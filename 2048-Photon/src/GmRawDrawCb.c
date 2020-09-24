@@ -138,7 +138,7 @@ GmDrawFinal( const PhRect_t *GmCanvas )
 
 /* Callbacks */
 void
-GmRawDraw( PtWidget_t *widget, PhTile_t *damage )
+GmRawDrawCb( PtWidget_t *widget, PhTile_t *damage )
 
 	{
 	PtSuperClassDraw( PtBasic, widget, damage );

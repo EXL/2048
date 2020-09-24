@@ -12,17 +12,17 @@ extern ApMenuLink_t GmMenuHelp;
 #ifdef __cplusplus
 extern "C" {
 #endif
-int GmMenuItemQuitCallback( PtWidget_t *widget, ApInfo_t *data, PtCallbackInfo_t *cbinfo );
-int GmMenuItemResetCallback( PtWidget_t *widget, ApInfo_t *data, PtCallbackInfo_t *cbinfo );
-int GmMenuItemResetCallback( PtWidget_t *widget, ApInfo_t *data, PtCallbackInfo_t *cbinfo );
-int GmMenuItemQuitCallback( PtWidget_t *widget, ApInfo_t *data, PtCallbackInfo_t *cbinfo );
-int GmRawInit( PtWidget_t *widget ) 
+int GmMenuItemQuitCb( PtWidget_t *widget, ApInfo_t *data, PtCallbackInfo_t *cbinfo );
+int GmMenuItemResetCb( PtWidget_t *widget, ApInfo_t *data, PtCallbackInfo_t *cbinfo );
+int GmRawInitCb( PtWidget_t *widget ) 
 
 ;
-void GmRawDraw( PtWidget_t *widget, PhTile_t *damage ) 
+void GmRawDrawCb( PtWidget_t *widget, PhTile_t *damage ) 
 
 ;
-int GmWindowKeysCallback( PtWidget_t *widget, ApInfo_t *data, PtCallbackInfo_t *cbinfo );
+int GmWindowKeyEventCb( PtWidget_t *widget, ApInfo_t *data, PtCallbackInfo_t *cbinfo );
+int GmMenuItemResetCb( PtWidget_t *widget, ApInfo_t *data, PtCallbackInfo_t *cbinfo );
+int GmMenuItemQuitCb( PtWidget_t *widget, ApInfo_t *data, PtCallbackInfo_t *cbinfo );
 #ifdef __cplusplus
 }
 #endif
