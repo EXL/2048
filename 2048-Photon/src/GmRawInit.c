@@ -65,17 +65,17 @@ GmFontsSetAntialias( int antialias )
 	{
 	if( antialias )
 		{
-		GmFontNormal = Helvetica14N;
-		GmFontSmall = Helvetica14B;
-		GmFontMiddle = Helvetica18B;
-		GmFontLarge = Helvetica24B;
-		}
-	else
-		{
 		GmFontNormal = Helvetica14NA;
 		GmFontSmall = Helvetica14BA;
 		GmFontMiddle = Helvetica18BA;
 		GmFontLarge = Helvetica24BA;
+		}
+	else
+		{
+		GmFontNormal = Helvetica14N;
+		GmFontSmall = Helvetica14B;
+		GmFontMiddle = Helvetica18B;
+		GmFontLarge = Helvetica24B;
 		}
 	}
 
