@@ -14,6 +14,8 @@ static const ApEventLink_t AbLinks_GmWindow[] = {
 	{ 5, 2, 118L, 4L, 0L, &GmMenuView, NULL, "GmMenuButtonView", 1010, NULL, 0, 1, 0, 0, },
 	{ 5, 0, 0L, 0L, 0L, &GmMenuHelp, NULL, "GmMenuButtonHelp", 2007, NULL, 0, 1, 0, 0, },
 	{ 5, 2, 104L, 4L, 0L, &GmMenuHelp, NULL, "GmMenuButtonHelp", 1010, NULL, 0, 1, 0, 0, },
+	{ 8, 3, 0L, 0L, 0L, NULL, NULL, "GmRaw", 24003, (int(*)(PtWidget_t*,ApInfo_t*,PtCallbackInfo_t*)) GmRawInit, 0, 0, 0, 0, },
+	{ 8, 3, 0L, 0L, 0L, NULL, NULL, "GmRaw", 24000, (int(*)(PtWidget_t*,ApInfo_t*,PtCallbackInfo_t*)) GmRawDraw, 0, 0, 0, 0, },
 	{ 0 }
 	};
 

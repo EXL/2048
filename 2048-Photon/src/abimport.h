@@ -16,6 +16,12 @@ int GmMenuItemQuitCallback( PtWidget_t *widget, ApInfo_t *data, PtCallbackInfo_t
 int GmMenuItemResetCallback( PtWidget_t *widget, ApInfo_t *data, PtCallbackInfo_t *cbinfo );
 int GmMenuItemResetCallback( PtWidget_t *widget, ApInfo_t *data, PtCallbackInfo_t *cbinfo );
 int GmMenuItemQuitCallback( PtWidget_t *widget, ApInfo_t *data, PtCallbackInfo_t *cbinfo );
+int GmRawInit( PtWidget_t *widget ) 
+
+;
+void GmRawDraw( PtWidget_t *widget, PhTile_t *damage ) 
+
+;
 #ifdef __cplusplus
 }
 #endif
