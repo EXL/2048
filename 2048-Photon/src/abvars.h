@@ -1,24 +1,26 @@
 /* Variables header for application - AppBuilder 2.03  */
 
+#define Ab_ABNs_ARE_MACROS
+
 /* 'GmWindow' Window link */
-const int ABN_GmWindow = 0;
-const int ABN_GmMenuButtonGame = 1;
-const int ABN_GmMenuButtonView = 2;
-const int ABN_GmMenuButtonHelp = 3;
-const int ABN_GmRaw = 4;
+#define ABN_GmWindow                         0
+#define ABN_GmMenuButtonGame                 1
+#define ABN_GmMenuButtonView                 2
+#define ABN_GmMenuButtonHelp                 3
+#define ABN_GmRaw                            4
 
 /* 'GmMenuGame' Menu link */
-const int ABN_GmMenuGame = 5;
-const int ABN_GmMenuItemReset = 6;
-const int ABN_GmMenuItemQuit = 8;
+#define ABN_GmMenuGame                       5
+#define ABN_GmMenuItemReset                  6
+#define ABN_GmMenuItemQuit                   8
 
 /* 'GmMenuView' Menu link */
-const int ABN_GmMenuView = 9;
-const int ABN_GmMenuItemBackground = 10;
-const int ABN_GmMenuItemTiles = 11;
-const int ABN_GmMenuItemFonts = 12;
+#define ABN_GmMenuView                       9
+#define ABN_GmMenuItemBackground             10
+#define ABN_GmMenuItemTiles                  11
+#define ABN_GmMenuItemFonts                  12
 
 /* 'GmMenuHelp' Menu link */
-const int ABN_GmMenuHelp = 13;
-const int ABN_GmMenuItemAbout = 14;
+#define ABN_GmMenuHelp                       13
+#define ABN_GmMenuItemAbout                  14
 
