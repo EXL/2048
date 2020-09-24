@@ -17,6 +17,7 @@
 /* Game headers */
 #include "2048.h"
 
+/* Global variables */
 PtWidget_t *GmRawWidget = NULL;
 
 char *GmFontNormal = NULL;
@@ -24,6 +25,7 @@ char *GmFontSmall = NULL;
 char *GmFontMiddle = NULL;
 char *GmFontLarge = NULL;
 
+/* Static variables */
 static char Helvetica14N[MAX_FONT_TAG];
 static char Helvetica14B[MAX_FONT_TAG];
 static char Helvetica18B[MAX_FONT_TAG];
@@ -33,11 +35,11 @@ static char Helvetica14BA[MAX_FONT_TAG];
 static char Helvetica18BA[MAX_FONT_TAG];
 static char Helvetica24BA[MAX_FONT_TAG];
 
-void
+/* Static functions */
+static void
 GmFontsInit( void )
 
 	{
-
 	if( !PfGenerateFontName( "Helvetica", 0, 14, Helvetica14N ) )
 		perror( "Unable to generate Helvectica 14, Normal font!" );
 	if( !PfGenerateFontName( "Helvetica", PF_STYLE_BOLD, 14, Helvetica14B ) )
@@ -56,11 +58,11 @@ GmFontsInit( void )
 		perror( "Unable to generate Helvectica 24, Bold, Anti-aliased font!" );
 	}
 
+/* Global functions */
 void
 GmFontsSetAntialias( int antialias )
 
 	{
-
 	if( antialias )
 		{
 		GmFontNormal = Helvetica14N;
@@ -77,6 +79,7 @@ GmFontsSetAntialias( int antialias )
 		}
 	}
 
+/* Callbacks */
 int
 GmRawInit( PtWidget_t *widget )
 

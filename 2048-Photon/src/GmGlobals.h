@@ -8,3 +8,6 @@ extern char *GmFontMiddle;
 extern char *GmFontLarge;
 
 extern void GmFontsSetAntialias( int antialias );
+
+extern int GmBackgroundShow;
+extern int GmTilesRound;

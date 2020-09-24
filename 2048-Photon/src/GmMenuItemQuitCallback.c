@@ -15,17 +15,15 @@
 #include "proto.h"
 
 
+/* Callbacks */
 int
 GmMenuItemQuitCallback( PtWidget_t *widget, ApInfo_t *apinfo, PtCallbackInfo_t *cbinfo )
 
 	{
-
 	/* eliminate 'unreferenced' warnings */
 	widget = widget, apinfo = apinfo, cbinfo = cbinfo;
 
 	PtExit( EXIT_SUCCESS );
 
 	return( Pt_CONTINUE );
-
 	}
-
