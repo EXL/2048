@@ -5,7 +5,7 @@ extern ApContext_t AbContext;
 ApWindowLink_t GmWindow = {
 	"GmWindow.wgtw",
 	&AbContext,
-	AbLinks_GmWindow, 0, 10
+	AbLinks_GmWindow, 0, 11
 	};
 
 static ApItem_t ApItems_GmMenuGame[ 4 ] = {

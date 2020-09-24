@@ -22,6 +22,7 @@ int GmRawInit( PtWidget_t *widget )
 void GmRawDraw( PtWidget_t *widget, PhTile_t *damage ) 
 
 ;
+int GmWindowKeysCallback( PtWidget_t *widget, ApInfo_t *data, PtCallbackInfo_t *cbinfo );
 #ifdef __cplusplus
 }
 #endif

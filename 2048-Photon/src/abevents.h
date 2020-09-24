@@ -8,6 +8,7 @@ static const ApEventLink_t AbApplLinks[] = {
 static const ApEventLink_t AbLinks_GmWindow[] = {
 	{ 8, 2, 61467L, 0L, 0L, NULL, NULL, "GmWindow", 1010, GmMenuItemResetCallback, 0, 0, 0, 0, },
 	{ 8, 2, 120L, 4L, 0L, NULL, NULL, "GmWindow", 1010, GmMenuItemQuitCallback, 0, 0, 0, 0, },
+	{ 8, 1, 0L, 0L, 1L, NULL, NULL, "GmWindow", 1026, GmWindowKeysCallback, 0, 0, 0, 0, },
 	{ 5, 0, 0L, 0L, 0L, &GmMenuGame, NULL, "GmMenuButtonGame", 2007, NULL, 0, 1, 0, 0, },
 	{ 5, 2, 103L, 4L, 0L, &GmMenuGame, NULL, "GmMenuButtonGame", 1010, NULL, 0, 1, 0, 0, },
 	{ 5, 0, 0L, 0L, 0L, &GmMenuView, NULL, "GmMenuButtonView", 2007, NULL, 0, 1, 0, 0, },
