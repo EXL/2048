@@ -40,8 +40,8 @@ ApMenuLink_t GmMenuView = {
 	2,
 	ApItems_GmMenuView,
 	& AbContext,
-	NULL,
-	9, 0, 3
+	AbLinks_GmMenuView,
+	9, 3, 3
 	};
 
 static ApItem_t ApItems_GmMenuHelp[ 2 ] = {

@@ -58,6 +58,14 @@ GmFontsInit( void )
 		perror( "Unable to generate Helvectica 24, Bold, Anti-aliased font!" );
 	}
 
+static void
+GmMenusInit( void )
+
+	{
+	ApModifyItemState( &GmMenuView, AB_ITEM_SET,
+		ABN_GmMenuItemBackground, ABN_GmMenuItemTiles, ABN_GmMenuItemFonts, NULL );
+	}
+
 /* Global functions */
 void
 GmFontsSetAntialias( int antialias )
@@ -89,6 +97,9 @@ GmRawInitCb( PtWidget_t *widget )
 
 	/* Init Game Engine with Control Keys. */
 	e_init( Pk_Escape, Pk_Left, Pk_Right, Pk_Up, Pk_Down );
+
+	/* Init Window Menus. */
+	GmMenusInit( );
 
 	/* Init Game Fonts and enable anti-aliasing by default. */
 	GmFontsInit( );

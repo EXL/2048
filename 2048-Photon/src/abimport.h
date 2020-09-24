@@ -23,6 +23,9 @@ void GmRawDrawCb( PtWidget_t *widget, PhTile_t *damage )
 int GmWindowKeyEventCb( PtWidget_t *widget, ApInfo_t *data, PtCallbackInfo_t *cbinfo );
 int GmMenuItemResetCb( PtWidget_t *widget, ApInfo_t *data, PtCallbackInfo_t *cbinfo );
 int GmMenuItemQuitCb( PtWidget_t *widget, ApInfo_t *data, PtCallbackInfo_t *cbinfo );
+int GmMenuItemBackgroundCb( PtWidget_t *widget, ApInfo_t *data, PtCallbackInfo_t *cbinfo );
+int GmMenuItemTilesCb( PtWidget_t *widget, ApInfo_t *data, PtCallbackInfo_t *cbinfo );
+int GmMenuItemFontsCb( PtWidget_t *widget, ApInfo_t *data, PtCallbackInfo_t *cbinfo );
 #ifdef __cplusplus
 }
 #endif

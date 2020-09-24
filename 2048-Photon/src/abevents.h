@@ -26,4 +26,11 @@ static const ApEventLink_t AbLinks_GmMenuGame[] = {
 	{ 0 }
 	};
 
+static const ApEventLink_t AbLinks_GmMenuView[] = {
+	{ 8, 0, 0L, 0L, 0L, NULL, NULL, "GmMenuItemBackground", 2009, GmMenuItemBackgroundCb, 0, 0, 0, 0, },
+	{ 8, 0, 0L, 0L, 0L, NULL, NULL, "GmMenuItemTiles", 2009, GmMenuItemTilesCb, 0, 0, 0, 0, },
+	{ 8, 0, 0L, 0L, 0L, NULL, NULL, "GmMenuItemFonts", 2009, GmMenuItemFontsCb, 0, 0, 0, 0, },
+	{ 0 }
+	};
+
 const char ApOptions[] = AB_OPTIONS;
