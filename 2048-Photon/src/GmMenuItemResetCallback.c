@@ -14,6 +14,9 @@
 #include "abimport.h"
 #include "proto.h"
 
+/* Game headers */
+#include "2048.h"
+
 /* Callbacks */
 int
 GmMenuItemResetCallback( PtWidget_t *widget, ApInfo_t *apinfo, PtCallbackInfo_t *cbinfo )
@@ -21,6 +24,9 @@ GmMenuItemResetCallback( PtWidget_t *widget, ApInfo_t *apinfo, PtCallbackInfo_t 
 	{
 	/* eliminate 'unreferenced' warnings */
 	widget = widget, apinfo = apinfo, cbinfo = cbinfo;
+
+	e_key( Pk_Escape );
+	PtDamageWidget( GmRawWidget );
 
 	return( Pt_CONTINUE );
 	}
