@@ -10,4 +10,12 @@ extern ApMenuLink_t GmMenuView;
 extern ApMenuLink_t GmMenuHelp;
 
 #ifdef __cplusplus
+extern "C" {
+#endif
+int GmMenuItemQuitCallback( PtWidget_t *widget, ApInfo_t *data, PtCallbackInfo_t *cbinfo );
+int GmMenuItemResetCallback( PtWidget_t *widget, ApInfo_t *data, PtCallbackInfo_t *cbinfo );
+int GmMenuItemResetCallback( PtWidget_t *widget, ApInfo_t *data, PtCallbackInfo_t *cbinfo );
+int GmMenuItemQuitCallback( PtWidget_t *widget, ApInfo_t *data, PtCallbackInfo_t *cbinfo );
+#ifdef __cplusplus
+}
 #endif
