@@ -1,7 +1,7 @@
 /* Event header for application - AppBuilder 2.03  */
 
 static const ApEventLink_t AbApplLinks[] = {
-	{ 3, 0, 0L, 0L, 0L, &GmWindow, NULL, NULL, 0, NULL, 0, 0, 0, 0, },
+	{ 3, 0, 0L, 0L, 0L, &GmWindow, NULL, NULL, 0, NULL, 0, 9, 0, 0, },
 	{ 0 }
 	};
 
@@ -30,6 +30,11 @@ static const ApEventLink_t AbLinks_GmMenuView[] = {
 	{ 8, 0, 0L, 0L, 0L, NULL, NULL, "GmMenuItemBackground", 2009, GmMenuItemBackgroundCb, 0, 0, 0, 0, },
 	{ 8, 0, 0L, 0L, 0L, NULL, NULL, "GmMenuItemTiles", 2009, GmMenuItemTilesCb, 0, 0, 0, 0, },
 	{ 8, 0, 0L, 0L, 0L, NULL, NULL, "GmMenuItemFonts", 2009, GmMenuItemFontsCb, 0, 0, 0, 0, },
+	{ 0 }
+	};
+
+static const ApEventLink_t AbLinks_GmMenuHelp[] = {
+	{ 4, 0, 0L, 0L, 0L, &GmDialogAbout, NULL, "GmMenuItemAbout", 2009, NULL, 0, 9, 0, 0, },
 	{ 0 }
 	};
 

@@ -1,1 +1,1 @@
-ABMOD = GmWindow.wgtw Icon.wgti 
+ABMOD = GmDialogAbout.wgtd GmWindow.wgtw Icon.wgti 

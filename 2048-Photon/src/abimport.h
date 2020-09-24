@@ -3,7 +3,8 @@
 #include "abdefine.h"
 
 extern ApWindowLink_t GmWindow;
-extern ApWidget_t AbWidgets[ 5 ];
+extern ApDialogLink_t GmDialogAbout;
+extern ApWidget_t AbWidgets[ 6 ];
 
 extern ApMenuLink_t GmMenuGame;
 extern ApMenuLink_t GmMenuView;

@@ -9,6 +9,9 @@
 #define ABW_GmMenuButtonHelp                 AbGetABW( ABN_GmMenuButtonHelp )
 #define ABW_GmRaw                            AbGetABW( ABN_GmRaw )
 
+/* 'GmDialogAbout' Dialog link */
+#define ABW_GmDialogAbout                    AbGetABW( ABN_GmDialogAbout )
+
 #define AbGetABW( n ) ( AbWidgets[ n ].wgt )
 
 /* 'GmMenuGame' Menu link */
