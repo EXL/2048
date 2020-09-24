@@ -68,6 +68,7 @@ static const ApClassTab_t ClassTable[] = {
 	{ "PtMenuBar", &PtMenuBar },
 	{ "PtMenuButton", &PtMenuButton },
 	{ "PtRaw", &PtRaw },
+	{ "PtMenu", &PtMenu },
 	{ NULL, NULL }
 	};
 
