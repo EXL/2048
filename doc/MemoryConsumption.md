@@ -3,14 +3,18 @@ Memory Consumption on Various Platform
 
 Information were obtained:
 
-1. By using `cat /proc/`pidof bin`/status` command on Fedora 32 and MotoMAGX platform.
-2. By using "System Monitor" programm on Serenity OS.
+1. By using `cat /proc/$PID/status` command on Fedora 32 and MotoMAGX platform.
+2. By using "System Monitor" application on Serenity OS.
+
+*Note: `$PID` is Process Identifier of 2048 game.*
 
 ### 2048-Qt5
 
 GNOME System Monitor: 9.8 MiB
 
 ```
+cat /proc/`pidof 2048-Qt5`/status
+...
 VmPeak:  1063488 kB
 VmSize:  1002036 kB
 VmLck:         0 kB
@@ -34,6 +38,8 @@ HugetlbPages:  0 kB
 GNOME System Monitor: 3.0 MiB
 
 ```
+cat /proc/`pidof 2048-Qt4`/status
+...
 VmPeak:   289748 kB
 VmSize:   289748 kB
 VmLck:         0 kB
@@ -57,6 +63,8 @@ HugetlbPages:  0 kB
 GNOME System Monitor: 2.1 MiB
 
 ```
+cat /proc/`pidof 2048-Qt3`/status
+...
 VmPeak:   245084 kB
 VmSize:   245084 kB
 VmLck:         0 kB
@@ -80,6 +88,8 @@ HugetlbPages:  0 kB
 GNOME System Monitor: 1.2 MiB
 
 ```
+cat /proc/`pidof 2048-Qt2`/status
+...
 VmPeak:   240780 kB
 VmSize:   240780 kB
 VmLck:         0 kB
@@ -103,6 +113,8 @@ HugetlbPages:  0 kB
 GNOME System Monitor: 512.0 KiB
 
 ```
+cat /proc/`pidof 2048-Qt1`/status
+...
 VmPeak:   222656 kB
 VmSize:   222504 kB
 VmLck:         0 kB
@@ -126,6 +138,8 @@ HugetlbPages:  0 kB
 GNOME System Monitor: 4.6 MiB
 
 ```
+cat /proc/`pidof 2048-Gtk3`/status
+...
 VmPeak:   458176 kB
 VmSize:   398432 kB
 VmLck:         0 kB
@@ -149,6 +163,8 @@ HugetlbPages:  0 kB
 GNOME System Monitor: 2.2 MiB
 
 ```
+cat /proc/`pidof 2048-Gtk2`/status
+...
 VmPeak:   240204 kB
 VmSize:   240204 kB
 VmLck:         0 kB
@@ -172,6 +188,8 @@ HugetlbPages:  0 kB
 GNOME System Monitor: 480.0 KiB
 
 ```
+cat /proc/`pidof 2048-Gtk1`/status
+...
 VmPeak:    15980 kB
 VmSize:    15980 kB
 VmLck:         0 kB
@@ -195,6 +213,8 @@ HugetlbPages:  0 kB
 GNOME System Monitor: 832.0 KiB
 
 ```
+cat /proc/`pidof 2048-Motif`/status
+...
 VmPeak:   225024 kB
 VmSize:   224872 kB
 VmLck:         0 kB
@@ -218,6 +238,8 @@ HugetlbPages:  0 kB
 GNOME System Monitor: 332.0 KiB
 
 ```
+cat /proc/`pidof 2048-Xaw`/status
+...
 VmPeak:     5380 kB
 VmSize:     5380 kB
 VmLck:         0 kB
@@ -241,6 +263,8 @@ HugetlbPages:  0 kB
 GNOME System Monitor: 116.0 KiB
 
 ```
+cat /proc/`pidof 2048-Xlib`/status
+...
 VmPeak:     3896 kB
 VmSize:     3876 kB
 VmLck:         0 kB
@@ -264,6 +288,8 @@ HugetlbPages:  0 kB
 GNOME System Monitor: 96.0 KiB
 
 ```
+cat /proc/`pidof 2048-Xcb`/status
+...
 VmPeak:     2608 kB
 VmSize:     2588 kB
 VmLck:         0 kB
@@ -285,6 +311,8 @@ HugetlbPages:  0 kB
 ### 2048-MotoMAGX_ZN5
 
 ```
+cat /proc/`pidof 2048-MotoMAGX_ZN5`/status
+...
 VmSize:    28748 kB
 VmLck:         0 kB
 VmRSS:      5556 kB
@@ -298,6 +326,8 @@ VmPTE:        26 kB
 ### 2048-Serenity
 
 ```
+cat /proc/$PID/status
+...
 Virtual:    5988 kB
 Physical:   1688 kB
 DirtyP:      720 kB
