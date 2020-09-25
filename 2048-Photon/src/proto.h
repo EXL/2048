@@ -1,9 +1,6 @@
 
 /* 2048.c */
 
-/* GmLabelSourceCb.c */
-int GmLabelSourceCb ( PtWidget_t *widget , ApInfo_t *apinfo , PtCallbackInfo_t *cbinfo );
-
 /* GmMenuItemsCbs.c */
 int GmMenuItemQuitCb ( PtWidget_t *widget , ApInfo_t *apinfo , PtCallbackInfo_t *cbinfo );
 int GmMenuItemResetCb ( PtWidget_t *widget , ApInfo_t *apinfo , PtCallbackInfo_t *cbinfo );
