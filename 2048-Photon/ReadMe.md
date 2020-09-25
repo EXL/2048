@@ -38,3 +38,21 @@ QNX Photon Application Builder or PhAB:
 Text Editor and Terminal applications for editing and building source code:
 
 ![Text Editor & Terminal QNX Screenshot](../image/TextEditor-Terminal-QNX-Screenshot.png)
+
+## Versions
+
+* QNX SDP 6.5.0 x86
+* PhAB Version 2.03
+
+```
+qcc -V
+cc: targets available in /usr/qnx650/host/qnx6/x86/etc/qcc:
+	4.4.2,gcc_ntox86_acpp-ne
+	4.4.2,gcc_ntox86_gpp
+	4.4.2,gcc_ntox86_ecpp
+	4.4.2,gcc_ntox86_acpp
+	4.4.2,gcc_ntox86_ecpp-ne
+	4.4.2,gcc_ntox86	(default)
+	4.4.2,gcc_ntox86_cpp
+	4.4.2,gcc_ntox86_cpp-ne
+```
