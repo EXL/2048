@@ -22,7 +22,7 @@ This image contains the required compilers and the PhAB application.
 
 ```sh
 cd ~/Projects/2048/2048-Photon
-make
+make all
 strip -s x86/o/2048-Photon
 ./x86/o/2048-Photon
 ```
