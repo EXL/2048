@@ -33,6 +33,28 @@ ls -lh 2048-*
 -rwxrwxr-x. 1 exl exl  15K Jun 30 07:20 2048-Xaw
 -rwxrwxr-x. 1 exl exl  15K Jun 30 07:20 2048-Xcb
 -rwxrwxr-x. 1 exl exl  15K Jun 30 07:20 2048-Xlib
+
+ls -lh MotoMAGX/
+total 2.9M
+-rw-rw-r--. 1 exl exl  15K Jun 29 02:58 2048_MotoMAGX_ZN5_v1.0_28-Jul-2020.mgx
+-rw-rw-r--. 1 exl exl 2.9M Jun 27 05:01 2048_MotoMAGX_ZN5.webm
+
+ls -lh NeXTSTEP/*
+NeXTSTEP/2048-NeXTSTEP.app:
+total 260K
+-rwxr-xr-x. 1 exl exl 184K Nov 15  1994 2048-NeXTSTEP
+-rw-r--r--. 1 exl exl  50K Nov 15  1994 avatar.tiff
+drwxr-xr-x. 4 exl exl 4.0K Nov 15  1994 English.lproj
+-rw-r--r--. 1 exl exl  16K Nov 15  1994 icon150.tiff
+-rw-r--r--. 1 exl exl 3.2K Nov 15  1994 icon48.tiff
+
+NeXTSTEP/2048-NeXTSTEP.pkg:
+total 196K
+-rw-r--r--. 1 exl exl  16K Nov 15  1994 2048-NeXTSTEP.bom
+-r--r--r--. 1 exl exl  798 Nov 15  1994 2048-NeXTSTEP.info
+-rw-r--r--. 1 exl exl   49 Nov 15  1994 2048-NeXTSTEP.sizes
+-r--r--r--. 1 exl exl 168K Nov 15  1994 2048-NeXTSTEP.tar.Z
+-r--r--r--. 1 exl exl 3.2K Nov 15  1994 2048-NeXTSTEP.tiff
 ```
 
 ### File Types
@@ -62,6 +84,27 @@ file 2048-*
 2048-Xaw:           ELF 64-bit LSB executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, for GNU/Linux 2.6.32, BuildID[sha1]=566076a8373ccfa7cf64ff73a4b4385b18bce7a7, stripped
 2048-Xcb:           ELF 64-bit LSB executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, for GNU/Linux 2.6.32, BuildID[sha1]=1f45dde2f5c9aac70b8bcad872f45d8f962451ea, stripped
 2048-Xlib:          ELF 64-bit LSB executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, for GNU/Linux 2.6.32, BuildID[sha1]=55e80fe0e4e139ef18c9bee96bcd9f5d66545294, stripped
+
+file MotoMAGX/*
+MotoMAGX/2048_MotoMAGX_ZN5_v1.0_28-Jul-2020.mgx: 7-zip archive data, version 0.4
+MotoMAGX/2048_MotoMAGX_ZN5.webm:                 WebM
+
+file NeXTSTEP/2048-NeXTSTEP.pkg/*
+NeXTSTEP/2048-NeXTSTEP.pkg/2048-NeXTSTEP.bom:   data
+NeXTSTEP/2048-NeXTSTEP.pkg/2048-NeXTSTEP.info:  ASCII text
+NeXTSTEP/2048-NeXTSTEP.pkg/2048-NeXTSTEP.sizes: ASCII text
+NeXTSTEP/2048-NeXTSTEP.pkg/2048-NeXTSTEP.tar.Z: compress'd data 16 bits
+NeXTSTEP/2048-NeXTSTEP.pkg/2048-NeXTSTEP.tiff:  TIFF image data, little-endian, direntries=19, height=48, bps=3154, compression=LZW, PhotometricIntepretation=RGB, name=/home/exl/Projects/2048/image/icon/icon48_1.tiff, orientation=upper-left, width=48
+
+find NeXTSTEP/2048-NeXTSTEP.app/ -type f -exec file {} \;
+NeXTSTEP/2048-NeXTSTEP.app/icon150.tiff: TIFF image data, little-endian, direntries=19, height=150, bps=15744, compression=LZW, PhotometricIntepretation=RGB, name=/home/exl/Projects/2048/image/icon/avatar.tiff, orientation=upper-left, width=150
+NeXTSTEP/2048-NeXTSTEP.app/avatar.tiff: TIFF image data, little-endian, direntries=18, height=150, bps=50592, compression=LZW, PhotometricIntepretation=RGB, name=/home/exl/Projects/2048/image/icon/avatar.tiff, orientation=upper-left, width=150
+NeXTSTEP/2048-NeXTSTEP.app/English.lproj/2048-NeXTSTEP.nib/data.nib: NeXT/Apple typedstream data, little endian, version 4, system 930
+NeXTSTEP/2048-NeXTSTEP.app/English.lproj/2048-NeXTSTEP.nib/data.classes: ASCII text
+NeXTSTEP/2048-NeXTSTEP.app/English.lproj/2048-Info.nib/data.nib: NeXT/Apple typedstream data, little endian, version 4, system 930
+NeXTSTEP/2048-NeXTSTEP.app/English.lproj/2048-Info.nib/data.classes: ASCII text
+NeXTSTEP/2048-NeXTSTEP.app/icon48.tiff: TIFF image data, little-endian, direntries=19, height=48, bps=3154, compression=LZW, PhotometricIntepretation=RGB, name=/home/exl/Projects/2048/image/icon/icon48_1.tiff, orientation=upper-left, width=48
+NeXTSTEP/2048-NeXTSTEP.app/2048-NeXTSTEP: Mach-O universal binary with 4 architectures: [m68k:Mach-O m68k executable, flags:<NOUNDEFS>] [i386:Mach-O i386 executable, flags:<NOUNDEFS>] [hppa 7100:Mach-O hppa 7100 executable, flags:<NOUNDEFS>] [SPARC:Mach-O SPARC executable, flags:<NOUNDEFS>]
 ```
 
 ### 2048-Qt5
