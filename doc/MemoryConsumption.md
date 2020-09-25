@@ -5,6 +5,7 @@ Information were obtained:
 
 1. By using `cat /proc/`pidof bin`/status` command on Fedora 32 and MotoMAGX platform.
 2. By using "System Monitor" programm on Serenity OS.
+3. By using `showmem -P $PID` command on QNX 6.5.0.
 
 ### 2048-Qt5
 
@@ -307,3 +308,13 @@ PurgN:      1048 kB
 ```
 
 ![System Monitor on Serenity OS Screenshot](../image/System-Monitor-Serenity-Screenshot.png)
+
+### 2048-Photon
+
+```
+showmem -P `ps -A | grep 2048-Photon | head -1 | awk {print $1}`
+...
+Process listing (Total, Code, Data, Heap, Stack, Other)
+  2183168    1855488     102400     200704      24576          0      765987 2048-Photon
+Shared shared objects (Total, Code, Data, Heap, Stack, Other)
+```
