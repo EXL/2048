@@ -14,7 +14,7 @@ This image contains the required compilers and the PhAB application.
 ## Build & Run via PhAB
 
 1. Click "Launch" menu, choose "QNX Software Development Platform 6.5.0" and run "Photon Application Builder".
-2. Go to "File" menu, choose "Open" and select "2048-Photon" project in PhAB.
+2. Go to "File" menu, choose "Open" and select "2048-Photon" project in the PhAB.
 3. Go to "Build" menu, choose "Rebuild All" item.
 4. Go to "Build" menu, choose "Build & Run" item then push "OK" button.
 
