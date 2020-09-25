@@ -7,6 +7,7 @@
 #define ABW_GmMenuButtonGame                 AbGetABW( ABN_GmMenuButtonGame )
 #define ABW_GmMenuButtonView                 AbGetABW( ABN_GmMenuButtonView )
 #define ABW_GmMenuButtonHelp                 AbGetABW( ABN_GmMenuButtonHelp )
+#define ABW_GmOSContainer                    AbGetABW( ABN_GmOSContainer )
 #define ABW_GmRaw                            AbGetABW( ABN_GmRaw )
 
 /* 'GmDialogAbout' Dialog link */

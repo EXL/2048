@@ -4,7 +4,7 @@
 
 extern ApWindowLink_t GmWindow;
 extern ApDialogLink_t GmDialogAbout;
-extern ApWidget_t AbWidgets[ 8 ];
+extern ApWidget_t AbWidgets[ 9 ];
 
 extern ApMenuLink_t GmMenuGame;
 extern ApMenuLink_t GmMenuView;
@@ -15,17 +15,17 @@ extern "C" {
 #endif
 int GmMenuItemQuitCb( PtWidget_t *widget, ApInfo_t *data, PtCallbackInfo_t *cbinfo );
 int GmMenuItemResetCb( PtWidget_t *widget, ApInfo_t *data, PtCallbackInfo_t *cbinfo );
-int GmRawInitCb( PtWidget_t *widget ) 
-
-;
-void GmRawDrawCb( PtWidget_t *widget, PhTile_t *damage ) 
-
-;
 int GmWindowKeyEventCb( PtWidget_t *widget, ApInfo_t *data, PtCallbackInfo_t *cbinfo );
 int GmMenuItemBackgroundCb( PtWidget_t *widget, ApInfo_t *data, PtCallbackInfo_t *cbinfo );
 int GmMenuItemTilesCb( PtWidget_t *widget, ApInfo_t *data, PtCallbackInfo_t *cbinfo );
 int GmMenuItemFontsCb( PtWidget_t *widget, ApInfo_t *data, PtCallbackInfo_t *cbinfo );
 int GmSourceButtonEventCb( PtWidget_t *widget, ApInfo_t *data, PtCallbackInfo_t *cbinfo );
+void GmRawDrawCb( PtWidget_t *widget, PhTile_t *damage ) 
+
+;
+int GmRawInitCb( PtWidget_t *widget ) 
+
+;
 #ifdef __cplusplus
 }
 #endif
