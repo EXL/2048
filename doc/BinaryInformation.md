@@ -3,7 +3,7 @@ Binary Information
 
 Dependencies were obtained:
 
-1. By using `ldd` command on Fedora 32.
+1. By using `ldd` command on Fedora 32 and QNX.
 2. By `arm-linux-gnueabi-objdump` for MotoMAGX platform.
 
 ### Sizes
@@ -23,6 +23,7 @@ ls -lh 2048-*
 -rwxrwxr-x. 1 exl exl  40K Jun 29 02:57 2048-MotoMAGX_Z6
 -rwxrwxr-x. 1 exl exl  40K Jun 29 02:57 2048-MotoMAGX_Z6W
 -rwxrwxr-x. 1 exl exl  40K Jun 29 02:57 2048-MotoMAGX_ZN5
+-rwxrwxr-x. 1 exl exl  40K Sep 26 01:41 2048-Photon
 -rwxrwxr-x. 1 exl exl  23K Jun 30 07:19 2048-Qt1
 -rwxrwxr-x. 1 exl exl  32K Jun 30 07:19 2048-Qt2
 -rwxrwxr-x. 1 exl exl  32K Jun 30 07:19 2048-Qt3
@@ -51,6 +52,7 @@ file 2048-*
 2048-MotoMAGX_Z6:   ELF 32-bit LSB executable, ARM, EABI4 version 1 (SYSV), dynamically linked, interpreter /lib/ld-linux.so.3, for GNU/Linux 2.4.17, stripped
 2048-MotoMAGX_Z6W:  ELF 32-bit LSB executable, ARM, EABI4 version 1 (SYSV), dynamically linked, interpreter /lib/ld-linux.so.3, for GNU/Linux 2.4.17, stripped
 2048-MotoMAGX_ZN5:  ELF 32-bit LSB executable, ARM, EABI4 version 1 (SYSV), dynamically linked, interpreter /lib/ld-linux.so.3, for GNU/Linux 2.4.17, stripped
+2048-Photon:        ELF 32-bit LSB executable, Intel 80386, version 1 (SYSV), dynamically linked, interpreter /usr/lib/ldqnx.so.2, stripped
 2048-Qt1:           ELF 64-bit LSB executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, for GNU/Linux 2.6.32, BuildID[sha1]=881e5f8c0db33bf72acee46b37bfc2b5adfbdaad, stripped
 2048-Qt2:           ELF 64-bit LSB executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, for GNU/Linux 2.6.32, BuildID[sha1]=d7738df97853dafcedd43754d760f035317956a6, stripped
 2048-Qt3:           ELF 64-bit LSB executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, for GNU/Linux 2.6.32, BuildID[sha1]=7a5c4b4aa286d5ecde2f183a0a8ba1431eb05f9d, stripped
@@ -609,3 +611,16 @@ ldd 2048-Xcb | wc -l
 ### 2048-Serenity
 
 Static executable, linked with `-lgui -lgfx -lcore -lipc` libraries.
+
+### 2048-Photon
+
+```
+ldd 2048-Photon
+	libAp.so.3 => /usr/lib/libAp.so.3 (0xb8200000)
+	libph.so.3 => /usr/lib/libph.so.3 (0xb8211000)
+	libm.so.2 => /lib/libm.so.2 (0xb8320000)
+	libc.so.3 => /usr/lib/ldqnx.so.2 (0xb0300000)
+	libfont.so.1 => /lib/libfont.so.1 (0xb8353000)
+ldd 2048-Photon | wc -l
+	5
+```
