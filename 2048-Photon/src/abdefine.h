@@ -11,6 +11,7 @@
 
 /* 'GmDialogAbout' Dialog link */
 #define ABW_GmDialogAbout                    AbGetABW( ABN_GmDialogAbout )
+#define ABW_GmLabelSource                    AbGetABW( ABN_GmLabelSource )
 #define ABW_GmDialogAboutButton              AbGetABW( ABN_GmDialogAboutButton )
 
 #define AbGetABW( n ) ( AbWidgets[ n ].wgt )

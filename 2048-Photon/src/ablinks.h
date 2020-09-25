@@ -11,7 +11,7 @@ ApWindowLink_t GmWindow = {
 ApDialogLink_t GmDialogAbout = {
 	"GmDialogAbout.wgtd",
 	&AbContext,
-	AbLinks_GmDialogAbout, 5, 1
+	AbLinks_GmDialogAbout, 5, 2
 	};
 
 static ApItem_t ApItems_GmMenuGame[ 4 ] = {
@@ -29,7 +29,7 @@ ApMenuLink_t GmMenuGame = {
 	ApItems_GmMenuGame,
 	& AbContext,
 	AbLinks_GmMenuGame,
-	7, 2, 3
+	8, 2, 3
 	};
 
 static ApItem_t ApItems_GmMenuView[ 4 ] = {
@@ -47,7 +47,7 @@ ApMenuLink_t GmMenuView = {
 	ApItems_GmMenuView,
 	& AbContext,
 	AbLinks_GmMenuView,
-	11, 3, 3
+	12, 3, 3
 	};
 
 static ApItem_t ApItems_GmMenuHelp[ 2 ] = {
@@ -63,6 +63,6 @@ ApMenuLink_t GmMenuHelp = {
 	ApItems_GmMenuHelp,
 	& AbContext,
 	AbLinks_GmMenuHelp,
-	15, 1, 1
+	16, 1, 1
 	};
 

@@ -1,4 +1,4 @@
 /* Widget header for application - AppBuilder 2.03  */
 
-ApWidget_t AbWidgets[ 7 ];
+ApWidget_t AbWidgets[ 8 ];
 

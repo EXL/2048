@@ -21,6 +21,7 @@ static const ApEventLink_t AbLinks_GmWindow[] = {
 	};
 
 static const ApEventLink_t AbLinks_GmDialogAbout[] = {
+	{ 8, 1, 0L, 0L, 2L, NULL, NULL, "GmLabelSource", 1026, GmSourceButtonEventCb, 0, 0, 0, 0, },
 	{ 9, 0, 0L, 0L, 0L, NULL, NULL, "GmDialogAboutButton", 2009, NULL, 0, 0, 0, 0, },
 	{ 0 }
 	};

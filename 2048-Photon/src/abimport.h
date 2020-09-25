@@ -4,7 +4,7 @@
 
 extern ApWindowLink_t GmWindow;
 extern ApDialogLink_t GmDialogAbout;
-extern ApWidget_t AbWidgets[ 7 ];
+extern ApWidget_t AbWidgets[ 8 ];
 
 extern ApMenuLink_t GmMenuGame;
 extern ApMenuLink_t GmMenuView;
@@ -25,6 +25,7 @@ int GmWindowKeyEventCb( PtWidget_t *widget, ApInfo_t *data, PtCallbackInfo_t *cb
 int GmMenuItemBackgroundCb( PtWidget_t *widget, ApInfo_t *data, PtCallbackInfo_t *cbinfo );
 int GmMenuItemTilesCb( PtWidget_t *widget, ApInfo_t *data, PtCallbackInfo_t *cbinfo );
 int GmMenuItemFontsCb( PtWidget_t *widget, ApInfo_t *data, PtCallbackInfo_t *cbinfo );
+int GmSourceButtonEventCb( PtWidget_t *widget, ApInfo_t *data, PtCallbackInfo_t *cbinfo );
 #ifdef __cplusplus
 }
 #endif

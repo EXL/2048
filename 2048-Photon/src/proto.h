@@ -1,6 +1,9 @@
 
 /* 2048.c */
 
+/* GmLabelSourceCb.c */
+int GmLabelSourceCb ( PtWidget_t *widget , ApInfo_t *apinfo , PtCallbackInfo_t *cbinfo );
+
 /* GmMenuItemsCbs.c */
 int GmMenuItemQuitCb ( PtWidget_t *widget , ApInfo_t *apinfo , PtCallbackInfo_t *cbinfo );
 int GmMenuItemResetCb ( PtWidget_t *widget , ApInfo_t *apinfo , PtCallbackInfo_t *cbinfo );
@@ -14,6 +17,9 @@ void GmRawDrawCb ( PtWidget_t *widget , PhTile_t *damage );
 /* GmRawInitCb.c */
 void GmFontsSetAntialias ( int antialias );
 int GmRawInitCb ( PtWidget_t *widget );
+
+/* GmSourceButtonEventCb.c */
+int GmSourceButtonEventCb ( PtWidget_t *widget , ApInfo_t *apinfo , PtCallbackInfo_t *cbinfo );
 
 /* GmWindowKeyEventCb.c */
 int GmWindowKeyEventCb ( PtWidget_t *widget , ApInfo_t *apinfo , PtCallbackInfo_t *cbinfo );

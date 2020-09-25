@@ -11,20 +11,21 @@
 
 /* 'GmDialogAbout' Dialog link */
 #define ABN_GmDialogAbout                    5
-#define ABN_GmDialogAboutButton              6
+#define ABN_GmLabelSource                    6
+#define ABN_GmDialogAboutButton              7
 
 /* 'GmMenuGame' Menu link */
-#define ABN_GmMenuGame                       7
-#define ABN_GmMenuItemReset                  8
-#define ABN_GmMenuItemQuit                   10
+#define ABN_GmMenuGame                       8
+#define ABN_GmMenuItemReset                  9
+#define ABN_GmMenuItemQuit                   11
 
 /* 'GmMenuView' Menu link */
-#define ABN_GmMenuView                       11
-#define ABN_GmMenuItemBackground             12
-#define ABN_GmMenuItemTiles                  13
-#define ABN_GmMenuItemFonts                  14
+#define ABN_GmMenuView                       12
+#define ABN_GmMenuItemBackground             13
+#define ABN_GmMenuItemTiles                  14
+#define ABN_GmMenuItemFonts                  15
 
 /* 'GmMenuHelp' Menu link */
-#define ABN_GmMenuHelp                       15
-#define ABN_GmMenuItemAbout                  16
+#define ABN_GmMenuHelp                       16
+#define ABN_GmMenuItemAbout                  17
 
