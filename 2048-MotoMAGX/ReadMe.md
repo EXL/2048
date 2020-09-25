@@ -47,3 +47,34 @@ mv 2048.7z 2048_MotoMAGX_ZN5_v1.0_28-Jul-2020.mgx
 MOTODEV Studio for Linux:
 
 ![MOTODEV Studio for Linux Screenshot](../image/MOTODEV-Studio-Windows-XP-Screenshot.png)
+
+## Versions
+
+### Linux host:
+
+* Any Linux distro with support for running 32-bit x86 applications and tools.
+
+```sh
+arm-linux-gnueabi-gcc --version | head -1
+arm-linux-gnueabi-gcc (GCC) 3.4.3 (MontaVista 3.4.3-25.0.96.%{_mvl_build_id} 2007-11-17)
+
+arm-linux-gnueabi-g++ --version | head -1
+arm-linux-gnueabi-g++ (GCC) 3.4.3 (MontaVista 3.4.3-25.0.96.%{_mvl_build_id} 2007-11-17)
+```
+
+### Windows host for MOTODEV Studio for Linux:
+
+* Windows XP SP2 or SP3 (tested) 32-bit x86
+* SUN Java JRE 1.5.0, *jre-1_5_0_12-windows-i586-p.exe*
+* VMWare Player 2.0.4, *VMware-Player-2-0-4.exe*
+* MOTODEV Studio for Linux 0.3.0, *MOTODEV_Studio_for_Linux_0.3.0_Windows.exe*
+
+Download these installers on the [Yandex.Disk](https://yadi.sk/d/qg7HCi5h_LTeuw) file sharing service.
+
+```bat
+i686-mot-linux-gnu-gcc.exe --version
+i686-mot-linux-gnu-gcc (GCC) 3.4.3 (MontaVista 3.4.3-25.0.96.custom 2008-01-17)
+
+i686-mot-linux-gnu-g++.exe --version
+i686-mot-linux-gnu-g++ (GCC) 3.4.3 (MontaVista 3.4.3-25.0.96.custom 2008-01-17)
+```
