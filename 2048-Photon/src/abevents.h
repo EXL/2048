@@ -20,6 +20,11 @@ static const ApEventLink_t AbLinks_GmWindow[] = {
 	{ 0 }
 	};
 
+static const ApEventLink_t AbLinks_GmDialogAbout[] = {
+	{ 9, 0, 0L, 0L, 0L, NULL, NULL, "GmDialogAboutButton", 2009, NULL, 0, 0, 0, 0, },
+	{ 0 }
+	};
+
 static const ApEventLink_t AbLinks_GmMenuGame[] = {
 	{ 8, 0, 0L, 0L, 0L, NULL, NULL, "GmMenuItemReset", 2009, GmMenuItemResetCb, 0, 0, 0, 0, },
 	{ 8, 0, 0L, 0L, 0L, NULL, NULL, "GmMenuItemQuit", 2009, GmMenuItemQuitCb, 0, 0, 0, 0, },

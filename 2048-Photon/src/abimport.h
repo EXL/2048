@@ -4,7 +4,7 @@
 
 extern ApWindowLink_t GmWindow;
 extern ApDialogLink_t GmDialogAbout;
-extern ApWidget_t AbWidgets[ 6 ];
+extern ApWidget_t AbWidgets[ 7 ];
 
 extern ApMenuLink_t GmMenuGame;
 extern ApMenuLink_t GmMenuView;
