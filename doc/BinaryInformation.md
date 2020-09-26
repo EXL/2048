@@ -9,7 +9,7 @@ Dependencies were obtained:
 
 ### Sizes
 
-```sh
+```
 ls -lh 2048-*
 -rwxrwxr-x. 1 exl exl  15K Jun 30 07:18 2048-Gtk1
 -rwxrwxr-x. 1 exl exl  15K Jun 30 07:18 2048-Gtk2
@@ -60,7 +60,7 @@ total 196K
 
 ### File Types
 
-```sh
+```
 file 2048-*
 2048-Gtk1:          ELF 64-bit LSB executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, for GNU/Linux 2.6.32, BuildID[sha1]=7184adff443baf648bb1a08061fc2003b8f8265a, stripped
 2048-Gtk2:          ELF 64-bit LSB executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, for GNU/Linux 2.6.32, BuildID[sha1]=8664c4f62a320b321831474b86d84743d58a1378, stripped
@@ -110,7 +110,7 @@ NeXTSTEP/2048-NeXTSTEP.app/2048-NeXTSTEP: Mach-O universal binary with 4 archite
 
 ### 2048-Qt5
 
-```sh
+```
 ldd 2048-Qt5
 	linux-vdso.so.1 (0x00007ffcf2194000)
 	libQt5Widgets.so.5 => /lib64/libQt5Widgets.so.5 (0x00007fe6acc41000)
@@ -154,7 +154,7 @@ ldd 2048-Qt5 | wc -l
 
 ### 2048-Qt4
 
-```sh
+```
 ldd 2048-Qt4
 	linux-vdso.so.1 (0x00007ffea8372000)
 	libQtGui.so.4 => /lib64/libQtGui.so.4 (0x00007f1c7ac4d000)
@@ -195,7 +195,7 @@ ldd 2048-Qt4 | wc -l
 
 ### 2048-Qt3
 
-```sh
+```
 ldd 2048-Qt3
 	linux-vdso.so.1 (0x00007ffd62de7000)
 	libqt-mt.so.3 => /usr/lib64/qt-3.3/lib/libqt-mt.so.3 (0x00007fd02c2aa000)
@@ -235,7 +235,7 @@ ldd 2048-Qt3 | wc -l
 
 ### 2048-Qt2
 
-```sh
+```
 ldd 2048-Qt2
 	linux-vdso.so.1 (0x00007fff0c2eb000)
 	libqt2.so.2 => /home/exl/Projects/qt2/src/libqt2.so.2 (0x00007f4be7159000)
@@ -275,7 +275,7 @@ ldd 2048-Qt2 | wc -l
 
 ### 2048-Qt1
 
-```sh
+```
 ldd 2048-Qt1
 	linux-vdso.so.1 (0x00007ffe55797000)
 	libqt1.so.1 => /home/exl/Projects/qt1/src/libqt1.so.1 (0x00007fe40439f000)
@@ -295,7 +295,7 @@ ldd 2048-Qt1 | wc -l
 
 ### 2048-Gtk3
 
-```sh
+```
 ldd 2048-Gtk3
 	linux-vdso.so.1 (0x00007fff191af000)
 	libgtk-3.so.0 => /lib64/libgtk-3.so.0 (0x00007f9e5d363000)
@@ -370,7 +370,7 @@ ldd 2048-Gtk3 | wc -l
 
 ### 2048-Gtk2
 
-```sh
+```
 ldd 2048-Gtk2
 	linux-vdso.so.1 (0x00007ffe06b8a000)
 	libglib-2.0.so.0 => /lib64/libglib-2.0.so.0 (0x00007f4bc7e31000)
@@ -433,7 +433,7 @@ ldd 2048-Gtk2 | wc -l
 
 ### 2048-Gtk1
 
-```sh
+```
 ldd 2048-Gtk1
 	linux-vdso.so.1 (0x00007ffd49181000)
 	libgtk-1.2.so.0 => /lib64/libgtk-1.2.so.0 (0x00007fc2855f1000)
@@ -455,7 +455,7 @@ ldd 2048-Gtk1 | wc -l
 
 ### 2048-Motif
 
-```sh
+```
 ldd 2048-Motif
 	linux-vdso.so.1 (0x00007ffeb43f6000)
 	libXm.so.4 => /lib64/libXm.so.4 (0x00007f327fe50000)
@@ -489,7 +489,7 @@ ldd 2048-Motif | wc -l
 
 ### 2048-Xaw
 
-```sh
+```
 ldd 2048-Xaw
 	linux-vdso.so.1 (0x00007ffd0bb2c000)
 	libXaw.so.7 => /lib64/libXaw.so.7 (0x00007f66d0458000)
@@ -512,7 +512,7 @@ ldd 2048-Xaw | wc -l
 
 ### 2048-Xlib
 
-```sh
+```
 ldd 2048-Xlib
 	linux-vdso.so.1 (0x00007ffc653f0000)
 	libX11.so.6 => /lib64/libX11.so.6 (0x00007fe456934000)
@@ -527,7 +527,7 @@ ldd 2048-Xlib | wc -l
 
 ### 2048-Xcb
 
-```sh
+```
 ldd 2048-Xcb
 	linux-vdso.so.1 (0x00007ffe28c30000)
 	libxcb.so.1 => /lib64/libxcb.so.1 (0x00007f93c90b5000)
@@ -542,7 +542,7 @@ ldd 2048-Xcb | wc -l
 
 ### 2048-MotoMAGX_Z6
 
-```sh
+```
 /opt/toolchains/motomagx/arm-eabi/bin/arm-linux-gnueabi-objdump -x 2048-MotoMAGX_Z6 | grep NEEDED
   NEEDED      libqte-mt.so.2
   NEEDED      libezxpm.so.2
@@ -556,7 +556,7 @@ ldd 2048-Xcb | wc -l
 
 ### 2048-MotoMAGX_V8
 
-```sh
+```
 /opt/toolchains/motomagx/arm-eabi/bin/arm-linux-gnueabi-objdump -x 2048-MotoMAGX_V8 | grep NEEDED
   NEEDED      libqte-mt.so.2
   NEEDED      libezxpm.so.2
@@ -569,7 +569,7 @@ ldd 2048-Xcb | wc -l
 
 ### 2048-MotoMAGX_Z6W
 
-```sh
+```
 /opt/toolchains/motomagx/arm-eabi/bin/arm-linux-gnueabi-objdump -x 2048-MotoMAGX_Z6W | grep NEEDED
   NEEDED      libqte-mt.so.2
   NEEDED      libezxappbase.so.1
@@ -594,7 +594,7 @@ ldd 2048-Xcb | wc -l
 
 ### 2048-MotoMAGX_ZN5
 
-```sh
+```
 /opt/toolchains/motomagx/arm-eabi/bin/arm-linux-gnueabi-objdump -x 2048-MotoMAGX_ZN5 | grep NEEDED
   NEEDED      libqte-mt.so.2
   NEEDED      libezxappbase.so.1
@@ -606,7 +606,7 @@ ldd 2048-Xcb | wc -l
 
 ### 2048-MotoMAGX_E8
 
-```sh
+```
 /opt/toolchains/motomagx/arm-eabi/bin/arm-linux-gnueabi-objdump -x 2048-MotoMAGX_ZN5 | grep NEEDED
   NEEDED      libqte-mt.so.2
   NEEDED      libezxappbase.so.1
@@ -618,7 +618,7 @@ ldd 2048-Xcb | wc -l
 
 ### 2048-MotoMAGX_EM30
 
-```sh
+```
 /opt/toolchains/motomagx/arm-eabi/bin/arm-linux-gnueabi-objdump -x 2048-MotoMAGX_EM30 | grep NEEDED
   NEEDED      libqte-mt.so.2
   NEEDED      libezxappbase.so.1
@@ -630,7 +630,7 @@ ldd 2048-Xcb | wc -l
 
 ### 2048-MotoMAGX_VE66
 
-```sh
+```
 /opt/toolchains/motomagx/arm-eabi/bin/arm-linux-gnueabi-objdump -x 2048-MotoMAGX_VE66 | grep NEEDED
   NEEDED      libqte-mt.so.2
   NEEDED      libezxappbase.so.1
@@ -642,7 +642,7 @@ ldd 2048-Xcb | wc -l
 
 ### 2048-MotoMAGX_EM35
 
-```sh
+```
 /opt/toolchains/motomagx/arm-eabi/bin/arm-linux-gnueabi-objdump -x 2048-MotoMAGX_EM35 | grep NEEDED
   NEEDED      libqte-mt.so.2
   NEEDED      libezxappbase.so.1
