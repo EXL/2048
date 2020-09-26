@@ -1,7 +1,11 @@
 PROGRAM = 2048-Serenity
+
+STRIP = strip
+
 OBJS = ../../src/2048.o ../main.o
 CFLAGS = -I../../src/ -O2
-CXXFLAGS = -I../../src/ -fno-rtti -O2
+CXXFLAGS = -I../../src/ -I../../../../../Libraries/LibM -O2 -std=c++2a -fconcepts -fno-exceptions -fno-rtti
+
 LDFLAGS = -lgui -lgfx -lcore -lipc
 
 all: $(PROGRAM)

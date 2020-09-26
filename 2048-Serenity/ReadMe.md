@@ -12,8 +12,8 @@ See [SerenityOS build instructions](https://github.com/SerenityOS/serenity/blob/
 ```sh
 cd ~/Projects/
 git clone https://github.com/EXL/2048
-cp -aR ~/Projects/2048/2048-Serenity/port/2048-Serenity ~/Projects/serenity/Ports/
-cd ~/Projects/serenity/Ports/2048-Serenity/
+cp -aR ~/Projects/2048/2048-Serenity/port/2048 ~/Projects/serenity/Ports/
+cd ~/Projects/serenity/Ports/2048/
 ./package.sh
 
 cd ~/Projects/serenity/Build/

@@ -94,7 +94,7 @@ class Widget final : public GUI::Widget {
 };
 
 int main(int argc, char *argv[]) {
-	GUI::Application application(argc, argv);
+	auto application = GUI::Application::construct(argc, argv);
 
 	const String title = "2048-Serenity";
 	auto window = GUI::Window::construct();
@@ -112,17 +112,18 @@ int main(int argc, char *argv[]) {
 	}));
 	main_menu.add_separator();
 	main_menu.add_action(GUI::CommonActions::make_quit_action([](auto &) {
-		GUI::Application::the().quit(0);
+		GUI::Application::the()->quit(0);
 	}));
 	auto &help_menu = menubar->add_menu("Help");
 	help_menu.add_action(GUI::Action::create("About...", [&](auto &) {
-		GUI::MessageBox::show("2048 Game, Version: 1.0, \xC2\xA9 EXL (exl@bk.ru), 2020, https://github.com/EXL/2048",
-			title, GUI::MessageBox::Type::Information, GUI::MessageBox::InputType::OK, window);
+//		GUI::MessageBox::show(window,
+//			"2048 Game, Version: 1.0, \xC2\xA9 EXL (exl@bk.ru), 2020, https://github.com/EXL/2048",
+//			title, GUI::MessageBox::Type::Information, GUI::MessageBox::InputType::OK, window);
 	}));
 
-	application.set_menubar(move(menubar));
+	application->set_menubar(move(menubar));
 	window->set_icon(Gfx::Bitmap::load_from_file("/res/icons/16x16/app-2048.png"));
 	window->show();
 
-	return application.exec();
+	return application->exec();
 }
