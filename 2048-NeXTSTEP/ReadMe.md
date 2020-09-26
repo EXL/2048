@@ -98,3 +98,23 @@ Project Builder:
 Interface Builder:
 
 ![Interface Builder NeXTSTEP Screenshot](../image/InterfaceBuilder-NeXTSTEP-Screenshot.png)
+
+## Versions
+
+![Versions NeXTSTEP Screenshot](../image/Versions-NeXTSTEP-Screenshot.png)
+
+Compiler on Motorola 68040 platform:
+
+```
+cc -v
+Reading specs from /lib/m68k/specs
+NeXT Computer, Inc. version cc-437.2.6, gcc version 2.5.8
+```
+
+Compiler on Intel 80486 (i486) platform:
+
+```
+cc -v
+Reading specs from /lib/i386/specs
+NeXT Computer, Inc. version cc-437.2.6, gcc version 2.5.8
+```
