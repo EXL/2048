@@ -3,7 +3,7 @@
 
 ![2048-Serenity Serenity OS Screenshot](../image/2048-Serenity-Screenshot.png)
 
-Port to the [Serenity OS](https://github.com/SerenityOS/serenity) by Andreas Kling.
+[Serenity OS](https://github.com/SerenityOS/serenity) by Andreas Kling.
 
 See [SerenityOS build instructions](https://github.com/SerenityOS/serenity/blob/master/Documentation/BuildInstructions.md) for information about building Serenity OS before compiling this game.
 
@@ -12,17 +12,16 @@ See [SerenityOS build instructions](https://github.com/SerenityOS/serenity/blob/
 ```sh
 cd ~/Projects/
 git clone https://github.com/EXL/2048
-cp -aR ~/Projects/2048/2048-Serenity/port/2048 ~/Projects/serenity/Ports/
+cp -aR ~/Projects/2048/2048-Serenity/port/2048/ ~/Projects/serenity/Ports/
 cd ~/Projects/serenity/Ports/2048/
 ./package.sh
 
 cd ~/Projects/serenity/Build/
-make install
 make image
 make run
 ```
 
-Run game via "Main Menu" => "Games" => "2048" menu items.
+Run game via "Main Menu" => "Games" => "2048-Serenity" menu item.
 
 ## Build & Run via HackStudio
 
@@ -32,14 +31,13 @@ git clone https://github.com/EXL/2048
 cp -aR ~/Projects/2048 ~/Projects/serenity/Base/home/anon/
 
 cd ~/Projects/serenity/Build/
-make install
 make image
 make run
 ```
 
 Run HackStudio, open `2048-Serenity.files` project, build and run game.
 
-## Build & Run
+## Build & Run via Makefile
 
 Host:
 
@@ -49,7 +47,6 @@ git clone https://github.com/EXL/2048
 cp -aR ~/Projects/2048 ~/Projects/serenity/Base/home/anon/
 
 cd ~/Projects/serenity/Build/
-make install
 make image
 make run
 ```
