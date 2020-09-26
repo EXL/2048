@@ -10,7 +10,10 @@ See [SerenityOS build instructions](https://github.com/SerenityOS/serenity/blob/
 ## Build & Run via Ports
 
 ```sh
-cd ~/Projects/serenity/Ports/2048/
+cd ~/Projects/
+git clone https://github.com/EXL/2048
+cp -aR ~/Projects/2048/2048-Serenity/port/2048-Serenity ~/Projects/serenity/Ports/
+cd ~/Projects/serenity/Ports/2048-Serenity/
 ./package.sh
 
 cd ~/Projects/serenity/Build/

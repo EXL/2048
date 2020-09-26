@@ -1,6 +1,6 @@
-CC = i686-pc-serenity-gcc
-CXX = i686-pc-serenity-g++
-STRIP = i686-pc-serenity-strip
+CC = $(CC)
+CXX = $(CXX)
+STRIP = $(STRIP)
 
 PROGRAM = 2048-Serenity
 OBJS = ../../src/2048.o ../main.o
@@ -27,8 +27,8 @@ install:
 	mkdir -p $(DESTDIR)/bin/
 	cp $(PROGRAM) $(DESTDIR)/bin/
 	mkdir -p $(DESTDIR)/res/icons/16x16/
-	cp ../../image/icon/app-2048-16.png $(DESTDIR)/res/icons/16x16/
+	cp ../../image/icon/app-2048-Serenity-16.png $(DESTDIR)/res/icons/16x16/
 	mkdir -p $(DESTDIR)/res/icons/32x32/
-	cp ../../image/icon/app-2048-32.png $(DESTDIR)/res/icons/32x32/
+	cp ../../image/icon/app-2048-Serenity-32.png $(DESTDIR)/res/icons/32x32/
 	mkdir -p $(DESTDIR)/res/apps/
-	cp 2048.af $(DESTDIR)/res/apps/
+	cp 2048-Serenity.af $(DESTDIR)/res/apps/
