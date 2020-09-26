@@ -101,7 +101,7 @@ int main(int argc, char *argv[]) {
 	window->set_double_buffering_enabled(false);
 	window->set_title(title);
 	window->set_rect(100, 100, 340, 400);
-	window->set_resizable(false);
+	// window->set_resizable(false);
 
 	auto &widget = window->set_main_widget<Widget>();
 	auto menubar = GUI::MenuBar::construct();
