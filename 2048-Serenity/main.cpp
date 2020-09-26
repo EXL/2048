@@ -106,16 +106,10 @@ int main(int argc, char *argv[]) {
 	auto &widget = window->set_main_widget<Widget>();
 	auto menubar = GUI::MenuBar::construct();
 	auto &main_menu = menubar->add_menu(title);
-	main_menu.add_action(GUI::CommonActions::make_undo_action([&](auto&) {
-		e_key(KeyCode::Key_Escape);
-		widget.update();
-	}));
-	/*
 	main_menu.add_action(GUI::Action::create("Reset", {Mod_Ctrl, Key_R}, [&](auto &) {
 		e_key(KeyCode::Key_Escape);
 		widget.update();
 	}));
-	*/
 	main_menu.add_separator();
 	main_menu.add_action(GUI::CommonActions::make_quit_action([](auto &) {
 		GUI::Application::the()->quit(0);

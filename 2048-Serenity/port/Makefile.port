@@ -4,6 +4,9 @@ STRIP = strip
 
 OBJS = ../../src/2048.o ../main.o
 CFLAGS = -I../../src/ -O2
+# TODO: 26-Sep-2020
+# Why is there a compilation error without `-I../../../../../Libraries/LibM` include option?
+# Check this on future versions of Serenity or with the release of a new C++ standard.
 CXXFLAGS = -I../../src/ -I../../../../../Libraries/LibM -O2 -std=c++2a -fconcepts -fno-exceptions -fno-rtti
 
 LDFLAGS = -lgui -lgfx -lcore -lipc
