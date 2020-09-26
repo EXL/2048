@@ -3,11 +3,12 @@ Memory Consumption on Various Platform
 
 Information were obtained:
 
-1. By using `cat /proc/$PID/status` command on Fedora 32 and MotoMAGX platform.
+1. By using `cat /proc/$PID/status` command on Fedora and MotoMAGX platform.
 2. By using "System Monitor" application on Serenity OS.
-3. By using `showmem -P $PID` command on QNX 6.5.0.
+3. By using `showmem -P $PID` command on QNX.
+4. By using `px aux` command on NeXTSTEP.
 
-*Note: `$PID` is Process Identifier of 2048 game.*
+*Note: `$PID` is Process Identifier of the executable file.*
 
 ### 2048-Qt5
 
@@ -338,6 +339,14 @@ PurgN:      1048 kB
 ```
 
 ![System Monitor on Serenity OS Screenshot](../image/System-Monitor-Serenity-Screenshot.png)
+
+### 2048-NeXTSTEP
+
+```
+ps aux | head -1 && ps aux | grep 2048
+USER       PID  %CPU %MEM VSIZE RSIZE TT STAT  TIME COMMAND
+root       223   0.0  1.2 4.31M 1.52M ?  SW    0:00 /me/Apps/2048-NeXTSTEP.app/
+```
 
 ### 2048-Photon
 

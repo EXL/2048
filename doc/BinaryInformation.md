@@ -3,8 +3,9 @@ Binary Information
 
 Dependencies were obtained:
 
-1. By using `ldd` command on Fedora 32 and QNX.
+1. By using `ldd` command on Fedora and QNX.
 2. By `arm-linux-gnueabi-objdump` for MotoMAGX platform.
+3. By `otool -L` command on NeXTSTEP.
 
 ### Sizes
 
@@ -649,6 +650,28 @@ ldd 2048-Xcb | wc -l
   NEEDED      libm.so.6
   NEEDED      libgcc_s.so.1
   NEEDED      libc.so.6
+```
+
+### 2048-NeXTSTEP
+
+Motorola 68040 version:
+
+```
+otool -L 2048-NeXTSTEP
+2048-NeXTSTEP:
+        /usr/shlib/libFoundation_s.E.shlib (minor version 1)
+        /usr/shlib/libNeXT_s.C.shlib (minor version 57)
+        /usr/shlib/libsys_s.B.shlib (minor version 55)
+```
+
+Intel 80486 (i486) version:
+
+```
+otool -L 2048-NeXTSTEP
+2048-NeXTSTEP:
+        /usr/shlib/libFoundation_s.E.shlib (minor version 1)
+        /usr/shlib/libNeXT_s.C.shlib (minor version 89)
+        /usr/shlib/libsys_s.B.shlib (minor version 62)
 ```
 
 ### 2048-Serenity
