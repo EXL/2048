@@ -1,7 +1,3 @@
-CC = $(CC)
-CXX = $(CXX)
-STRIP = $(STRIP)
-
 PROGRAM = 2048-Serenity
 OBJS = ../../src/2048.o ../main.o
 CFLAGS = -I../../src/ -O2
