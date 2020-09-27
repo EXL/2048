@@ -94,9 +94,10 @@ class Widget final : public GUI::Widget {
 		GUI::Painter painter(*this);
 		auto rect = paintEvent.rect();
 		painter.add_clip_rect(rect);
-		if (q_show_background) {
+		if (q_show_background)
 			painter.fill_rect(rect, Color::from_rgb(COLOR_BOARD));
-		}
+		else
+			painter.fill_rect(rect, palette().color(background_role()));
 		for (int y = 0; y < LINE_SIZE; ++y)
 			for (int x = 0; x < LINE_SIZE; ++x)
 				draw_tile(painter, rect, e_board[x + y * LINE_SIZE], x, y);
@@ -138,19 +139,20 @@ int main(int argc, char *argv[]) {
 		widget.set_show_background(action.is_checked());
 		widget.update();
 	});
-	background_action->set_checked(widget.is_show_background);
+	background_action->set_checked(widget.is_show_background());
 	auto tiles_action = GUI::Action::create_checkable("Round Tiles", [&](auto &action) {
 		widget.set_tiles_rounded(action.is_checked());
 		widget.update();
 	});
+	tiles_action->set_checked(widget.is_tiles_rounded());
 	view_menu.add_action(*background_action);
 	view_menu.add_action(*tiles_action);
 	auto &help_menu = menubar->add_menu("Help");
 	help_menu.add_action(GUI::Action::create("About...", [&](auto &) {
 		GUI::MessageBox::show(window,
-			"2048 Game, Version: 1.0, \xC2\xA9 EXL (exl@bk.ru), 2020, https://github.com/EXL/2048",
+			"2048 Game, Version: 1.0, 27-Sep-2020, \xC2\xA9 EXL (exl@bk.ru), https://github.com/EXL/2048",
 			title, GUI::MessageBox::Type::Information);
-	}), true);
+	}));
 
 	application->set_menubar(move(menubar));
 	window->set_icon(Gfx::Bitmap::load_from_file("/res/icons/16x16/app-2048-Serenity-16.png"));
