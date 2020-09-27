@@ -89,6 +89,8 @@ class Widget final : public GUI::Widget {
 		is_tiles_rounded = true;
 		is_show_bakground = true;
 		e_init(KeyCode::Key_Escape, KeyCode::Key_Left, KeyCode::Key_Right, KeyCode::Key_Up, KeyCode::Key_Down);
+		set_preferred_size(Gfx::IntRect(340, 400));
+		set_size_policy(GUI::SizePolicy::Fill, GUI::SizePolicy::Fill);
 	}
 	virtual void paint_event(GUI::PaintEvent &paintEvent) override {
 		GUI::Painter painter(*this);
@@ -116,7 +118,6 @@ int main(int argc, char *argv[]) {
 	window->set_double_buffering_enabled(false);
 	window->set_title(title);
 	window->set_rect(100, 100, 340, 400);
-	window->set_base_size(Gfx::IntSize(340, 400));
 
 	auto &widget = window->set_main_widget<Widget>();
 	auto menubar = GUI::MenuBar::construct();
@@ -128,6 +129,13 @@ int main(int argc, char *argv[]) {
 	main_menu.add_separator();
 	main_menu.add_action(GUI::CommonActions::make_quit_action([](auto &) {
 		GUI::Application::the()->quit(0);
+	}));
+	auto &view_menu = menubar->add_menu("View");
+	view_menu.add_action(GUI::Action::create("Background", [](auto &) {
+		
+	}));
+	view_menu.add_action(GUI::Action::create("Round Tiles", [](auto &) {
+		
 	}));
 	auto &help_menu = menubar->add_menu("Help");
 	help_menu.add_action(GUI::Action::create("About...", [&](auto &) {
