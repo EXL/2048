@@ -38,13 +38,13 @@ public:
     void paint (juce::Graphics& g) override
     {
         if (qBackground) {
-            g.fillAll (juce::Colour(COLOR_BOARD));
+            g.fillAll (juce::Colour (COLOR_BOARD));
         } else {
             // (Our component is opaque, so we must completely fill the background with a solid colour)
             g.fillAll (getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId));
         }
         
-        auto rect = getLocalBounds();
+        const auto rect = getLocalBounds();
 
         for (int y = 0; y < LINE_SIZE; ++y)
 	        for (int x = 0; x < LINE_SIZE; ++x)
@@ -76,21 +76,27 @@ private:
     bool qRoundTiles;
     
     //==============================================================================
-    void drawTile (juce::Graphics& g, juce::Rectangle<int>& rect, int value, int x, int y)
+    void drawTile (juce::Graphics& g, const juce::Rectangle<int>& rect, int value, int x, int y)
     {
         const int xOffset = offsetCoord (x, rect.getWidth(), 0), yOffset = offsetCoord (y, rect.getHeight(), TILE_MARGIN * 2);
-        g.setColour (juce::Colour(e_background(value)));
+        g.setColour (juce::Colour (e_background (value)));
         if (qRoundTiles)
             g.fillRoundedRectangle (xOffset, yOffset, TILE_SIZE, TILE_SIZE, 10);
         else
             g.fillRect (xOffset, yOffset, TILE_SIZE, TILE_SIZE);
         if (value)
         {
-            
+            const int size = (value < 100) ? 32 : (value < 1000) ? 28 : 22;
+            auto font = juce::Font (size, juce::Font::bold);
+            auto strValue = juce::String (value);
+            g.setColour (juce::Colour (e_foreground (value)));
+            g.setFont (font);
+            const int w = font.getStringWidth (strValue), h = (value < 100) ? size - 6 : (value < 1000) ? size - 4 : size - 5;
+            g.drawSingleLineText (strValue, xOffset + (TILE_SIZE - w) / 2, yOffset + TILE_SIZE - (TILE_SIZE - h) / 2 - 2);
         }
     }
     
-    void drawFinal (juce::Graphics& g, juce::Rectangle<int>& rect)
+    void drawFinal (juce::Graphics& g, const juce::Rectangle<int>& rect)
     {
     
     }
@@ -163,7 +169,7 @@ public:
                               DocumentWindow::allButtons)
         {
             setUsingNativeTitleBar (true);
-            auto gameComponent = new GameComponent();
+            const auto gameComponent = new GameComponent();
             setContentOwned (gameComponent, true);
             addKeyListener (gameComponent);
 
