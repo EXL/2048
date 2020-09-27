@@ -87,8 +87,8 @@ private:
         if (value)
         {
             const int size = (value < 100) ? 32 : (value < 1000) ? 28 : 22;
-            auto font = juce::Font (size, juce::Font::bold);
-            auto strValue = juce::String (value);
+            const auto font = juce::Font (size, juce::Font::bold);
+            const auto strValue = juce::String (value);
             g.setColour (juce::Colour (e_foreground (value)));
             g.setFont (font);
             const int w = font.getStringWidth (strValue), h = (value < 100) ? size - 6 : (value < 1000) ? size - 4 : size - 5;
@@ -98,7 +98,26 @@ private:
     
     void drawFinal (juce::Graphics& g, const juce::Rectangle<int>& rect)
     {
-    
+        const int width = rect.getWidth(), height = rect.getHeight();
+        if (e_win || e_lose)
+        {
+            g.setColour (juce::Colour (COLOR_OVERLAY));
+            g.setOpacity (0.5f);
+            g.fillRect (rect);
+            const juce::String strFinal = (e_win) ? "You Won!" : "Game Over!";
+            const auto font = juce::Font (32, juce::Font::bold);
+            g.setColour (juce::Colour (COLOR_FINAL));
+            g.setFont (font);
+            const int w = font.getStringWidth (strFinal);
+            g.drawSingleLineText (strFinal, width / 2 - w / 2, height / 2);
+        }
+        g.setColour (juce::Colour (COLOR_TEXT));
+        const auto font = juce::Font (22);
+        g.setFont (font);
+        const juce::String strScore = juce::String("Score: ") + juce::String (e_score);
+        const int w = font.getStringWidth (strScore);
+        g.drawSingleLineText ("ESC to Restart!", TILE_MARGIN, height - 20);
+        g.drawSingleLineText (strScore, width - w - TILE_MARGIN, height - 20);
     }
     
     inline int offsetCoord(int coord, int size, int offset) {
