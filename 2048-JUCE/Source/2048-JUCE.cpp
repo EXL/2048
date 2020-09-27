@@ -12,20 +12,24 @@
 
 #include "../../src/2048.h"
 
+static const int TILE_SIZE = 64;
+static const int TILE_MARGIN = 16;
+
 //==============================================================================
 /*
     This component lives inside our window, and this is where you should put all
     your controls and content.
 */
-class GameComponent  : public juce::Component
+class GameComponent : public juce::Component, public juce::KeyListener
 {
 public:
     //==============================================================================
     GameComponent() : qBackground(true), qRoundTiles(true) 
     {
-        e_init (0, 0, 0, 0, 0);
+        e_init (juce::KeyPress::escapeKey, juce::KeyPress::leftKey, juce::KeyPress::rightKey, juce::KeyPress::upKey, juce::KeyPress::downKey);
         setSize (340, 400);
     }
+
     ~GameComponent() override
     {
     }
@@ -39,18 +43,31 @@ public:
             // (Our component is opaque, so we must completely fill the background with a solid colour)
             g.fillAll (getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId));
         }
+        
+        auto rect = getLocalBounds();
 
         for (int y = 0; y < LINE_SIZE; ++y)
 	        for (int x = 0; x < LINE_SIZE; ++x)
-	            drawTile (g);
+	            drawTile (g, rect, e_board[x + y * LINE_SIZE], x, y);
 
-	    drawFinal(g);
+	    drawFinal (g, rect);
     }
+
     void resized() override
     {
         // This is called when the GameComponent is resized.
         // If you add any child components, this is where you should
         // update their positions.
+    }
+
+    bool keyPressed (const juce::KeyPress &key, juce::Component *originatingComponent) override
+    {
+        if (key.isValid())
+        {
+            e_key (key.getKeyCode());
+            repaint();
+        }
+        return true;
     }
 
 private:
@@ -59,15 +76,29 @@ private:
     bool qRoundTiles;
     
     //==============================================================================
-    void drawTile (juce::Graphics& g)
+    void drawTile (juce::Graphics& g, juce::Rectangle<int>& rect, int value, int x, int y)
+    {
+        const int xOffset = offsetCoord (x, rect.getWidth(), 0), yOffset = offsetCoord (y, rect.getHeight(), TILE_MARGIN * 2);
+        g.setColour (juce::Colour(e_background(value)));
+        if (qRoundTiles)
+            g.fillRoundedRectangle (xOffset, yOffset, TILE_SIZE, TILE_SIZE, 10);
+        else
+            g.fillRect (xOffset, yOffset, TILE_SIZE, TILE_SIZE);
+        if (value)
+        {
+            
+        }
+    }
+    
+    void drawFinal (juce::Graphics& g, juce::Rectangle<int>& rect)
     {
     
     }
     
-    void drawFinal (juce::Graphics& g)
-    {
-    
-    }
+    inline int offsetCoord(int coord, int size, int offset) {
+		const int start = (size / 2) - (((TILE_SIZE * LINE_SIZE) + (TILE_MARGIN * (LINE_SIZE - 1))) / 2);
+		return coord * (TILE_MARGIN + TILE_SIZE) + start - offset;
+	}
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (GameComponent)
 };
@@ -77,7 +108,7 @@ private:
     
     This section contains the basic startup code for a JUCE application.
 */
-class Application  : public juce::JUCEApplication
+class Application : public juce::JUCEApplication
 {
 public:
     //==============================================================================
@@ -122,7 +153,7 @@ public:
         This class implements the desktop window that contains an instance of
         our GameComponent class.
     */
-    class GameWindow    : public juce::DocumentWindow
+    class GameWindow : public juce::DocumentWindow
     {
     public:
         GameWindow (juce::String name)
@@ -132,7 +163,9 @@ public:
                               DocumentWindow::allButtons)
         {
             setUsingNativeTitleBar (true);
-            setContentOwned (new GameComponent(), true);
+            auto gameComponent = new GameComponent();
+            setContentOwned (gameComponent, true);
+            addKeyListener (gameComponent);
 
            #if JUCE_IOS || JUCE_ANDROID
             setFullScreen (true);
