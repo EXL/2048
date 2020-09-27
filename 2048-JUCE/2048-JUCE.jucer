@@ -4,10 +4,7 @@
               addUsingNamespaceToJuceHeader="0" displaySplashScreen="1" jucerFormatVersion="1">
   <MAINGROUP id="uHnsGF" name="2048-JUCE">
     <GROUP id="{226C4419-BDD0-2417-C103-D942CA5128C1}" name="Source">
-      <FILE id="AegD9Y" name="Main.cpp" compile="1" resource="0" file="Source/Main.cpp"/>
-      <FILE id="I3zYPW" name="MainComponent.h" compile="0" resource="0" file="Source/MainComponent.h"/>
-      <FILE id="GwwNBJ" name="MainComponent.cpp" compile="1" resource="0"
-            file="Source/MainComponent.cpp"/>
+      <FILE id="PU94YI" name="2048-JUCE.cpp" compile="1" resource="0" file="Source/2048-JUCE.cpp"/>
     </GROUP>
     <FILE id="jaP7sF" name="2048.c" compile="1" resource="0" file="../src/2048.c"/>
     <FILE id="QP6Kq8" name="2048.h" compile="0" resource="0" file="../src/2048.h"/>

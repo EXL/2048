@@ -1,20 +1,87 @@
 /*
   ==============================================================================
 
-    This file contains the basic startup code for a JUCE application.
+    2048-JUCE.cpp
+    Created: 28 Sep 2020 1:08:22am
+    Author:  exl
 
   ==============================================================================
 */
 
 #include <JuceHeader.h>
-#include "MainComponent.h"
+
+#include "../../src/2048.h"
 
 //==============================================================================
-class _2048JUCEApplication  : public juce::JUCEApplication
+/*
+    This component lives inside our window, and this is where you should put all
+    your controls and content.
+*/
+class GameComponent  : public juce::Component
 {
 public:
     //==============================================================================
-    _2048JUCEApplication() {}
+    GameComponent() : qBackground(true), qRoundTiles(true) 
+    {
+        e_init (0, 0, 0, 0, 0);
+        setSize (340, 400);
+    }
+    ~GameComponent() override
+    {
+    }
+
+    //==============================================================================
+    void paint (juce::Graphics& g) override
+    {
+        if (qBackground) {
+            g.fillAll (juce::Colour(COLOR_BOARD));
+        } else {
+            // (Our component is opaque, so we must completely fill the background with a solid colour)
+            g.fillAll (getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId));
+        }
+
+        for (int y = 0; y < LINE_SIZE; ++y)
+	        for (int x = 0; x < LINE_SIZE; ++x)
+	            drawTile (g);
+
+	    drawFinal(g);
+    }
+    void resized() override
+    {
+        // This is called when the GameComponent is resized.
+        // If you add any child components, this is where you should
+        // update their positions.
+    }
+
+private:
+    //==============================================================================
+    bool qBackground;
+    bool qRoundTiles;
+    
+    //==============================================================================
+    void drawTile (juce::Graphics& g)
+    {
+    
+    }
+    
+    void drawFinal (juce::Graphics& g)
+    {
+    
+    }
+
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (GameComponent)
+};
+
+//==============================================================================
+/*
+    
+    This section contains the basic startup code for a JUCE application.
+*/
+class Application  : public juce::JUCEApplication
+{
+public:
+    //==============================================================================
+    Application() {}
 
     const juce::String getApplicationName() override       { return ProjectInfo::projectName; }
     const juce::String getApplicationVersion() override    { return ProjectInfo::versionString; }
@@ -25,14 +92,14 @@ public:
     {
         // This method is where you should put your application's initialisation code..
 
-        mainWindow.reset (new MainWindow (getApplicationName()));
+        gameWindow.reset (new GameWindow (getApplicationName()));
     }
 
     void shutdown() override
     {
         // Add your application's shutdown code here..
 
-        mainWindow = nullptr; // (deletes our window)
+        gameWindow = nullptr; // (deletes our window)
     }
 
     //==============================================================================
@@ -53,19 +120,19 @@ public:
     //==============================================================================
     /*
         This class implements the desktop window that contains an instance of
-        our MainComponent class.
+        our GameComponent class.
     */
-    class MainWindow    : public juce::DocumentWindow
+    class GameWindow    : public juce::DocumentWindow
     {
     public:
-        MainWindow (juce::String name)
+        GameWindow (juce::String name)
             : DocumentWindow (name,
                               juce::Desktop::getInstance().getDefaultLookAndFeel()
                                                           .findColour (juce::ResizableWindow::backgroundColourId),
                               DocumentWindow::allButtons)
         {
             setUsingNativeTitleBar (true);
-            setContentOwned (new MainComponent(), true);
+            setContentOwned (new GameComponent(), true);
 
            #if JUCE_IOS || JUCE_ANDROID
             setFullScreen (true);
@@ -93,13 +160,13 @@ public:
         */
 
     private:
-        JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainWindow)
+        JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (GameWindow)
     };
 
 private:
-    std::unique_ptr<MainWindow> mainWindow;
+    std::unique_ptr<GameWindow> gameWindow;
 };
 
 //==============================================================================
 // This macro generates the main() routine that launches the app.
-START_JUCE_APPLICATION (_2048JUCEApplication)
+START_JUCE_APPLICATION (Application)
