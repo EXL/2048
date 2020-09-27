@@ -65,3 +65,26 @@ make
 HackStudio for Serenity OS:
 
 ![HackStudio for Serenity OS Screenshot](../image/HackStudio-Serenity-Screenshot.png)
+
+## Versions
+
+* SerenityOS 1.0.gb245121
+* Host Toolchain Compiler
+
+    ```
+    gcc --version
+    gcc (GCC) 10.1.0
+
+    g++ --version
+    g++ (GCC) 10.1.0
+    ```
+
+* Guest Toolchain Compiler
+
+    ```
+    i686-pc-serenity-gcc --version
+    i686-pc-serenity-gcc (GCC) 10.1.0
+
+    i686-pc-serenity-g++ --version
+    i686-pc-serenity-g++ (GCC) 10.1.0
+    ```

@@ -4,7 +4,7 @@ Memory Consumption on Various Platform
 Information were obtained:
 
 1. By using `cat /proc/$PID/status` command on Fedora and MotoMAGX platform.
-2. By using "System Monitor" application on Serenity OS.
+2. By using `top` command and "System Monitor" application on Serenity OS.
 3. By using `showmem -P $PID` command on QNX.
 4. By using `px aux` command on NeXTSTEP.
 
@@ -328,17 +328,20 @@ VmPTE:        26 kB
 ### 2048-Serenity
 
 ```
-cat /proc/$PID/status
-...
-Virtual:    5988 kB
-Physical:   1688 kB
-DirtyP:      720 kB
-CleanI:      428 kB
-PurgV:       168 kB
-PurgN:      1048 kB
+   PID TID PRI  USER       STATE         VIRT    PHYS  %CPU  NAME
+    84  84 30   anon       Selecting     6164    1732   0.0  2048-Serenity
 ```
 
 ![System Monitor on Serenity OS Screenshot](../image/System-Monitor-Serenity-Screenshot.png)
+
+```
+Virtual:    6164 kB
+Physical:   1732 kB
+DirtyP:      712 kB
+CleanI:      480 kB
+PurgV:       164 kB
+PurgN:      1048 kB
+```
 
 ### 2048-NeXTSTEP
 
