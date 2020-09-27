@@ -20,7 +20,14 @@ static const int TILE_MARGIN = 16;
 class Widget final : public GUI::Widget {
 	C_OBJECT(Widget)
 
-	inline int offsetCoords(int coord) { return coord * (TILE_MARGIN + TILE_SIZE) + TILE_MARGIN; }
+	bool is_tiles_rounded;
+	bool is_show_bakground;
+
+	inline int offset_coords(int coord, int size, int offset) {
+		const int start = (size / 2) - (((TILE_SIZE * LINE_SIZE) + (TILE_MARGIN * (LINE_SIZE - 1))) / 2);
+		return coord * (TILE_MARGIN + TILE_SIZE) + start - offset;
+	}
+
 	// There are some HACKS for properly rounded rectangles.
 	// See this method with clean code and additional information here:
 	// https://github.com/SerenityOS/serenity/issues/2582
@@ -39,11 +46,15 @@ class Widget final : public GUI::Widget {
 		path.close();
 		painter.fill_path(path, color, Gfx::Painter::WindingRule::EvenOdd);
 	}
-	void draw_tile(GUI::Painter &painter, int value, int x, int y) {
-		const int xOffset = offsetCoords(x), yOffset = offsetCoords(y);
-		// HACK: draw rounded rect through Bezier quadratic curves.
-		fill_rounded_rect(painter, Gfx::IntRect(xOffset, yOffset, TILE_SIZE, TILE_SIZE),
-			Color::from_rgb(e_background(value)));
+	void draw_tile(GUI::Painter &painter, const Gfx::IntRect &rect, int value, int x, int y) {
+		const int xOffset = offset_coords(x, rect.width(), 0), yOffset = offset_coords(y, rect.height(), TILE_MARGIN * 2);
+		if (is_tiles_rounded) {
+			// HACK: draw rounded rect through Bezier quadratic curves.
+			fill_rounded_rect(painter, Gfx::IntRect(xOffset, yOffset, TILE_SIZE, TILE_SIZE),
+				Color::from_rgb(e_background(value)));
+		} else {
+			painter.fill_rect(xOffset, yOffset, TILE_SIZE, TILE_SIZE, Color::from_rgb(e_background(value)));
+		}
 		if (value) {
 			const String strValue = String::format("%d", value);
 			auto font = GUI::FontDatabase::the().get_by_name((value < 100) ?
@@ -75,13 +86,17 @@ class Widget final : public GUI::Widget {
 			strScore, *font, Gfx::TextAlignment::TopLeft, Color::from_rgb(COLOR_TEXT));
 	}
 	explicit Widget() {
+		is_tiles_rounded = true;
+		is_show_bakground = true;
 		e_init(KeyCode::Key_Escape, KeyCode::Key_Left, KeyCode::Key_Right, KeyCode::Key_Up, KeyCode::Key_Down);
 	}
 	virtual void paint_event(GUI::PaintEvent &paintEvent) override {
 		GUI::Painter painter(*this);
 		auto rect = paintEvent.rect();
 		painter.add_clip_rect(rect);
-		painter.fill_rect(rect, Color::from_rgb(COLOR_BOARD));
+		if (is_show_bakground) {
+			painter.fill_rect(rect, Color::from_rgb(COLOR_BOARD));
+		}
 		for (int y = 0; y < LINE_SIZE; ++y)
 			for (int x = 0; x < LINE_SIZE; ++x)
 				draw_tile(painter, e_board[x + y * LINE_SIZE], x, y);
