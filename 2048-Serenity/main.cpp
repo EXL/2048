@@ -20,8 +20,8 @@ static const int TILE_MARGIN = 16;
 class Widget final : public GUI::Widget {
 	C_OBJECT(Widget)
 
-	bool is_tiles_rounded;
-	bool is_show_bakground;
+	bool q_tiles_rounded;
+	bool q_show_background;
 
 	inline int offset_coords(int coord, int size, int offset) {
 		const int start = (size / 2) - (((TILE_SIZE * LINE_SIZE) + (TILE_MARGIN * (LINE_SIZE - 1))) / 2);
@@ -48,7 +48,7 @@ class Widget final : public GUI::Widget {
 	}
 	void draw_tile(GUI::Painter &painter, const Gfx::IntRect &rect, int value, int x, int y) {
 		const int xOffset = offset_coords(x, rect.width(), 0), yOffset = offset_coords(y, rect.height(), TILE_MARGIN * 2);
-		if (is_tiles_rounded) {
+		if (q_tiles_rounded) {
 			// HACK: draw rounded rect through Bezier quadratic curves.
 			fill_rounded_rect(painter, Gfx::IntRect(xOffset, yOffset, TILE_SIZE, TILE_SIZE),
 				Color::from_rgb(e_background(value)));
@@ -86,17 +86,15 @@ class Widget final : public GUI::Widget {
 			strScore, *font, Gfx::TextAlignment::TopLeft, Color::from_rgb(COLOR_TEXT));
 	}
 	explicit Widget() {
-		is_tiles_rounded = true;
-		is_show_bakground = true;
+		q_tiles_rounded = true;
+		q_show_background = true;
 		e_init(KeyCode::Key_Escape, KeyCode::Key_Left, KeyCode::Key_Right, KeyCode::Key_Up, KeyCode::Key_Down);
-		set_preferred_size(Gfx::IntRect(340, 400));
-		set_size_policy(GUI::SizePolicy::Fill, GUI::SizePolicy::Fill);
 	}
 	virtual void paint_event(GUI::PaintEvent &paintEvent) override {
 		GUI::Painter painter(*this);
 		auto rect = paintEvent.rect();
 		painter.add_clip_rect(rect);
-		if (is_show_bakground) {
+		if (q_show_background) {
 			painter.fill_rect(rect, Color::from_rgb(COLOR_BOARD));
 		}
 		for (int y = 0; y < LINE_SIZE; ++y)
@@ -108,6 +106,11 @@ class Widget final : public GUI::Widget {
 		e_key(keyEvent.key());
 		update();
 	}
+public:
+	void set_show_background(bool show_background) { q_show_background = show_background; }
+	void set_tiles_rounded(bool tiles_rounded) { q_tiles_rounded = tiles_rounded; }
+	bool is_show_background() const { return q_show_background; }
+	bool is_tiles_rounded() const { return q_tiles_rounded; }
 };
 
 int main(int argc, char *argv[]) {
@@ -132,17 +135,19 @@ int main(int argc, char *argv[]) {
 	}));
 	auto &view_menu = menubar->add_menu("View");
 	view_menu.add_action(GUI::Action::create("Background", [](auto &) {
-		
+		widget.set_show_background(!widget.is_show_background);
+		widget.update();
 	}));
 	view_menu.add_action(GUI::Action::create("Round Tiles", [](auto &) {
-		
-	}));
+		widget.set_tiles_rounded(!widget.is_tiles_rounded);
+		widget.update();
+	}), true);
 	auto &help_menu = menubar->add_menu("Help");
 	help_menu.add_action(GUI::Action::create("About...", [&](auto &) {
 		GUI::MessageBox::show(window,
 			"2048 Game, Version: 1.0, \xC2\xA9 EXL (exl@bk.ru), 2020, https://github.com/EXL/2048",
 			title, GUI::MessageBox::Type::Information);
-	}));
+	}), true);
 
 	application->set_menubar(move(menubar));
 	window->set_icon(Gfx::Bitmap::load_from_file("/res/icons/16x16/app-2048-Serenity-16.png"));
