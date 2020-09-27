@@ -78,3 +78,7 @@ i686-mot-linux-gnu-gcc (GCC) 3.4.3 (MontaVista 3.4.3-25.0.96.custom 2008-01-17)
 i686-mot-linux-gnu-g++.exe --version
 i686-mot-linux-gnu-g++ (GCC) 3.4.3 (MontaVista 3.4.3-25.0.96.custom 2008-01-17)
 ```
+
+## Information
+
+Additional information about porting in [NotesMotoMAGX.md](../doc/NotesMotoMAGX.md) document file.
