@@ -20,8 +20,14 @@ public:
 
 private:
     //==============================================================================
-    // Your private member variables go here...
-
+    bool qBackground;
+    bool qRoundTiles;
+    
+    //==============================================================================
+    void drawTile (juce::Graphics&);
+    void drawFinal (juce::Graphics&);
+    
+    int 
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainComponent)
 };
