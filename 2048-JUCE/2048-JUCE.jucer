@@ -9,6 +9,8 @@
       <FILE id="GwwNBJ" name="MainComponent.cpp" compile="1" resource="0"
             file="Source/MainComponent.cpp"/>
     </GROUP>
+    <FILE id="jaP7sF" name="2048.c" compile="1" resource="0" file="../src/2048.c"/>
+    <FILE id="QP6Kq8" name="2048.h" compile="0" resource="0" file="../src/2048.h"/>
   </MAINGROUP>
   <JUCEOPTIONS JUCE_STRICT_REFCOUNTEDPOINTER="1"/>
   <EXPORTFORMATS>
