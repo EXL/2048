@@ -134,14 +134,17 @@ int main(int argc, char *argv[]) {
 		GUI::Application::the()->quit(0);
 	}));
 	auto &view_menu = menubar->add_menu("View");
-	view_menu.add_action(GUI::Action::create("Background", [](auto &) {
-		widget.set_show_background(!widget.is_show_background);
+	auto background_action = GUI::Action::create_checkable("Background", [&](auto &action) {
+		widget.set_show_background(action.is_checked());
 		widget.update();
-	}));
-	view_menu.add_action(GUI::Action::create("Round Tiles", [](auto &) {
-		widget.set_tiles_rounded(!widget.is_tiles_rounded);
+	});
+	background_action->set_checked(widget.is_show_background);
+	auto tiles_action = GUI::Action::create_checkable("Round Tiles", [&](auto &action) {
+		widget.set_tiles_rounded(action.is_checked());
 		widget.update();
-	}), true);
+	});
+	view_menu.add_action(*background_action);
+	view_menu.add_action(*tiles_action);
 	auto &help_menu = menubar->add_menu("Help");
 	help_menu.add_action(GUI::Action::create("About...", [&](auto &) {
 		GUI::MessageBox::show(window,
