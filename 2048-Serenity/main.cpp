@@ -3,6 +3,7 @@
 #include <LibGfx/Font.h>
 #include <LibGfx/Path.h>
 #include <LibGfx/Bitmap.h>
+#include <LibGfx/Palette.h>
 
 #include <LibGUI/Menu.h>
 #include <LibGUI/Action.h>
