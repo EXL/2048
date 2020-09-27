@@ -53,7 +53,7 @@ class Widget final : public GUI::Widget {
 			fill_rounded_rect(painter, Gfx::IntRect(xOffset, yOffset, TILE_SIZE, TILE_SIZE),
 				Color::from_rgb(e_background(value)));
 		} else {
-			painter.fill_rect(xOffset, yOffset, TILE_SIZE, TILE_SIZE, Color::from_rgb(e_background(value)));
+			painter.fill_rect(Gfx::IntRect(xOffset, yOffset, TILE_SIZE, TILE_SIZE), Color::from_rgb(e_background(value)));
 		}
 		if (value) {
 			const String strValue = String::format("%d", value);
@@ -99,7 +99,7 @@ class Widget final : public GUI::Widget {
 		}
 		for (int y = 0; y < LINE_SIZE; ++y)
 			for (int x = 0; x < LINE_SIZE; ++x)
-				draw_tile(painter, e_board[x + y * LINE_SIZE], x, y);
+				draw_tile(painter, rect, e_board[x + y * LINE_SIZE], x, y);
 		draw_final(painter, rect);
 	}
 	virtual void keydown_event(GUI::KeyEvent &keyEvent) override {
@@ -116,7 +116,7 @@ int main(int argc, char *argv[]) {
 	window->set_double_buffering_enabled(false);
 	window->set_title(title);
 	window->set_rect(100, 100, 340, 400);
-	// window->set_resizable(false);
+	window->set_base_size(Gfx::IntSize(340, 400));
 
 	auto &widget = window->set_main_widget<Widget>();
 	auto menubar = GUI::MenuBar::construct();
