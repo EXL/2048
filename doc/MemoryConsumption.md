@@ -328,6 +328,8 @@ VmPTE:        26 kB
 ### 2048-Serenity
 
 ```
+top
+...
    PID TID PRI  USER       STATE         VIRT    PHYS  %CPU  NAME
     84  84 30   anon       Selecting     6164    1732   0.0  2048-Serenity
 ```
