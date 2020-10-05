@@ -24,9 +24,10 @@ class GameComponent : public juce::Component, public juce::KeyListener
 {
 public:
     //==============================================================================
-    GameComponent() : qBackground(true), qRoundTiles(true) 
+    GameComponent() : qBackground(true), qRoundTiles(true)
     {
-        e_init (juce::KeyPress::escapeKey, juce::KeyPress::leftKey, juce::KeyPress::rightKey, juce::KeyPress::upKey, juce::KeyPress::downKey);
+        e_init (juce::KeyPress::escapeKey, juce::KeyPress::leftKey, juce::KeyPress::rightKey,
+            juce::KeyPress::upKey, juce::KeyPress::downKey);
         setSize (340, 400);
     }
 
@@ -43,14 +44,14 @@ public:
             // (Our component is opaque, so we must completely fill the background with a solid colour)
             g.fillAll (getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId));
         }
-        
+
         const auto rect = getLocalBounds();
 
         for (int y = 0; y < LINE_SIZE; ++y)
-	        for (int x = 0; x < LINE_SIZE; ++x)
-	            drawTile (g, rect, e_board[x + y * LINE_SIZE], x, y);
+            for (int x = 0; x < LINE_SIZE; ++x)
+                drawTile (g, rect, e_board[x + y * LINE_SIZE], x, y);
 
-	    drawFinal (g, rect);
+        drawFinal (g, rect);
     }
 
     void resized() override
@@ -74,11 +75,12 @@ private:
     //==============================================================================
     bool qBackground;
     bool qRoundTiles;
-    
+
     //==============================================================================
     void drawTile (juce::Graphics& g, const juce::Rectangle<int>& rect, int value, int x, int y)
     {
-        const int xOffset = offsetCoord (x, rect.getWidth(), 0), yOffset = offsetCoord (y, rect.getHeight(), TILE_MARGIN * 2);
+        const int xOffset = offsetCoord (x, rect.getWidth(), 0);
+        const int yOffset = offsetCoord (y, rect.getHeight(), TILE_MARGIN * 2);
         g.setColour (juce::Colour (e_background (value)));
         if (qRoundTiles)
             g.fillRoundedRectangle (xOffset, yOffset, TILE_SIZE, TILE_SIZE, 10);
@@ -91,11 +93,13 @@ private:
             const auto strValue = juce::String (value);
             g.setColour (juce::Colour (e_foreground (value)));
             g.setFont (font);
-            const int w = font.getStringWidth (strValue), h = (value < 100) ? size - 6 : (value < 1000) ? size - 4 : size - 5;
-            g.drawSingleLineText (strValue, xOffset + (TILE_SIZE - w) / 2, yOffset + TILE_SIZE - (TILE_SIZE - h) / 2 - 2);
+            const int w = font.getStringWidth (strValue);
+            const int h = (value < 100) ? size - 6 : (value < 1000) ? size - 4 : size - 5;
+            g.drawSingleLineText (strValue, xOffset + (TILE_SIZE - w) / 2,
+                yOffset + TILE_SIZE - (TILE_SIZE - h) / 2 - 2);
         }
     }
-    
+
     void drawFinal (juce::Graphics& g, const juce::Rectangle<int>& rect)
     {
         const int width = rect.getWidth(), height = rect.getHeight();
@@ -119,18 +123,19 @@ private:
         g.drawSingleLineText ("ESC to Restart!", TILE_MARGIN, height - 20);
         g.drawSingleLineText (strScore, width - w - TILE_MARGIN, height - 20);
     }
-    
-    inline int offsetCoord(int coord, int size, int offset) {
-		const int start = (size / 2) - (((TILE_SIZE * LINE_SIZE) + (TILE_MARGIN * (LINE_SIZE - 1))) / 2);
-		return coord * (TILE_MARGIN + TILE_SIZE) + start - offset;
-	}
+
+    inline int offsetCoord(int coord, int size, int offset)
+    {
+        const int start = (size / 2) - (((TILE_SIZE * LINE_SIZE) + (TILE_MARGIN * (LINE_SIZE - 1))) / 2);
+        return coord * (TILE_MARGIN + TILE_SIZE) + start - offset;
+    }
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (GameComponent)
 };
 
 //==============================================================================
 /*
-    
+
     This section contains the basic startup code for a JUCE application.
 */
 class Application : public juce::JUCEApplication
