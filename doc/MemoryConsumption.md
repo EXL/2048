@@ -362,3 +362,28 @@ Process listing (Total, Code, Data, Heap, Stack, Other)
   2183168    1855488     102400     200704      24576          0      765987 2048-Photon
 Shared shared objects (Total, Code, Data, Heap, Stack, Other)
 ```
+
+### 2048-JUCE
+
+GNOME System Monitor: 1.7 MiB
+
+```
+cat /proc/`pidof 2048-JUCE`/status
+...
+VmPeak:   311380 kB
+VmSize:   310808 kB
+VmLck:         0 kB
+VmPin:         0 kB
+VmHWM:     13976 kB
+VmRSS:     13872 kB
+RssAnon:    1700 kB
+RssFile:   12172 kB
+RssShmem:      0 kB
+VmData:     9616 kB
+VmStk:       132 kB
+VmExe:      2800 kB
+VmLib:      9712 kB
+VmPTE:       108 kB
+VmSwap:        0 kB
+HugetlbPages:  0 kB
+```

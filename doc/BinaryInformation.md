@@ -14,6 +14,7 @@ ls -lh 2048-*
 -rwxrwxr-x. 1 exl exl  15K Jun 30 07:18 2048-Gtk1
 -rwxrwxr-x. 1 exl exl  15K Jun 30 07:18 2048-Gtk2
 -rwxrwxr-x. 1 exl exl  15K Jun 30 07:18 2048-Gtk3
+-rwxrwxr-x. 1 exl exl 3.6M Oct  5 18:42 2048-JUCE
 -rwxrwxr-x. 1 exl exl  15K Jun 30 07:20 2048-Motif
 -rwxrwxr-x. 1 exl exl  40K Jun 29 02:56 2048-MotoMAGX_E8
 -rwxrwxr-x. 1 exl exl  40K Jun 29 02:56 2048-MotoMAGX_EM30
@@ -689,4 +690,48 @@ ldd 2048-Photon
 	libfont.so.1 => /lib/libfont.so.1 (0xb8353000)
 ldd 2048-Photon | wc -l
 	5
+```
+
+### 2048-JUCE
+
+```
+ldd 2048-JUCE
+	linux-vdso.so.1 (0x00007ffc3c5d4000)
+	libfreetype.so.6 => /lib64/libfreetype.so.6 (0x00007f8d911f9000)
+	libcurl.so.4 => /lib64/libcurl.so.4 (0x00007f8d91165000)
+	librt.so.1 => /lib64/librt.so.1 (0x00007f8d9115a000)
+	libdl.so.2 => /lib64/libdl.so.2 (0x00007f8d91153000)
+	libpthread.so.0 => /lib64/libpthread.so.0 (0x00007f8d91131000)
+	libstdc++.so.6 => /lib64/libstdc++.so.6 (0x00007f8d90f41000)
+	libm.so.6 => /lib64/libm.so.6 (0x00007f8d90df9000)
+	libgcc_s.so.1 => /lib64/libgcc_s.so.1 (0x00007f8d90dde000)
+	libc.so.6 => /lib64/libc.so.6 (0x00007f8d90c14000)
+	libbz2.so.1 => /lib64/libbz2.so.1 (0x00007f8d90c01000)
+	libpng16.so.16 => /lib64/libpng16.so.16 (0x00007f8d90bca000)
+	libz.so.1 => /lib64/libz.so.1 (0x00007f8d90bb0000)
+	libnghttp2.so.14 => /lib64/libnghttp2.so.14 (0x00007f8d90b82000)
+	libidn2.so.0 => /lib64/libidn2.so.0 (0x00007f8d90b60000)
+	libssh.so.4 => /lib64/libssh.so.4 (0x00007f8d90aee000)
+	libpsl.so.5 => /lib64/libpsl.so.5 (0x00007f8d90adb000)
+	libssl.so.1.1 => /lib64/libssl.so.1.1 (0x00007f8d90a44000)
+	libcrypto.so.1.1 => /lib64/libcrypto.so.1.1 (0x00007f8d90757000)
+	libgssapi_krb5.so.2 => /lib64/libgssapi_krb5.so.2 (0x00007f8d906fe000)
+	libkrb5.so.3 => /lib64/libkrb5.so.3 (0x00007f8d90613000)
+	libk5crypto.so.3 => /lib64/libk5crypto.so.3 (0x00007f8d905fa000)
+	libcom_err.so.2 => /lib64/libcom_err.so.2 (0x00007f8d905f3000)
+	libldap-2.4.so.2 => /lib64/libldap-2.4.so.2 (0x00007f8d905a1000)
+	liblber-2.4.so.2 => /lib64/liblber-2.4.so.2 (0x00007f8d9058f000)
+	libbrotlidec.so.1 => /lib64/libbrotlidec.so.1 (0x00007f8d9057e000)
+	/lib64/ld-linux-x86-64.so.2 (0x00007f8d912eb000)
+	libunistring.so.2 => /lib64/libunistring.so.2 (0x00007f8d903f9000)
+	libkrb5support.so.0 => /lib64/libkrb5support.so.0 (0x00007f8d903e7000)
+	libkeyutils.so.1 => /lib64/libkeyutils.so.1 (0x00007f8d903e0000)
+	libresolv.so.2 => /lib64/libresolv.so.2 (0x00007f8d903c6000)
+	libsasl2.so.3 => /lib64/libsasl2.so.3 (0x00007f8d903a4000)
+	libbrotlicommon.so.1 => /lib64/libbrotlicommon.so.1 (0x00007f8d90381000)
+	libselinux.so.1 => /lib64/libselinux.so.1 (0x00007f8d90354000)
+	libcrypt.so.2 => /lib64/libcrypt.so.2 (0x00007f8d90319000)
+	libpcre2-8.so.0 => /lib64/libpcre2-8.so.0 (0x00007f8d90280000)
+ldd 2048-JUCE | wc -l
+	36
 ```
