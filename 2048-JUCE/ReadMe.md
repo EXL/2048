@@ -40,11 +40,11 @@ strip -s build/2048-JUCE
 
 Projucer application:
 
-![Projucer Fedora 32 Screenshot](../image/Projucer-Screenshot.png)
+![Projucer Fedora 32 Screenshot](../image/Projucer-Fedora-Screenshot.png)
 
 ## Cross compiling
 
-You can use **Projucer** application for generating IDE and Makefile projects for various platforms. See "Exporters" side panel and click "+" button.
+You can use **Projucer** application for generating projects for various platforms. See "Exporters" side panel and click "+" button.
 
 ## Versions
 
