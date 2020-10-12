@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-LinuxPorts="
+CMakeLinuxPorts="
 	2048-Gtk1
 	2048-Gtk2
 	2048-Gtk3
@@ -37,8 +37,17 @@ function build_port {
 	cd -
 }
 
+function build_juce_port {
+	cd 2048-JUCE/Builds/LinuxMakefile/
+	make CONFIG=Release V=1
+	strip -s build/2048-JUCE
+	mv build/2048-JUCE ../../../build
+	cd -
+}
+
 function build_all {
-	for port in $LinuxPorts; do
+	build_juce_port
+	for port in $CMakeLinuxPorts; do
 		build_port $port
 	done
 }
