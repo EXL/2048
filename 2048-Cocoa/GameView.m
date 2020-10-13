@@ -51,6 +51,9 @@ static inline int offsetCoords(int coord, int size, int offset) {
 
 - (id)keyDown:(NSEvent)event {
     // TODO: Implement keys.
+	fprintf(stderr, "KEY\n");
+	[[NSColor redColor] set];
+    NSRectFill([self bounds]);
     [self setNeedsDisplay:YES];
     return self;
 }

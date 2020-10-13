@@ -22,16 +22,14 @@
     return YES;
 }
 
-/*
-- appDidInit:sender {
+- (id)appDidInit:sender {
 	[self prefReads];
         // TODO: Not implemented.
 	//[[gameView window] setMiniwindowIcon:"icon48.tiff"];
-	//[[gameView window] makeKeyAndOrderFront:self];
-	//[[gameView window] makeFirstResponder:gameView];
+	[[gameView window] makeKeyAndOrderFront:self];
+	[[gameView window] makeFirstResponder:gameView];
 	return self;
 }
-*/
 
 - (id)windowWillClose:sender {
 	[NSApp terminate:self];

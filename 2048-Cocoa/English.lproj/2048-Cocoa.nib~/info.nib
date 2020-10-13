@@ -3,12 +3,12 @@
 <plist version="0.9">
 <dict>
 	<key>IBDocumentLocation</key>
-	<string>11 131 356 240 0 74 1360 672 </string>
+	<string>198 213 356 240 0 74 1360 672 </string>
 	<key>IBMainMenuLocation</key>
 	<string>22 326 299 44 0 74 1360 672 </string>
 	<key>IBUserGuides</key>
 	<dict>
-		<key>Window</key>
+		<key>GameWindow</key>
 		<dict>
 			<key>guideLocations</key>
 			<array/>
