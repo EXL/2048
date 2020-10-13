@@ -5,6 +5,7 @@
 		argumentStrings = (
 		);
 		debuggerPlugin = GDBDebugging;
+		dylibVariantSuffix = "";
 		enableDebugStr = 1;
 		environmentEntries = (
 		);
@@ -15,28 +16,32 @@
 	29B97313FDCFA39411CA2CEA = {
 		activeBuildStyle = 4A9504CCFFE6A4B311CA0CBA;
 		activeTarget = 29B97326FDCFA39411CA2CEA;
+		addToTargets = (
+			29B97326FDCFA39411CA2CEA,
+		);
 		perUserDictionary = {
 			PBXWorkspaceConfiguration = {
-				ContentSize = "{886, 588}";
+				ContentSize = "{1360, 598}";
 				LeftSlideOut = {
 					ActiveTab = 0;
-					Frame = "{{0, 23}, {886, 565}}";
+					Frame = "{{0, 23}, {1360, 575}}";
 					Split0 = {
-						Frame = "{{225, 0}, {661, 565}}";
+						ActiveTab = 2;
+						Frame = "{{225, 0}, {1135, 575}}";
 						Split0 = {
-							Frame = "{{0, 25}, {661, 540}}";
+							Frame = "{{0, 134}, {1135, 441}}";
 						};
 						SplitCount = 1;
 						Tab0 = {
 							Debugger = {
-								Frame = "{{0, 0}, {484, 208}}";
+								Frame = "{{0, 0}, {1135, 208}}";
 								Split0 = {
-									Frame = "{{0, 25}, {484, 183}}";
+									Frame = "{{0, 25}, {1135, 183}}";
 									Split0 = {
-										Frame = "{{0, 0}, {236, 183}}";
+										Frame = "{{0, 0}, {559, 183}}";
 									};
 									Split1 = {
-										Frame = "{{245, 0}, {239, 183}}";
+										Frame = "{{568, 0}, {567, 183}}";
 									};
 									SplitCount = 2;
 								};
@@ -46,20 +51,20 @@
 								};
 								TabCount = 1;
 							};
-							Frame = "{{0, 0}, {484, 208}}";
+							Frame = "{{0, 0}, {1135, 208}}";
 							LauncherConfigVersion = 4;
 						};
 						Tab1 = {
-							Frame = "{{0, 0}, {484, 208}}";
+							Frame = "{{0, 0}, {1135, 208}}";
 							LauncherConfigVersion = 3;
 							Runner = {
-								Frame = "{{0, 0}, {484, 208}}";
+								Frame = "{{0, 0}, {1135, 208}}";
 							};
 						};
 						Tab2 = {
-							BuildMessageFrame = "{{0, 0}, {484, 139}}";
-							BuildTranscriptFrame = "{{0, 148}, {484, 46}}";
-							Frame = "{{0, 0}, {480, 192}}";
+							BuildMessageFrame = "{{0, 0}, {1139, 19}}";
+							BuildTranscriptFrame = "{{0, 28}, {1139, 83}}";
+							Frame = "{{0, 0}, {1135, 109}}";
 						};
 						Tab3 = {
 							Frame = "{{0, 0}, {612, 295}}";
@@ -68,7 +73,7 @@
 					};
 					SplitCount = 1;
 					Tab0 = {
-						Frame = "{{0, 0}, {200, 565}}";
+						Frame = "{{0, 0}, {200, 575}}";
 					};
 					Tab1 = {
 						Frame = "{{0, 0}, {200, 100}}";
@@ -88,7 +93,7 @@
 					};
 					TabCount = 4;
 				};
-				WindowLoc = "{30, 5}";
+				WindowLoc = "{0, 0}";
 			};
 		};
 	};

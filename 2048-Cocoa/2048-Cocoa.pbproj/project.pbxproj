@@ -5,6 +5,72 @@
 	};
 	objectVersion = 32;
 	objects = {
+		012D9E7425353A5C7F000001 = {
+			isa = PBXFileReference;
+			path = GameView.h;
+			refType = 4;
+		};
+		012D9E7525353A5C7F000001 = {
+			isa = PBXFileReference;
+			path = GameView.m;
+			refType = 4;
+		};
+		012D9E7625353A5C7F000001 = {
+			fileRef = 012D9E7425353A5C7F000001;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		012D9E7725353A5C7F000001 = {
+			fileRef = 012D9E7525353A5C7F000001;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		012D9E7825353E397F000001 = {
+			isa = PBXFileReference;
+			path = 2048.c;
+			refType = 4;
+		};
+		012D9E7925353E397F000001 = {
+			fileRef = 012D9E7825353E397F000001;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		012D9E7A25353E637F000001 = {
+			isa = PBXFileReference;
+			path = 2048.h;
+			refType = 4;
+		};
+		012D9E7B25353E637F000001 = {
+			fileRef = 012D9E7A25353E637F000001;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		012D9E7C253552037F000001 = {
+			isa = PBXFileReference;
+			path = GameController.h;
+			refType = 4;
+		};
+		012D9E7D253552037F000001 = {
+			isa = PBXFileReference;
+			path = GameController.m;
+			refType = 4;
+		};
+		012D9E7E253552037F000001 = {
+			fileRef = 012D9E7C253552037F000001;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		012D9E7F253552037F000001 = {
+			fileRef = 012D9E7D253552037F000001;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
 		043355C9FE30361CC02AAC07 = {
 			buildActionMask = 2147483647;
 			files = (
@@ -20,6 +86,10 @@
 		};
 		080E96DDFE201D6D7F000001 = {
 			children = (
+				012D9E7425353A5C7F000001,
+				012D9E7525353A5C7F000001,
+				012D9E7C253552037F000001,
+				012D9E7D253552037F000001,
 			);
 			isa = PBXGroup;
 			name = Classes;
@@ -115,6 +185,8 @@
 		29B97315FDCFA39411CA2CEA = {
 			children = (
 				29B97316FDCFA39411CA2CEA,
+				012D9E7825353E397F000001,
+				012D9E7A25353E637F000001,
 			);
 			isa = PBXGroup;
 			name = "Other Sources";
@@ -233,6 +305,9 @@
 		29B97327FDCFA39411CA2CEA = {
 			buildActionMask = 2147483647;
 			files = (
+				012D9E7625353A5C7F000001,
+				012D9E7B25353E637F000001,
+				012D9E7E253552037F000001,
 			);
 			isa = PBXHeadersBuildPhase;
 			name = Headers;
@@ -250,6 +325,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				29B9732CFDCFA39411CA2CEA,
+				012D9E7725353A5C7F000001,
+				012D9E7925353E397F000001,
+				012D9E7F253552037F000001,
 			);
 			isa = PBXSourcesBuildPhase;
 			name = Sources;
