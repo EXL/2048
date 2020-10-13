@@ -13,6 +13,8 @@ GameView = {
 	"load:" = "load:"; 
 	"resetGame:" = "resetGame:"; 
 	"save:" = "save:"; 
+	"setDisableBackground:" = "setDisableBackground:"; 
+	"setEnableBackground:" = "setEnableBackground:"; 
 	"setRectangleTiles:" = "setRectangleTiles:"; 
 	"setRoundedTiles:" = "setRoundedTiles:"; 
     }; 

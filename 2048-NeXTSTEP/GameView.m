@@ -69,7 +69,10 @@ static inline int offsetCoords(int coord, int size, int offset) {
 
 - drawSelf:(const NXRect *)rects :(int)rectCount {
 	int x, y;
-	NXSetColor(NXConvertRGBToColor(R(COLOR_BOARD), G(COLOR_BOARD), B(COLOR_BOARD)));
+	if (showBackground)
+		NXSetColor(NXConvertRGBToColor(R(COLOR_BOARD), G(COLOR_BOARD), B(COLOR_BOARD)));
+	else
+		NXSetColor(NXConvertGrayToColor(NX_LTGRAY));
 	NXRectFill(&bounds);
 	for (y = 0; y < LINE_SIZE; ++y)
 		for (x = 0; x < LINE_SIZE; ++x)
@@ -112,6 +115,20 @@ static inline int offsetCoords(int coord, int size, int offset) {
 	return self;
 }
 
+- setEnableBackground:sender {
+	showBackground = YES;
+	NXWriteDefault([NXApp appName], "showBkg", "1");
+	[self update];
+	return self;
+}
+
+- setDisableBackground:sender {
+	showBackground = NO;
+	NXWriteDefault([NXApp appName], "showBkg", "0");
+	[self update];
+	return self;
+}
+
 - save:sender {
 	char str_state[STATE_MAX_SIZE] = { '\0' };
 	if ([GameController saveState:str_state :e_board :BOARD_SIZE :e_score :e_win :e_lose])
@@ -146,6 +163,7 @@ static inline int offsetCoords(int coord, int size, int offset) {
 	largeFont = [Font boldSystemFontOfSize:24.0f matrix:NX_FLIPPEDMATRIX];
 
 	roundedTiles = YES;
+	showBackground = YES;
 
 	return self;
 }

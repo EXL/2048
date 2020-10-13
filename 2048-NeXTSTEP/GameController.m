@@ -61,7 +61,7 @@
 }
 
 - appDidInit:sender {
-	[self prefReadRectType];
+	[self prefReads];
 	[[gameView window] setMiniwindowIcon:"icon48.tiff"];
 	[[gameView window] makeKeyAndOrderFront:self];
 	[[gameView window] makeFirstResponder:gameView];
@@ -79,10 +79,13 @@
 	return self;
 }
 
-- prefReadRectType {
+- prefReads {
 	const char *rectType = NXGetDefaultValue([NXApp appName], "rectType");
+	const char *showBkg = NXGetDefaultValue([NXApp appName], "showBkg");
 	if (rectType && atoi(rectType))
 		[gameView setRectangleTiles:self];
+	if (showBkg && !atoi(showBkg))
+		[gameView setDisableBackground:self];
 	return self;
 }
 

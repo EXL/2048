@@ -7,6 +7,7 @@
 	id largeFont;
 
 	BOOL roundedTiles;
+	BOOL showBackground;
 }
 
 - initFrame:(const NXRect *)frameRect;
@@ -19,6 +20,8 @@
 - resetGame:sender;
 - setRoundedTiles:sender;
 - setRectangleTiles:sender;
+- setEnableBackground:sender;
+- setDisableBackground:sender;
 
 - save:sender;
 - load:sender;
