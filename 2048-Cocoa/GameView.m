@@ -25,6 +25,8 @@ static inline int offsetCoords(int coord, int size, int offset) {
 @implementation GameView
 
 - (id)initWithFrame:(NSRect)frame {
+	e_init('\e', NSLeftArrowFunctionKey, NSRightArrowFunctionKey, NSUpArrowFunctionKey, NSDownArrowFunctionKey);
+
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code here.
@@ -37,69 +39,82 @@ static inline int offsetCoords(int coord, int size, int offset) {
 
 - (void)drawRect:(NSRect)rect {
     // Drawing code here.
+	int x, y;
     [[NSColor colorWithCalibratedRed:R(COLOR_BOARD) green:G(COLOR_BOARD) blue:B(COLOR_BOARD) alpha:1.0f] set];
     NSRectFill([self bounds]);
+	for (y = 0; y < LINE_SIZE; ++y)
+		for (x = 0; x < LINE_SIZE; ++x)
+			[self drawTile:e_board[x + y * LINE_SIZE] :x :y];
+	[self drawFinal];
 }
 
 - (void)drawTile:(int)value :(int)x :(int)y {
     // TODO: Not implemented.
+	
 }
 
 - (void)drawFinal {
     // TODO: Not implemented.
 }
 
-- (id)keyDown:(NSEvent)event {
+- (id)keyDown:(NSEvent *)theEvent {
     // TODO: Implement keys.
-	fprintf(stderr, "KEY\n");
-	[[NSColor redColor] set];
-    NSRectFill([self bounds]);
+	
+
+	NSLog(@"%@ %hu", [theEvent characters], [theEvent keyCode]);
+
+	// [self interpretKeyEvents:[NSArray arrayWithObject:theEvent]];
+
     [self setNeedsDisplay:YES];
     return self;
 }
-
+/*
+- (void)cancelOperation:(id)sender {
+	NSLog(@"ESC!");
+}
+*/
 ///
 
-- (id)resetGame:sender {
+- (id)resetGame:(id)sender {
     // TODO: e_key(NS_KEY_ESC);
     [self setNeedsDisplay:YES];
     return self;
 }
 
-- (id)disableBackground:sender {
+- (id)disableBackground:(id)sender {
     showBackground = NO;
     // TODO: Write defaults.
     [self setNeedsDisplay:YES];
     return self;
 }
 
-- (id)enableBackground:sender {
+- (id)enableBackground:(id)sender {
     showBackground = YES;
     // TODO: Write defaults.
     [self setNeedsDisplay:YES];
     return self;
 }
 
-- (id)setRoundedTiles:sender {
+- (id)setRoundedTiles:(id)sender {
     roundedTiles = YES;
     // TODO: Write defaults.
     [self setNeedsDisplay:YES];
     return self;
 }
 
-- (id)setRectangleTiles:sender {
+- (id)setRectangleTiles:(id)sender {
     roundedTiles = NO;
     // TODO: Write defaults.
     [self setNeedsDisplay:YES];
     return self;
 }
 
-- (id)save:sender {
+- (id)save:(id)sender {
     // TODO: Not implemented.
     return self;
 }
 
-- (id)load:sender {
+- (id)load:(id)sender {
     // TODO: Not implemented.
     return self;
 }

@@ -20,18 +20,20 @@
 
 - (id)initWithFrame:(NSRect)frame;
 - (void)drawRect:(NSRect)rect;
-- (id)keyDown:(NSEvent)event;
+
+- (id)keyDown:(NSEvent *)event;
+//- (void)cancelOperation:(id)sender;
 
 - (void)drawTile:(int)value :(int)x :(int)y;
 - (void)drawFinal;
 
-- (id)resetGame:sender;
-- (id)setRoundedTiles:sender;
-- (id)setRectangleTiles:sender;
-- (id)disableBackground:sender;
-- (id)enableBackground:sender;
+- (id)resetGame:(id)sender;
+- (id)setRoundedTiles:(id)sender;
+- (id)setRectangleTiles:(id)sender;
+- (id)disableBackground:(id)sender;
+- (id)enableBackground:(id)sender;
 
-- (id)save:sender;
-- (id)load:sender;
+- (id)save:(id)sender;
+- (id)load:(id)sender;
 
 @end

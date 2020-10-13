@@ -22,18 +22,20 @@
     return YES;
 }
 
-- (id)appDidInit:sender {
+- (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
+	fprintf(stderr, "addDidInit\n");
 	[self prefReads];
         // TODO: Not implemented.
 	//[[gameView window] setMiniwindowIcon:"icon48.tiff"];
 	[[gameView window] makeKeyAndOrderFront:self];
 	[[gameView window] makeFirstResponder:gameView];
-	return self;
+	//return self;
 }
 
-- (id)windowWillClose:sender {
+- (void)windowWillClose:(NSNotification *)aNotification {
+	fprintf(stderr, "windowWillClose\n");
 	[NSApp terminate:self];
-        return self;
+        //return self;
 }
 
 - (id)prefReads {

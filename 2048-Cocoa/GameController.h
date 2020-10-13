@@ -15,8 +15,8 @@
 + (BOOL)saveState:(char *)str_state :(const int *)board :(int)boardSize :(int)score :(int)win :(int)lose;
 + (BOOL)loadState:(char *)str_state :(int *)board :(int)boardSize :(int *)score :(int *)win :(int *)lose;
 
-- (id)appDidInit:sender;
-- (id)windowWillClose:sender;
+- (void)applicationDidFinishLaunching:(NSNotification *)aNotification;
+- (void)windowWillClose:(NSNotification *)aNotification;
 
 - (id)prefReads;
 
