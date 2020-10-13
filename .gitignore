@@ -14,3 +14,6 @@ a.out
 # Build directories.
 build-*
 build*
+
+# Mac OS X and macOS files.
+.DS_Store
