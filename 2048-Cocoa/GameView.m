@@ -41,8 +41,6 @@ static inline int offsetCoords(int coord, int size, int offset) {
 		
 		roundedTiles = YES;
 		showBackground = YES;
-		
-		NSLog(@"rectType: %@ showBackgound: %@", numRectType, numShowBackground);
 		if (numRectType)
 			[self setRoundedTiles:[numRectType boolValue]];
 		if (numShowBackground)
@@ -160,7 +158,6 @@ static inline int offsetCoords(int coord, int size, int offset) {
 }
 
 - (id)menuTiles:(id)sender {
-	NSLog(@"Tiles");
 	[self setRoundedTiles:!roundedTiles];
 	[self updateMenus];
 	[self setNeedsDisplay:YES];
@@ -168,7 +165,6 @@ static inline int offsetCoords(int coord, int size, int offset) {
 }
 
 - (id)menuBackground:(id)sender {
-	NSLog(@"Background");
 	[self setShowBackground:!showBackground];
 	[self updateMenus];
 	[self setNeedsDisplay:YES];
@@ -176,12 +172,14 @@ static inline int offsetCoords(int coord, int size, int offset) {
 }
 
 - (id)menuSave:(id)sender {
-    // TODO: Not implemented.
+    // TODO: Not yet implemented.
+	NSLog(@"SAVE");
     return self;
 }
 
 - (id)menuLoad:(id)sender {
-    // TODO: Not implemented.
+    // TODO: Not yet implemented.
+	NSLog(@"LOAD");
     return self;
 }
 
