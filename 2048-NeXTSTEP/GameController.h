@@ -19,6 +19,4 @@
 - appDidInit:sender;
 - windowWillClose:sender;
 
-- prefReads;
-
 @end

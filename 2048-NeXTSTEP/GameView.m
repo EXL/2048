@@ -149,6 +149,9 @@ static inline int offsetCoords(int coord, int size, int offset) {
 }
 
 - initFrame:(const NXRect *)frameRect {
+	const char *rectType = NXGetDefaultValue([NXApp appName], "rectType");
+	const char *showBkg = NXGetDefaultValue([NXApp appName], "showBkg");
+
 	[super initFrame:frameRect];
 
 	e_init(NX_KEY_ESC, NX_KEY_LEFT, NX_KEY_RIGHT, NX_KEY_UP, NX_KEY_DOWN);
@@ -165,6 +168,10 @@ static inline int offsetCoords(int coord, int size, int offset) {
 	roundedTiles = YES;
 	showBackground = YES;
 
+	if (rectType && atoi(rectType))
+		[self setRectangleTiles:self];
+	if (showBkg && !atoi(showBkg))
+		[self setDisableBackground:self];
 	return self;
 }
 
