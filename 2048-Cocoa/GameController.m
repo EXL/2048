@@ -7,6 +7,7 @@
 //
 
 #import "GameController.h"
+#import "GameView.h"
 
 @implementation GameController
 
@@ -22,11 +23,12 @@
 
 - (void)applicationDidFinishLaunching:(NSNotification *)notification {
 	fprintf(stderr, "addDidInit\n");
-	[self prefReads];
+	// [self prefReads];
         // TODO: Not implemented.
 	//[[gameView window] setMiniwindowIcon:"icon48.tiff"];
 	[[gameView window] makeKeyAndOrderFront:self];
 	[[gameView window] makeFirstResponder:gameView];
+	[gameView updateMenus];
 	//return self;
 }
 
@@ -42,14 +44,9 @@
 }
 */
 
-- (id)prefReads {
-        // TODO: Not implemented.
-        /*
-	const char *rectType = NXGetDefaultValue([NXApp appName], "rectType");
-	if (rectType && atoi(rectType))
-		[gameView setRectangleTiles:self];
-        */
-	return self;
-}
+//- (void)prefReads {
+//
+//	[gameView setNeedsDisplay:YES];
+//}
 
 @end

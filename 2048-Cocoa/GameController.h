@@ -18,8 +18,9 @@
 
 - (void)applicationDidFinishLaunching:(NSNotification *)notification;
 - (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)sender;
+
 //- (void)windowWillClose:(NSNotification *)aNotification;
 
-- (id)prefReads;
+//- (void)prefReads;
 
 @end

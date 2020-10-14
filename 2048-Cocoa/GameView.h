@@ -9,6 +9,9 @@
 #import <AppKit/AppKit.h>
 
 @interface GameView : NSView {
+	id menuItemTiles;
+	id menuItemBackground;
+
     NSFont *smallFont;
     NSFont *middleFont;
     NSFont *normalFont;
@@ -33,13 +36,24 @@
 - (NSDictionary *)textAttributes:(NSFont *)font :(NSColor *)color;
 - (NSColor *)getColor:(unsigned int)color :(float)alpha;
 
-- (id)resetGame:(id)sender;
+- (id)menuReset:(id)sender;
+- (id)menuTiles:(id)sender;
+- (id)menuBackground:(id)sender;
+- (id)menuSave:(id)sender;
+- (id)menuLoad:(id)sender;
+
+- (void)setRoundedTiles:(BOOL)value;
+- (void)setShowBackground:(BOOL)value;
+
+- (void)updateMenus;
+
+
+/*
 - (id)setRoundedTiles:(id)sender;
 - (id)setRectangleTiles:(id)sender;
 - (id)disableBackground:(id)sender;
 - (id)enableBackground:(id)sender;
+*/
 
-- (id)save:(id)sender;
-- (id)load:(id)sender;
 
 @end

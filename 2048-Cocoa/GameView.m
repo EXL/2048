@@ -31,6 +31,9 @@ static inline int offsetCoords(int coord, int size, int offset) {
 	e_init('\e', NSLeftArrowFunctionKey, NSRightArrowFunctionKey, NSUpArrowFunctionKey, NSDownArrowFunctionKey);
     self = [super initWithFrame:frame];
     if (self) {
+		NSNumber *numRectType = [[NSUserDefaults standardUserDefaults] objectForKey:@"roundedTiles"];
+		NSNumber *numShowBackground = [[NSUserDefaults standardUserDefaults] objectForKey:@"showBackground"];
+		
 		smallFont = [NSFont boldSystemFontOfSize:18.0f];
 		middleFont = [NSFont boldSystemFontOfSize:22.0f];
 		normalFont = [NSFont systemFontOfSize:18.0f];
@@ -38,6 +41,12 @@ static inline int offsetCoords(int coord, int size, int offset) {
 		
 		roundedTiles = YES;
 		showBackground = YES;
+		
+		NSLog(@"rectType: %@ showBackgound: %@", numRectType, numShowBackground);
+		if (numRectType)
+			[self setRoundedTiles:[numRectType boolValue]];
+		if (numShowBackground)
+			[self setShowBackground:[numShowBackground boolValue]];
     }
     return self;
 }
@@ -144,48 +153,87 @@ static inline int offsetCoords(int coord, int size, int offset) {
 */
 ///
 
-- (id)resetGame:(id)sender {
-    // TODO: e_key(NS_KEY_ESC);
+- (id)menuReset:(id)sender {
+	e_key('\e');
     [self setNeedsDisplay:YES];
     return self;
 }
 
+- (id)menuTiles:(id)sender {
+	NSLog(@"Tiles");
+	[self setRoundedTiles:!roundedTiles];
+	[self updateMenus];
+	[self setNeedsDisplay:YES];
+	return self;
+}
+
+- (id)menuBackground:(id)sender {
+	NSLog(@"Background");
+	[self setShowBackground:!showBackground];
+	[self updateMenus];
+	[self setNeedsDisplay:YES];
+	return self;
+}
+
+- (id)menuSave:(id)sender {
+    // TODO: Not implemented.
+    return self;
+}
+
+- (id)menuLoad:(id)sender {
+    // TODO: Not implemented.
+    return self;
+}
+
+- (void)setRoundedTiles:(BOOL)value {
+    roundedTiles = value;
+	[[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:roundedTiles] forKey:@"roundedTiles"];
+	[[NSUserDefaults standardUserDefaults] synchronize];
+}
+
+- (void)setShowBackground:(BOOL)value {
+    showBackground = value;
+	[[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:showBackground] forKey:@"showBackground"];
+	[[NSUserDefaults standardUserDefaults] synchronize];
+}
+
+- (void)updateMenus {
+	[(NSMenuItem *) menuItemTiles setState:roundedTiles]; 
+	[(NSMenuItem *) menuItemBackground setState:showBackground];
+}
+
+/*
 - (id)disableBackground:(id)sender {
     showBackground = NO;
-    // TODO: Write defaults.
-    [self setNeedsDisplay:YES];
+	[[NSUserDefaults standardUserDefaults] setObject:showBackground forKey:@"showBackground"];
+	[[NSUserDefaults synchronize];
+	[self setNeedsDisplay:YES];
     return self;
 }
 
 - (id)enableBackground:(id)sender {
     showBackground = YES;
-    // TODO: Write defaults.
+	[[NSUserDefaults standardUserDefaults] setObject:showBackground forKey:@"showBackground"];
+	[[NSUserDefaults synchronize];
     [self setNeedsDisplay:YES];
     return self;
 }
 
 - (id)setRoundedTiles:(id)sender {
     roundedTiles = YES;
-    // TODO: Write defaults.
+	[[NSUserDefaults standardUserDefaults] setObject:roundedTiles forKey:@"roundedTiles"];
+	[[NSUserDefaults synchronize];
     [self setNeedsDisplay:YES];
     return self;
 }
 
 - (id)setRectangleTiles:(id)sender {
     roundedTiles = NO;
-    // TODO: Write defaults.
+	[[NSUserDefaults standardUserDefaults] setObject:roundedTiles forKey:@"roundedTiles"];
+	[[NSUserDefaults synchronize];
     [self setNeedsDisplay:YES];
     return self;
 }
-
-- (id)save:(id)sender {
-    // TODO: Not implemented.
-    return self;
-}
-
-- (id)load:(id)sender {
-    // TODO: Not implemented.
-    return self;
-}
+*/
 
 @end
