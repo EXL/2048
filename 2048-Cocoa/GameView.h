@@ -3,7 +3,7 @@
 //  2048-Cocoa
 //
 //  Created by happymac on Mon Oct 12 2020.
-//  Copyright (c) 2001 __CompanyName__. All rights reserved.
+//  Copyright (c) 2020 EXL. All rights reserved.
 //
 
 #import <AppKit/AppKit.h>
@@ -12,20 +12,19 @@
 	id menuItemTiles;
 	id menuItemBackground;
 
-    NSFont *smallFont;
-    NSFont *middleFont;
-    NSFont *normalFont;
-    NSFont *largeFont;
+	NSFont *smallFont;
+	NSFont *middleFont;
+	NSFont *normalFont;
+	NSFont *largeFont;
 
-    BOOL roundedTiles;
-    BOOL showBackground;
+	BOOL roundedTiles;
+	BOOL showBackground;
 }
 
 - (id)initWithFrame:(NSRect)frame;
 - (void)drawRect:(NSRect)rect;
 
 - (id)keyDown:(NSEvent *)event;
-//- (void)cancelOperation:(id)sender;
 
 - (BOOL)isFlipped;
 
@@ -46,14 +45,5 @@
 - (void)setShowBackground:(BOOL)value;
 
 - (void)updateMenus;
-
-
-/*
-- (id)setRoundedTiles:(id)sender;
-- (id)setRectangleTiles:(id)sender;
-- (id)disableBackground:(id)sender;
-- (id)enableBackground:(id)sender;
-*/
-
 
 @end

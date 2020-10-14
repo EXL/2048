@@ -3,14 +3,14 @@
 //  2048-Cocoa
 //
 //  Created by happymac on Mon Oct 12 2020.
-//  Copyright (c) 2001 __CompanyName__. All rights reserved.
+//  Copyright (c) 2020 EXL. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
 #import <AppKit/AppKit.h>
 
 @interface GameController : NSObject {
-    id gameView;
+	id gameView;
 }
 
 + (BOOL)saveState:(char *)str_state :(const int *)board :(int)boardSize :(int)score :(int)win :(int)lose;
@@ -18,9 +18,5 @@
 
 - (void)applicationDidFinishLaunching:(NSNotification *)notification;
 - (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)sender;
-
-//- (void)windowWillClose:(NSNotification *)aNotification;
-
-//- (void)prefReads;
 
 @end

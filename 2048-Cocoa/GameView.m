@@ -3,7 +3,7 @@
 //  2048-Cocoa
 //
 //  Created by happymac on Mon Oct 12 2020.
-//  Copyright (c) 2001 __CompanyName__. All rights reserved.
+//  Copyright (c) 2020 EXL. All rights reserved.
 //
 
 #include "2048.h"
@@ -29,24 +29,24 @@ static inline int offsetCoords(int coord, int size, int offset) {
 
 - (id)initWithFrame:(NSRect)frame {
 	e_init('\e', NSLeftArrowFunctionKey, NSRightArrowFunctionKey, NSUpArrowFunctionKey, NSDownArrowFunctionKey);
-    self = [super initWithFrame:frame];
-    if (self) {
+	self = [super initWithFrame:frame];
+	if (self) {
 		NSNumber *numRectType = [[NSUserDefaults standardUserDefaults] objectForKey:@"roundedTiles"];
 		NSNumber *numShowBackground = [[NSUserDefaults standardUserDefaults] objectForKey:@"showBackground"];
-		
+
 		smallFont = [NSFont boldSystemFontOfSize:18.0f];
 		middleFont = [NSFont boldSystemFontOfSize:22.0f];
 		normalFont = [NSFont systemFontOfSize:18.0f];
 		largeFont = [NSFont boldSystemFontOfSize:28.0f];
-		
+
 		roundedTiles = YES;
 		showBackground = YES;
 		if (numRectType)
 			[self setRoundedTiles:[numRectType boolValue]];
 		if (numShowBackground)
 			[self setShowBackground:[numShowBackground boolValue]];
-    }
-    return self;
+	}
+	return self;
 }
 
 - (void)drawRect:(NSRect)rect {
@@ -74,7 +74,8 @@ static inline int offsetCoords(int coord, int size, int offset) {
 		NSString *strValue = [NSString stringWithFormat:@"%d", value];
 		NSDictionary *attrs = [self textAttributes:currentFont :[self getColor:e_foreground(value) :1.0f]];
 		strSize = [strValue sizeWithAttributes:attrs];
-		[strValue drawAtPoint:NSMakePoint(xOffset + (TILE_SIZE - strSize.width) / 2, yOffset + (TILE_SIZE - strSize.height) / 2) withAttributes:attrs];
+		[strValue drawAtPoint:NSMakePoint(xOffset + (TILE_SIZE - strSize.width) / 2,
+			yOffset + (TILE_SIZE - strSize.height) / 2) withAttributes:attrs];
 	}
 }
 
@@ -84,12 +85,14 @@ static inline int offsetCoords(int coord, int size, int offset) {
 	NSDictionary *attrs = [self textAttributes:normalFont :[self getColor:COLOR_TEXT :1.0f]];
 	NSSize strSize;
 	if (e_win || e_lose) {
-		NSString *strCenter = (e_win) ? NSLocalizedString(@"GMYouWon", @"You Won!") : NSLocalizedString(@"GMGameOver", @"Game Over!");
+		NSString *strCenter = (e_win) ? NSLocalizedString(@"GMYouWon", @"You Won!") :
+			NSLocalizedString(@"GMGameOver", @"Game Over!");
 		NSDictionary *attrs = [self textAttributes:largeFont :[self getColor:COLOR_FINAL :1.0f]];
 		[[self getColor:COLOR_OVERLAY :0.5f] set];
 		NSRectFillUsingOperation(bounds, NSCompositeSourceOver);
 		strSize = [strCenter sizeWithAttributes:attrs];
-		[strCenter drawAtPoint:NSMakePoint(ww / 2 - strSize.width / 2, hh / 2 - strSize.height / 2) withAttributes:attrs];
+		[strCenter drawAtPoint:NSMakePoint(ww / 2 - strSize.width / 2,
+			hh / 2 - strSize.height / 2) withAttributes:attrs];
 	}
 	strSize = [strScore sizeWithAttributes:attrs];
 	[strEscape drawAtPoint:NSMakePoint(TILE_MARGIN, hh - strSize.height - 10) withAttributes:attrs];
@@ -97,24 +100,30 @@ static inline int offsetCoords(int coord, int size, int offset) {
 }
 
 - (NSBezierPath *)roundedRect:(NSRect)rect :(int)rad {
-	const int left = rect.origin.x, right = rect.origin.x + rect.size.width, top = rect.origin.y, bottom = rect.origin.y + rect.size.height;
+	const int left = rect.origin.x, right = rect.origin.x + rect.size.width,
+		top = rect.origin.y, bottom = rect.origin.y + rect.size.height;
 	const float offset = rad * (1 - 0.551915024494f);
 	NSBezierPath *path = [NSBezierPath bezierPath];
 	[path moveToPoint:NSMakePoint(left + rad, top)];
 	[path lineToPoint:NSMakePoint(right - rad, top)];
-	[path curveToPoint:NSMakePoint(right, top + rad) controlPoint1:NSMakePoint(right - offset, top) controlPoint2:NSMakePoint(right, top + offset)];
+	[path curveToPoint:NSMakePoint(right, top + rad)
+		controlPoint1:NSMakePoint(right - offset, top) controlPoint2:NSMakePoint(right, top + offset)];
 	[path lineToPoint:NSMakePoint(right, bottom - rad)];
-	[path curveToPoint:NSMakePoint(right - rad, bottom) controlPoint1:NSMakePoint(right, bottom - offset) controlPoint2:NSMakePoint(right - offset, bottom)];
+	[path curveToPoint:NSMakePoint(right - rad, bottom)
+		controlPoint1:NSMakePoint(right, bottom - offset) controlPoint2:NSMakePoint(right - offset, bottom)];
 	[path lineToPoint:NSMakePoint(left + rad, bottom)];
-	[path curveToPoint:NSMakePoint(left, bottom - rad) controlPoint1:NSMakePoint(left + offset, bottom) controlPoint2:NSMakePoint(left, bottom - offset)];
+	[path curveToPoint:NSMakePoint(left, bottom - rad)
+		controlPoint1:NSMakePoint(left + offset, bottom) controlPoint2:NSMakePoint(left, bottom - offset)];
 	[path lineToPoint:NSMakePoint(left, top + rad)];
-	[path curveToPoint:NSMakePoint(left + rad, top) controlPoint1:NSMakePoint(left, top + offset) controlPoint2:NSMakePoint(left + offset, top)];
+	[path curveToPoint:NSMakePoint(left + rad, top)
+		controlPoint1:NSMakePoint(left, top + offset) controlPoint2:NSMakePoint(left + offset, top)];
 	[path closePath];
 	return path;
 }
 
 - (NSDictionary *)textAttributes:(NSFont *)font :(NSColor *)color {
-	return [NSDictionary dictionaryWithObjectsAndKeys:font, NSFontAttributeName, color, NSForegroundColorAttributeName, nil];
+	return [NSDictionary dictionaryWithObjectsAndKeys:font, NSFontAttributeName,
+		color, NSForegroundColorAttributeName, nil];
 }
 
 - (NSColor *)getColor:(unsigned int)color :(float)alpha {
@@ -136,25 +145,18 @@ static inline int offsetCoords(int coord, int size, int offset) {
 		}
 	}
 	// NSLog(@"%@ %hu", [theEvent characters], [theEvent keyCode]);
-    [self setNeedsDisplay:YES];
-    return self;
+	[self setNeedsDisplay:YES];
+	return self;
 }
 
 - (BOOL)isFlipped {
 	return YES;
 }
 
-/*
-- (void)cancelOperation:(id)sender {
-	NSLog(@"ESC!");
-}
-*/
-///
-
 - (id)menuReset:(id)sender {
 	e_key('\e');
-    [self setNeedsDisplay:YES];
-    return self;
+	[self setNeedsDisplay:YES];
+	return self;
 }
 
 - (id)menuTiles:(id)sender {
@@ -172,66 +174,32 @@ static inline int offsetCoords(int coord, int size, int offset) {
 }
 
 - (id)menuSave:(id)sender {
-    // TODO: Not yet implemented.
+	// TODO: Not yet implemented.
 	NSLog(@"SAVE");
-    return self;
+	return self;
 }
 
 - (id)menuLoad:(id)sender {
-    // TODO: Not yet implemented.
+	// TODO: Not yet implemented.
 	NSLog(@"LOAD");
-    return self;
+	return self;
 }
 
 - (void)setRoundedTiles:(BOOL)value {
-    roundedTiles = value;
+	roundedTiles = value;
 	[[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:roundedTiles] forKey:@"roundedTiles"];
 	[[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 - (void)setShowBackground:(BOOL)value {
-    showBackground = value;
+	showBackground = value;
 	[[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithBool:showBackground] forKey:@"showBackground"];
 	[[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 - (void)updateMenus {
-	[(NSMenuItem *) menuItemTiles setState:roundedTiles]; 
+	[(NSMenuItem *) menuItemTiles setState:roundedTiles];
 	[(NSMenuItem *) menuItemBackground setState:showBackground];
 }
-
-/*
-- (id)disableBackground:(id)sender {
-    showBackground = NO;
-	[[NSUserDefaults standardUserDefaults] setObject:showBackground forKey:@"showBackground"];
-	[[NSUserDefaults synchronize];
-	[self setNeedsDisplay:YES];
-    return self;
-}
-
-- (id)enableBackground:(id)sender {
-    showBackground = YES;
-	[[NSUserDefaults standardUserDefaults] setObject:showBackground forKey:@"showBackground"];
-	[[NSUserDefaults synchronize];
-    [self setNeedsDisplay:YES];
-    return self;
-}
-
-- (id)setRoundedTiles:(id)sender {
-    roundedTiles = YES;
-	[[NSUserDefaults standardUserDefaults] setObject:roundedTiles forKey:@"roundedTiles"];
-	[[NSUserDefaults synchronize];
-    [self setNeedsDisplay:YES];
-    return self;
-}
-
-- (id)setRectangleTiles:(id)sender {
-    roundedTiles = NO;
-	[[NSUserDefaults standardUserDefaults] setObject:roundedTiles forKey:@"roundedTiles"];
-	[[NSUserDefaults synchronize];
-    [self setNeedsDisplay:YES];
-    return self;
-}
-*/
 
 @end
