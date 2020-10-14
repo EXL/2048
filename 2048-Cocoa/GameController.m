@@ -8,8 +8,6 @@
 
 #import "GameController.h"
 
-#import <AppKit/AppKit.h>
-
 @implementation GameController
 
 + (BOOL)saveState:(char *)str_state :(const int *)board :(int)boardSize :(int)score :(int)win :(int)lose {
@@ -22,7 +20,7 @@
     return YES;
 }
 
-- (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
+- (void)applicationDidFinishLaunching:(NSNotification *)notification {
 	fprintf(stderr, "addDidInit\n");
 	[self prefReads];
         // TODO: Not implemented.
@@ -32,11 +30,17 @@
 	//return self;
 }
 
+- (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)sender {
+	return YES;
+}
+
+/*
 - (void)windowWillClose:(NSNotification *)aNotification {
 	fprintf(stderr, "windowWillClose\n");
 	[NSApp terminate:self];
         //return self;
 }
+*/
 
 - (id)prefReads {
         // TODO: Not implemented.
