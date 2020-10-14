@@ -145,6 +145,7 @@ static inline int offsetCoords(int coord, int size, int offset) {
 		}
 	}
 	// NSLog(@"%@ %hu", [theEvent characters], [theEvent keyCode]);
+	[super keyDown:theEvent];
 	[self setNeedsDisplay:YES];
 	return self;
 }
