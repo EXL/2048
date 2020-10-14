@@ -89,6 +89,14 @@ mv pack.tar /src/
 
 Choose **Workspace => Disk => Eject** menu item.
 
+## Change Defaults
+
+```csh
+dread -o 2048-NeXTSTEP
+dwrite 2048-NeXTSTEP rectType 1
+dremove 2048-NeXTSTEP rectType
+```
+
 ## NeXTSTEP Development Environment
 
 Project Builder:
