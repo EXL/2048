@@ -5,6 +5,26 @@
 	};
 	objectVersion = 32;
 	objects = {
+		00E4DC5E253727E67F000001 = {
+			children = (
+				00E4DC5F253727E67F000001,
+			);
+			isa = PBXGroup;
+			name = "Supporting Files";
+			path = "";
+			refType = 4;
+		};
+		00E4DC5F253727E67F000001 = {
+			isa = PBXFileReference;
+			path = ReadMe.md;
+			refType = 4;
+		};
+		00E4DC60253727E67F000001 = {
+			fileRef = 00E4DC5F253727E67F000001;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
 		012D9E7425353A5C7F000001 = {
 			isa = PBXFileReference;
 			path = GameView.h;
@@ -195,6 +215,7 @@
 				080E96DDFE201D6D7F000001,
 				29B97315FDCFA39411CA2CEA,
 				29B97317FDCFA39411CA2CEA,
+				00E4DC5E253727E67F000001,
 				29B97323FDCFA39411CA2CEA,
 				19C28FACFE9D520D11CA2CBB,
 			);
@@ -340,6 +361,7 @@
 				080E96DCFE201CFB7F000001,
 				089C165EFE840E0CC02AAC07,
 				09B0982C2536E1707F000001,
+				00E4DC60253727E67F000001,
 			);
 			isa = PBXResourcesBuildPhase;
 			name = "Bundle Resources";
