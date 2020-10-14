@@ -17,3 +17,5 @@ build*
 
 # Mac OS X and macOS files.
 .DS_Store
+*.pbxuser
+2048-Cocoa/English.lproj/2048-Cocoa.nib~
