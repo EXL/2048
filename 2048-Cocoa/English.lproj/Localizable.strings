@@ -1,0 +1,6 @@
+/* Localized versions of strings */
+
+GMYouWon = "You won!";
+GMGameOver = "Game Over!";
+GMScoreFMT = "Score: %1$d";
+GMEscape = "ESC to Restart!";

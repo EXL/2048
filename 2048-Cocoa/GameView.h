@@ -9,10 +9,10 @@
 #import <AppKit/AppKit.h>
 
 @interface GameView : NSView {
-    id smallFont;
-    id middleFont;
-    id normalFont;
-    id largeFont;
+    NSFont *smallFont;
+    NSFont *middleFont;
+    NSFont *normalFont;
+    NSFont *largeFont;
 
     BOOL roundedTiles;
     BOOL showBackground;
@@ -24,8 +24,14 @@
 - (id)keyDown:(NSEvent *)event;
 //- (void)cancelOperation:(id)sender;
 
-- (void)drawTile:(int)value :(int)x :(int)y;
-- (void)drawFinal;
+- (BOOL)isFlipped;
+
+- (void)drawTile:(NSRect)bounds :(int)value :(int)x :(int)y;
+- (void)drawFinal:(NSRect)bounds;
+
+- (NSBezierPath *)roundedRect:(NSRect)rect :(int)rad;
+- (NSDictionary *)textAttributes:(NSFont *)font :(NSColor *)color;
+- (NSColor *)getColor:(unsigned int)color :(float)alpha;
 
 - (id)resetGame:(id)sender;
 - (id)setRoundedTiles:(id)sender;

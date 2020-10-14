@@ -116,6 +116,27 @@
 			settings = {
 			};
 		};
+		09B0982A2536E16F7F000001 = {
+			children = (
+				09B0982B2536E16F7F000001,
+			);
+			isa = PBXVariantGroup;
+			name = Localizable.strings;
+			path = "";
+			refType = 4;
+		};
+		09B0982B2536E16F7F000001 = {
+			isa = PBXFileReference;
+			name = English;
+			path = English.lproj/Localizable.strings;
+			refType = 4;
+		};
+		09B0982C2536E1707F000001 = {
+			fileRef = 09B0982A2536E16F7F000001;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
 		1058C7A0FEA54F0111CA2CBB = {
 			children = (
 				1058C7A1FEA54F0111CA2CBB,
@@ -202,6 +223,7 @@
 			children = (
 				29B97318FDCFA39411CA2CEA,
 				089C165CFE840E0CC02AAC07,
+				09B0982A2536E16F7F000001,
 			);
 			isa = PBXGroup;
 			name = Resources;
@@ -317,6 +339,7 @@
 			files = (
 				080E96DCFE201CFB7F000001,
 				089C165EFE840E0CC02AAC07,
+				09B0982C2536E1707F000001,
 			);
 			isa = PBXResourcesBuildPhase;
 			name = "Bundle Resources";
