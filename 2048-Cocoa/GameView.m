@@ -9,6 +9,7 @@
 #include "2048.h"
 
 #import "GameView.h"
+#import "GameController.h"
 
 #define ww bounds.size.width
 #define hh bounds.size.height
@@ -175,14 +176,23 @@ static inline int offsetCoords(int coord, int size, int offset) {
 }
 
 - (id)menuSave:(id)sender {
-	// TODO: Not yet implemented.
-	NSLog(@"SAVE");
+	NSString *strState = [GameController saveState:e_board :BOARD_SIZE :e_score :e_win :e_lose];
+	if (strState)
+		[self showAlertSheet:NSLocalizedString(@"GMSaveOk", @"Game Saved!") :strState];
+	else
+		[self showAlertSheet:NSLocalizedString(@"GMSaveError", @"Save Error!") 
+			:NSLocalizedString(@"GMSaveErrorDesc", @"Sorry, cannot save game state.")];
 	return self;
 }
 
 - (id)menuLoad:(id)sender {
-	// TODO: Not yet implemented.
-	NSLog(@"LOAD");
+	NSString *strState = [GameController loadState:e_board :BOARD_SIZE :&e_score :&e_win :&e_lose];
+	if (strState)
+		[self showAlertSheet:NSLocalizedString(@"GMLoadOk", @"Game Loaded!") :strState];
+	else
+		[self showAlertSheet:NSLocalizedString(@"GMLoadError", @"Load Error!")
+			:NSLocalizedString(@"GMLoadErrorDesc", @"Sorry, cannot load game state.")];
+	[self setNeedsDisplay:YES];
 	return self;
 }
 
@@ -201,6 +211,10 @@ static inline int offsetCoords(int coord, int size, int offset) {
 - (void)updateMenus {
 	[(NSMenuItem *) menuItemTiles setState:roundedTiles];
 	[(NSMenuItem *) menuItemBackground setState:showBackground];
+}
+
+- (void)showAlertSheet:(NSString *)title :(NSString *)information {
+	NSBeginAlertSheet(title, nil, nil, nil, [self window], self, NULL, NULL, NULL, information);
 }
 
 @end

@@ -1,6 +1,13 @@
-/* Localized versions of strings */
+/* Localized versions of application strings (English) */
 
 GMYouWon = "You won!";
 GMGameOver = "Game Over!";
 GMScoreFMT = "Score: %1$d";
 GMEscape = "ESC to Restart!";
+GMStateFMT = "State on: %1$@";
+GMSaveOk = "Game Saved!";
+GMSaveError = "Save Error!";
+GMSaveErrorDesc = "Sorry, cannot save game state.";
+GMLoadOk = "Game Loaded!";
+GMLoadError = "Load Error!";
+GMLoadErrorDesc = "Sorry, cannot load game state.";

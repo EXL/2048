@@ -13,8 +13,8 @@
 	id gameView;
 }
 
-+ (BOOL)saveState:(char *)str_state :(const int *)board :(int)boardSize :(int)score :(int)win :(int)lose;
-+ (BOOL)loadState:(char *)str_state :(int *)board :(int)boardSize :(int *)score :(int *)win :(int *)lose;
++ (NSString *)saveState:(const int *)board :(int)boardSize :(int)score :(int)win :(int)lose;
++ (NSString *)loadState:(int *)board :(int)boardSize :(int *)score :(int *)win :(int *)lose;
 
 - (void)applicationDidFinishLaunching:(NSNotification *)notification;
 - (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)sender;

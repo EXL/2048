@@ -45,5 +45,6 @@
 - (void)setShowBackground:(BOOL)value;
 
 - (void)updateMenus;
+- (void)showAlertSheet:(NSString *)title :(NSString *)information;
 
 @end

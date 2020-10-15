@@ -11,14 +11,39 @@
 
 @implementation GameController
 
-+ (BOOL)saveState:(char *)str_state :(const int *)board :(int)boardSize :(int)score :(int)win :(int)lose {
-	// TODO: Not yet implemented.
-	return YES;
++ (NSString *)saveState:(const int *)board :(int)boardSize :(int)score :(int)win :(int)lose {
+	int i;
+	NSUserDefaults *settings = [NSUserDefaults standardUserDefaults];
+	NSString *strState = [NSString stringWithFormat:NSLocalizedString(@"GMStateFMT", @"State on: %@"), [[NSDate date] description]];
+	[settings setObject:strState forKey:@"saveDate"];
+	for (i = 0; i < boardSize; ++i)
+		[settings setObject:[NSNumber numberWithInt:board[i]] forKey:[NSString stringWithFormat:@"saveBoard_%d", i]];
+	[settings setObject:[NSNumber numberWithInt:score] forKey:@"saveScore"];
+	[settings setObject:[NSNumber numberWithInt:win] forKey:@"saveWin"];
+	[settings setObject:[NSNumber numberWithInt:lose] forKey:@"saveLose"];
+	return ([settings synchronize]) ? strState : nil;
 }
 
-+ (BOOL)loadState:(char *)str_state :(int *)board :(int)boardSize :(int *)score :(int *)win :(int *)lose {
-	// TODO: Not yet implemented.
-	return YES;
++ (NSString *)loadState:(int *)board :(int)boardSize :(int *)score :(int *)win :(int *)lose {
+	int i;
+	NSNumber *value = nil;
+	NSUserDefaults *settings = [NSUserDefaults standardUserDefaults];
+	NSString *strState = [settings objectForKey:@"saveDate"];
+	for (i = 0; i < boardSize; ++i) {
+		value = [settings objectForKey:[NSString stringWithFormat:@"saveBoard_%d", i]];
+		if (!value) return nil;
+		board[i] = [value intValue];
+	}
+	value = [settings objectForKey:@"saveScore"];
+	if (!value) return nil;
+	*score = [value intValue];
+	value = [settings objectForKey:@"saveWin"];
+	if (!value) return nil;
+	*win = [value intValue];
+	value = [settings objectForKey:@"saveLose"];
+	if (!value) return nil;
+	*lose = [value intValue];
+	return strState;
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)notification {
