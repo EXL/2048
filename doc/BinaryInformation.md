@@ -5,7 +5,7 @@ Dependencies were obtained:
 
 1. By using `ldd` command on Fedora and QNX.
 2. By `arm-linux-gnueabi-objdump` for MotoMAGX platform.
-3. By `otool -L` command on NeXTSTEP.
+3. By `otool -L` command on NeXTSTEP and Mac OS X.
 
 ### Sizes
 
@@ -49,7 +49,6 @@ total 260K
 drwxr-xr-x. 4 exl exl 4.0K Nov 15  1994 English.lproj
 -rw-r--r--. 1 exl exl  16K Nov 15  1994 icon150.tiff
 -rw-r--r--. 1 exl exl 3.2K Nov 15  1994 icon48.tiff
-
 NeXTSTEP/2048-NeXTSTEP.pkg:
 total 196K
 -rw-r--r--. 1 exl exl  16K Nov 15  1994 2048-NeXTSTEP.bom
@@ -57,6 +56,42 @@ total 196K
 -rw-r--r--. 1 exl exl   49 Nov 15  1994 2048-NeXTSTEP.sizes
 -r--r--r--. 1 exl exl 168K Nov 15  1994 2048-NeXTSTEP.tar.Z
 -r--r--r--. 1 exl exl 3.2K Nov 15  1994 2048-NeXTSTEP.tiff
+
+ls -lhR MacOS/
+MacOS/:
+total 4.0K
+drwxr-xr-x. 3 exl exl 4.0K Oct 15 22:03 PowerPC
+MacOS/PowerPC:
+total 4.0K
+drwxr-xr-x. 3 exl exl 4.0K Oct 15 19:39 2048-Cocoa.app
+MacOS/PowerPC/2048-Cocoa.app:
+total 4.0K
+drwxr-xr-x. 4 exl exl 4.0K Oct 15 19:39 Contents
+MacOS/PowerPC/2048-Cocoa.app/Contents:
+total 20K
+-rw-r--r--. 1 exl exl  760 Oct 15 19:38 Info.plist
+drwxr-xr-x. 2 exl exl 4.0K Oct 15 19:39 MacOS
+-rw-r--r--. 1 exl exl  275 Oct 15 19:38 pbdevelopment.plist
+-rw-r--r--. 1 exl exl    8 Oct 15 19:38 PkgInfo
+drwxr-xr-x. 3 exl exl 4.0K Oct 15 19:38 Resources
+MacOS/PowerPC/2048-Cocoa.app/Contents/MacOS:
+total 40K
+-rwxr-xr-x. 1 exl exl 37K Oct 15 19:39 2048-Cocoa
+MacOS/PowerPC/2048-Cocoa.app/Contents/Resources:
+total 60K
+-rw-r--r--. 1 exl exl  49K Oct 15 19:38 2048-Cocoa.icns
+drwxr-xr-x. 3 exl exl 4.0K Oct 15 19:38 English.lproj
+-rw-r--r--. 1 exl exl  188 Oct 15 19:38 ReadMe.md
+MacOS/PowerPC/2048-Cocoa.app/Contents/Resources/English.lproj:
+total 12K
+drwxr-xr-x. 2 exl exl 4.0K Oct 15 19:38 2048-Cocoa.nib
+-rw-r--r--. 1 exl exl  530 Oct 15 19:38 InfoPlist.strings
+-rw-r--r--. 1 exl exl  413 Oct 15 19:38 Localizable.strings
+MacOS/PowerPC/2048-Cocoa.app/Contents/Resources/English.lproj/2048-Cocoa.nib:
+total 12K
+-rw-r--r--. 1 exl exl  688 Oct 15 19:38 classes.nib
+-rw-r--r--. 1 exl exl  500 Oct 15 19:38 info.nib
+-rw-r--r--. 1 exl exl 3.0K Oct 15 19:38 objects.nib
 ```
 
 ### File Types
@@ -734,4 +769,13 @@ ldd 2048-JUCE
 	libpcre2-8.so.0 => /lib64/libpcre2-8.so.0 (0x00007f8d90280000)
 ldd 2048-JUCE | wc -l
 	36
+```
+
+### 2048-Cocoa
+
+```
+otool -L 2048-Cocoa
+2048-Cocoa:
+        /System/Library/Frameworks/Cocoa.framework/Versions/A/Cocoa (compatibility version 1.0.0, current version 5.0.0)
+        /usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 50.0.0)
 ```
