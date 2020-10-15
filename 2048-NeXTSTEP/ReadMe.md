@@ -89,7 +89,7 @@ mv pack.tar /src/
 
 Choose **Workspace => Disk => Eject** menu item.
 
-## Change Defaults
+## Change Defaults Commands
 
 ```csh
 dread -o 2048-NeXTSTEP
