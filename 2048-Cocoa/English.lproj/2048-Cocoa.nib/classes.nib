@@ -1,0 +1,25 @@
+{
+    IBClasses = (
+        {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
+        {
+            CLASS = GameController; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {gameView = id; }; 
+            SUPERCLASS = NSObject; 
+        }, 
+        {
+            ACTIONS = {
+                menuBackground = id; 
+                menuLoad = id; 
+                menuReset = id; 
+                menuSave = id; 
+                menuTiles = id; 
+            }; 
+            CLASS = GameView; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {menuItemBackground = id; menuItemTiles = id; }; 
+            SUPERCLASS = NSView; 
+        }
+    ); 
+    IBVersion = 1; 
+}
