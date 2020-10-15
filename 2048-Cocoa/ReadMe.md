@@ -3,7 +3,7 @@
 ```tcsh
 defaults
 defaults domains
-defaults read 2048-Cocoa
-defaults write 2048-Cocoa roundedTiles 1
-defaults delete 2048-Cocoa
+defaults read ru.exlmoto.Cocoa2048
+defaults write ru.exlmoto.Cocoa2048 roundedTiles -bool NO
+defaults delete ru.exlmoto.Cocoa2048
 ```
