@@ -195,7 +195,7 @@ extern void e_key(int keycode) {
 }
 
 extern void e_init(int esc_keycode, int left_keycode, int right_keycode, int up_keycode, int down_keycode) {
-	srand(time(NULL));
+	srand((unsigned int)time(NULL));
 	K_ESCAPE = esc_keycode;
 	K_LEFT = left_keycode;
 	K_RIGHT = right_keycode;
