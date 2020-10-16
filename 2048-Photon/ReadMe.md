@@ -26,6 +26,13 @@ make all
 strip -s x86/o/2048-Photon
 ./x86/o/2048-Photon
 ```
+## SSH/SCP Client Commands
+
+```sh
+ssh exl@192.168.122.1
+scp exl@192.168.122.1:/home/exl/Projects/2048/2048.tar.gz .
+scp 2048.tar.gz exl@192.168.122.1:/home/exl/Projects/
+```
 
 ## QNX Development Environment
 
