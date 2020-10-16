@@ -13,16 +13,9 @@ GameView = {
 	"load:" = "load:"; 
 	"resetGame:" = "resetGame:"; 
 	"save:" = "save:"; 
-	"setDisableBackground:" = "setDisableBackground:"; 
-	"setEnableBackground:" = "setEnableBackground:"; 
-	"setRectangleTiles:" = "setRectangleTiles:"; 
-	"setRoundedTiles:" = "setRoundedTiles:"; 
+	"setBackground:" = "setBackground:"; 
+	"setTiles:" = "setTiles:"; 
     }; 
-    OUTLETS = {
-	largeFont = largeFont; 
-	middleFont = middleFont; 
-	normalFont = normalFont; 
-	smallFont = smallFont; 
-    }; 
+    OUTLETS = {menuCellBackground = menuCellBackground; menuCellTiles = menuCellTiles; }; 
     SUPERCLASS = View; 
 };

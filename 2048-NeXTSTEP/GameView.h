@@ -1,10 +1,14 @@
+#import <appkit/Font.h>
 #import <appkit/View.h>
 
 @interface GameView : View {
-	id smallFont;
-	id middleFont;
-	id normalFont;
-	id largeFont;
+	id menuCellTiles;
+	id menuCellBackground;
+
+	Font *smallFont;
+	Font *middleFont;
+	Font *normalFont;
+	Font *largeFont;
 
 	BOOL roundedTiles;
 	BOOL showBackground;
@@ -18,12 +22,12 @@
 - (void)drawFinal;
 
 - resetGame:sender;
-- setRoundedTiles:sender;
-- setRectangleTiles:sender;
-- setEnableBackground:sender;
-- setDisableBackground:sender;
+- setTiles:sender;
+- setBackground:sender;
 
 - save:sender;
 - load:sender;
+
+- (void)updateMenus;
 
 @end

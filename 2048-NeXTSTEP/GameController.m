@@ -64,6 +64,7 @@
 	[[gameView window] setMiniwindowIcon:"icon48.tiff"];
 	[[gameView window] makeKeyAndOrderFront:self];
 	[[gameView window] makeFirstResponder:gameView];
+	[gameView updateMenus];
 	return self;
 }
 

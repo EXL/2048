@@ -13,6 +13,11 @@
 #define ww bounds.size.width
 #define hh bounds.size.height
 
+static const char *MENU_CELL_TILES_ROUNDED   = "Rounded Tiles";
+static const char *MENU_CELL_TILES_RECTANGLE = "Rectangle Tiles";
+static const char *MENU_CELL_BACKGROUND_SHOW = "Show Background";
+static const char *MENU_CELL_BACKGROUND_HIDE = "Hide Background";
+
 static const int TILE_SIZE   = 64;
 static const int TILE_MARGIN = 16;
 
@@ -101,31 +106,25 @@ static inline int offsetCoords(int coord, int size, int offset) {
 	return self;
 }
 
-- setRoundedTiles:sender {
-	roundedTiles = YES;
-	NXWriteDefault([NXApp appName], "rectType", "0");
+- setTiles:sender {
+	if (roundedTiles)
+		NXWriteDefault([NXApp appName], "rectType", "0");
+	else
+		NXWriteDefault([NXApp appName], "rectType", "1");
+	roundedTiles = !roundedTiles;
+	[self updateMenus];
 	[self update];
 	return self;
 }
 
-- setRectangleTiles:sender {
-	roundedTiles = NO;
-	NXWriteDefault([NXApp appName], "rectType", "1");
+- setBackground:sender {
+	if (showBackground)
+		NXWriteDefault([NXApp appName], "showBkg", "0");
+	else
+		NXWriteDefault([NXApp appName], "showBkg", "1");
+	showBackground = !showBackground;
 	[self update];
-	return self;
-}
-
-- setEnableBackground:sender {
-	showBackground = YES;
-	NXWriteDefault([NXApp appName], "showBkg", "1");
-	[self update];
-	return self;
-}
-
-- setDisableBackground:sender {
-	showBackground = NO;
-	NXWriteDefault([NXApp appName], "showBkg", "0");
-	[self update];
+	[self updateMenus];
 	return self;
 }
 
@@ -148,6 +147,17 @@ static inline int offsetCoords(int coord, int size, int offset) {
 	return self;
 }
 
+- (void)updateMenus {
+	if (roundedTiles)
+		[menuCellTiles setTitle:MENU_CELL_TILES_RECTANGLE];
+	else
+		[menuCellTiles setTitle:MENU_CELL_TILES_ROUNDED];
+	if (showBackground)
+		[menuCellBackground setTitle:MENU_CELL_BACKGROUND_HIDE];
+	else
+		[menuCellBackground setTitle:MENU_CELL_BACKGROUND_SHOW];
+}
+
 - initFrame:(const NXRect *)frameRect {
 	const char *rectType = NXGetDefaultValue([NXApp appName], "rectType");
 	const char *showBkg = NXGetDefaultValue([NXApp appName], "showBkg");
@@ -168,10 +178,10 @@ static inline int offsetCoords(int coord, int size, int offset) {
 	roundedTiles = YES;
 	showBackground = YES;
 
-	if (rectType && atoi(rectType))
-		[self setRectangleTiles:self];
+	if (rectType && !atoi(rectType))
+		roundedTiles = NO;
 	if (showBkg && !atoi(showBkg))
-		[self setDisableBackground:self];
+		showBackground = NO;
 	return self;
 }
 
