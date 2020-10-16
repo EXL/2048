@@ -213,7 +213,7 @@ static inline int offsetCoords(int coord, int size, int offset) {
 }
 
 - (void)showAlertSheet:(NSString *)title :(NSString *)information {
-	NSBeginAlertSheet(title, nil, nil, nil, [self window], self, NULL, NULL, NULL, information);
+	NSBeginAlertSheet(title, nil, nil, nil, [self window], self, NULL, NULL, NULL, @"%@", information);
 }
 
 @end
