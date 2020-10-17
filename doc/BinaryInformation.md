@@ -43,55 +43,55 @@ total 2.9M
 
 ls -lh NeXTSTEP/*
 NeXTSTEP/2048-NeXTSTEP.app:
-total 260K
--rwxr-xr-x. 1 exl exl 184K Nov 15  1994 2048-NeXTSTEP
+total 276K
+-rwxr-xr-x. 1 exl exl 200K Nov 15  1994 2048-NeXTSTEP
 -rw-r--r--. 1 exl exl  50K Nov 15  1994 avatar.tiff
 drwxr-xr-x. 4 exl exl 4.0K Nov 15  1994 English.lproj
 -rw-r--r--. 1 exl exl  16K Nov 15  1994 icon150.tiff
 -rw-r--r--. 1 exl exl 3.2K Nov 15  1994 icon48.tiff
 NeXTSTEP/2048-NeXTSTEP.pkg:
-total 196K
+total 200K
 -rw-r--r--. 1 exl exl  16K Nov 15  1994 2048-NeXTSTEP.bom
 -r--r--r--. 1 exl exl  798 Nov 15  1994 2048-NeXTSTEP.info
 -rw-r--r--. 1 exl exl   49 Nov 15  1994 2048-NeXTSTEP.sizes
--r--r--r--. 1 exl exl 168K Nov 15  1994 2048-NeXTSTEP.tar.Z
+-r--r--r--. 1 exl exl 170K Nov 15  1994 2048-NeXTSTEP.tar.Z
 -r--r--r--. 1 exl exl 3.2K Nov 15  1994 2048-NeXTSTEP.tiff
 
 ls -lhR MacOS/
 MacOS/:
 total 4.0K
-drwxr-xr-x. 3 exl exl 4.0K Oct 15 22:03 PowerPC
+drwxr-xr-x. 3 exl exl 4.0K Oct 17 13:34 PowerPC
 MacOS/PowerPC:
 total 4.0K
-drwxr-xr-x. 3 exl exl 4.0K Oct 15 19:39 2048-Cocoa.app
+drwxr-xr-x. 3 exl exl 4.0K Oct 17 13:14 2048-Cocoa.app
 MacOS/PowerPC/2048-Cocoa.app:
 total 4.0K
-drwxr-xr-x. 4 exl exl 4.0K Oct 15 19:39 Contents
+drwxr-xr-x. 4 exl exl 4.0K Oct 17 13:14 Contents
 MacOS/PowerPC/2048-Cocoa.app/Contents:
 total 20K
--rw-r--r--. 1 exl exl  760 Oct 15 19:38 Info.plist
-drwxr-xr-x. 2 exl exl 4.0K Oct 15 19:39 MacOS
--rw-r--r--. 1 exl exl  275 Oct 15 19:38 pbdevelopment.plist
--rw-r--r--. 1 exl exl    8 Oct 15 19:38 PkgInfo
-drwxr-xr-x. 3 exl exl 4.0K Oct 15 19:38 Resources
+-rw-r--r--. 1 exl exl  760 Oct 17 13:13 Info.plist
+drwxr-xr-x. 2 exl exl 4.0K Oct 17 13:14 MacOS
+-rw-r--r--. 1 exl exl  275 Oct 17 13:13 pbdevelopment.plist
+-rw-r--r--. 1 exl exl    8 Oct 17 13:13 PkgInfo
+drwxr-xr-x. 3 exl exl 4.0K Oct 17 13:13 Resources
 MacOS/PowerPC/2048-Cocoa.app/Contents/MacOS:
 total 40K
--rwxr-xr-x. 1 exl exl 37K Oct 15 19:39 2048-Cocoa
+-rwxr-xr-x. 1 exl exl 37K Oct 17 13:14 2048-Cocoa
 MacOS/PowerPC/2048-Cocoa.app/Contents/Resources:
 total 60K
--rw-r--r--. 1 exl exl  49K Oct 15 19:38 2048-Cocoa.icns
-drwxr-xr-x. 3 exl exl 4.0K Oct 15 19:38 English.lproj
--rw-r--r--. 1 exl exl  188 Oct 15 19:38 ReadMe.md
+-rw-r--r--. 1 exl exl  49K Oct 17 13:13 2048-Cocoa.icns
+drwxr-xr-x. 3 exl exl 4.0K Oct 17 13:13 English.lproj
+-rw-r--r--. 1 exl exl 1.7K Oct 17 13:13 ReadMe.md
 MacOS/PowerPC/2048-Cocoa.app/Contents/Resources/English.lproj:
 total 12K
-drwxr-xr-x. 2 exl exl 4.0K Oct 15 19:38 2048-Cocoa.nib
--rw-r--r--. 1 exl exl  530 Oct 15 19:38 InfoPlist.strings
--rw-r--r--. 1 exl exl  413 Oct 15 19:38 Localizable.strings
+drwxr-xr-x. 2 exl exl 4.0K Oct 17 13:13 2048-Cocoa.nib
+-rw-r--r--. 1 exl exl  530 Oct 17 13:13 InfoPlist.strings
+-rw-r--r--. 1 exl exl  413 Oct 17 13:13 Localizable.strings
 MacOS/PowerPC/2048-Cocoa.app/Contents/Resources/English.lproj/2048-Cocoa.nib:
 total 12K
--rw-r--r--. 1 exl exl  688 Oct 15 19:38 classes.nib
--rw-r--r--. 1 exl exl  500 Oct 15 19:38 info.nib
--rw-r--r--. 1 exl exl 3.0K Oct 15 19:38 objects.nib
+-rw-r--r--. 1 exl exl  688 Oct 17 13:13 classes.nib
+-rw-r--r--. 1 exl exl  500 Oct 17 13:13 info.nib
+-rw-r--r--. 1 exl exl 3.0K Oct 17 13:13 objects.nib
 ```
 
 ### File Types
@@ -126,14 +126,7 @@ file MotoMAGX/*
 MotoMAGX/2048_MotoMAGX_ZN5_v1.0_28-Jul-2020.mgx: 7-zip archive data, version 0.4
 MotoMAGX/2048_MotoMAGX_ZN5.webm:                 WebM
 
-file NeXTSTEP/2048-NeXTSTEP.pkg/*
-NeXTSTEP/2048-NeXTSTEP.pkg/2048-NeXTSTEP.bom:   data
-NeXTSTEP/2048-NeXTSTEP.pkg/2048-NeXTSTEP.info:  ASCII text
-NeXTSTEP/2048-NeXTSTEP.pkg/2048-NeXTSTEP.sizes: ASCII text
-NeXTSTEP/2048-NeXTSTEP.pkg/2048-NeXTSTEP.tar.Z: compress'd data 16 bits
-NeXTSTEP/2048-NeXTSTEP.pkg/2048-NeXTSTEP.tiff:  TIFF image data, little-endian, direntries=19, height=48, bps=3154, compression=LZW, PhotometricIntepretation=RGB, name=/home/exl/Projects/2048/image/icon/icon48_1.tiff, orientation=upper-left, width=48
-
-find NeXTSTEP/2048-NeXTSTEP.app/ -type f -exec file {} \;
+find NeXTSTEP/ -type f -exec file {} \;
 NeXTSTEP/2048-NeXTSTEP.app/icon150.tiff: TIFF image data, little-endian, direntries=19, height=150, bps=15744, compression=LZW, PhotometricIntepretation=RGB, name=/home/exl/Projects/2048/image/icon/avatar.tiff, orientation=upper-left, width=150
 NeXTSTEP/2048-NeXTSTEP.app/avatar.tiff: TIFF image data, little-endian, direntries=18, height=150, bps=50592, compression=LZW, PhotometricIntepretation=RGB, name=/home/exl/Projects/2048/image/icon/avatar.tiff, orientation=upper-left, width=150
 NeXTSTEP/2048-NeXTSTEP.app/English.lproj/2048-NeXTSTEP.nib/data.nib: NeXT/Apple typedstream data, little endian, version 4, system 930
@@ -142,6 +135,24 @@ NeXTSTEP/2048-NeXTSTEP.app/English.lproj/2048-Info.nib/data.nib: NeXT/Apple type
 NeXTSTEP/2048-NeXTSTEP.app/English.lproj/2048-Info.nib/data.classes: ASCII text
 NeXTSTEP/2048-NeXTSTEP.app/icon48.tiff: TIFF image data, little-endian, direntries=19, height=48, bps=3154, compression=LZW, PhotometricIntepretation=RGB, name=/home/exl/Projects/2048/image/icon/icon48_1.tiff, orientation=upper-left, width=48
 NeXTSTEP/2048-NeXTSTEP.app/2048-NeXTSTEP: Mach-O universal binary with 4 architectures: [m68k:Mach-O m68k executable, flags:<NOUNDEFS>] [i386:Mach-O i386 executable, flags:<NOUNDEFS>] [hppa 7100:Mach-O hppa 7100 executable, flags:<NOUNDEFS>] [SPARC:Mach-O SPARC executable, flags:<NOUNDEFS>]
+NeXTSTEP/2048-NeXTSTEP.pkg/2048-NeXTSTEP.bom: data
+NeXTSTEP/2048-NeXTSTEP.pkg/2048-NeXTSTEP.sizes: ASCII text
+NeXTSTEP/2048-NeXTSTEP.pkg/2048-NeXTSTEP.tar.Z: compress'd data 16 bits
+NeXTSTEP/2048-NeXTSTEP.pkg/2048-NeXTSTEP.info: ASCII text
+NeXTSTEP/2048-NeXTSTEP.pkg/2048-NeXTSTEP.tiff: TIFF image data, little-endian, direntries=19, height=48, bps=3154, compression=LZW, PhotometricIntepretation=RGB, name=/home/exl/Projects/2048/image/icon/icon48_1.tiff, orientation=upper-left, width=48
+
+find MacOS/ -type f -exec file {} \;
+MacOS/PowerPC/2048-Cocoa.app/Contents/pbdevelopment.plist: XML 1.0 document, ASCII text
+MacOS/PowerPC/2048-Cocoa.app/Contents/Info.plist: XML 1.0 document, ASCII text
+MacOS/PowerPC/2048-Cocoa.app/Contents/Resources/ReadMe.md: ReStructuredText file, ASCII text
+MacOS/PowerPC/2048-Cocoa.app/Contents/Resources/English.lproj/InfoPlist.strings: Big-endian UTF-16 Unicode text
+MacOS/PowerPC/2048-Cocoa.app/Contents/Resources/English.lproj/2048-Cocoa.nib/info.nib: XML 1.0 document, ASCII text
+MacOS/PowerPC/2048-Cocoa.app/Contents/Resources/English.lproj/2048-Cocoa.nib/classes.nib: ASCII text
+MacOS/PowerPC/2048-Cocoa.app/Contents/Resources/English.lproj/2048-Cocoa.nib/objects.nib: NeXT/Apple typedstream data, big endian, version 4, system 1000
+MacOS/PowerPC/2048-Cocoa.app/Contents/Resources/English.lproj/Localizable.strings: ASCII text
+MacOS/PowerPC/2048-Cocoa.app/Contents/Resources/2048-Cocoa.icns: Mac OS X icon, 49253 bytes, "ics#" type
+MacOS/PowerPC/2048-Cocoa.app/Contents/PkgInfo: ASCII text, with no line terminators
+MacOS/PowerPC/2048-Cocoa.app/Contents/MacOS/2048-Cocoa: Mach-O ppc executable, flags:<NOUNDEFS|DYLDLINK|PREBOUND>
 ```
 
 ### 2048-Qt5
