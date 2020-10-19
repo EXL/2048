@@ -219,7 +219,14 @@ static inline int offsetCoords(int coord, int size, int offset) {
 }
 
 - (void)showAlertSheet:(NSString *)title :(NSString *)information {
+#ifdef MODERN_MAC_OS
+	NSAlert *alert = [[NSAlert alloc] init];
+	[alert setMessageText:title];
+	[alert setInformativeText:information];
+	[alert beginSheetModalForWindow:[self window] completionHandler:nil];
+#else
 	NSBeginAlertSheet(title, nil, nil, nil, [self window], self, NULL, NULL, NULL, @"%@", information);
+#endif // MODERN_MAC_OS
 }
 
 @end
