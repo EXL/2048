@@ -1,7 +1,7 @@
 2048-Cocoa
 ==========
 
-![2048-Cocoa Mac OS X Screenshot](../image/2048-Cocoa-Screenshot.png)
+![2048-Cocoa Mac OS X 10.0 Screenshot](../image/2048-Cocoa-Screenshot-10_0.png)
 
 ## Developer Tools
 
