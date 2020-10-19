@@ -1,7 +1,7 @@
 2048-Cocoa
 ==========
 
-![2048-Cocoa Mac OS X 10.13 Screenshot](../image/2048-Cocoa-Screenshot-10_13.png)
+![2048-Cocoa Mac OS X 10.13 Screenshot](../../image/2048-Cocoa-Screenshot-10_13.png)
 
 ## Building application via Xcode 10
 
