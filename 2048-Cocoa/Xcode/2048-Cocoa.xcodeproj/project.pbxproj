@@ -319,7 +319,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				PRODUCT_BUNDLE_IDENTIFIER = ru.exlmoto.Cocoa2048;
 				PRODUCT_MODULE_NAME = "2048-Cocoa";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -343,7 +343,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				PRODUCT_BUNDLE_IDENTIFIER = ru.exlmoto.Cocoa2048;
 				PRODUCT_MODULE_NAME = "2048-Cocoa";
 				PRODUCT_NAME = "$(TARGET_NAME)";
