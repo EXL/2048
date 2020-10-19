@@ -14,6 +14,9 @@
 ## Building application via Command-Line tools
 
 ```bash
+git clone https://github.com/EXL/2048
+cd 2048/2048-Cocoa/Xcode10
+
 xcodebuild -scheme 2048-Cocoa archive -archivePath 2048-Cocoa
 xcodebuild -exportArchive -archivePath 2048-Cocoa.xcarchive -exportPath build -exportOptionsPlist 2048-Cocoa.xcarchive/Info.plist
 ```
