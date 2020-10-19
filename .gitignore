@@ -22,3 +22,4 @@ build*
 
 # Xcode files.
 xcuserdata/
+*.xcarchive/
