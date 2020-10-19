@@ -6,7 +6,7 @@
 //  Copyright (c) 2020 EXL. All rights reserved.
 //
 
-#import <AppKit/AppKit.h>
+#import <Cocoa/Cocoa.h>
 
 @interface GameView : NSView {
 	id menuItemTiles;

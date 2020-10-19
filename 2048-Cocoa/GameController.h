@@ -6,8 +6,7 @@
 //  Copyright (c) 2020 EXL. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-#import <AppKit/AppKit.h>
+#import <Cocoa/Cocoa.h>
 
 @interface GameController : NSObject {
 	id gameView;

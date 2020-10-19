@@ -82,7 +82,7 @@ static inline int offsetCoords(int coord, int size, int offset) {
 
 - (void)drawFinal:(NSRect)bounds {
 	NSString *strScore = [NSString stringWithFormat:NSLocalizedString(@"GMScoreFMT", @"Score: %d"), e_score];
-	NSString *strEscape = @"ESC to Restart!";
+	NSString *strEscape = NSLocalizedString(@"GMEscape", @"ESC to Restart!");
 	NSDictionary *attrs = [self textAttributes:normalFont :[self getColor:COLOR_TEXT :1.0f]];
 	NSSize strSize;
 	if (e_win || e_lose) {
