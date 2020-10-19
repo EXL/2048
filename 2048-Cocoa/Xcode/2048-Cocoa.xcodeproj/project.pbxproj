@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 47;
+	objectVersion = 50;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -125,7 +125,7 @@
 				};
 			};
 			buildConfigurationList = CA7D733C253D760D00A075D7 /* Build configuration list for PBXProject "2048-Cocoa" */;
-			compatibilityVersion = "Xcode 6.3";
+			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -310,9 +310,17 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = AXV39C6QRF;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"MODERN_MAC_OS_X=1",
+					"DEBUG=1",
+					"$(inherited)",
+				);
 				INFOPLIST_FILE = Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				PRODUCT_BUNDLE_IDENTIFIER = ru.exlmoto.Cocoa2048;
 				PRODUCT_MODULE_NAME = "2048-Cocoa";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -330,9 +338,13 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = AXV39C6QRF;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_PREPROCESSOR_DEFINITIONS = "MODERN_MAC_OS_X=1";
 				INFOPLIST_FILE = Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				PRODUCT_BUNDLE_IDENTIFIER = ru.exlmoto.Cocoa2048;
 				PRODUCT_MODULE_NAME = "2048-Cocoa";
 				PRODUCT_NAME = "$(TARGET_NAME)";
