@@ -1,0 +1,352 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 47;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		CA2195E0253D85CA006CC270 /* 2048-Cocoa.xib in Resources */ = {isa = PBXBuildFile; fileRef = CA2195DE253D85CA006CC270 /* 2048-Cocoa.xib */; };
+		CA7D7348253D761100A075D7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CA7D7347253D761100A075D7 /* Assets.xcassets */; };
+		CA7D734E253D761100A075D7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = CA7D734D253D761100A075D7 /* main.m */; };
+		CA7D7357253D79F700A075D7 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CA7D7356253D79F700A075D7 /* Cocoa.framework */; };
+		CAA366B4253D88D2001E90E3 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = CAA366B2253D88D2001E90E3 /* Localizable.strings */; };
+		CABA52BA253D7EF200AA4A97 /* GameView.m in Sources */ = {isa = PBXBuildFile; fileRef = CABA52B9253D7EF200AA4A97 /* GameView.m */; };
+		CABA52BD253D7F0900AA4A97 /* GameController.m in Sources */ = {isa = PBXBuildFile; fileRef = CABA52BC253D7F0900AA4A97 /* GameController.m */; };
+		CABA52C0253D7F2600AA4A97 /* 2048.c in Sources */ = {isa = PBXBuildFile; fileRef = CABA52BE253D7F2600AA4A97 /* 2048.c */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		CA2195DF253D85CA006CC270 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = "Base.lproj/2048-Cocoa.xib"; sourceTree = "<group>"; };
+		CA7D7341253D760D00A075D7 /* 2048-Cocoa.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "2048-Cocoa.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		CA7D7347253D761100A075D7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		CA7D734C253D761100A075D7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CA7D734D253D761100A075D7 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		CA7D734F253D761100A075D7 /* 2048-Cocoa.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "2048-Cocoa.entitlements"; sourceTree = "<group>"; };
+		CA7D7356253D79F700A075D7 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
+		CAA366B3253D88D2001E90E3 /* English */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = English; path = ../English.lproj/Localizable.strings; sourceTree = "<group>"; };
+		CABA52B8253D7EF200AA4A97 /* GameView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GameView.h; sourceTree = "<group>"; };
+		CABA52B9253D7EF200AA4A97 /* GameView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GameView.m; sourceTree = "<group>"; };
+		CABA52BB253D7F0900AA4A97 /* GameController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GameController.h; sourceTree = "<group>"; };
+		CABA52BC253D7F0900AA4A97 /* GameController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GameController.m; sourceTree = "<group>"; };
+		CABA52BE253D7F2600AA4A97 /* 2048.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = 2048.c; sourceTree = "<group>"; };
+		CABA52BF253D7F2600AA4A97 /* 2048.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = 2048.h; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		CA7D733E253D760D00A075D7 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CA7D7357253D79F700A075D7 /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		CA7D7338253D760D00A075D7 = {
+			isa = PBXGroup;
+			children = (
+				CAA366B2253D88D2001E90E3 /* Localizable.strings */,
+				CA2195DE253D85CA006CC270 /* 2048-Cocoa.xib */,
+				CABA52B8253D7EF200AA4A97 /* GameView.h */,
+				CABA52B9253D7EF200AA4A97 /* GameView.m */,
+				CABA52BB253D7F0900AA4A97 /* GameController.h */,
+				CABA52BC253D7F0900AA4A97 /* GameController.m */,
+				CABA52BE253D7F2600AA4A97 /* 2048.c */,
+				CABA52BF253D7F2600AA4A97 /* 2048.h */,
+				CA7D7347253D761100A075D7 /* Assets.xcassets */,
+				CA7D734C253D761100A075D7 /* Info.plist */,
+				CA7D734D253D761100A075D7 /* main.m */,
+				CA7D734F253D761100A075D7 /* 2048-Cocoa.entitlements */,
+				CA7D7342253D760D00A075D7 /* Products */,
+				CA7D7355253D79F600A075D7 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+			usesTabs = 1;
+		};
+		CA7D7342253D760D00A075D7 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				CA7D7341253D760D00A075D7 /* 2048-Cocoa.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		CA7D7355253D79F600A075D7 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				CA7D7356253D79F700A075D7 /* Cocoa.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		CA7D7340253D760D00A075D7 /* 2048-Cocoa */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CA7D7352253D761100A075D7 /* Build configuration list for PBXNativeTarget "2048-Cocoa" */;
+			buildPhases = (
+				CA7D733D253D760D00A075D7 /* Sources */,
+				CA7D733E253D760D00A075D7 /* Frameworks */,
+				CA7D733F253D760D00A075D7 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "2048-Cocoa";
+			productName = "2048-Cocoa";
+			productReference = CA7D7341253D760D00A075D7 /* 2048-Cocoa.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		CA7D7339253D760D00A075D7 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 1010;
+				ORGANIZATIONNAME = EXL;
+				TargetAttributes = {
+					CA7D7340253D760D00A075D7 = {
+						CreatedOnToolsVersion = 10.1;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = CA7D733C253D760D00A075D7 /* Build configuration list for PBXProject "2048-Cocoa" */;
+			compatibilityVersion = "Xcode 6.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+				English,
+			);
+			mainGroup = CA7D7338253D760D00A075D7;
+			productRefGroup = CA7D7342253D760D00A075D7 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				CA7D7340253D760D00A075D7 /* 2048-Cocoa */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		CA7D733F253D760D00A075D7 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CA7D7348253D761100A075D7 /* Assets.xcassets in Resources */,
+				CAA366B4253D88D2001E90E3 /* Localizable.strings in Resources */,
+				CA2195E0253D85CA006CC270 /* 2048-Cocoa.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		CA7D733D253D760D00A075D7 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CABA52BD253D7F0900AA4A97 /* GameController.m in Sources */,
+				CABA52C0253D7F2600AA4A97 /* 2048.c in Sources */,
+				CABA52BA253D7EF200AA4A97 /* GameView.m in Sources */,
+				CA7D734E253D761100A075D7 /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		CA2195DE253D85CA006CC270 /* 2048-Cocoa.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				CA2195DF253D85CA006CC270 /* Base */,
+			);
+			name = "2048-Cocoa.xib";
+			sourceTree = "<group>";
+		};
+		CAA366B2253D88D2001E90E3 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				CAA366B3253D88D2001E90E3 /* English */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		CA7D7350253D761100A075D7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		CA7D7351253D761100A075D7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		CA7D7353253D761100A075D7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = "2048-Cocoa.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				PRODUCT_BUNDLE_IDENTIFIER = ru.exlmoto.Cocoa2048;
+				PRODUCT_MODULE_NAME = "2048-Cocoa";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		CA7D7354253D761100A075D7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = "2048-Cocoa.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				PRODUCT_BUNDLE_IDENTIFIER = ru.exlmoto.Cocoa2048;
+				PRODUCT_MODULE_NAME = "2048-Cocoa";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		CA7D733C253D760D00A075D7 /* Build configuration list for PBXProject "2048-Cocoa" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CA7D7350253D761100A075D7 /* Debug */,
+				CA7D7351253D761100A075D7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CA7D7352253D761100A075D7 /* Build configuration list for PBXNativeTarget "2048-Cocoa" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CA7D7353253D761100A075D7 /* Debug */,
+				CA7D7354253D761100A075D7 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = CA7D7339253D760D00A075D7 /* Project object */;
+}
