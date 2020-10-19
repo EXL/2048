@@ -129,9 +129,8 @@
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
-				en,
 				Base,
-				English,
+				en,
 			);
 			mainGroup = CA7D7338253D760D00A075D7;
 			productRefGroup = CA7D7342253D760D00A075D7 /* Products */;
