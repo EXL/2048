@@ -23,6 +23,14 @@ xcodebuild -exportArchive -archivePath 2048-Cocoa.xcarchive -exportPath build -e
 Travis-CI recipe:
 
 ```yml
+os: osx
+osx_image: xcode10.1
+language: objective-c
+script:
+    - cd 2048-Cocoa/Xcode10/
+    - xcodebuild -scheme 2048-Cocoa archive -archivePath 2048-Cocoa CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO
+    - tar -cvzf 2048-Cocoa.gz 2048-Cocoa.xcarchive
+    - curl --upload-file ./2048-Cocoa.gz https://transfer.sh/2048-Cocoa.gz
 ```
 
 ## Versions
