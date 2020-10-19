@@ -19,3 +19,6 @@ build*
 .DS_Store
 *.pbxuser
 2048-Cocoa/English.lproj/2048-Cocoa.nib~
+
+# Xcode files.
+xcuserdata/
