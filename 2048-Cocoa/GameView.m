@@ -66,11 +66,11 @@ static inline int offsetCoords(int coord, int size, int offset) {
 	const NSRect tile = NSMakeRect(xOffset, yOffset, TILE_SIZE, TILE_SIZE);
 	[[self getColor:e_background(value) :1.0f] set];
 	if (roundedTiles)
-#ifdef MODERN_MAC_OS
+#ifdef USE_SYSTEM_ROUNDED_RECT
 		[[NSBezierPath bezierPathWithRoundedRect:tile xRadius:8.0f yRadius:8.0f] fill];
 #else
 		[[self roundedRect:tile :8.0f] fill];
-#endif // MODERN_MAC_OS
+#endif // USE_SYSTEM_ROUNDED_RECT
 	else
 		NSRectFill(tile);
 	if (value) {
@@ -104,7 +104,7 @@ static inline int offsetCoords(int coord, int size, int offset) {
 	[strScore drawAtPoint:NSMakePoint(ww - strSize.width - TILE_MARGIN, hh - strSize.height - 10) withAttributes:attrs];
 }
 
-#ifdef MODERN_MAC_OS
+#ifndef USE_SYSTEM_ROUNDED_RECT
 - (NSBezierPath *)roundedRect:(NSRect)rect :(int)rad {
 	const int left = rect.origin.x, right = rect.origin.x + rect.size.width,
 		top = rect.origin.y, bottom = rect.origin.y + rect.size.height;
@@ -126,7 +126,7 @@ static inline int offsetCoords(int coord, int size, int offset) {
 	[path closePath];
 	return path;
 }
-#endif // MODERN_MAC_OS
+#endif // !USE_SYSTEM_ROUNDED_RECT
 
 - (NSDictionary *)textAttributes:(NSFont *)font :(NSColor *)color {
 	return [NSDictionary dictionaryWithObjectsAndKeys:font, NSFontAttributeName,
@@ -219,14 +219,14 @@ static inline int offsetCoords(int coord, int size, int offset) {
 }
 
 - (void)showAlertSheet:(NSString *)title :(NSString *)information {
-#ifdef MODERN_MAC_OS
+#ifdef USE_SYSTEM_MODERN_ALERT
 	NSAlert *alert = [[NSAlert alloc] init];
 	[alert setMessageText:title];
 	[alert setInformativeText:information];
 	[alert beginSheetModalForWindow:[self window] completionHandler:nil];
 #else
 	NSBeginAlertSheet(title, nil, nil, nil, [self window], self, NULL, NULL, NULL, @"%@", information);
-#endif // MODERN_MAC_OS
+#endif // USE_SYSTEM_MODERN_ALERT
 }
 
 @end

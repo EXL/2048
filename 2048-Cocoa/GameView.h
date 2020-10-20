@@ -31,9 +31,9 @@
 - (void)drawTile:(NSRect)bounds :(int)value :(int)x :(int)y;
 - (void)drawFinal:(NSRect)bounds;
 
-#ifdef MODERN_MAC_OS
+#ifndef USE_SYSTEM_ROUNDED_RECT
 - (NSBezierPath *)roundedRect:(NSRect)rect :(int)rad;
-#endif // MODERN_MAC_OS
+#endif // !USE_SYSTEM_ROUNDED_RECT
 - (NSDictionary *)textAttributes:(NSFont *)font :(NSColor *)color;
 - (NSColor *)getColor:(unsigned int)color :(float)alpha;
 
