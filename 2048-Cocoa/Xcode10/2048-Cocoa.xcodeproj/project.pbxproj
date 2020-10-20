@@ -15,6 +15,7 @@
 		CABA52BA253D7EF200AA4A97 /* GameView.m in Sources */ = {isa = PBXBuildFile; fileRef = CABA52B9253D7EF200AA4A97 /* GameView.m */; };
 		CABA52BD253D7F0900AA4A97 /* GameController.m in Sources */ = {isa = PBXBuildFile; fileRef = CABA52BC253D7F0900AA4A97 /* GameController.m */; };
 		CABA52C0253D7F2600AA4A97 /* 2048.c in Sources */ = {isa = PBXBuildFile; fileRef = CABA52BE253D7F2600AA4A97 /* 2048.c */; };
+		CAC31D8D253F92AE00722A90 /* ReadMe.md in Resources */ = {isa = PBXBuildFile; fileRef = CAC31D8C253F92AE00722A90 /* ReadMe.md */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +33,7 @@
 		CABA52BC253D7F0900AA4A97 /* GameController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GameController.m; sourceTree = "<group>"; };
 		CABA52BE253D7F2600AA4A97 /* 2048.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = 2048.c; sourceTree = "<group>"; };
 		CABA52BF253D7F2600AA4A97 /* 2048.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = 2048.h; sourceTree = "<group>"; };
+		CAC31D8C253F92AE00722A90 /* ReadMe.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = ReadMe.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,6 +63,7 @@
 				CA7D734C253D761100A075D7 /* Info.plist */,
 				CA7D734D253D761100A075D7 /* main.m */,
 				CA7D734F253D761100A075D7 /* 2048-Cocoa.entitlements */,
+				CAC31D8B253F929400722A90 /* Supporting Files */,
 				CA7D7342253D760D00A075D7 /* Products */,
 				CA7D7355253D79F600A075D7 /* Frameworks */,
 			);
@@ -81,6 +84,14 @@
 				CA7D7356253D79F700A075D7 /* Cocoa.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		CAC31D8B253F929400722A90 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				CAC31D8C253F92AE00722A90 /* ReadMe.md */,
+			);
+			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -149,6 +160,7 @@
 			files = (
 				CA7D7348253D761100A075D7 /* Assets.xcassets in Resources */,
 				CAA366B4253D88D2001E90E3 /* Localizable.strings in Resources */,
+				CAC31D8D253F92AE00722A90 /* ReadMe.md in Resources */,
 				CA2195E0253D85CA006CC270 /* 2048-Cocoa.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
