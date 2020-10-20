@@ -5,7 +5,7 @@
 
 ## Building application via Xcode 10
 
-1. Open **2048-Cocoa.xproj** project.
+1. Open **2048-Cocoa.xcodeproj** project.
 2. Choose **Product** => **Clean Build Folder** in the global menu then choose **Product** => **Archive** item.
 3. Select in the window that opens **Distribute App** button.
 4. Choose **Copy App** option then set directory and click export.
