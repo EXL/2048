@@ -36,6 +36,10 @@ script:
     - curl --upload-file ./2048-Cocoa.gz https://transfer.sh/2048-Cocoa.gz
 ```
 
+## macOS Development Environment
+
+Xcode 10: See [2048-Swift](../../2048-Swift) project directory.
+
 ## Versions
 
 * macOS 10.13.6 (Build 17G14033)
