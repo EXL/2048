@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		CA3F626E2540B629000E067E /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = CA3F626C2540B629000E067E /* Credits.rtf */; };
-		CA3F62702540B630000E067E /* 2048-Cocoa-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CA3F626F2540B630000E067E /* 2048-Cocoa-Info.plist */; };
 		CA3F62732540B644000E067E /* ReadMe.md in Resources */ = {isa = PBXBuildFile; fileRef = CA3F62722540B644000E067E /* ReadMe.md */; };
 		CA58D0672540B05B00C02DDA /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CA58D0662540B05B00C02DDA /* Cocoa.framework */; };
 		CABB157F2540B8E2007F724C /* 2048-Cocoa.xib in Resources */ = {isa = PBXBuildFile; fileRef = CABB157D2540B8E2007F724C /* 2048-Cocoa.xib */; };
@@ -30,7 +29,7 @@
 		CA58D0692540B05B00C02DDA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		CA58D06A2540B05B00C02DDA /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		CA58D06B2540B05B00C02DDA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		CABB157E2540B8E2007F724C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = "Base.lproj/2048-Cocoa.xib"; sourceTree = "<group>"; };
+		CAAE7D132540C1E500D305B7 /* 2048-Cocoa.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "2048-Cocoa.entitlements"; sourceTree = "<group>"; };
 		CABB15802540BBAB007F724C /* 2048.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = 2048.c; sourceTree = "<group>"; };
 		CABB15812540BBAB007F724C /* 2048.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = 2048.h; sourceTree = "<group>"; };
 		CABB15822540BBAB007F724C /* GameController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameController.h; sourceTree = "<group>"; };
@@ -40,6 +39,7 @@
 		CABB15862540BBAB007F724C /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		CABB158C2540BE89007F724C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		CABB158E2540C0D5007F724C /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		CAF7071725420C940000E00F /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = "en.lproj/2048-Cocoa.xib"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,6 +57,7 @@
 		CA58D05A2540B05B00C02DDA = {
 			isa = PBXGroup;
 			children = (
+				CAAE7D132540C1E500D305B7 /* 2048-Cocoa.entitlements */,
 				CABB158E2540C0D5007F724C /* Images.xcassets */,
 				CABB157D2540B8E2007F724C /* 2048-Cocoa.xib */,
 				CABB15802540BBAB007F724C /* 2048.c */,
@@ -72,6 +73,7 @@
 				CA58D0642540B05B00C02DDA /* Products */,
 			);
 			sourceTree = "<group>";
+			usesTabs = 1;
 		};
 		CA58D0642540B05B00C02DDA /* Products */ = {
 			isa = PBXGroup;
@@ -140,6 +142,15 @@
 			attributes = {
 				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = EXL;
+				TargetAttributes = {
+					CA58D0622540B05B00C02DDA = {
+						SystemCapabilities = {
+							com.apple.Sandbox = {
+								enabled = 1;
+							};
+						};
+					};
+				};
 			};
 			buildConfigurationList = CA58D05E2540B05B00C02DDA /* Build configuration list for PBXProject "2048-Cocoa" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -165,7 +176,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				CABB158D2540BE89007F724C /* Localizable.strings in Resources */,
-				CA3F62702540B630000E067E /* 2048-Cocoa-Info.plist in Resources */,
 				CA3F626E2540B629000E067E /* Credits.rtf in Resources */,
 				CABB158F2540C0D5007F724C /* Images.xcassets in Resources */,
 				CA3F62732540B644000E067E /* ReadMe.md in Resources */,
@@ -201,7 +211,7 @@
 		CABB157D2540B8E2007F724C /* 2048-Cocoa.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				CABB157E2540B8E2007F724C /* Base */,
+				CAF7071725420C940000E00F /* en */,
 			);
 			name = "2048-Cocoa.xib";
 			sourceTree = "<group>";
@@ -291,10 +301,20 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "2048-Cocoa.entitlements";
+				CODE_SIGN_IDENTITY = "-";
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "2048-Cocoa/2048-Cocoa-Prefix.pch";
-				INFOPLIST_FILE = "2048-Cocoa/2048-Cocoa-Info.plist";
+				GCC_PREFIX_HEADER = "2048-Cocoa-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					USE_SYSTEM_ROUNDED_RECT,
+					"$(inherited)",
+				);
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
+				GCC_WARN_INHIBIT_ALL_WARNINGS = YES;
+				GCC_WARN_PEDANTIC = YES;
+				INFOPLIST_FILE = "$(SRCROOT)/2048-Cocoa-Info.plist";
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -304,10 +324,18 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "2048-Cocoa.entitlements";
+				CODE_SIGN_IDENTITY = "-";
 				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "2048-Cocoa/2048-Cocoa-Prefix.pch";
-				INFOPLIST_FILE = "2048-Cocoa/2048-Cocoa-Info.plist";
+				GCC_PREFIX_HEADER = "2048-Cocoa-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = USE_SYSTEM_ROUNDED_RECT;
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
+				GCC_WARN_INHIBIT_ALL_WARNINGS = YES;
+				GCC_WARN_PEDANTIC = YES;
+				INFOPLIST_FILE = "$(SRCROOT)/2048-Cocoa-Info.plist";
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
