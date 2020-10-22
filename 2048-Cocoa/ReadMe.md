@@ -49,11 +49,11 @@ defaults delete ru.exlmoto.Cocoa2048
 
 Project Builder:
 
-![Project Builder Mac OS X Screenshot](../image/ProjectBuilder-MacOSX-Screenshot.png)
+![Project Builder Mac OS X 10.0 Screenshot](../image/ProjectBuilder-MacOSX-Screenshot.png)
 
 Interface Builder:
 
-![Interface Builder Mac OS X Screenshot](../image/InterfaceBuilder-MacOSX-Screenshot.png)
+![Interface Builder Mac OS X 10.0 Screenshot](../image/InterfaceBuilder-MacOSX-Screenshot.png)
 
 ## Versions
 
@@ -61,7 +61,7 @@ Interface Builder:
 * Project Builder 1.0 (v57)
 * Interface Builder 2.0 (v187)
 
-Compiler on Mac OS X 10.10 and PowerPC platform:
+Compiler on Mac OS X 10.0 and PowerPC platform:
 
 ```
 cc -v

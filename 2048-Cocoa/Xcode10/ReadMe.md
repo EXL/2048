@@ -1,7 +1,7 @@
 2048-Cocoa
 ==========
 
-![2048-Cocoa Mac OS X 10.13 Screenshot](../../image/2048-Cocoa-Screenshot-10_13.png)
+![2048-Cocoa macOS 10.13 Screenshot](../../image/2048-Cocoa-Screenshot-10_13.png)
 
 ## Building application via Xcode 10
 
@@ -17,7 +17,7 @@
 git clone https://github.com/EXL/2048
 cd 2048/2048-Cocoa/Xcode10
 
-xcodebuild -scheme 2048-Cocoa archive -archivePath 2048-Cocoa
+xcodebuild -scheme 2048-Cocoa clean archive -archivePath 2048-Cocoa
 xcodebuild -exportArchive -archivePath 2048-Cocoa.xcarchive -exportPath build -exportOptionsPlist 2048-Cocoa.xcarchive/Info.plist
 ```
 
