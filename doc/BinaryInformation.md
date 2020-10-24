@@ -784,6 +784,8 @@ ldd 2048-JUCE | wc -l
 
 ### 2048-Cocoa
 
+#### Mac OS 10.0:
+
 ```
 otool -L 2048-Cocoa
 2048-Cocoa:

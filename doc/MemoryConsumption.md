@@ -391,12 +391,14 @@ HugetlbPages:  0 kB
 
 ### 2048-Cocoa
 
+#### Mac OS 10.0:
+
 ```
 ps aux | head -1 && ps aux | grep 2048
 USER       PID %CPU %MEM      VSZ    RSS  TT  STAT      TIME COMMAND
-happymac   213   0.0  0.4    55584   3708  ??  S      2:08.30 /Users/happymac/Projects/2048-Cocoa.app/Contents/MacOS/2048-Cocoa -psn_0_786433
+happymac   421   0.0  0.3    54940   3112  ??  S      2:08.30 /Users/happymac/Projects/2048-Cocoa.app/Contents/MacOS/2048-Cocoa -psn_0_786433
 
 top
   PID COMMAND      %CPU   TIME   #TH #PRTS #MREGS RPRVT  RSHRD  RSIZE  VSIZE
-  213 2048-Cocoa   0.0%  2:08.33   1    70    52  1.20M  3.48M  3.62M  54.3M
+  421 2048-Cocoa   0.0%  0:02.95   1    64    43   872K  4.01M  3.04M  53.7M
 ```
