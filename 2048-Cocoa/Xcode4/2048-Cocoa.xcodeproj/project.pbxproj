@@ -71,6 +71,7 @@
 				CAD890B5254484ED00206B02 /* Products */,
 			);
 			sourceTree = "<group>";
+			usesTabs = 1;
 		};
 		CAD890B5254484ED00206B02 /* Products */ = {
 			isa = PBXGroup;
@@ -261,9 +262,15 @@
 		CAD890D3254484EE00206B02 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "2048-Cocoa-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					USE_SYSTEM_ROUNDED_RECT,
+					"$(inherited)",
+				);
 				INFOPLIST_FILE = "2048-Cocoa-Info.plist";
+				MACOSX_DEPLOYMENT_TARGET = 10.4;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRIP_INSTALLED_PRODUCT = YES;
 				WRAPPER_EXTENSION = app;
@@ -273,9 +280,13 @@
 		CAD890D4254484EE00206B02 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "2048-Cocoa-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = USE_SYSTEM_ROUNDED_RECT;
 				INFOPLIST_FILE = "2048-Cocoa-Info.plist";
+				MACOSX_DEPLOYMENT_TARGET = 10.4;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRIP_INSTALLED_PRODUCT = YES;
 				WRAPPER_EXTENSION = app;
