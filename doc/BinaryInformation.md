@@ -706,9 +706,9 @@ Motorola 68040 version:
 ```
 otool -L 2048-NeXTSTEP
 2048-NeXTSTEP:
-        /usr/shlib/libFoundation_s.E.shlib (minor version 1)
-        /usr/shlib/libNeXT_s.C.shlib (minor version 57)
-        /usr/shlib/libsys_s.B.shlib (minor version 55)
+	/usr/shlib/libFoundation_s.E.shlib (minor version 1)
+	/usr/shlib/libNeXT_s.C.shlib (minor version 57)
+	/usr/shlib/libsys_s.B.shlib (minor version 55)
 ```
 
 Intel 80486 (i486) version:
@@ -716,9 +716,9 @@ Intel 80486 (i486) version:
 ```
 otool -L 2048-NeXTSTEP
 2048-NeXTSTEP:
-        /usr/shlib/libFoundation_s.E.shlib (minor version 1)
-        /usr/shlib/libNeXT_s.C.shlib (minor version 89)
-        /usr/shlib/libsys_s.B.shlib (minor version 62)
+	/usr/shlib/libFoundation_s.E.shlib (minor version 1)
+	/usr/shlib/libNeXT_s.C.shlib (minor version 89)
+	/usr/shlib/libsys_s.B.shlib (minor version 62)
 ```
 
 ### 2048-Serenity
@@ -784,11 +784,51 @@ ldd 2048-JUCE | wc -l
 
 ### 2048-Cocoa
 
-#### Mac OS 10.0:
+#### Mac OS X 10.0:
 
 ```
 otool -L 2048-Cocoa
 2048-Cocoa:
-        /System/Library/Frameworks/Cocoa.framework/Versions/A/Cocoa (compatibility version 1.0.0, current version 5.0.0)
-        /usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 50.0.0)
+	/System/Library/Frameworks/Cocoa.framework/Versions/A/Cocoa (compatibility version 1.0.0, current version 5.0.0)
+	/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 50.0.0)
+```
+
+#### Mac OS X 10.6.8:
+
+```
+otool -L 2048-Cocoa
+2048-Cocoa:
+	/System/Library/Frameworks/Cocoa.framework/Versions/A/Cocoa (compatibility version 1.0.0, current version 15.0.0)
+	/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 125.2.11)
+	/usr/lib/libgcc_s.1.dylib (compatibility version 1.0.0, current version 697.0.0)
+	/usr/lib/libobjc.A.dylib (compatibility version 1.0.0, current version 227.0.0)
+	/System/Library/Frameworks/CoreFoundation.framework/Versions/A/CoreFoundation (compatibility version 150.0.0, current version 550.43.0)
+	/System/Library/Frameworks/Foundation.framework/Versions/C/Foundation (compatibility version 300.0.0, current version 751.62.0)
+	/System/Library/Frameworks/AppKit.framework/Versions/C/AppKit (compatibility version 45.0.0, current version 1038.36.0)
+```
+
+#### OS X 10.8.5:
+
+```
+`xcodebuild -find otool` -L 2048-Cocoa
+2048-Cocoa:
+	/System/Library/Frameworks/Cocoa.framework/Versions/A/Cocoa (compatibility version 1.0.0, current version 20.0.0)
+	/System/Library/Frameworks/Foundation.framework/Versions/C/Foundation (compatibility version 300.0.0, current version 1056.13.0)
+	/usr/lib/libobjc.A.dylib (compatibility version 1.0.0, current version 228.0.0)
+	/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 1197.1.1)
+	/System/Library/Frameworks/AppKit.framework/Versions/C/AppKit (compatibility version 45.0.0, current version 1265.19.0)
+	/System/Library/Frameworks/CoreFoundation.framework/Versions/A/CoreFoundation (compatibility version 150.0.0, current version 855.14.0)
+```
+
+#### macOS 10.13.6
+
+```
+otool -L 2048-Cocoa
+2048-Cocoa:
+	/System/Library/Frameworks/Cocoa.framework/Versions/A/Cocoa (compatibility version 1.0.0, current version 23.0.0)
+	/System/Library/Frameworks/Foundation.framework/Versions/C/Foundation (compatibility version 300.0.0, current version 1560.12.0)
+	/usr/lib/libobjc.A.dylib (compatibility version 1.0.0, current version 228.0.0)
+	/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 1252.200.5)
+	/System/Library/Frameworks/AppKit.framework/Versions/C/AppKit (compatibility version 45.0.0, current version 1671.10.106)
+	/System/Library/Frameworks/CoreFoundation.framework/Versions/A/CoreFoundation (compatibility version 150.0.0, current version 1560.12.0)
 ```

@@ -391,7 +391,7 @@ HugetlbPages:  0 kB
 
 ### 2048-Cocoa
 
-#### Mac OS 10.0:
+#### Mac OS X 10.0:
 
 ```
 ps aux | head -1 && ps aux | grep 2048
@@ -399,6 +399,42 @@ USER       PID %CPU %MEM      VSZ    RSS  TT  STAT      TIME COMMAND
 happymac   421   0.0  0.3    54940   3112  ??  S      2:08.30 /Users/happymac/Projects/2048-Cocoa.app/Contents/MacOS/2048-Cocoa -psn_0_786433
 
 top
-  PID COMMAND      %CPU   TIME   #TH #PRTS #MREGS RPRVT  RSHRD  RSIZE  VSIZE
-  421 2048-Cocoa   0.0%  0:02.95   1    64    43   872K  4.01M  3.04M  53.7M
+PID COMMAND      %CPU   TIME   #TH #PRTS #MREGS RPRVT  RSHRD  RSIZE  VSIZE
+421 2048-Cocoa   0.0%  0:02.95   1    64    43   872K  4.01M  3.04M  53.7M
+```
+
+#### Mac OS X 10.6.8:
+
+```
+ps aux | head -1 && ps aux | grep 2048
+USER       PID  %CPU %MEM      VSZ    RSS   TT  STAT STARTED      TIME COMMAND
+exl        315   0.0  0.6  2550784   6700   ??  S     5:35PM   0:01.21 /Users/exl/Projects/2048-Cocoa.app/Contents/MacOS/2048-Cocoa -psn_0_118813
+
+top
+PID  COMMAND      %CPU TIME     #TH  #WQ  #POR #MRE RPRVT  RSHRD  RSIZE  VPRVT  VSIZE  PGRP PPID STATE    UID  FAULTS  COW   MSGSENT  MSGRECV
+315  2048-Cocoa   0.0  00:01.21 2    1    72   76   1628K  12M    6700K  19M    2491M  315  97   sleeping 502  2169    171   9285     4838
+```
+
+#### OS X 10.8.5:
+
+```
+ps aux | head -1 && ps aux | grep 2048
+USER             PID  %CPU %MEM      VSZ    RSS   TT  STAT STARTED      TIME COMMAND
+exl              340   0.0  0.5  2506596   9860   ??  S     4:02PM   0:00.27 /Users/exl/Projects/2048-Cocoa.app/Contents/MacOS/2048-Cocoa -psn_0_172074
+
+top
+PID  COMMAND      %CPU TIME     #TH  #WQ  #POR #MRE RPRVT  RSHRD  RSIZE  VPRVT  VSIZE  PGRP PPID STATE    UID
+340  2048-Cocoa   0.0  00:00.27 2    1    98   95   2372K+ 9868K  9860K  15M+   2448M  340  149  sleeping 501
+```
+
+#### macOS 10.13.6:
+
+```
+ps aux | head -1 && ps aux | grep 2048
+USER               PID  %CPU %MEM      VSZ    RSS   TT  STAT STARTED      TIME COMMAND
+exl                957   0.0  0.4  4405976  27504   ??  S     6:20AM   0:00.64 /Users/exl/Projects/2048-Cocoa.app/Contents/MacOS/2048-Cocoa
+
+top
+PID  COMMAND      %CPU TIME     #TH   #WQ  #PORT MEM    PURG   CMPRS  PGRP PPID STATE    BOOSTS         %CPU_ME %CPU_OTHRS UID  FAULTS  COW    MSGSENT  MSGRECV  SYSBSD    SYSMACH  CSW
+957  2048-Cocoa   0.0  00:00.82 3     1    202   10M    592K   0B     957  1    sleeping *0[19]         0.00000 0.00000    501  9238    349    7531     1594     6445      15123    6033
 ```
