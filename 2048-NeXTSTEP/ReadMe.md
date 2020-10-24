@@ -43,8 +43,8 @@ mkdirs ~/Projects/2048/
 cd ~/Projects/2048/
 cp /src/2048.tar .
 tar -xvf 2048.tar
-find . -type f -exec touch {} \; # Recursive reset files to system date.
 rm 2048.tar
+find . -type f -exec touch {} \; # Recursive reset files to system date.
 ```
 
 ## Building via Project Builder
