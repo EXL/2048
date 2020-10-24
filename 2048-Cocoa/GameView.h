@@ -12,11 +12,6 @@
 	id menuItemTiles;
 	id menuItemBackground;
 
-	NSFont *smallFont;
-	NSFont *middleFont;
-	NSFont *normalFont;
-	NSFont *largeFont;
-
 	BOOL roundedTiles;
 	BOOL showBackground;
 }

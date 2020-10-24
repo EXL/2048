@@ -13,6 +13,11 @@
 #define ww bounds.size.width
 #define hh bounds.size.height
 
+#define smallFont [Font boldSystemFontOfSize:14.0f matrix:NX_FLIPPEDMATRIX]
+#define middleFont [Font boldSystemFontOfSize:18.0f matrix:NX_FLIPPEDMATRIX]
+#define normalFont [Font systemFontOfSize:18.0f matrix:NX_FLIPPEDMATRIX]
+#define largeFont [Font boldSystemFontOfSize:24.0f matrix:NX_FLIPPEDMATRIX]
+
 static const char *MENU_CELL_TILES_ROUNDED   = "Rounded Tiles";
 static const char *MENU_CELL_TILES_RECTANGLE = "Rectangle Tiles";
 static const char *MENU_CELL_BACKGROUND_SHOW = "Show Background";
@@ -170,14 +175,8 @@ static inline int offsetCoords(int coord, int size, int offset) {
 	[self setClipping:NO];
 	[self setFlipped:YES];
 
-	smallFont = [Font boldSystemFontOfSize:14.0f matrix:NX_FLIPPEDMATRIX];
-	middleFont = [Font boldSystemFontOfSize:18.0f matrix:NX_FLIPPEDMATRIX];
-	normalFont = [Font systemFontOfSize:18.0f matrix:NX_FLIPPEDMATRIX];
-	largeFont = [Font boldSystemFontOfSize:24.0f matrix:NX_FLIPPEDMATRIX];
-
 	roundedTiles = YES;
 	showBackground = YES;
-
 	if (rectType && !atoi(rectType))
 		roundedTiles = NO;
 	if (showBkg && !atoi(showBkg))

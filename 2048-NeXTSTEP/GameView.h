@@ -1,14 +1,8 @@
-#import <appkit/Font.h>
 #import <appkit/View.h>
 
 @interface GameView : View {
 	id menuCellTiles;
 	id menuCellBackground;
-
-	Font *smallFont;
-	Font *middleFont;
-	Font *normalFont;
-	Font *largeFont;
 
 	BOOL roundedTiles;
 	BOOL showBackground;

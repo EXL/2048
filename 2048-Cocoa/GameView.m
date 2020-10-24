@@ -14,6 +14,11 @@
 #define ww bounds.size.width
 #define hh bounds.size.height
 
+#define smallFont [NSFont boldSystemFontOfSize:18.0f]
+#define middleFont [NSFont boldSystemFontOfSize:22.0f]
+#define normalFont [NSFont systemFontOfSize:18.0f]
+#define largeFont [NSFont boldSystemFontOfSize:28.0f]
+
 static const int TILE_SIZE   = 64;
 static const int TILE_MARGIN = 16;
 
@@ -34,12 +39,6 @@ static inline int offsetCoords(int coord, int size, int offset) {
 	if (self) {
 		NSNumber *numRectType = [[NSUserDefaults standardUserDefaults] objectForKey:@"roundedTiles"];
 		NSNumber *numShowBackground = [[NSUserDefaults standardUserDefaults] objectForKey:@"showBackground"];
-
-		smallFont = [NSFont boldSystemFontOfSize:18.0f];
-		middleFont = [NSFont boldSystemFontOfSize:22.0f];
-		normalFont = [NSFont systemFontOfSize:18.0f];
-		largeFont = [NSFont boldSystemFontOfSize:28.0f];
-
 		roundedTiles = YES;
 		showBackground = YES;
 		if (numRectType)
