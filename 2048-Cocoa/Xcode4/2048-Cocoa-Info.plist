@@ -7,7 +7,7 @@
 	<key>CFBundleExecutable</key>
 	<string>${EXECUTABLE_NAME}</string>
 	<key>CFBundleIconFile</key>
-	<string></string>
+	<string>2048-Cocoa-modern.icns</string>
 	<key>CFBundleIdentifier</key>
 	<string>ru.exlmoto.Cocoa2048</string>
 	<key>CFBundleInfoDictionaryVersion</key>
@@ -21,13 +21,13 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>1</string>
+	<string>22-Oct-2020</string>
 	<key>LSApplicationCategoryType</key>
 	<string>public.app-category.puzzle-games</string>
 	<key>LSMinimumSystemVersion</key>
 	<string>${MACOSX_DEPLOYMENT_TARGET}</string>
 	<key>NSHumanReadableCopyright</key>
-	<string>Copyright © 2020 __MyCompanyName__. All rights reserved.</string>
+	<string>Copyright © 2020 EXL. All rights reserved.</string>
 	<key>NSMainNibFile</key>
 	<string>2048-Cocoa</string>
 	<key>NSPrincipalClass</key>

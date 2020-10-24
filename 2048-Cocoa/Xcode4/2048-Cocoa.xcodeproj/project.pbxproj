@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		CA3D148D25448A62003A521E /* 2048-Cocoa.xib in Resources */ = {isa = PBXBuildFile; fileRef = CA3D148B25448A62003A521E /* 2048-Cocoa.xib */; };
+		CA3D149225448D99003A521E /* 2048-Cocoa-modern.icns in Resources */ = {isa = PBXBuildFile; fileRef = CA3D149125448D99003A521E /* 2048-Cocoa-modern.icns */; };
 		CA489BE9254487F60088541C /* 2048.c in Sources */ = {isa = PBXBuildFile; fileRef = CA489BE2254487F60088541C /* 2048.c */; };
 		CA489BEA254487F60088541C /* GameController.m in Sources */ = {isa = PBXBuildFile; fileRef = CA489BE5254487F60088541C /* GameController.m */; };
 		CA489BEB254487F60088541C /* GameView.m in Sources */ = {isa = PBXBuildFile; fileRef = CA489BE7254487F60088541C /* GameView.m */; };
@@ -20,6 +21,7 @@
 
 /* Begin PBXFileReference section */
 		CA3D148C25448A62003A521E /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = "en.lproj/2048-Cocoa.xib"; sourceTree = "<group>"; };
+		CA3D149125448D99003A521E /* 2048-Cocoa-modern.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = "2048-Cocoa-modern.icns"; sourceTree = "<group>"; };
 		CA489BDF2544872F0088541C /* 2048-Cocoa-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "2048-Cocoa-Info.plist"; sourceTree = SOURCE_ROOT; };
 		CA489BE1254487380088541C /* 2048-Cocoa-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "2048-Cocoa-Prefix.pch"; sourceTree = SOURCE_ROOT; };
 		CA489BE2254487F60088541C /* 2048.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = 2048.c; sourceTree = "<group>"; };
@@ -54,6 +56,7 @@
 		CAD890A9254484ED00206B02 = {
 			isa = PBXGroup;
 			children = (
+				CA3D149125448D99003A521E /* 2048-Cocoa-modern.icns */,
 				CA3D148B25448A62003A521E /* 2048-Cocoa.xib */,
 				CA489BE2254487F60088541C /* 2048.c */,
 				CA489BE3254487F60088541C /* 2048.h */,
@@ -162,6 +165,7 @@
 				CA489BF1254488380088541C /* ReadMe.md in Resources */,
 				CA489BF42544884D0088541C /* Localizable.strings in Resources */,
 				CA3D148D25448A62003A521E /* 2048-Cocoa.xib in Resources */,
+				CA3D149225448D99003A521E /* 2048-Cocoa-modern.icns in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
