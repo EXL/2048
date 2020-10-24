@@ -1,0 +1,305 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		CA3D148D25448A62003A521E /* 2048-Cocoa.xib in Resources */ = {isa = PBXBuildFile; fileRef = CA3D148B25448A62003A521E /* 2048-Cocoa.xib */; };
+		CA489BE9254487F60088541C /* 2048.c in Sources */ = {isa = PBXBuildFile; fileRef = CA489BE2254487F60088541C /* 2048.c */; };
+		CA489BEA254487F60088541C /* GameController.m in Sources */ = {isa = PBXBuildFile; fileRef = CA489BE5254487F60088541C /* GameController.m */; };
+		CA489BEB254487F60088541C /* GameView.m in Sources */ = {isa = PBXBuildFile; fileRef = CA489BE7254487F60088541C /* GameView.m */; };
+		CA489BEC254487F60088541C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = CA489BE8254487F60088541C /* main.m */; };
+		CA489BEF254488310088541C /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = CA489BED254488310088541C /* Credits.rtf */; };
+		CA489BF1254488380088541C /* ReadMe.md in Resources */ = {isa = PBXBuildFile; fileRef = CA489BF0254488380088541C /* ReadMe.md */; };
+		CA489BF42544884D0088541C /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = CA489BF22544884D0088541C /* Localizable.strings */; };
+		CAD890B9254484ED00206B02 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CAD890B8254484ED00206B02 /* Cocoa.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		CA3D148C25448A62003A521E /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = "en.lproj/2048-Cocoa.xib"; sourceTree = "<group>"; };
+		CA489BDF2544872F0088541C /* 2048-Cocoa-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "2048-Cocoa-Info.plist"; sourceTree = SOURCE_ROOT; };
+		CA489BE1254487380088541C /* 2048-Cocoa-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "2048-Cocoa-Prefix.pch"; sourceTree = SOURCE_ROOT; };
+		CA489BE2254487F60088541C /* 2048.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = 2048.c; sourceTree = "<group>"; };
+		CA489BE3254487F60088541C /* 2048.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = 2048.h; sourceTree = "<group>"; };
+		CA489BE4254487F60088541C /* GameController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameController.h; sourceTree = "<group>"; };
+		CA489BE5254487F60088541C /* GameController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameController.m; sourceTree = "<group>"; };
+		CA489BE6254487F60088541C /* GameView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameView.h; sourceTree = "<group>"; };
+		CA489BE7254487F60088541C /* GameView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameView.m; sourceTree = "<group>"; };
+		CA489BE8254487F60088541C /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		CA489BEE254488310088541C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = en.lproj/Credits.rtf; sourceTree = SOURCE_ROOT; };
+		CA489BF0254488380088541C /* ReadMe.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ReadMe.md; sourceTree = SOURCE_ROOT; };
+		CA489BF32544884D0088541C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		CAD890B4254484ED00206B02 /* 2048-Cocoa.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "2048-Cocoa.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		CAD890B8254484ED00206B02 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
+		CAD890BB254484ED00206B02 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
+		CAD890BC254484ED00206B02 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		CAD890BD254484ED00206B02 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		CAD890B1254484ED00206B02 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CAD890B9254484ED00206B02 /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		CAD890A9254484ED00206B02 = {
+			isa = PBXGroup;
+			children = (
+				CA3D148B25448A62003A521E /* 2048-Cocoa.xib */,
+				CA489BE2254487F60088541C /* 2048.c */,
+				CA489BE3254487F60088541C /* 2048.h */,
+				CA489BE4254487F60088541C /* GameController.h */,
+				CA489BE5254487F60088541C /* GameController.m */,
+				CA489BE6254487F60088541C /* GameView.h */,
+				CA489BE7254487F60088541C /* GameView.m */,
+				CA489BE8254487F60088541C /* main.m */,
+				CA489BF22544884D0088541C /* Localizable.strings */,
+				CAD890BF254484ED00206B02 /* Supporting Files */,
+				CAD890B7254484ED00206B02 /* Frameworks */,
+				CAD890B5254484ED00206B02 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		CAD890B5254484ED00206B02 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				CAD890B4254484ED00206B02 /* 2048-Cocoa.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		CAD890B7254484ED00206B02 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				CAD890B8254484ED00206B02 /* Cocoa.framework */,
+				CAD890BA254484ED00206B02 /* Other Frameworks */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		CAD890BA254484ED00206B02 /* Other Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				CAD890BB254484ED00206B02 /* AppKit.framework */,
+				CAD890BC254484ED00206B02 /* CoreData.framework */,
+				CAD890BD254484ED00206B02 /* Foundation.framework */,
+			);
+			name = "Other Frameworks";
+			sourceTree = "<group>";
+		};
+		CAD890BF254484ED00206B02 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				CA489BDF2544872F0088541C /* 2048-Cocoa-Info.plist */,
+				CA489BE1254487380088541C /* 2048-Cocoa-Prefix.pch */,
+				CA489BED254488310088541C /* Credits.rtf */,
+				CA489BF0254488380088541C /* ReadMe.md */,
+			);
+			name = "Supporting Files";
+			path = "2048-Cocoa";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		CAD890B3254484ED00206B02 /* 2048-Cocoa */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CAD890D2254484EE00206B02 /* Build configuration list for PBXNativeTarget "2048-Cocoa" */;
+			buildPhases = (
+				CAD890B0254484ED00206B02 /* Sources */,
+				CAD890B1254484ED00206B02 /* Frameworks */,
+				CAD890B2254484ED00206B02 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "2048-Cocoa";
+			productName = "2048-Cocoa";
+			productReference = CAD890B4254484ED00206B02 /* 2048-Cocoa.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		CAD890AB254484ED00206B02 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0420;
+			};
+			buildConfigurationList = CAD890AE254484ED00206B02 /* Build configuration list for PBXProject "2048-Cocoa" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = CAD890A9254484ED00206B02;
+			productRefGroup = CAD890B5254484ED00206B02 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				CAD890B3254484ED00206B02 /* 2048-Cocoa */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		CAD890B2254484ED00206B02 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CA489BEF254488310088541C /* Credits.rtf in Resources */,
+				CA489BF1254488380088541C /* ReadMe.md in Resources */,
+				CA489BF42544884D0088541C /* Localizable.strings in Resources */,
+				CA3D148D25448A62003A521E /* 2048-Cocoa.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		CAD890B0254484ED00206B02 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CA489BE9254487F60088541C /* 2048.c in Sources */,
+				CA489BEA254487F60088541C /* GameController.m in Sources */,
+				CA489BEB254487F60088541C /* GameView.m in Sources */,
+				CA489BEC254487F60088541C /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		CA3D148B25448A62003A521E /* 2048-Cocoa.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				CA3D148C25448A62003A521E /* en */,
+			);
+			name = "2048-Cocoa.xib";
+			sourceTree = "<group>";
+		};
+		CA489BED254488310088541C /* Credits.rtf */ = {
+			isa = PBXVariantGroup;
+			children = (
+				CA489BEE254488310088541C /* en */,
+			);
+			name = Credits.rtf;
+			sourceTree = "<group>";
+		};
+		CA489BF22544884D0088541C /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				CA489BF32544884D0088541C /* en */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		CAD890D0254484EE00206B02 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		CAD890D1254484EE00206B02 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		CAD890D3254484EE00206B02 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "2048-Cocoa-Prefix.pch";
+				INFOPLIST_FILE = "2048-Cocoa-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRIP_INSTALLED_PRODUCT = YES;
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		CAD890D4254484EE00206B02 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "2048-Cocoa-Prefix.pch";
+				INFOPLIST_FILE = "2048-Cocoa-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRIP_INSTALLED_PRODUCT = YES;
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		CAD890AE254484ED00206B02 /* Build configuration list for PBXProject "2048-Cocoa" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CAD890D0254484EE00206B02 /* Debug */,
+				CAD890D1254484EE00206B02 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CAD890D2254484EE00206B02 /* Build configuration list for PBXNativeTarget "2048-Cocoa" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CAD890D3254484EE00206B02 /* Debug */,
+				CAD890D4254484EE00206B02 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = CAD890AB254484ED00206B02 /* Project object */;
+}
