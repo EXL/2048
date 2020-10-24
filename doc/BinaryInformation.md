@@ -54,7 +54,7 @@ total 200K
 -rw-r--r--. 1 exl exl  16K Nov 15  1994 2048-NeXTSTEP.bom
 -r--r--r--. 1 exl exl  798 Nov 15  1994 2048-NeXTSTEP.info
 -rw-r--r--. 1 exl exl   49 Nov 15  1994 2048-NeXTSTEP.sizes
--r--r--r--. 1 exl exl 170K Nov 15  1994 2048-NeXTSTEP.tar.Z
+-r--r--r--. 1 exl exl 169K Nov 15  1994 2048-NeXTSTEP.tar.Z
 -r--r--r--. 1 exl exl 3.2K Nov 15  1994 2048-NeXTSTEP.tiff
 
 ls -lhR MacOS/
