@@ -25,9 +25,9 @@ xcodebuild -exportArchive -archivePath 2048-Cocoa.xcarchive -exportPath '2048-Co
 
 Xcode 5:
 
-![XCode 5 OS X 10.8 Code Editor Screenshot](../../image/Xcode-MacOSX-10_8-Screenshot1.png)
+![Xcode 5 OS X 10.8 Code Editor Screenshot](../../image/Xcode-MacOSX-10_8-Screenshot1.png)
 
-![XCode 5 OS X 10.8 Interface Builder Screenshot](../../image/Xcode-MacOSX-10_8-Screenshot2.png)
+![Xcode 5 OS X 10.8 Interface Builder Screenshot](../../image/Xcode-MacOSX-10_8-Screenshot2.png)
 
 ## Versions
 
