@@ -39,7 +39,7 @@ Mac OS Notes
 
 #### Description:
 
-The first rendering frame - everything is fine, information about the font is displayed in the log. The second redraw frame causes the application to crash. It seems that the `largeFont` pointer is being invalidated somewhere. The pointer in this case isn't reset to `nil` and `EXC_BAD_ACCESS` error occurs directly in `NSLog()` function.
+On the first rendering frame everything is fine and information about the font is displayed in the log but the second redraw frame causes the application to crash. It seems that the `largeFont` pointer is being invalidated somewhere. The pointer in this case isn't reset to `nil` and `EXC_BAD_ACCESS` error occurs directly in `NSLog()` function.
 
 ```
 (gdb) bt
@@ -50,11 +50,11 @@ The first rendering frame - everything is fine, information about the font is di
 #4  0x00007fff89d079bf in _CFLogvEx ()
 #5  0x00007fff81f0bd70 in NSLogv ()
 #6  0x00007fff81f0bd08 in NSLog ()
-#7  0x00000001000017e8 in -[GameView drawRect:] (self=0x100173880, _cmd=0x7fff85ba3560) at /Users/exl/Desktop/TestShit/TestShit/GameView.m:20
+#7  0x00000001000017e8 in -[GameView drawRect:] (self=0x100173880, _cmd=0x7fff85ba3560) at /Users/exl/Projects/TestNsFontBug/GameView.m:20
 ...
 ```
 
-The backtrace shows that the fall occurs on the `- [NSFont description]` method inside the Cocoa (AppKit) framework.
+The backtrace shows that the crash occurs on the `- [NSFont description]` method inside the Cocoa (AppKit) framework.
 
 #### Additional research:
 
@@ -89,7 +89,7 @@ macOS X 10.13.6 output:
 ...
 ```
 
-Modern and some older versions of Mac OS are not affected by the issue.
+Modern and some older versions of Mac OS are not affected by this issue.
 
 #### Fix:
 
