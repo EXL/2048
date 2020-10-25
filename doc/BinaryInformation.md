@@ -59,39 +59,128 @@ total 200K
 
 ls -lhR MacOS/
 MacOS/:
+total 16K
+drwxr-xr-x. 3 exl exl 4.0K Oct 25 05:04 10.0
+drwxr-xr-x. 3 exl exl 4.0K Oct 25 06:54 10.13
+drwxr-xr-x. 3 exl exl 4.0K Oct 25 06:53 10.6
+drwxr-xr-x. 3 exl exl 4.0K Oct 25 06:55 10.8
+MacOS/10.0:
 total 4.0K
-drwxr-xr-x. 3 exl exl 4.0K Oct 17 13:34 PowerPC
-MacOS/PowerPC:
+drwxr-xr-x. 3 exl exl 4.0K Oct 25 04:14 2048-Cocoa.app
+MacOS/10.0/2048-Cocoa.app:
 total 4.0K
-drwxr-xr-x. 3 exl exl 4.0K Oct 17 13:14 2048-Cocoa.app
-MacOS/PowerPC/2048-Cocoa.app:
-total 4.0K
-drwxr-xr-x. 4 exl exl 4.0K Oct 17 13:14 Contents
-MacOS/PowerPC/2048-Cocoa.app/Contents:
+drwxr-xr-x. 4 exl exl 4.0K Oct 25 04:14 Contents
+MacOS/10.0/2048-Cocoa.app/Contents:
 total 20K
--rw-r--r--. 1 exl exl  760 Oct 17 13:13 Info.plist
-drwxr-xr-x. 2 exl exl 4.0K Oct 17 13:14 MacOS
--rw-r--r--. 1 exl exl  275 Oct 17 13:13 pbdevelopment.plist
--rw-r--r--. 1 exl exl    8 Oct 17 13:13 PkgInfo
-drwxr-xr-x. 3 exl exl 4.0K Oct 17 13:13 Resources
-MacOS/PowerPC/2048-Cocoa.app/Contents/MacOS:
+-rw-r--r--. 1 exl exl  760 Oct 25 04:13 Info.plist
+drwxr-xr-x. 2 exl exl 4.0K Oct 25 04:14 MacOS
+-rw-r--r--. 1 exl exl  275 Oct 25 04:13 pbdevelopment.plist
+-rw-r--r--. 1 exl exl    8 Oct 25 04:13 PkgInfo
+drwxr-xr-x. 3 exl exl 4.0K Oct 25 04:13 Resources
+MacOS/10.0/2048-Cocoa.app/Contents/MacOS:
 total 40K
--rwxr-xr-x. 1 exl exl 37K Oct 17 13:14 2048-Cocoa
-MacOS/PowerPC/2048-Cocoa.app/Contents/Resources:
+-rwxr-xr-x. 1 exl exl 37K Oct 25 04:14 2048-Cocoa
+MacOS/10.0/2048-Cocoa.app/Contents/Resources:
 total 60K
--rw-r--r--. 1 exl exl  49K Oct 17 13:13 2048-Cocoa.icns
-drwxr-xr-x. 3 exl exl 4.0K Oct 17 13:13 English.lproj
--rw-r--r--. 1 exl exl 1.7K Oct 17 13:13 ReadMe.md
-MacOS/PowerPC/2048-Cocoa.app/Contents/Resources/English.lproj:
+-rw-r--r--. 1 exl exl  49K Oct 25 04:13 2048-Cocoa.icns
+drwxr-xr-x. 3 exl exl 4.0K Oct 25 04:13 English.lproj
+-rw-r--r--. 1 exl exl 1.8K Oct 25 04:13 ReadMe.md
+MacOS/10.0/2048-Cocoa.app/Contents/Resources/English.lproj:
 total 12K
-drwxr-xr-x. 2 exl exl 4.0K Oct 17 13:13 2048-Cocoa.nib
--rw-r--r--. 1 exl exl  530 Oct 17 13:13 InfoPlist.strings
--rw-r--r--. 1 exl exl  413 Oct 17 13:13 Localizable.strings
-MacOS/PowerPC/2048-Cocoa.app/Contents/Resources/English.lproj/2048-Cocoa.nib:
+drwxr-xr-x. 2 exl exl 4.0K Oct 25 04:13 2048-Cocoa.nib
+-rw-r--r--. 1 exl exl  530 Oct 25 04:13 InfoPlist.strings
+-rw-r--r--. 1 exl exl  413 Oct 25 04:13 Localizable.strings
+MacOS/10.0/2048-Cocoa.app/Contents/Resources/English.lproj/2048-Cocoa.nib:
 total 12K
--rw-r--r--. 1 exl exl  688 Oct 17 13:13 classes.nib
--rw-r--r--. 1 exl exl  500 Oct 17 13:13 info.nib
--rw-r--r--. 1 exl exl 3.0K Oct 17 13:13 objects.nib
+-rw-r--r--. 1 exl exl  688 Oct 25 04:13 classes.nib
+-rw-r--r--. 1 exl exl  500 Oct 25 04:13 info.nib
+-rw-r--r--. 1 exl exl 3.0K Oct 25 04:13 objects.nib
+MacOS/10.13:
+total 4.0K
+drwxr-xr-x. 3 exl exl 4.0K Oct 25 06:30 2048-Cocoa.app
+MacOS/10.13/2048-Cocoa.app:
+total 4.0K
+drwxr-xr-x. 5 exl exl 4.0K Oct 25 06:29 Contents
+MacOS/10.13/2048-Cocoa.app/Contents:
+total 20K
+drwxr-xr-x. 2 exl exl 4.0K Oct 25 06:54 _CodeSignature
+-rw-r--r--. 1 exl exl 1.7K Oct 25 06:29 Info.plist
+drwxr-xr-x. 2 exl exl 4.0K Oct 25 06:54 MacOS
+-rw-r--r--. 1 exl exl    8 Oct 25 06:29 PkgInfo
+drwxr-xr-x. 4 exl exl 4.0K Oct 25 06:29 Resources
+MacOS/10.13/2048-Cocoa.app/Contents/_CodeSignature:
+total 4.0K
+-rw-r--r--. 1 exl exl 3.9K Oct 25 06:29 CodeResources
+MacOS/10.13/2048-Cocoa.app/Contents/MacOS:
+total 44K
+-rwxr-xr-x. 1 exl exl 42K Oct 25 06:30 2048-Cocoa
+MacOS/10.13/2048-Cocoa.app/Contents/Resources:
+total 1.2M
+-rw-r--r--. 1 exl exl 628K Oct 25 06:29 AppIcon.icns
+-rw-r--r--. 1 exl exl 509K Oct 25 06:29 Assets.car
+drwxr-xr-x. 2 exl exl 4.0K Oct 25 06:54 Base.lproj
+drwxr-xr-x. 2 exl exl 4.0K Oct 25 06:54 English.lproj
+-rw-r--r--. 1 exl exl 1.7K Oct 25 06:29 ReadMe.md
+MacOS/10.13/2048-Cocoa.app/Contents/Resources/Base.lproj:
+total 12K
+-rw-r--r--. 1 exl exl 8.9K Oct 25 06:29 2048-Cocoa.nib
+MacOS/10.13/2048-Cocoa.app/Contents/Resources/English.lproj:
+total 4.0K
+-rw-r--r--. 1 exl exl 828 Oct 25 06:29 Localizable.strings
+MacOS/10.6:
+total 4.0K
+drwxr-xr-x. 3 exl exl 4.0K Oct 25 05:26 2048-Cocoa.app
+MacOS/10.6/2048-Cocoa.app:
+total 4.0K
+drwxr-xr-x. 4 exl exl 4.0K Oct 25 05:26 Contents
+MacOS/10.6/2048-Cocoa.app/Contents:
+total 16K
+-rw-r--r--. 1 exl exl 1.6K Oct 25 05:26 Info.plist
+drwxr-xr-x. 2 exl exl 4.0K Oct 25 06:53 MacOS
+-rw-r--r--. 1 exl exl    8 Oct 25 05:26 PkgInfo
+drwxr-xr-x. 3 exl exl 4.0K Oct 25 05:26 Resources
+MacOS/10.6/2048-Cocoa.app/Contents/MacOS:
+total 56K
+-rwxr-xr-x. 1 exl exl 54K Oct 25 05:26 2048-Cocoa
+MacOS/10.6/2048-Cocoa.app/Contents/Resources:
+total 148K
+-rw-r--r--. 1 exl exl 140K Oct 25 05:26 2048-Cocoa-modern.icns
+drwxr-xr-x. 2 exl exl 4.0K Oct 25 06:53 en.lproj
+-rw-r--r--. 1 exl exl 1.3K Oct 25 05:26 ReadMe.md
+MacOS/10.6/2048-Cocoa.app/Contents/Resources/en.lproj:
+total 20K
+-rw-r--r--. 1 exl exl 8.5K Oct 25 05:26 2048-Cocoa.nib
+-rw-r--r--. 1 exl exl 1.1K Oct 25 05:26 Credits.rtf
+-rw-r--r--. 1 exl exl  828 Oct 25 05:26 Localizable.strings
+MacOS/10.8:
+total 4.0K
+drwxr-xr-x. 3 exl exl 4.0K Oct 25 06:00 2048-Cocoa.app
+MacOS/10.8/2048-Cocoa.app:
+total 4.0K
+drwxr-xr-x. 5 exl exl 4.0K Oct 25 06:00 Contents
+MacOS/10.8/2048-Cocoa.app/Contents:
+total 20K
+drwxr-xr-x. 2 exl exl 4.0K Oct 25 06:55 _CodeSignature
+-rw-r--r--. 1 exl exl 1.6K Oct 25 06:00 Info.plist
+drwxr-xr-x. 2 exl exl 4.0K Oct 25 06:55 MacOS
+-rw-r--r--. 1 exl exl    8 Oct 25 06:00 PkgInfo
+drwxr-xr-x. 3 exl exl 4.0K Oct 25 06:01 Resources
+MacOS/10.8/2048-Cocoa.app/Contents/_CodeSignature:
+total 4.0K
+-rw-r--r--. 1 exl exl 1.4K Oct 25 06:00 CodeResources
+MacOS/10.8/2048-Cocoa.app/Contents/MacOS:
+total 40K
+-rwxr-xr-x. 1 exl exl 39K Oct 25 06:00 2048-Cocoa
+MacOS/10.8/2048-Cocoa.app/Contents/Resources:
+total 636K
+-rw-r--r--. 1 exl exl 628K Oct 25 06:00 AppIcon.icns
+drwxr-xr-x. 2 exl exl 4.0K Oct 25 06:55 en.lproj
+-rw-r--r--. 1 exl exl 1.3K Oct 25 06:00 ReadMe.md
+MacOS/10.8/2048-Cocoa.app/Contents/Resources/en.lproj:
+total 16K
+-rw-r--r--. 1 exl exl 7.4K Oct 25 06:00 2048-Cocoa.nib
+-rw-r--r--. 1 exl exl 1.1K Oct 25 06:00 Credits.rtf
+-rw-r--r--. 1 exl exl  828 Oct 25 06:00 Localizable.strings
 ```
 
 ### File Types
@@ -142,17 +231,43 @@ NeXTSTEP/2048-NeXTSTEP.pkg/2048-NeXTSTEP.info: ASCII text
 NeXTSTEP/2048-NeXTSTEP.pkg/2048-NeXTSTEP.tiff: TIFF image data, little-endian, direntries=19, height=48, bps=3154, compression=LZW, PhotometricIntepretation=RGB, name=/home/exl/Projects/2048/image/icon/icon48_1.tiff, orientation=upper-left, width=48
 
 find MacOS/ -type f -exec file {} \;
-MacOS/PowerPC/2048-Cocoa.app/Contents/pbdevelopment.plist: XML 1.0 document, ASCII text
-MacOS/PowerPC/2048-Cocoa.app/Contents/Info.plist: XML 1.0 document, ASCII text
-MacOS/PowerPC/2048-Cocoa.app/Contents/Resources/ReadMe.md: ReStructuredText file, ASCII text
-MacOS/PowerPC/2048-Cocoa.app/Contents/Resources/English.lproj/InfoPlist.strings: Big-endian UTF-16 Unicode text
-MacOS/PowerPC/2048-Cocoa.app/Contents/Resources/English.lproj/2048-Cocoa.nib/info.nib: XML 1.0 document, ASCII text
-MacOS/PowerPC/2048-Cocoa.app/Contents/Resources/English.lproj/2048-Cocoa.nib/classes.nib: ASCII text
-MacOS/PowerPC/2048-Cocoa.app/Contents/Resources/English.lproj/2048-Cocoa.nib/objects.nib: NeXT/Apple typedstream data, big endian, version 4, system 1000
-MacOS/PowerPC/2048-Cocoa.app/Contents/Resources/English.lproj/Localizable.strings: ASCII text
-MacOS/PowerPC/2048-Cocoa.app/Contents/Resources/2048-Cocoa.icns: Mac OS X icon, 49253 bytes, "ics#" type
-MacOS/PowerPC/2048-Cocoa.app/Contents/PkgInfo: ASCII text, with no line terminators
-MacOS/PowerPC/2048-Cocoa.app/Contents/MacOS/2048-Cocoa: Mach-O ppc executable, flags:<NOUNDEFS|DYLDLINK|PREBOUND>
+MacOS/10.6/2048-Cocoa.app/Contents/Info.plist: XML 1.0 document, UTF-8 Unicode text
+MacOS/10.6/2048-Cocoa.app/Contents/Resources/en.lproj/2048-Cocoa.nib: Apple binary property list
+MacOS/10.6/2048-Cocoa.app/Contents/Resources/en.lproj/Credits.rtf: Rich Text Format data, version 1, ANSI
+MacOS/10.6/2048-Cocoa.app/Contents/Resources/en.lproj/Localizable.strings: Little-endian UTF-16 Unicode text
+MacOS/10.6/2048-Cocoa.app/Contents/Resources/ReadMe.md: ASCII text
+MacOS/10.6/2048-Cocoa.app/Contents/Resources/2048-Cocoa-modern.icns: Mac OS X icon, 142338 bytes, "is32" type
+MacOS/10.6/2048-Cocoa.app/Contents/PkgInfo: ASCII text, with no line terminators
+MacOS/10.6/2048-Cocoa.app/Contents/MacOS/2048-Cocoa: Mach-O universal binary with 2 architectures: [x86_64:Mach-O 64-bit x86_64 executable, flags:<NOUNDEFS|DYLDLINK|TWOLEVEL>] [i386:Mach-O i386 executable, flags:<NOUNDEFS|DYLDLINK|TWOLEVEL|NO_HEAP_EXECUTION>]
+MacOS/10.13/2048-Cocoa.app/Contents/Info.plist: XML 1.0 document, UTF-8 Unicode text
+MacOS/10.13/2048-Cocoa.app/Contents/Resources/AppIcon.icns: Mac OS X icon, 642518 bytes, "TOC " type
+MacOS/10.13/2048-Cocoa.app/Contents/Resources/Base.lproj/2048-Cocoa.nib: Apple binary property list
+MacOS/10.13/2048-Cocoa.app/Contents/Resources/ReadMe.md: ASCII text
+MacOS/10.13/2048-Cocoa.app/Contents/Resources/English.lproj/Localizable.strings: Little-endian UTF-16 Unicode text
+MacOS/10.13/2048-Cocoa.app/Contents/Resources/Assets.car: Mac OS X bill of materials (BOM) file
+MacOS/10.13/2048-Cocoa.app/Contents/PkgInfo: ASCII text, with no line terminators
+MacOS/10.13/2048-Cocoa.app/Contents/_CodeSignature/CodeResources: XML 1.0 document, ASCII text
+MacOS/10.13/2048-Cocoa.app/Contents/MacOS/2048-Cocoa: Mach-O 64-bit x86_64 executable, flags:<NOUNDEFS|DYLDLINK|TWOLEVEL|PIE>
+MacOS/10.8/2048-Cocoa.app/Contents/Info.plist: XML 1.0 document, UTF-8 Unicode text
+MacOS/10.8/2048-Cocoa.app/Contents/Resources/AppIcon.icns: Mac OS X icon, 642414 bytes, "TOC " type
+MacOS/10.8/2048-Cocoa.app/Contents/Resources/en.lproj/2048-Cocoa.nib: Apple binary property list
+MacOS/10.8/2048-Cocoa.app/Contents/Resources/en.lproj/Credits.rtf: Rich Text Format data, version 1, ANSI
+MacOS/10.8/2048-Cocoa.app/Contents/Resources/en.lproj/Localizable.strings: Little-endian UTF-16 Unicode text
+MacOS/10.8/2048-Cocoa.app/Contents/Resources/ReadMe.md: ASCII text
+MacOS/10.8/2048-Cocoa.app/Contents/PkgInfo: ASCII text, with no line terminators
+MacOS/10.8/2048-Cocoa.app/Contents/_CodeSignature/CodeResources: XML 1.0 document, ASCII text
+MacOS/10.8/2048-Cocoa.app/Contents/MacOS/2048-Cocoa: Mach-O 64-bit x86_64 executable, flags:<NOUNDEFS|DYLDLINK|TWOLEVEL>
+MacOS/10.0/2048-Cocoa.app/Contents/pbdevelopment.plist: XML 1.0 document, ASCII text
+MacOS/10.0/2048-Cocoa.app/Contents/Info.plist: XML 1.0 document, ASCII text
+MacOS/10.0/2048-Cocoa.app/Contents/Resources/ReadMe.md: ReStructuredText file, ASCII text
+MacOS/10.0/2048-Cocoa.app/Contents/Resources/English.lproj/InfoPlist.strings: Big-endian UTF-16 Unicode text
+MacOS/10.0/2048-Cocoa.app/Contents/Resources/English.lproj/2048-Cocoa.nib/info.nib: XML 1.0 document, ASCII text
+MacOS/10.0/2048-Cocoa.app/Contents/Resources/English.lproj/2048-Cocoa.nib/classes.nib: ASCII text
+MacOS/10.0/2048-Cocoa.app/Contents/Resources/English.lproj/2048-Cocoa.nib/objects.nib: NeXT/Apple typedstream data, big endian, version 4, system 1000
+MacOS/10.0/2048-Cocoa.app/Contents/Resources/English.lproj/Localizable.strings: ASCII text
+MacOS/10.0/2048-Cocoa.app/Contents/Resources/2048-Cocoa.icns: Mac OS X icon, 49253 bytes, "ics#" type
+MacOS/10.0/2048-Cocoa.app/Contents/PkgInfo: ASCII text, with no line terminators
+MacOS/10.0/2048-Cocoa.app/Contents/MacOS/2048-Cocoa: Mach-O ppc executable, flags:<NOUNDEFS|DYLDLINK|PREBOUND>
 ```
 
 ### 2048-Qt5
