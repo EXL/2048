@@ -13,7 +13,7 @@
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
-        <window title="2048-Cocoa" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" animationBehavior="default" id="21" userLabel="GameWindow">
+        <window title="2048-Swift" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" animationBehavior="default" id="21" userLabel="GameWindow">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="100" y="268" width="340" height="400"/>
@@ -23,7 +23,7 @@
                 <rect key="frame" x="0.0" y="0.0" width="340" height="400"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <customView id="194" customClass="GameView">
+                    <customView id="194" customClass="GameView" customModule="Swift2048" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="340" height="400"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <connections>
@@ -34,12 +34,12 @@
                 </subviews>
             </view>
         </window>
-        <menu title="2048-Cocoa" systemMenu="main" id="29" userLabel="MainMenu">
+        <menu title="2048-Swift" systemMenu="main" id="29" userLabel="MainMenu">
             <items>
-                <menuItem title="2048-Cocoa" id="56">
-                    <menu key="submenu" title="2048-Cocoa" systemMenu="apple" id="57">
+                <menuItem title="2048-Swift" id="56">
+                    <menu key="submenu" title="2048-Swift" systemMenu="apple" id="57">
                         <items>
-                            <menuItem title="About 2048-Cocoa..." id="58">
+                            <menuItem title="About 2048-Swift..." id="58">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
                                     <action selector="orderFrontStandardAboutPanel:" target="-2" id="142"/>
@@ -48,7 +48,7 @@
                             <menuItem isSeparatorItem="YES" id="143">
                                 <modifierMask key="keyEquivalentModifierMask" command="YES"/>
                             </menuItem>
-                            <menuItem title="Hide 2048-Cocoa" keyEquivalent="h" id="134">
+                            <menuItem title="Hide 2048-Swift" keyEquivalent="h" id="134">
                                 <connections>
                                     <action selector="hide:" target="-2" id="152"/>
                                 </connections>
@@ -66,7 +66,7 @@
                             <menuItem isSeparatorItem="YES" id="149">
                                 <modifierMask key="keyEquivalentModifierMask" command="YES"/>
                             </menuItem>
-                            <menuItem title="Quit 2048-Cocoa" keyEquivalent="q" id="136">
+                            <menuItem title="Quit 2048-Swift" keyEquivalent="q" id="136">
                                 <connections>
                                     <action selector="terminate:" target="-2" id="139"/>
                                 </connections>
@@ -147,8 +147,9 @@
                     </menu>
                 </menuItem>
             </items>
+            <point key="canvasLocation" x="140" y="447"/>
         </menu>
-        <customObject id="195" userLabel="GameController" customClass="GameController">
+        <customObject id="195" userLabel="GameController" customClass="GameController" customModule="Swift2048" customModuleProvider="target">
             <connections>
                 <outlet property="gameView" destination="194" id="198"/>
             </connections>

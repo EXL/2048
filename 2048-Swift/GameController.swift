@@ -10,5 +10,7 @@ import Cocoa
 
 @NSApplicationMain
 class GameController: NSObject, NSApplicationDelegate {
-	
+	func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
+		return true
+	}
 }
