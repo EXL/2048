@@ -25,30 +25,6 @@ let largeFont = NSFont.boldSystemFont(ofSize: 28.0 as CGFloat)
 	return coord * (TILE_MARGIN + TILE_SIZE) + start - offset
 }
 
-//
-//  Key Codes Table.
-//  Additional Information:
-//    https://stackoverflow.com/a/2080324
-//    https://stackoverflow.com/a/59995062
-//    https://gist.github.com/swillits/df648e87016772c7f7e5dbed2b345066
-//
-let K_Escape = Int32(0x35)
-let K_R      = Int32(0x0F)
-let K_W      = Int32(0x0D)
-let K_A      = Int32(0x00)
-let K_S      = Int32(0x01)
-let K_D      = Int32(0x02)
-let K_Left   = Int32(0x7B)
-let K_Right  = Int32(0x7C)
-let K_Up     = Int32(0x7E)
-let K_Down   = Int32(0x7D)
-
-extension String {
-	var localized: String {
-		return NSLocalizedString(self, tableName: nil, bundle: Bundle.main, value: "", comment: "")
-	}
-}
-
 class GameView: NSView {
 	@IBOutlet weak var menuItemTiles: NSMenuItem!
 	@IBOutlet weak var menuItemBackground: NSMenuItem!
