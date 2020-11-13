@@ -12,8 +12,8 @@ import Cocoa
 class GameController: NSObject, NSApplicationDelegate {
 	@IBOutlet weak var gameView: GameView!
 
-	// Save static func.
-	// Load static func.
+	// TODO: Save static func.
+	// TODO: Load static func.
 
 	func applicationDidFinishLaunching(_ notification: Notification) {
 		gameView.window?.makeKeyAndOrderFront(self)

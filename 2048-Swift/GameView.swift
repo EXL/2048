@@ -8,9 +8,22 @@
 
 import Cocoa
 
+let TILE_SIZE: Int32   = 64
+let TILE_MARGIN: Int32 = 16
+
+let smallFont = NSFont.boldSystemFont(ofSize: 18.0 as CGFloat)
+let middleFont = NSFont.boldSystemFont(ofSize: 22.0 as CGFloat)
+let normalFont = NSFont.systemFont(ofSize: 18.0 as CGFloat)
+let largeFont = NSFont.boldSystemFont(ofSize: 28.0 as CGFloat)
+
 @inline(__always) func R(rgb: UInt32) -> CGFloat { return CGFloat((rgb >> 16) & 0xFF) / 255.0 as CGFloat }
 @inline(__always) func G(rgb: UInt32) -> CGFloat { return CGFloat((rgb >> 8) & 0xFF) / 255.0 as CGFloat }
 @inline(__always) func B(rgb: UInt32) -> CGFloat { return CGFloat((rgb >> 0) & 0xFF) / 255.0 as CGFloat }
+
+@inline(__always) func offsetCoords(coord: Int32, size: Int32, offset: Int32) -> Int32 {
+	let start = (size / 2) - (((TILE_SIZE * LINE_SIZE) + (TILE_MARGIN * (LINE_SIZE - 1))) / 2)
+	return coord * (TILE_MARGIN + TILE_SIZE) + start - offset
+}
 
 //
 //  Key Codes Table.
@@ -25,10 +38,10 @@ let K_W      = Int32(0x0D)
 let K_A      = Int32(0x00)
 let K_S      = Int32(0x01)
 let K_D      = Int32(0x02)
-let K_Left   = Int32(NSLeftArrowFunctionKey)
-let K_Right  = Int32(NSRightArrowFunctionKey)
-let K_Up     = Int32(NSUpArrowFunctionKey)
-let K_Down   = Int32(NSDownArrowFunctionKey)
+let K_Left   = Int32(0x7B)
+let K_Right  = Int32(0x7C)
+let K_Up     = Int32(0x7E)
+let K_Down   = Int32(0x7D)
 
 class GameView: NSView {
 	@IBOutlet weak var menuItemTiles: NSMenuItem!
@@ -48,7 +61,7 @@ class GameView: NSView {
 	}
 
 	override func draw(_ dirtyRect: NSRect) {
-		(showBackground) ? getColor(aRgb: COLOR_BOARD, aAlpha: 1.0).set() : NSColor.clear.set()
+		(showBackground) ? getColor(aRgb: COLOR_BOARD, aAlpha: 1.0 as CGFloat).set() : NSColor.clear.set()
 		bounds.fill(using: NSCompositingOperation.sourceOver)
 		for y_index in 0..<LINE_SIZE {
 			for x_index in 0..<LINE_SIZE {
@@ -59,7 +72,30 @@ class GameView: NSView {
 	}
 
 	func drawTile(value: Int32, x: Int32, y: Int32) {
-		// NSLog("%d:%d=%d", x, y, value)
+		let xOffset = offsetCoords(coord: x, size: Int32(bounds.size.width), offset: 0)
+		let yOffset = offsetCoords(coord: y, size: Int32(bounds.size.height), offset: TILE_MARGIN * 2)
+		let tile = NSMakeRect(CGFloat(xOffset), CGFloat(yOffset), CGFloat(TILE_SIZE), CGFloat(TILE_SIZE))
+		getColor(aRgb: e_background(value), aAlpha: 1.0 as CGFloat).set()
+		if (roundedTiles) {
+			NSBezierPath(roundedRect: tile, xRadius: 8.0 as CGFloat, yRadius: 8.0 as CGFloat).fill()
+		} else {
+			tile.fill()
+		}
+		if (value > 0) {
+			let strFont = (value < 100) ? largeFont : (value < 1000) ? middleFont : smallFont
+			let strValue = String(value)
+			let strAttributes = [
+				NSAttributedStringKey.font: strFont,
+				NSAttributedStringKey.foregroundColor:
+					getColor(aRgb: e_foreground(value), aAlpha: 1.0 as CGFloat)
+			]
+			let strSize = strValue.size(withAttributes: strAttributes)
+			let strPoint = NSMakePoint(
+				CGFloat(xOffset + (TILE_SIZE - Int32(strSize.width)) / 2),
+				CGFloat(yOffset + (TILE_SIZE - Int32(strSize.height)) / 2)
+			)
+			strValue.draw(at: strPoint, withAttributes: strAttributes)
+		}
 	}
 
 	func drawFinal() {
