@@ -8,6 +8,10 @@
 
 import Cocoa
 
+@inline(__always) func R(rgb: UInt32) -> CGFloat { return CGFloat((rgb >> 16) & 0xFF) / 255.0 as CGFloat }
+@inline(__always) func G(rgb: UInt32) -> CGFloat { return CGFloat((rgb >> 8) & 0xFF) / 255.0 as CGFloat }
+@inline(__always) func B(rgb: UInt32) -> CGFloat { return CGFloat((rgb >> 0) & 0xFF) / 255.0 as CGFloat }
+
 //
 //  Key Codes Table.
 //  Additional Information:
@@ -44,7 +48,7 @@ class GameView: NSView {
 	}
 
 	override func draw(_ dirtyRect: NSRect) {
-		(showBackground) ? NSColor.red.set() : NSColor.clear.set()
+		(showBackground) ? getColor(aRgb: COLOR_BOARD, aAlpha: 1.0).set() : NSColor.clear.set()
 		bounds.fill(using: NSCompositingOperation.sourceOver)
 		for y_index in 0..<LINE_SIZE {
 			for x_index in 0..<LINE_SIZE {
@@ -72,6 +76,10 @@ class GameView: NSView {
 		if (showBackground) {
 			setShowBackground(value: showBackground)
 		}
+	}
+
+	func getColor(aRgb: UInt32, aAlpha: CGFloat) -> NSColor {
+		return NSColor(calibratedRed: R(rgb: aRgb), green: G(rgb: aRgb), blue: B(rgb: aRgb), alpha: aAlpha)
 	}
 
 	override func keyDown(with event: NSEvent) {
