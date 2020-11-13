@@ -899,7 +899,7 @@ ldd 2048-JUCE | wc -l
 
 ### 2048-Cocoa
 
-#### Mac OS X 10.0:
+Mac OS X 10.0:
 
 ```
 otool -L 2048-Cocoa
@@ -908,7 +908,7 @@ otool -L 2048-Cocoa
 	/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 50.0.0)
 ```
 
-#### Mac OS X 10.6.8:
+Mac OS X 10.6.8:
 
 ```
 otool -L 2048-Cocoa
@@ -922,7 +922,7 @@ otool -L 2048-Cocoa
 	/System/Library/Frameworks/AppKit.framework/Versions/C/AppKit (compatibility version 45.0.0, current version 1038.36.0)
 ```
 
-#### OS X 10.8.5:
+OS X 10.8.5:
 
 ```
 `xcodebuild -find otool` -L 2048-Cocoa
@@ -935,7 +935,7 @@ otool -L 2048-Cocoa
 	/System/Library/Frameworks/CoreFoundation.framework/Versions/A/CoreFoundation (compatibility version 150.0.0, current version 855.14.0)
 ```
 
-#### macOS 10.13.6
+macOS 10.13.6:
 
 ```
 otool -L 2048-Cocoa
@@ -946,4 +946,33 @@ otool -L 2048-Cocoa
 	/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 1252.200.5)
 	/System/Library/Frameworks/AppKit.framework/Versions/C/AppKit (compatibility version 45.0.0, current version 1671.10.106)
 	/System/Library/Frameworks/CoreFoundation.framework/Versions/A/CoreFoundation (compatibility version 150.0.0, current version 1560.12.0)
+```
+
+### 2048-Swift
+
+macOS 10.13.6:
+
+```
+otool -L 2048-Swift
+2048-Swift:
+	/System/Library/Frameworks/Cocoa.framework/Versions/A/Cocoa (compatibility version 1.0.0, current version 23.0.0)
+	/System/Library/Frameworks/Foundation.framework/Versions/C/Foundation (compatibility version 300.0.0, current version 1560.12.0)
+	/usr/lib/libobjc.A.dylib (compatibility version 1.0.0, current version 228.0.0)
+	/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 1252.200.5)
+	/System/Library/Frameworks/AppKit.framework/Versions/C/AppKit (compatibility version 45.0.0, current version 1671.10.106)
+	/System/Library/Frameworks/CoreFoundation.framework/Versions/A/CoreFoundation (compatibility version 150.0.0, current version 1560.12.0)
+	@rpath/libswiftAppKit.dylib (compatibility version 1.0.0, current version 1000.11.42)
+	@rpath/libswiftCore.dylib (compatibility version 1.0.0, current version 1000.11.42)
+	@rpath/libswiftCoreData.dylib (compatibility version 1.0.0, current version 1000.11.42)
+	@rpath/libswiftCoreFoundation.dylib (compatibility version 1.0.0, current version 1000.11.42)
+	@rpath/libswiftCoreGraphics.dylib (compatibility version 1.0.0, current version 1000.11.42)
+	@rpath/libswiftCoreImage.dylib (compatibility version 1.0.0, current version 1000.11.42)
+	@rpath/libswiftDarwin.dylib (compatibility version 1.0.0, current version 1000.11.42)
+	@rpath/libswiftDispatch.dylib (compatibility version 1.0.0, current version 1000.11.42)
+	@rpath/libswiftFoundation.dylib (compatibility version 1.0.0, current version 1000.11.42)
+	@rpath/libswiftIOKit.dylib (compatibility version 1.0.0, current version 1000.11.42)
+	@rpath/libswiftMetal.dylib (compatibility version 1.0.0, current version 1000.11.42)
+	@rpath/libswiftObjectiveC.dylib (compatibility version 1.0.0, current version 1000.11.42)
+	@rpath/libswiftQuartzCore.dylib (compatibility version 1.0.0, current version 1000.11.42)
+	@rpath/libswiftXPC.dylib (compatibility version 1.0.0, current version 1000.11.42)
 ```

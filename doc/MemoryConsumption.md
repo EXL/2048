@@ -391,7 +391,7 @@ HugetlbPages:  0 kB
 
 ### 2048-Cocoa
 
-#### Mac OS X 10.0:
+Mac OS X 10.0:
 
 ```
 ps aux | head -1 && ps aux | grep 2048
@@ -403,7 +403,7 @@ PID COMMAND      %CPU   TIME   #TH #PRTS #MREGS RPRVT  RSHRD  RSIZE  VSIZE
 421 2048-Cocoa   0.0%  0:02.95   1    64    43   872K  4.01M  3.04M  53.7M
 ```
 
-#### Mac OS X 10.6.8:
+Mac OS X 10.6.8:
 
 ```
 ps aux | head -1 && ps aux | grep 2048
@@ -415,7 +415,7 @@ PID  COMMAND      %CPU TIME     #TH  #WQ  #POR #MRE RPRVT  RSHRD  RSIZE  VPRVT  
 315  2048-Cocoa   0.0  00:01.21 2    1    72   76   1628K  12M    6700K  19M    2491M  315  97   sleeping 502  2169    171   9285     4838
 ```
 
-#### OS X 10.8.5:
+OS X 10.8.5:
 
 ```
 ps aux | head -1 && ps aux | grep 2048
@@ -427,7 +427,7 @@ PID  COMMAND      %CPU TIME     #TH  #WQ  #POR #MRE RPRVT  RSHRD  RSIZE  VPRVT  
 340  2048-Cocoa   0.0  00:00.27 2    1    98   95   2372K+ 9868K  9860K  15M+   2448M  340  149  sleeping 501
 ```
 
-#### macOS 10.13.6:
+macOS 10.13.6:
 
 ```
 ps aux | head -1 && ps aux | grep 2048
@@ -437,4 +437,18 @@ exl                957   0.0  0.4  4405976  27504   ??  S     6:20AM   0:00.64 /
 top
 PID  COMMAND      %CPU TIME     #TH   #WQ  #PORT MEM    PURG   CMPRS  PGRP PPID STATE    BOOSTS         %CPU_ME %CPU_OTHRS UID  FAULTS  COW    MSGSENT  MSGRECV  SYSBSD    SYSMACH  CSW
 957  2048-Cocoa   0.0  00:00.82 3     1    202   10M    592K   0B     957  1    sleeping *0[19]         0.00000 0.00000    501  9238    349    7531     1594     6445      15123    6033
+```
+
+### 2048-Swift
+
+macOS 10.13.6:
+
+```
+ps aux | head -1 && ps aux | grep 2048
+USER               PID  %CPU %MEM      VSZ    RSS   TT  STAT STARTED      TIME COMMAND
+exl               9026   0.0  0.5  4430908  29188   ??  S     4:46PM   0:00.77 /Users/exl/Projects/2048-Swift.app/Contents/MacOS/2048-Swift
+
+top
+PID   COMMAND      %CPU TIME     #TH   #WQ  #PORT MEM    PURG   CMPRS  PGRP PPID STATE    BOOSTS          %CPU_ME %CPU_OTHRS UID  FAULTS    COW      MSGSENT   MSGRECV   SYSBSD     SYSMACH
+9075  2048-Swift   0.0  00:00.85 5     3    214   11M    592K   0B     9075 1    sleeping *0[11]          0.00000 0.00000    501  10414     462      9858      2003      7418       19749
 ```
