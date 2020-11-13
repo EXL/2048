@@ -43,6 +43,12 @@ class GameView: NSView {
 		NSLog(event.charactersIgnoringModifiers!)
 	}
 
+	override var isFlipped: Bool {
+		get {
+			return true
+		}
+	}
+
 	func setRoundedTiles(value: Bool) {
 		roundedTiles = value
 		UserDefaults.standard.set(value, forKey: "roundedTiles")
