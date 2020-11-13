@@ -6,8 +6,6 @@
 //  Copyright © 2020 EXL. All rights reserved.
 //
 
-// TODO: Simplify if's
-
 import Cocoa
 
 let TILE_SIZE: Int32   = 64
@@ -84,11 +82,9 @@ class GameView: NSView {
 		let yOffset = offsetCoords(coord: y, size: Int32(bounds.size.height), offset: TILE_MARGIN * 2)
 		let tile = NSMakeRect(CGFloat(xOffset), CGFloat(yOffset), CGFloat(TILE_SIZE), CGFloat(TILE_SIZE))
 		getColor(aRgb: e_background(value), aAlpha: 1.0 as CGFloat).set()
-		if (roundedTiles) {
-			NSBezierPath(roundedRect: tile, xRadius: 8.0 as CGFloat, yRadius: 8.0 as CGFloat).fill()
-		} else {
+		(roundedTiles) ?
+			NSBezierPath(roundedRect: tile, xRadius: 8.0 as CGFloat, yRadius: 8.0 as CGFloat).fill() :
 			tile.fill()
-		}
 		if (value > 0) {
 			let strFont = (value < 100) ? largeFont : (value < 1000) ? middleFont : smallFont
 			let strValue = String(value)
