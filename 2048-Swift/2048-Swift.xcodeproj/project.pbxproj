@@ -14,6 +14,7 @@
 		CA93AB902559E9C4007B3D38 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CA93AB8F2559E9C4007B3D38 /* Cocoa.framework */; };
 		CA93AB94255A2153007B3D38 /* GameController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA93AB93255A2153007B3D38 /* GameController.swift */; };
 		CAC6D240255E1EC20067AE49 /* 2048.c in Sources */ = {isa = PBXBuildFile; fileRef = CAC6D23E255E1EC20067AE49 /* 2048.c */; };
+		CAC6D242255E38680067AE49 /* 2048-Swift-Bridging.c in Sources */ = {isa = PBXBuildFile; fileRef = CAC6D241255E38680067AE49 /* 2048-Swift-Bridging.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -29,6 +30,7 @@
 		CAC6D23D255E1EC20067AE49 /* 2048-Swift-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "2048-Swift-Bridging-Header.h"; sourceTree = "<group>"; };
 		CAC6D23E255E1EC20067AE49 /* 2048.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = 2048.c; sourceTree = "<group>"; };
 		CAC6D23F255E1EC20067AE49 /* 2048.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = 2048.h; sourceTree = "<group>"; };
+		CAC6D241255E38680067AE49 /* 2048-Swift-Bridging.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = "2048-Swift-Bridging.c"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -48,6 +50,7 @@
 			children = (
 				CAC6D23E255E1EC20067AE49 /* 2048.c */,
 				CAC6D23F255E1EC20067AE49 /* 2048.h */,
+				CAC6D241255E38680067AE49 /* 2048-Swift-Bridging.c */,
 				CAC6D23D255E1EC20067AE49 /* 2048-Swift-Bridging-Header.h */,
 				CA09AF51255D24EF00AD1DBE /* GameView.swift */,
 				CA93AB93255A2153007B3D38 /* GameController.swift */,
@@ -155,6 +158,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CA93AB94255A2153007B3D38 /* GameController.swift in Sources */,
+				CAC6D242255E38680067AE49 /* 2048-Swift-Bridging.c in Sources */,
 				CA09AF52255D24EF00AD1DBE /* GameView.swift in Sources */,
 				CAC6D240255E1EC20067AE49 /* 2048.c in Sources */,
 			);

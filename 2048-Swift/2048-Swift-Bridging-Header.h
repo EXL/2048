@@ -3,3 +3,5 @@
 //
 
 #include "2048.h"
+
+extern int *p_board;

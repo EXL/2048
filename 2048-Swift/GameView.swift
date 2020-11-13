@@ -43,6 +43,25 @@ class GameView: NSView {
 		initGameView()
 	}
 
+	override func draw(_ dirtyRect: NSRect) {
+		(showBackground) ? NSColor.red.set() : NSColor.clear.set()
+		bounds.fill(using: NSCompositingOperation.sourceOver)
+		for y_index in 0..<LINE_SIZE {
+			for x_index in 0..<LINE_SIZE {
+				drawTile(value: p_board![Int(x_index + y_index * LINE_SIZE)], x: x_index, y: y_index)
+			}
+		}
+		drawFinal()
+	}
+
+	func drawTile(value: Int32, x: Int32, y: Int32) {
+		// NSLog("%d:%d=%d", x, y, value)
+	}
+
+	func drawFinal() {
+
+	}
+
 	func initGameView() {
 		e_init(K_Escape, K_Left, K_Right, K_Up, K_Down)
 		let rectType: Bool = UserDefaults.standard.bool(forKey: "roundedTiles")
@@ -71,7 +90,7 @@ class GameView: NSView {
 		default:
 			e_key(keyCode)
 		}
-		setNeedsDisplay(frame)
+		setNeedsDisplay(bounds)
 	}
 
 	override var isFlipped: Bool {
@@ -97,19 +116,19 @@ class GameView: NSView {
 
 	@IBAction func menuReset(_ sender: NSMenuItem) {
 		e_key(K_Escape)
-		setNeedsDisplay(frame)
+		setNeedsDisplay(bounds)
 	}
 
 	@IBAction func menuTiles(_ sender: NSMenuItem) {
 		setRoundedTiles(value: !roundedTiles)
 		updateMenus()
-		setNeedsDisplay(frame)
+		setNeedsDisplay(bounds)
 	}
 
 	@IBAction func menuBackground(_ sender: NSMenuItem) {
 		setShowBackground(value: !showBackground)
 		updateMenus()
-		setNeedsDisplay(frame)
+		setNeedsDisplay(bounds)
 	}
 
 	@IBAction func menuSave(_ sender: NSMenuItem) {
