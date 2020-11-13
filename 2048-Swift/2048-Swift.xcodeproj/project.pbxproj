@@ -9,11 +9,11 @@
 /* Begin PBXBuildFile section */
 		CA09AF52255D24EF00AD1DBE /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA09AF51255D24EF00AD1DBE /* GameView.swift */; };
 		CA93AB7F2559E5F5007B3D38 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CA93AB7E2559E5F5007B3D38 /* Assets.xcassets */; };
-		CA93AB872559E671007B3D38 /* 2048.c in Sources */ = {isa = PBXBuildFile; fileRef = CA93AB852559E671007B3D38 /* 2048.c */; };
 		CA93AB8A2559E89B007B3D38 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = CA93AB882559E89B007B3D38 /* Localizable.strings */; };
 		CA93AB8D2559E8C4007B3D38 /* 2048-Swift.xib in Resources */ = {isa = PBXBuildFile; fileRef = CA93AB8B2559E8C4007B3D38 /* 2048-Swift.xib */; };
 		CA93AB902559E9C4007B3D38 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CA93AB8F2559E9C4007B3D38 /* Cocoa.framework */; };
 		CA93AB94255A2153007B3D38 /* GameController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA93AB93255A2153007B3D38 /* GameController.swift */; };
+		CAC6D240255E1EC20067AE49 /* 2048.c in Sources */ = {isa = PBXBuildFile; fileRef = CAC6D23E255E1EC20067AE49 /* 2048.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,12 +22,13 @@
 		CA93AB7B2559E126007B3D38 /* 2048-Swift.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = "2048-Swift.entitlements"; sourceTree = "<group>"; };
 		CA93AB7C2559E126007B3D38 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CA93AB7E2559E5F5007B3D38 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = "../2048-Cocoa/Xcode10/Assets.xcassets"; sourceTree = "<group>"; };
-		CA93AB852559E671007B3D38 /* 2048.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = 2048.c; path = ../src/2048.c; sourceTree = "<group>"; };
-		CA93AB862559E671007B3D38 /* 2048.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = 2048.h; path = ../src/2048.h; sourceTree = "<group>"; };
 		CA93AB892559E89B007B3D38 /* English */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = English; path = "../2048-Cocoa/English.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		CA93AB8C2559E8C4007B3D38 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = "Base.lproj/2048-Swift.xib"; sourceTree = "<group>"; };
 		CA93AB8F2559E9C4007B3D38 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		CA93AB93255A2153007B3D38 /* GameController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameController.swift; sourceTree = "<group>"; usesTabs = 1; };
+		CAC6D23D255E1EC20067AE49 /* 2048-Swift-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "2048-Swift-Bridging-Header.h"; sourceTree = "<group>"; };
+		CAC6D23E255E1EC20067AE49 /* 2048.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = 2048.c; sourceTree = "<group>"; };
+		CAC6D23F255E1EC20067AE49 /* 2048.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = 2048.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -45,12 +46,13 @@
 		CA93AB612559DA71007B3D38 = {
 			isa = PBXGroup;
 			children = (
-				CA93AB882559E89B007B3D38 /* Localizable.strings */,
-				CA93AB8B2559E8C4007B3D38 /* 2048-Swift.xib */,
+				CAC6D23E255E1EC20067AE49 /* 2048.c */,
+				CAC6D23F255E1EC20067AE49 /* 2048.h */,
+				CAC6D23D255E1EC20067AE49 /* 2048-Swift-Bridging-Header.h */,
 				CA09AF51255D24EF00AD1DBE /* GameView.swift */,
 				CA93AB93255A2153007B3D38 /* GameController.swift */,
-				CA93AB852559E671007B3D38 /* 2048.c */,
-				CA93AB862559E671007B3D38 /* 2048.h */,
+				CA93AB8B2559E8C4007B3D38 /* 2048-Swift.xib */,
+				CA93AB882559E89B007B3D38 /* Localizable.strings */,
 				CA93AB7E2559E5F5007B3D38 /* Assets.xcassets */,
 				CA93AB7C2559E126007B3D38 /* Info.plist */,
 				CA93AB7B2559E126007B3D38 /* 2048-Swift.entitlements */,
@@ -154,7 +156,7 @@
 			files = (
 				CA93AB94255A2153007B3D38 /* GameController.swift in Sources */,
 				CA09AF52255D24EF00AD1DBE /* GameView.swift in Sources */,
-				CA93AB872559E671007B3D38 /* 2048.c in Sources */,
+				CAC6D240255E1EC20067AE49 /* 2048.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -314,6 +316,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = ru.exlmoto.Swift2048;
 				PRODUCT_MODULE_NAME = Swift2048;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "2048-Swift-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.0;
 			};
@@ -340,6 +343,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = ru.exlmoto.Swift2048;
 				PRODUCT_MODULE_NAME = Swift2048;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "2048-Swift-Bridging-Header.h";
 				SWIFT_VERSION = 4.0;
 			};
 			name = Release;
