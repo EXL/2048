@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		CA09AF52255D24EF00AD1DBE /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA09AF51255D24EF00AD1DBE /* GameView.swift */; };
+		CA23B02A255E72F800493FCF /* ReadMe.md in Resources */ = {isa = PBXBuildFile; fileRef = CA23B029255E72F800493FCF /* ReadMe.md */; };
 		CA93AB7F2559E5F5007B3D38 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CA93AB7E2559E5F5007B3D38 /* Assets.xcassets */; };
 		CA93AB8A2559E89B007B3D38 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = CA93AB882559E89B007B3D38 /* Localizable.strings */; };
 		CA93AB8D2559E8C4007B3D38 /* 2048-Swift.xib in Resources */ = {isa = PBXBuildFile; fileRef = CA93AB8B2559E8C4007B3D38 /* 2048-Swift.xib */; };
@@ -19,6 +20,7 @@
 
 /* Begin PBXFileReference section */
 		CA09AF51255D24EF00AD1DBE /* GameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameView.swift; sourceTree = "<group>"; usesTabs = 1; };
+		CA23B029255E72F800493FCF /* ReadMe.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = ReadMe.md; sourceTree = "<group>"; };
 		CA93AB6A2559DA71007B3D38 /* 2048-Swift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "2048-Swift.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CA93AB7B2559E126007B3D38 /* 2048-Swift.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = "2048-Swift.entitlements"; sourceTree = "<group>"; };
 		CA93AB7C2559E126007B3D38 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -45,6 +47,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		CA23B028255E72CE00493FCF /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				CA23B029255E72F800493FCF /* ReadMe.md */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
 		CA93AB612559DA71007B3D38 = {
 			isa = PBXGroup;
 			children = (
@@ -59,6 +69,7 @@
 				CA93AB7E2559E5F5007B3D38 /* Assets.xcassets */,
 				CA93AB7C2559E126007B3D38 /* Info.plist */,
 				CA93AB7B2559E126007B3D38 /* 2048-Swift.entitlements */,
+				CA23B028255E72CE00493FCF /* Supporting Files */,
 				CA93AB6B2559DA71007B3D38 /* Products */,
 				CA93AB8E2559E9C3007B3D38 /* Frameworks */,
 			);
@@ -146,6 +157,7 @@
 			files = (
 				CA93AB8D2559E8C4007B3D38 /* 2048-Swift.xib in Resources */,
 				CA93AB7F2559E5F5007B3D38 /* Assets.xcassets in Resources */,
+				CA23B02A255E72F800493FCF /* ReadMe.md in Resources */,
 				CA93AB8A2559E89B007B3D38 /* Localizable.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
