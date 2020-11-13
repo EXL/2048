@@ -38,7 +38,11 @@ script:
 
 ## macOS Development Environment
 
-Xcode 10: See [2048-Swift](../../2048-Swift) project directory.
+Xcode 10:
+
+![Xcode 10 macOS 10.13 Code Editor Screenshot](../../image/Xcode-macOS-10_13-Screenshot1.png)
+
+![Xcode 10 macOS 10.13 Interface Builder Screenshot](../../image/Xcode-macOS-10_13-Screenshot2.png)
 
 ## Versions
 
