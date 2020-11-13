@@ -6,6 +6,8 @@
 //  Copyright © 2020 EXL. All rights reserved.
 //
 
+// TODO: Simplify if's
+
 import Cocoa
 
 let TILE_SIZE: Int32   = 64
@@ -92,8 +94,7 @@ class GameView: NSView {
 			let strValue = String(value)
 			let strAttributes = [
 				NSAttributedStringKey.font: strFont,
-				NSAttributedStringKey.foregroundColor:
-					getColor(aRgb: e_foreground(value), aAlpha: 1.0 as CGFloat)
+				NSAttributedStringKey.foregroundColor: getColor(aRgb: e_foreground(value), aAlpha: 1.0 as CGFloat)
 			]
 			let strSize = strValue.size(withAttributes: strAttributes)
 			let strPoint = NSMakePoint(
@@ -215,12 +216,24 @@ class GameView: NSView {
 	}
 
 	@IBAction func menuSave(_ sender: NSMenuItem) {
-		NSLog("Save!")
-		// TODO: e_save
+		let strState = GameController.saveState()
+		(!strState.isEmpty) ?
+			showAlertSheet(title: "GMSaveOk".localized, information: strState) :
+			showAlertSheet(title: "GMSaveError".localized, information: "GMSaveErrorDesc".localized)
 	}
 
 	@IBAction func menuLoad(_ sender: NSMenuItem) {
-		NSLog("Load!")
-		// TODO: e_load
+		let strState = GameController.loadState()
+		(!strState.isEmpty) ?
+			showAlertSheet(title: "GMLoadOk".localized, information: strState) :
+			showAlertSheet(title: "GMLoadError".localized, information: "GMLoadErrorDesc".localized)
+		setNeedsDisplay(bounds)
+	}
+
+	func showAlertSheet(title: String, information: String) {
+		let alertSheet = NSAlert()
+		alertSheet.messageText = title
+		alertSheet.informativeText = information
+		alertSheet.beginSheetModal(for: window!, completionHandler: nil)
 	}
 }
