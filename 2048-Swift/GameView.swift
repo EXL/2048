@@ -140,13 +140,11 @@ class GameView: NSView {
 
 	func initGameView() {
 		e_init(K_Escape, K_Left, K_Right, K_Up, K_Down)
-		let rectType: Bool = UserDefaults.standard.bool(forKey: "roundedTiles")
-		let showBackground: Bool = UserDefaults.standard.bool(forKey: "showBackground")
-		if (rectType) {
-			setRoundedTiles(value: rectType)
+		if let bRectType = UserDefaults.standard.object(forKey: "roundedTiles") as? Bool {
+			setRoundedTiles(value: bRectType)
 		}
-		if (showBackground) {
-			setShowBackground(value: showBackground)
+		if let bShowBackground = UserDefaults.standard.object(forKey: "showBackground") as? Bool {
+			setShowBackground(value: bShowBackground)
 		}
 	}
 
@@ -181,12 +179,14 @@ class GameView: NSView {
 
 	func setRoundedTiles(value: Bool) {
 		roundedTiles = value
-		UserDefaults.standard.set(value, forKey: "roundedTiles")
+		UserDefaults.standard.set(roundedTiles, forKey: "roundedTiles")
+		UserDefaults.standard.synchronize()
 	}
 
 	func setShowBackground(value: Bool) {
 		showBackground = value
-		UserDefaults.standard.set(value, forKey: "showBackground")
+		UserDefaults.standard.set(showBackground, forKey: "showBackground")
+		UserDefaults.standard.synchronize()
 	}
 
 	func updateMenus() {
