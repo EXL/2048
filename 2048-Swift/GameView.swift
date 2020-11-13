@@ -43,6 +43,12 @@ let K_Right  = Int32(0x7C)
 let K_Up     = Int32(0x7E)
 let K_Down   = Int32(0x7D)
 
+extension String {
+	var localized: String {
+		return NSLocalizedString(self, tableName: nil, bundle: Bundle.main, value: "", comment: "")
+	}
+}
+
 class GameView: NSView {
 	@IBOutlet weak var menuItemTiles: NSMenuItem!
 	@IBOutlet weak var menuItemBackground: NSMenuItem!
@@ -99,7 +105,40 @@ class GameView: NSView {
 	}
 
 	func drawFinal() {
-
+		let bWin = (e_win as NSNumber).boolValue
+		let bLose = (e_lose as NSNumber).boolValue
+		let strScore = String.localizedStringWithFormat("GMScoreFMT".localized, e_score)
+		let strEscape = "GMEscape".localized
+		let strAttributes = [
+			NSAttributedStringKey.font: normalFont,
+			NSAttributedStringKey.foregroundColor: getColor(aRgb: COLOR_TEXT, aAlpha: 1.0 as CGFloat)
+		]
+		if (bWin || bLose) {
+			let strCenter = (bWin) ? "GMYouWon".localized : "GMGameOver".localized
+			let strAttributes = [
+				NSAttributedStringKey.font: largeFont,
+				NSAttributedStringKey.foregroundColor: getColor(aRgb: COLOR_FINAL, aAlpha: 1.0 as CGFloat)
+			]
+			getColor(aRgb: COLOR_OVERLAY, aAlpha: 0.5 as CGFloat).set()
+			bounds.fill(using: NSCompositingOperation.sourceOver)
+			let strSize = strScore.size(withAttributes: strAttributes)
+			let strCenterPoint = NSMakePoint(
+				CGFloat(Int32(bounds.size.width) / 2 - Int32(strSize.width) / 2),
+				CGFloat(Int32(bounds.size.height) / 2 - Int32(strSize.height) / 2)
+			)
+			strCenter.draw(at: strCenterPoint, withAttributes: strAttributes)
+		}
+		let strSize = strScore.size(withAttributes: strAttributes)
+		let strEscapePoint = NSMakePoint(
+			CGFloat(TILE_MARGIN),
+			CGFloat(Int32(bounds.size.height - strSize.height) - 10)
+		)
+		let strScorePoint = NSMakePoint(
+			CGFloat(Int32(bounds.size.width - strSize.width) - TILE_MARGIN),
+			CGFloat(Int32(bounds.size.height - strSize.height) - 10)
+		)
+		strEscape.draw(at: strEscapePoint, withAttributes: strAttributes)
+		strScore.draw(at: strScorePoint, withAttributes: strAttributes)
 	}
 
 	func initGameView() {
