@@ -107,7 +107,7 @@ class GameView: NSView {
 	func drawFinal() {
 		let bWin = (e_win as NSNumber).boolValue
 		let bLose = (e_lose as NSNumber).boolValue
-		let strScore = String.localizedStringWithFormat("GMScoreFMT".localized, e_score)
+		let strScore = String(format: "GMScoreFMT".localized, e_score)
 		let strEscape = "GMEscape".localized
 		let strAttributes = [
 			NSAttributedStringKey.font: normalFont,
