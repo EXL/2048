@@ -10,177 +10,153 @@ Dependencies were obtained:
 ### Sizes
 
 ```
-ls -lh 2048-*
--rwxrwxr-x. 1 exl exl  15K Jun 30 07:18 2048-Gtk1
--rwxrwxr-x. 1 exl exl  15K Jun 30 07:18 2048-Gtk2
--rwxrwxr-x. 1 exl exl  15K Jun 30 07:18 2048-Gtk3
--rwxrwxr-x. 1 exl exl 3.6M Oct  5 18:42 2048-JUCE
--rwxrwxr-x. 1 exl exl  15K Jun 30 07:20 2048-Motif
--rwxrwxr-x. 1 exl exl  40K Jun 29 02:56 2048-MotoMAGX_E8
--rwxrwxr-x. 1 exl exl  40K Jun 29 02:56 2048-MotoMAGX_EM30
--rwxrwxr-x. 1 exl exl  40K Jun 29 02:58 2048-MotoMAGX_EM35
--rwxrwxr-x. 1 exl exl  40K Jun 29 02:57 2048-MotoMAGX_U9
--rwxrwxr-x. 1 exl exl  40K Jun 29 02:57 2048-MotoMAGX_V8
--rwxrwxr-x. 1 exl exl  40K Jun 29 02:57 2048-MotoMAGX_VE66
--rwxrwxr-x. 1 exl exl  40K Jun 29 02:57 2048-MotoMAGX_Z6
--rwxrwxr-x. 1 exl exl  40K Jun 29 02:57 2048-MotoMAGX_Z6W
--rwxrwxr-x. 1 exl exl  40K Jun 29 02:57 2048-MotoMAGX_ZN5
--rwxrwxr-x. 1 exl exl  40K Sep 26 01:41 2048-Photon
--rwxrwxr-x. 1 exl exl  23K Jun 30 07:19 2048-Qt1
--rwxrwxr-x. 1 exl exl  32K Jun 30 07:19 2048-Qt2
--rwxrwxr-x. 1 exl exl  32K Jun 30 07:19 2048-Qt3
--rwxrwxr-x. 1 exl exl  23K Jun 30 07:19 2048-Qt4
--rwxrwxr-x. 1 exl exl  23K Jun 30 07:19 2048-Qt5
--rwxrwxr-x. 1 exl exl 759K Sep 27 09:18 2048-Serenity
--rwxrwxr-x. 1 exl exl  15K Jun 30 07:20 2048-Xaw
--rwxrwxr-x. 1 exl exl  15K Jun 30 07:20 2048-Xcb
--rwxrwxr-x. 1 exl exl  15K Jun 30 07:20 2048-Xlib
+2048-Release/
+├── [-rwxrwxr-x   14K Jun 30 07:18]  2048-Gtk1
+├── [-rwxrwxr-x   14K Jun 30 07:18]  2048-Gtk2
+├── [-rwxrwxr-x   14K Jun 30 07:18]  2048-Gtk3
+├── [-rwxrwxr-x  3.6M Oct  5 18:42]  2048-JUCE
+├── [-rwxrwxr-x   14K Jun 30 07:20]  2048-Motif
+├── [-rwxrwxr-x   39K Jun 29 02:56]  2048-MotoMAGX_E8
+├── [-rwxrwxr-x   39K Jun 29 02:56]  2048-MotoMAGX_EM30
+├── [-rwxrwxr-x   39K Jun 29 02:58]  2048-MotoMAGX_EM35
+├── [-rwxrwxr-x   39K Jun 29 02:57]  2048-MotoMAGX_U9
+├── [-rwxrwxr-x   39K Jun 29 02:57]  2048-MotoMAGX_V8
+├── [-rwxrwxr-x   39K Jun 29 02:57]  2048-MotoMAGX_VE66
+├── [-rwxrwxr-x   39K Jun 29 02:57]  2048-MotoMAGX_Z6
+├── [-rwxrwxr-x   39K Jun 29 02:57]  2048-MotoMAGX_Z6W
+├── [-rwxrwxr-x   39K Jun 29 02:57]  2048-MotoMAGX_ZN5
+├── [-rwxrwxr-x   40K Sep 26 01:41]  2048-Photon
+├── [-rwxrwxr-x   23K Jun 30 07:19]  2048-Qt1
+├── [-rwxrwxr-x   31K Jun 30 07:19]  2048-Qt2
+├── [-rwxrwxr-x   31K Jun 30 07:19]  2048-Qt3
+├── [-rwxrwxr-x   23K Jun 30 07:19]  2048-Qt4
+├── [-rwxrwxr-x   23K Jun 30 07:19]  2048-Qt5
+├── [-rwxrwxr-x  759K Sep 27 09:18]  2048-Serenity
+├── [-rwxrwxr-x   14K Jun 30 07:20]  2048-Xaw
+├── [-rwxrwxr-x   14K Jun 30 07:20]  2048-Xcb
+├── [-rwxrwxr-x   14K Jun 30 07:20]  2048-Xlib
+├── [drwxr-xr-x  4.0K Oct 25 06:53]  MacOS
+│   ├── [drwxr-xr-x  4.0K Oct 25 05:04]  10.0
+│   │   └── [drwxr-xr-x  4.0K Oct 25 04:14]  2048-Cocoa.app
+│   │       └── [drwxr-xr-x  4.0K Oct 25 04:14]  Contents
+│   │           ├── [-rw-r--r--   760 Oct 25 04:13]  Info.plist
+│   │           ├── [drwxr-xr-x  4.0K Oct 25 04:14]  MacOS
+│   │           │   └── [-rwxr-xr-x   36K Oct 25 04:14]  2048-Cocoa
+│   │           ├── [-rw-r--r--   275 Oct 25 04:13]  pbdevelopment.plist
+│   │           ├── [-rw-r--r--     8 Oct 25 04:13]  PkgInfo
+│   │           └── [drwxr-xr-x  4.0K Oct 25 04:13]  Resources
+│   │               ├── [-rw-r--r--   48K Oct 25 04:13]  2048-Cocoa.icns
+│   │               ├── [drwxr-xr-x  4.0K Oct 25 04:13]  English.lproj
+│   │               │   ├── [drwxr-xr-x  4.0K Oct 25 04:13]  2048-Cocoa.nib
+│   │               │   │   ├── [-rw-r--r--   688 Oct 25 04:13]  classes.nib
+│   │               │   │   ├── [-rw-r--r--   500 Oct 25 04:13]  info.nib
+│   │               │   │   └── [-rw-r--r--  2.9K Oct 25 04:13]  objects.nib
+│   │               │   ├── [-rw-r--r--   530 Oct 25 04:13]  InfoPlist.strings
+│   │               │   └── [-rw-r--r--   413 Oct 25 04:13]  Localizable.strings
+│   │               └── [-rw-r--r--  1.7K Oct 25 04:13]  ReadMe.md
+│   ├── [drwxr-xr-x  4.0K Nov 13 18:19]  10.13
+│   │   ├── [drwxr-xr-x  4.0K Oct 25 06:30]  2048-Cocoa.app
+│   │   │   └── [drwxr-xr-x  4.0K Oct 25 06:29]  Contents
+│   │   │       ├── [drwxr-xr-x  4.0K Oct 25 06:54]  _CodeSignature
+│   │   │       │   └── [-rw-r--r--  3.8K Oct 25 06:29]  CodeResources
+│   │   │       ├── [-rw-r--r--  1.6K Oct 25 06:29]  Info.plist
+│   │   │       ├── [drwxr-xr-x  4.0K Oct 25 06:54]  MacOS
+│   │   │       │   └── [-rwxr-xr-x   42K Oct 25 06:30]  2048-Cocoa
+│   │   │       ├── [-rw-r--r--     8 Oct 25 06:29]  PkgInfo
+│   │   │       └── [drwxr-xr-x  4.0K Oct 25 06:29]  Resources
+│   │   │           ├── [-rw-r--r--  627K Oct 25 06:29]  AppIcon.icns
+│   │   │           ├── [-rw-r--r--  509K Oct 25 06:29]  Assets.car
+│   │   │           ├── [drwxr-xr-x  4.0K Oct 25 06:54]  Base.lproj
+│   │   │           │   └── [-rw-r--r--  8.9K Oct 25 06:29]  2048-Cocoa.nib
+│   │   │           ├── [drwxr-xr-x  4.0K Oct 25 06:54]  English.lproj
+│   │   │           │   └── [-rw-r--r--   828 Oct 25 06:29]  Localizable.strings
+│   │   │           └── [-rw-r--r--  1.6K Oct 25 06:29]  ReadMe.md
+│   │   └── [drwxr-xr-x  4.0K Nov 13 16:59]  2048-Swift.app
+│   │       └── [drwxr-xr-x  4.0K Nov 13 16:59]  Contents
+│   │           ├── [drwxr-xr-x  4.0K Nov 13 16:59]  _CodeSignature
+│   │           │   └── [-rw-r--r--  9.8K Nov 13 16:59]  CodeResources
+│   │           ├── [drwxr-xr-x  4.0K Nov 13 16:59]  Frameworks
+│   │           │   ├── [-rwxr-xr-x  236K Nov 13 16:59]  libswiftAppKit.dylib
+│   │           │   ├── [-rwxr-xr-x   96K Nov 13 16:59]  libswiftCoreData.dylib
+│   │           │   ├── [-rwxr-xr-x  6.2M Nov 13 16:59]  libswiftCore.dylib
+│   │           │   ├── [-rwxr-xr-x   41K Nov 13 16:59]  libswiftCoreFoundation.dylib
+│   │           │   ├── [-rwxr-xr-x  198K Nov 13 16:59]  libswiftCoreGraphics.dylib
+│   │           │   ├── [-rwxr-xr-x   49K Nov 13 16:59]  libswiftCoreImage.dylib
+│   │           │   ├── [-rwxr-xr-x  104K Nov 13 16:59]  libswiftDarwin.dylib
+│   │           │   ├── [-rwxr-xr-x  338K Nov 13 16:59]  libswiftDispatch.dylib
+│   │           │   ├── [-rwxr-xr-x  2.9M Nov 13 16:59]  libswiftFoundation.dylib
+│   │           │   ├── [-rwxr-xr-x   44K Nov 13 16:59]  libswiftIOKit.dylib
+│   │           │   ├── [-rwxr-xr-x   91K Nov 13 16:59]  libswiftMetal.dylib
+│   │           │   ├── [-rwxr-xr-x   60K Nov 13 16:59]  libswiftObjectiveC.dylib
+│   │           │   ├── [-rwxr-xr-x   73K Nov 13 16:59]  libswiftos.dylib
+│   │           │   ├── [-rwxr-xr-x   57K Nov 13 16:59]  libswiftQuartzCore.dylib
+│   │           │   └── [-rwxr-xr-x   44K Nov 13 16:59]  libswiftXPC.dylib
+│   │           ├── [-rw-r--r--  1.6K Nov 13 16:59]  Info.plist
+│   │           ├── [drwxr-xr-x  4.0K Nov 13 16:59]  MacOS
+│   │           │   └── [-rwxr-xr-x   88K Nov 13 16:59]  2048-Swift
+│   │           ├── [-rw-r--r--     8 Nov 13 16:59]  PkgInfo
+│   │           └── [drwxr-xr-x  4.0K Nov 13 16:59]  Resources
+│   │               ├── [-rw-r--r--  627K Nov 13 16:59]  AppIcon.icns
+│   │               ├── [-rw-r--r--  509K Nov 13 16:59]  Assets.car
+│   │               ├── [drwxr-xr-x  4.0K Nov 13 16:59]  Base.lproj
+│   │               │   └── [-rw-r--r--  8.9K Nov 13 16:59]  2048-Swift.nib
+│   │               ├── [drwxr-xr-x  4.0K Nov 13 16:59]  English.lproj
+│   │               │   └── [-rw-r--r--   828 Nov 13 16:59]  Localizable.strings
+│   │               └── [-rw-r--r--  1.8K Nov 13 16:59]  ReadMe.md
+│   ├── [drwxr-xr-x  4.0K Oct 25 06:53]  10.6
+│   │   └── [drwxr-xr-x  4.0K Oct 25 05:26]  2048-Cocoa.app
+│   │       └── [drwxr-xr-x  4.0K Oct 25 05:26]  Contents
+│   │           ├── [-rw-r--r--  1.5K Oct 25 05:26]  Info.plist
+│   │           ├── [drwxr-xr-x  4.0K Oct 25 06:53]  MacOS
+│   │           │   └── [-rwxr-xr-x   53K Oct 25 05:26]  2048-Cocoa
+│   │           ├── [-rw-r--r--     8 Oct 25 05:26]  PkgInfo
+│   │           └── [drwxr-xr-x  4.0K Oct 25 05:26]  Resources
+│   │               ├── [-rw-r--r--  139K Oct 25 05:26]  2048-Cocoa-modern.icns
+│   │               ├── [drwxr-xr-x  4.0K Oct 25 06:53]  en.lproj
+│   │               │   ├── [-rw-r--r--  8.5K Oct 25 05:26]  2048-Cocoa.nib
+│   │               │   ├── [-rw-r--r--  1.0K Oct 25 05:26]  Credits.rtf
+│   │               │   └── [-rw-r--r--   828 Oct 25 05:26]  Localizable.strings
+│   │               └── [-rw-r--r--  1.3K Oct 25 05:26]  ReadMe.md
+│   └── [drwxr-xr-x  4.0K Oct 25 06:55]  10.8
+│       └── [drwxr-xr-x  4.0K Oct 25 06:00]  2048-Cocoa.app
+│           └── [drwxr-xr-x  4.0K Oct 25 06:00]  Contents
+│               ├── [drwxr-xr-x  4.0K Oct 25 06:55]  _CodeSignature
+│               │   └── [-rw-r--r--  1.4K Oct 25 06:00]  CodeResources
+│               ├── [-rw-r--r--  1.5K Oct 25 06:00]  Info.plist
+│               ├── [drwxr-xr-x  4.0K Oct 25 06:55]  MacOS
+│               │   └── [-rwxr-xr-x   38K Oct 25 06:00]  2048-Cocoa
+│               ├── [-rw-r--r--     8 Oct 25 06:00]  PkgInfo
+│               └── [drwxr-xr-x  4.0K Oct 25 06:01]  Resources
+│                   ├── [-rw-r--r--  627K Oct 25 06:00]  AppIcon.icns
+│                   ├── [drwxr-xr-x  4.0K Oct 25 06:55]  en.lproj
+│                   │   ├── [-rw-r--r--  7.3K Oct 25 06:00]  2048-Cocoa.nib
+│                   │   ├── [-rw-r--r--  1.0K Oct 25 06:00]  Credits.rtf
+│                   │   └── [-rw-r--r--   828 Oct 25 06:00]  Localizable.strings
+│                   └── [-rw-r--r--  1.3K Oct 25 06:00]  ReadMe.md
+├── [drwxrwxr-x  4.0K Jul  8 15:37]  MotoMAGX
+│   ├── [-rw-rw-r--   14K Jun 29 02:58]  2048_MotoMAGX_ZN5_v1.0_28-Jul-2020.mgx
+│   └── [-rw-rw-r--  2.9M Jun 27 05:01]  2048_MotoMAGX_ZN5.webm
+└── [drwxrwxr-x  4.0K Oct 25 03:30]  NeXTSTEP
+    ├── [drwxr-xr-x  4.0K Nov 15  1994]  2048-NeXTSTEP.app
+    │   ├── [-rwxr-xr-x  200K Nov 15  1994]  2048-NeXTSTEP
+    │   ├── [-rw-r--r--   49K Nov 15  1994]  avatar.tiff
+    │   ├── [drwxr-xr-x  4.0K Nov 15  1994]  English.lproj
+    │   │   ├── [drwxr-xr-x  4.0K Sep 26 09:40]  2048-Info.nib
+    │   │   │   ├── [-rw-r--r--    56 Nov 15  1994]  data.classes
+    │   │   │   └── [-rw-r--r--  1.4K Nov 15  1994]  data.nib
+    │   │   └── [drwxr-xr-x  4.0K Nov 15  1994]  2048-NeXTSTEP.nib
+    │   │       ├── [-rw-r--r--   598 Nov 15  1994]  data.classes
+    │   │       └── [-rw-r--r--  2.5K Nov 15  1994]  data.nib
+    │   ├── [-rw-r--r--   15K Nov 15  1994]  icon150.tiff
+    │   └── [-rw-r--r--  3.2K Nov 15  1994]  icon48.tiff
+    └── [drwxr-xr-x  4.0K Nov 15  1994]  2048-NeXTSTEP.pkg
+        ├── [-rw-r--r--   16K Nov 15  1994]  2048-NeXTSTEP.bom
+        ├── [-r--r--r--   798 Nov 15  1994]  2048-NeXTSTEP.info
+        ├── [-rw-r--r--    49 Nov 15  1994]  2048-NeXTSTEP.sizes
+        ├── [-r--r--r--  169K Nov 15  1994]  2048-NeXTSTEP.tar.Z
+        └── [-r--r--r--  3.2K Nov 15  1994]  2048-NeXTSTEP.tiff
 
-ls -lh MotoMAGX/
-total 2.9M
--rw-rw-r--. 1 exl exl  15K Jun 29 02:58 2048_MotoMAGX_ZN5_v1.0_28-Jul-2020.mgx
--rw-rw-r--. 1 exl exl 2.9M Jun 27 05:01 2048_MotoMAGX_ZN5.webm
-
-ls -lh NeXTSTEP/*
-NeXTSTEP/2048-NeXTSTEP.app:
-total 276K
--rwxr-xr-x. 1 exl exl 200K Nov 15  1994 2048-NeXTSTEP
--rw-r--r--. 1 exl exl  50K Nov 15  1994 avatar.tiff
-drwxr-xr-x. 4 exl exl 4.0K Nov 15  1994 English.lproj
--rw-r--r--. 1 exl exl  16K Nov 15  1994 icon150.tiff
--rw-r--r--. 1 exl exl 3.2K Nov 15  1994 icon48.tiff
-NeXTSTEP/2048-NeXTSTEP.pkg:
-total 200K
--rw-r--r--. 1 exl exl  16K Nov 15  1994 2048-NeXTSTEP.bom
--r--r--r--. 1 exl exl  798 Nov 15  1994 2048-NeXTSTEP.info
--rw-r--r--. 1 exl exl   49 Nov 15  1994 2048-NeXTSTEP.sizes
--r--r--r--. 1 exl exl 169K Nov 15  1994 2048-NeXTSTEP.tar.Z
--r--r--r--. 1 exl exl 3.2K Nov 15  1994 2048-NeXTSTEP.tiff
-
-ls -lhR MacOS/
-MacOS/:
-total 16K
-drwxr-xr-x. 3 exl exl 4.0K Oct 25 05:04 10.0
-drwxr-xr-x. 3 exl exl 4.0K Oct 25 06:54 10.13
-drwxr-xr-x. 3 exl exl 4.0K Oct 25 06:53 10.6
-drwxr-xr-x. 3 exl exl 4.0K Oct 25 06:55 10.8
-MacOS/10.0:
-total 4.0K
-drwxr-xr-x. 3 exl exl 4.0K Oct 25 04:14 2048-Cocoa.app
-MacOS/10.0/2048-Cocoa.app:
-total 4.0K
-drwxr-xr-x. 4 exl exl 4.0K Oct 25 04:14 Contents
-MacOS/10.0/2048-Cocoa.app/Contents:
-total 20K
--rw-r--r--. 1 exl exl  760 Oct 25 04:13 Info.plist
-drwxr-xr-x. 2 exl exl 4.0K Oct 25 04:14 MacOS
--rw-r--r--. 1 exl exl  275 Oct 25 04:13 pbdevelopment.plist
--rw-r--r--. 1 exl exl    8 Oct 25 04:13 PkgInfo
-drwxr-xr-x. 3 exl exl 4.0K Oct 25 04:13 Resources
-MacOS/10.0/2048-Cocoa.app/Contents/MacOS:
-total 40K
--rwxr-xr-x. 1 exl exl 37K Oct 25 04:14 2048-Cocoa
-MacOS/10.0/2048-Cocoa.app/Contents/Resources:
-total 60K
--rw-r--r--. 1 exl exl  49K Oct 25 04:13 2048-Cocoa.icns
-drwxr-xr-x. 3 exl exl 4.0K Oct 25 04:13 English.lproj
--rw-r--r--. 1 exl exl 1.8K Oct 25 04:13 ReadMe.md
-MacOS/10.0/2048-Cocoa.app/Contents/Resources/English.lproj:
-total 12K
-drwxr-xr-x. 2 exl exl 4.0K Oct 25 04:13 2048-Cocoa.nib
--rw-r--r--. 1 exl exl  530 Oct 25 04:13 InfoPlist.strings
--rw-r--r--. 1 exl exl  413 Oct 25 04:13 Localizable.strings
-MacOS/10.0/2048-Cocoa.app/Contents/Resources/English.lproj/2048-Cocoa.nib:
-total 12K
--rw-r--r--. 1 exl exl  688 Oct 25 04:13 classes.nib
--rw-r--r--. 1 exl exl  500 Oct 25 04:13 info.nib
--rw-r--r--. 1 exl exl 3.0K Oct 25 04:13 objects.nib
-MacOS/10.13:
-total 4.0K
-drwxr-xr-x. 3 exl exl 4.0K Oct 25 06:30 2048-Cocoa.app
-MacOS/10.13/2048-Cocoa.app:
-total 4.0K
-drwxr-xr-x. 5 exl exl 4.0K Oct 25 06:29 Contents
-MacOS/10.13/2048-Cocoa.app/Contents:
-total 20K
-drwxr-xr-x. 2 exl exl 4.0K Oct 25 06:54 _CodeSignature
--rw-r--r--. 1 exl exl 1.7K Oct 25 06:29 Info.plist
-drwxr-xr-x. 2 exl exl 4.0K Oct 25 06:54 MacOS
--rw-r--r--. 1 exl exl    8 Oct 25 06:29 PkgInfo
-drwxr-xr-x. 4 exl exl 4.0K Oct 25 06:29 Resources
-MacOS/10.13/2048-Cocoa.app/Contents/_CodeSignature:
-total 4.0K
--rw-r--r--. 1 exl exl 3.9K Oct 25 06:29 CodeResources
-MacOS/10.13/2048-Cocoa.app/Contents/MacOS:
-total 44K
--rwxr-xr-x. 1 exl exl 42K Oct 25 06:30 2048-Cocoa
-MacOS/10.13/2048-Cocoa.app/Contents/Resources:
-total 1.2M
--rw-r--r--. 1 exl exl 628K Oct 25 06:29 AppIcon.icns
--rw-r--r--. 1 exl exl 509K Oct 25 06:29 Assets.car
-drwxr-xr-x. 2 exl exl 4.0K Oct 25 06:54 Base.lproj
-drwxr-xr-x. 2 exl exl 4.0K Oct 25 06:54 English.lproj
--rw-r--r--. 1 exl exl 1.7K Oct 25 06:29 ReadMe.md
-MacOS/10.13/2048-Cocoa.app/Contents/Resources/Base.lproj:
-total 12K
--rw-r--r--. 1 exl exl 8.9K Oct 25 06:29 2048-Cocoa.nib
-MacOS/10.13/2048-Cocoa.app/Contents/Resources/English.lproj:
-total 4.0K
--rw-r--r--. 1 exl exl 828 Oct 25 06:29 Localizable.strings
-MacOS/10.6:
-total 4.0K
-drwxr-xr-x. 3 exl exl 4.0K Oct 25 05:26 2048-Cocoa.app
-MacOS/10.6/2048-Cocoa.app:
-total 4.0K
-drwxr-xr-x. 4 exl exl 4.0K Oct 25 05:26 Contents
-MacOS/10.6/2048-Cocoa.app/Contents:
-total 16K
--rw-r--r--. 1 exl exl 1.6K Oct 25 05:26 Info.plist
-drwxr-xr-x. 2 exl exl 4.0K Oct 25 06:53 MacOS
--rw-r--r--. 1 exl exl    8 Oct 25 05:26 PkgInfo
-drwxr-xr-x. 3 exl exl 4.0K Oct 25 05:26 Resources
-MacOS/10.6/2048-Cocoa.app/Contents/MacOS:
-total 56K
--rwxr-xr-x. 1 exl exl 54K Oct 25 05:26 2048-Cocoa
-MacOS/10.6/2048-Cocoa.app/Contents/Resources:
-total 148K
--rw-r--r--. 1 exl exl 140K Oct 25 05:26 2048-Cocoa-modern.icns
-drwxr-xr-x. 2 exl exl 4.0K Oct 25 06:53 en.lproj
--rw-r--r--. 1 exl exl 1.3K Oct 25 05:26 ReadMe.md
-MacOS/10.6/2048-Cocoa.app/Contents/Resources/en.lproj:
-total 20K
--rw-r--r--. 1 exl exl 8.5K Oct 25 05:26 2048-Cocoa.nib
--rw-r--r--. 1 exl exl 1.1K Oct 25 05:26 Credits.rtf
--rw-r--r--. 1 exl exl  828 Oct 25 05:26 Localizable.strings
-MacOS/10.8:
-total 4.0K
-drwxr-xr-x. 3 exl exl 4.0K Oct 25 06:00 2048-Cocoa.app
-MacOS/10.8/2048-Cocoa.app:
-total 4.0K
-drwxr-xr-x. 5 exl exl 4.0K Oct 25 06:00 Contents
-MacOS/10.8/2048-Cocoa.app/Contents:
-total 20K
-drwxr-xr-x. 2 exl exl 4.0K Oct 25 06:55 _CodeSignature
--rw-r--r--. 1 exl exl 1.6K Oct 25 06:00 Info.plist
-drwxr-xr-x. 2 exl exl 4.0K Oct 25 06:55 MacOS
--rw-r--r--. 1 exl exl    8 Oct 25 06:00 PkgInfo
-drwxr-xr-x. 3 exl exl 4.0K Oct 25 06:01 Resources
-MacOS/10.8/2048-Cocoa.app/Contents/_CodeSignature:
-total 4.0K
--rw-r--r--. 1 exl exl 1.4K Oct 25 06:00 CodeResources
-MacOS/10.8/2048-Cocoa.app/Contents/MacOS:
-total 40K
--rwxr-xr-x. 1 exl exl 39K Oct 25 06:00 2048-Cocoa
-MacOS/10.8/2048-Cocoa.app/Contents/Resources:
-total 636K
--rw-r--r--. 1 exl exl 628K Oct 25 06:00 AppIcon.icns
-drwxr-xr-x. 2 exl exl 4.0K Oct 25 06:55 en.lproj
--rw-r--r--. 1 exl exl 1.3K Oct 25 06:00 ReadMe.md
-MacOS/10.8/2048-Cocoa.app/Contents/Resources/en.lproj:
-total 16K
--rw-r--r--. 1 exl exl 7.4K Oct 25 06:00 2048-Cocoa.nib
--rw-r--r--. 1 exl exl 1.1K Oct 25 06:00 Credits.rtf
--rw-r--r--. 1 exl exl  828 Oct 25 06:00 Localizable.strings
+44 directories, 100 files
 ```
 
 ### File Types
@@ -190,6 +166,7 @@ file 2048-*
 2048-Gtk1:          ELF 64-bit LSB executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, for GNU/Linux 2.6.32, BuildID[sha1]=7184adff443baf648bb1a08061fc2003b8f8265a, stripped
 2048-Gtk2:          ELF 64-bit LSB executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, for GNU/Linux 2.6.32, BuildID[sha1]=8664c4f62a320b321831474b86d84743d58a1378, stripped
 2048-Gtk3:          ELF 64-bit LSB executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, for GNU/Linux 2.6.32, BuildID[sha1]=465a678a0e5a28faf80a3a9149acc3d3408f29da, stripped
+2048-JUCE:          ELF 64-bit LSB executable, x86-64, version 1 (GNU/Linux), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, BuildID[sha1]=4d1fa100e2f9bd25732ec8f17f4533fe35417614, for GNU/Linux 3.2.0, stripped
 2048-Motif:         ELF 64-bit LSB executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, for GNU/Linux 2.6.32, BuildID[sha1]=ee11f72f2c732b4f2b348bf4d772ac20647d3dd3, stripped
 2048-MotoMAGX_E8:   ELF 32-bit LSB executable, ARM, EABI4 version 1 (SYSV), dynamically linked, interpreter /lib/ld-linux.so.3, for GNU/Linux 2.4.17, stripped
 2048-MotoMAGX_EM30: ELF 32-bit LSB executable, ARM, EABI4 version 1 (SYSV), dynamically linked, interpreter /lib/ld-linux.so.3, for GNU/Linux 2.4.17, stripped
@@ -233,7 +210,7 @@ NeXTSTEP/2048-NeXTSTEP.pkg/2048-NeXTSTEP.tiff: TIFF image data, little-endian, d
 find MacOS/ -type f -exec file {} \;
 MacOS/10.6/2048-Cocoa.app/Contents/Info.plist: XML 1.0 document, UTF-8 Unicode text
 MacOS/10.6/2048-Cocoa.app/Contents/Resources/en.lproj/2048-Cocoa.nib: Apple binary property list
-MacOS/10.6/2048-Cocoa.app/Contents/Resources/en.lproj/Credits.rtf: Rich Text Format data, version 1, ANSI
+MacOS/10.6/2048-Cocoa.app/Contents/Resources/en.lproj/Credits.rtf: Rich Text Format data, version 1, ANSI, code page 1252
 MacOS/10.6/2048-Cocoa.app/Contents/Resources/en.lproj/Localizable.strings: Little-endian UTF-16 Unicode text
 MacOS/10.6/2048-Cocoa.app/Contents/Resources/ReadMe.md: ASCII text
 MacOS/10.6/2048-Cocoa.app/Contents/Resources/2048-Cocoa-modern.icns: Mac OS X icon, 142338 bytes, "is32" type
@@ -248,10 +225,34 @@ MacOS/10.13/2048-Cocoa.app/Contents/Resources/Assets.car: Mac OS X bill of mater
 MacOS/10.13/2048-Cocoa.app/Contents/PkgInfo: ASCII text, with no line terminators
 MacOS/10.13/2048-Cocoa.app/Contents/_CodeSignature/CodeResources: XML 1.0 document, ASCII text
 MacOS/10.13/2048-Cocoa.app/Contents/MacOS/2048-Cocoa: Mach-O 64-bit x86_64 executable, flags:<NOUNDEFS|DYLDLINK|TWOLEVEL|PIE>
+MacOS/10.13/2048-Swift.app/Contents/Info.plist: XML 1.0 document, UTF-8 Unicode text
+MacOS/10.13/2048-Swift.app/Contents/Resources/AppIcon.icns: Mac OS X icon, 642518 bytes, "TOC " type
+MacOS/10.13/2048-Swift.app/Contents/Resources/Base.lproj/2048-Swift.nib: Apple binary property list
+MacOS/10.13/2048-Swift.app/Contents/Resources/ReadMe.md: ASCII text
+MacOS/10.13/2048-Swift.app/Contents/Resources/English.lproj/Localizable.strings: Little-endian UTF-16 Unicode text
+MacOS/10.13/2048-Swift.app/Contents/Resources/Assets.car: Mac OS X bill of materials (BOM) file
+MacOS/10.13/2048-Swift.app/Contents/PkgInfo: ASCII text, with no line terminators
+MacOS/10.13/2048-Swift.app/Contents/_CodeSignature/CodeResources: XML 1.0 document, ASCII text
+MacOS/10.13/2048-Swift.app/Contents/MacOS/2048-Swift: Mach-O 64-bit x86_64 executable, flags:<NOUNDEFS|DYLDLINK|TWOLEVEL|PIE>
+MacOS/10.13/2048-Swift.app/Contents/Frameworks/libswiftIOKit.dylib: Mach-O 64-bit x86_64 dynamically linked shared library, flags:<NOUNDEFS|DYLDLINK|TWOLEVEL|NO_REEXPORTED_DYLIBS|APP_EXTENSION_SAFE>
+MacOS/10.13/2048-Swift.app/Contents/Frameworks/libswiftObjectiveC.dylib: Mach-O 64-bit x86_64 dynamically linked shared library, flags:<NOUNDEFS|DYLDLINK|TWOLEVEL|NO_REEXPORTED_DYLIBS|APP_EXTENSION_SAFE>
+MacOS/10.13/2048-Swift.app/Contents/Frameworks/libswiftDispatch.dylib: Mach-O 64-bit x86_64 dynamically linked shared library, flags:<NOUNDEFS|DYLDLINK|TWOLEVEL|NO_REEXPORTED_DYLIBS|APP_EXTENSION_SAFE>
+MacOS/10.13/2048-Swift.app/Contents/Frameworks/libswiftCoreData.dylib: Mach-O 64-bit x86_64 dynamically linked shared library, flags:<NOUNDEFS|DYLDLINK|TWOLEVEL|NO_REEXPORTED_DYLIBS|APP_EXTENSION_SAFE>
+MacOS/10.13/2048-Swift.app/Contents/Frameworks/libswiftDarwin.dylib: Mach-O 64-bit x86_64 dynamically linked shared library, flags:<NOUNDEFS|DYLDLINK|TWOLEVEL|NO_REEXPORTED_DYLIBS|APP_EXTENSION_SAFE>
+MacOS/10.13/2048-Swift.app/Contents/Frameworks/libswiftCoreFoundation.dylib: Mach-O 64-bit x86_64 dynamically linked shared library, flags:<NOUNDEFS|DYLDLINK|TWOLEVEL|NO_REEXPORTED_DYLIBS|APP_EXTENSION_SAFE>
+MacOS/10.13/2048-Swift.app/Contents/Frameworks/libswiftCoreImage.dylib: Mach-O 64-bit x86_64 dynamically linked shared library, flags:<NOUNDEFS|DYLDLINK|TWOLEVEL|NO_REEXPORTED_DYLIBS|APP_EXTENSION_SAFE>
+MacOS/10.13/2048-Swift.app/Contents/Frameworks/libswiftCore.dylib: Mach-O 64-bit x86_64 dynamically linked shared library, flags:<NOUNDEFS|DYLDLINK|TWOLEVEL|BINDS_TO_WEAK|NO_REEXPORTED_DYLIBS|HAS_TLV_DESCRIPTORS|APP_EXTENSION_SAFE>
+MacOS/10.13/2048-Swift.app/Contents/Frameworks/libswiftMetal.dylib: Mach-O 64-bit x86_64 dynamically linked shared library, flags:<NOUNDEFS|DYLDLINK|TWOLEVEL|NO_REEXPORTED_DYLIBS|APP_EXTENSION_SAFE>
+MacOS/10.13/2048-Swift.app/Contents/Frameworks/libswiftXPC.dylib: Mach-O 64-bit x86_64 dynamically linked shared library, flags:<NOUNDEFS|DYLDLINK|TWOLEVEL|NO_REEXPORTED_DYLIBS|APP_EXTENSION_SAFE>
+MacOS/10.13/2048-Swift.app/Contents/Frameworks/libswiftos.dylib: Mach-O 64-bit x86_64 dynamically linked shared library, flags:<NOUNDEFS|DYLDLINK|TWOLEVEL|NO_REEXPORTED_DYLIBS|APP_EXTENSION_SAFE>
+MacOS/10.13/2048-Swift.app/Contents/Frameworks/libswiftFoundation.dylib: Mach-O 64-bit x86_64 dynamically linked shared library, flags:<NOUNDEFS|DYLDLINK|TWOLEVEL|NO_REEXPORTED_DYLIBS|APP_EXTENSION_SAFE>
+MacOS/10.13/2048-Swift.app/Contents/Frameworks/libswiftCoreGraphics.dylib: Mach-O 64-bit x86_64 dynamically linked shared library, flags:<NOUNDEFS|DYLDLINK|TWOLEVEL|NO_REEXPORTED_DYLIBS|APP_EXTENSION_SAFE>
+MacOS/10.13/2048-Swift.app/Contents/Frameworks/libswiftQuartzCore.dylib: Mach-O 64-bit x86_64 dynamically linked shared library, flags:<NOUNDEFS|DYLDLINK|TWOLEVEL|NO_REEXPORTED_DYLIBS|APP_EXTENSION_SAFE>
+MacOS/10.13/2048-Swift.app/Contents/Frameworks/libswiftAppKit.dylib: Mach-O 64-bit x86_64 dynamically linked shared library, flags:<NOUNDEFS|DYLDLINK|TWOLEVEL|NO_REEXPORTED_DYLIBS|APP_EXTENSION_SAFE>
 MacOS/10.8/2048-Cocoa.app/Contents/Info.plist: XML 1.0 document, UTF-8 Unicode text
 MacOS/10.8/2048-Cocoa.app/Contents/Resources/AppIcon.icns: Mac OS X icon, 642414 bytes, "TOC " type
 MacOS/10.8/2048-Cocoa.app/Contents/Resources/en.lproj/2048-Cocoa.nib: Apple binary property list
-MacOS/10.8/2048-Cocoa.app/Contents/Resources/en.lproj/Credits.rtf: Rich Text Format data, version 1, ANSI
+MacOS/10.8/2048-Cocoa.app/Contents/Resources/en.lproj/Credits.rtf: Rich Text Format data, version 1, ANSI, code page 1252
 MacOS/10.8/2048-Cocoa.app/Contents/Resources/en.lproj/Localizable.strings: Little-endian UTF-16 Unicode text
 MacOS/10.8/2048-Cocoa.app/Contents/Resources/ReadMe.md: ASCII text
 MacOS/10.8/2048-Cocoa.app/Contents/PkgInfo: ASCII text, with no line terminators
@@ -259,7 +260,7 @@ MacOS/10.8/2048-Cocoa.app/Contents/_CodeSignature/CodeResources: XML 1.0 documen
 MacOS/10.8/2048-Cocoa.app/Contents/MacOS/2048-Cocoa: Mach-O 64-bit x86_64 executable, flags:<NOUNDEFS|DYLDLINK|TWOLEVEL>
 MacOS/10.0/2048-Cocoa.app/Contents/pbdevelopment.plist: XML 1.0 document, ASCII text
 MacOS/10.0/2048-Cocoa.app/Contents/Info.plist: XML 1.0 document, ASCII text
-MacOS/10.0/2048-Cocoa.app/Contents/Resources/ReadMe.md: ReStructuredText file, ASCII text
+MacOS/10.0/2048-Cocoa.app/Contents/Resources/ReadMe.md: ASCII text
 MacOS/10.0/2048-Cocoa.app/Contents/Resources/English.lproj/InfoPlist.strings: Big-endian UTF-16 Unicode text
 MacOS/10.0/2048-Cocoa.app/Contents/Resources/English.lproj/2048-Cocoa.nib/info.nib: XML 1.0 document, ASCII text
 MacOS/10.0/2048-Cocoa.app/Contents/Resources/English.lproj/2048-Cocoa.nib/classes.nib: ASCII text
