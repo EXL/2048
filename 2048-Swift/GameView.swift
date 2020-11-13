@@ -94,7 +94,7 @@ class GameView: NSView {
 			]
 			getColor(aRgb: COLOR_OVERLAY, aAlpha: 0.5 as CGFloat).set()
 			bounds.fill(using: NSCompositingOperation.sourceOver)
-			let strSize = strScore.size(withAttributes: strAttributes)
+			let strSize = strCenter.size(withAttributes: strAttributes)
 			let strCenterPoint = NSMakePoint(
 				CGFloat(Int32(bounds.size.width) / 2 - Int32(strSize.width) / 2),
 				CGFloat(Int32(bounds.size.height) / 2 - Int32(strSize.height) / 2)
