@@ -22,18 +22,30 @@ class GameController: NSObject, NSApplicationDelegate {
 			UserDefaults.standard.set(p_board![Int(i)], forKey: String(format: "saveBoard_%d", i))
 		}
 		UserDefaults.standard.set(e_score, forKey: "saveScore")
-		UserDefaults.standard.set((e_win as NSNumber).boolValue, forKey: "saveWin")
-		UserDefaults.standard.set((e_lose as NSNumber).boolValue, forKey: "saveLose")
+		UserDefaults.standard.set(e_win, forKey: "saveWin")
+		UserDefaults.standard.set(e_lose, forKey: "saveLose")
 		return (UserDefaults.standard.synchronize()) ? strState : ""
 	}
 
-	// TODO: Load static func.
 	static func loadState() -> String {
-		let formatter = DateFormatter()
-		formatter.dateStyle = .long
-		formatter.timeStyle = .long
-		let strState = String(format: "GMStateFMT".localized, formatter.string(from: Date()))
-		return strState
+		if let strState = UserDefaults.standard.object(forKey: "saveDate") as? String {
+			for i in 0..<BOARD_SIZE {
+				if let value = UserDefaults.standard.object(forKey: String(format: "saveBoard_%d", i)) as? Int32 {
+					p_board![Int(i)] = value
+				}
+			}
+			if let score = UserDefaults.standard.object(forKey: "saveScore") as? Int32 {
+				e_score = score
+			}
+			if let win = UserDefaults.standard.object(forKey: "saveWin") as? Int32 {
+				e_win = win
+			}
+			if let lose = UserDefaults.standard.object(forKey: "saveLose") as? Int32 {
+				e_lose = lose
+			}
+			return strState
+		}
+		return ""
 	}
 
 	func applicationDidFinishLaunching(_ notification: Notification) {
