@@ -1,7 +1,7 @@
 2048-Swift
 ==========
 
-![2048-Swift macOS 10.13 Screenshot](../../image/2048-Swift-Screenshot-10_13.png)
+![2048-Swift macOS 10.13 Screenshot](../image/2048-Swift-Screenshot-10_13.png)
 
 ## Building application via Xcode 10
 
@@ -40,9 +40,9 @@ script:
 
 Xcode 10:
 
-![Xcode 10 macOS 10.13 Code Editor Screenshot](../../image/Xcode-macOS-10_13-Screenshot1.png)
+![Xcode 10 macOS 10.13 Code Editor Screenshot](../image/Xcode-macOS-10_13-Screenshot1.png)
 
-![Xcode 10 macOS 10.13 Interface Builder Screenshot](../../image/Xcode-macOS-10_13-Screenshot2.png)
+![Xcode 10 macOS 10.13 Interface Builder Screenshot](../image/Xcode-macOS-10_13-Screenshot2.png)
 
 ## Versions
 
