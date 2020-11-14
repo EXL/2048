@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/">
+        <file>2048-QtQuick.qml</file>
+    </qresource>
+</RCC>
