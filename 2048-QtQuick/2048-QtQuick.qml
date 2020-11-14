@@ -13,6 +13,7 @@ Window {
 	minimumWidth: w; minimumHeight: h
 	visible: true
 	title: qsTr("2048-QtQuick")
+	color: gameEngine.boardColor()
 
 	ColumnLayout {
 		anchors.fill: parent
@@ -25,45 +26,60 @@ Window {
 			model: gameBoard
 
 			delegate: Item {
-				width: grid.cellWidth
-				height: grid.cellHeight
+				width: grid.cellWidth; height: grid.cellHeight
+
 				Rectangle {
-					anchors.fill: parent
-					anchors.margins: tileMargin / 2
+					anchors.fill: parent; anchors.margins: tileMargin / 2
 					radius: 10
-					color: gameEngine.rectColor(modelData)
+					color: gameEngine.backgroundColor(modelData)
 
 					Text {
 						anchors.centerIn: parent
-						text: (modelData > 0) ? modelData : ""
-						color: gameEngine.textColor(modelData)
-						font.bold: true
-						font.pointSize: 12
+						text: modelData > 0 ? modelData : null
+						color: gameEngine.foregroundColor(modelData)
+						font.bold: true; font.pointSize: modelData < 100 ? 24 : modelData < 1000 ? 18 : 14
 					}
 				}
 			}
 		}
 
 		RowLayout {
-			Rectangle {
-				width: tileSize; height: tileSize
-				color: "red"
+			Layout.margins: 10
+
+			Text {
+				text: qsTr("ESC to Restart!")
+				font.pointSize: 16
+				color: gameEngine.textColor()
 			}
-			Item {
-				Layout.fillWidth: true
-			}
-			Rectangle {
-				width: tileSize; height: tileSize
-				color: "blue"
+
+			Item { Layout.fillWidth: true }
+
+			Text {
+				text: qsTr("Score: ") + gameScore
+				font.pointSize: 16
+				color: gameEngine.textColor()
 			}
 		}
 	}
 
 	Item {
-		focus: true
-		Keys.onPressed: {
-			gameEngine.keyEvent(event.key)
-			gameEngine.updateGameBoard()
+		Rectangle {
+			anchors.fill: parent
+			visible: gameWin || gameLose
+			color: gameEngine.overlayColor(); opacity: 0.5
 		}
+
+		Text {
+			anchors.centerIn: parent
+			visible: gameWin || gameLose
+			text: gameWin ? qsTr("You won!") : qsTr("Game Over!")
+			color: gameEngine.finalColor()
+			font.bold: true; font.pointSize: 24
+		}
+	}
+
+	Item {
+		focus: true
+		Keys.onPressed:	gameEngine.keyEvent(event.key)
 	}
 }
