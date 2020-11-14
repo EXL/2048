@@ -63,15 +63,16 @@ Window {
 	}
 
 	Item {
+		anchors.fill: parent
+		visible: gameWin || gameLose
+
 		Rectangle {
 			anchors.fill: parent
-			visible: gameWin || gameLose
 			color: gameEngine.overlayColor(); opacity: 0.5
 		}
 
 		Text {
 			anchors.centerIn: parent
-			visible: gameWin || gameLose
 			text: gameWin ? qsTr("You won!") : qsTr("Game Over!")
 			color: gameEngine.finalColor()
 			font.bold: true; font.pointSize: 24
