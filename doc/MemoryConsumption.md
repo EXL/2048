@@ -11,6 +11,31 @@ Information were obtained:
 
 *Note: `$PID` is Process Identifier of the executable file.*
 
+### 2048-QtQuick
+
+GNOME System Monitor: 21.6 MiB
+
+```
+cat /proc/`pidof 2048-QtQuick`/status
+...
+VmPeak:  1344916 kB
+VmSize:  1280392 kB
+VmLck:         0 kB
+VmPin:         0 kB
+VmHWM:     77492 kB
+VmRSS:     76776 kB
+RssAnon:   22152 kB
+RssFile:   54108 kB
+RssShmem:    516 kB
+VmData:   145240 kB
+VmStk:       136 kB
+VmExe:        20 kB
+VmLib:     52648 kB
+VmPTE:       408 kB
+VmSwap:        0 kB
+HugetlbPages:  0 kB
+```
+
 ### 2048-Qt5
 
 GNOME System Monitor: 9.8 MiB

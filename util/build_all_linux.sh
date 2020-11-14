@@ -10,6 +10,7 @@ CMakeLinuxPorts="
 	2048-Qt3
 	2048-Qt4
 	2048-Qt5
+	2048-QtQuick
 	2048-Xaw
 	2048-Xcb
 	2048-Xlib

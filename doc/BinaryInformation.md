@@ -10,6 +10,7 @@ Dependencies were obtained:
 ### Sizes
 
 ```
+tree -phD 2048-Release/
 2048-Release/
 ├── [-rwxrwxr-x   14K Jun 30 07:18]  2048-Gtk1
 ├── [-rwxrwxr-x   14K Jun 30 07:18]  2048-Gtk2
@@ -31,6 +32,7 @@ Dependencies were obtained:
 ├── [-rwxrwxr-x   31K Jun 30 07:19]  2048-Qt3
 ├── [-rwxrwxr-x   23K Jun 30 07:19]  2048-Qt4
 ├── [-rwxrwxr-x   23K Jun 30 07:19]  2048-Qt5
+├── [-rwxrwxr-x   23K Nov 14 21:38]  2048-QtQuick
 ├── [-rwxrwxr-x  759K Sep 27 09:18]  2048-Serenity
 ├── [-rwxrwxr-x   14K Jun 30 07:20]  2048-Xaw
 ├── [-rwxrwxr-x   14K Jun 30 07:20]  2048-Xcb
@@ -156,7 +158,7 @@ Dependencies were obtained:
         ├── [-r--r--r--  169K Nov 15  1994]  2048-NeXTSTEP.tar.Z
         └── [-r--r--r--  3.2K Nov 15  1994]  2048-NeXTSTEP.tiff
 
-44 directories, 100 files
+44 directories, 101 files
 ```
 
 ### File Types
@@ -183,6 +185,7 @@ file 2048-*
 2048-Qt3:           ELF 64-bit LSB executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, for GNU/Linux 2.6.32, BuildID[sha1]=7a5c4b4aa286d5ecde2f183a0a8ba1431eb05f9d, stripped
 2048-Qt4:           ELF 64-bit LSB executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, for GNU/Linux 2.6.32, BuildID[sha1]=fd454656289bc8f07a1740f9fca73e3e6b303d62, stripped
 2048-Qt5:           ELF 64-bit LSB executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, for GNU/Linux 2.6.32, BuildID[sha1]=f63cb42651afdcf8dd866d2d9ed5cea08ef8bfb7, stripped
+2048-QtQuick:       ELF 64-bit LSB executable, x86-64, version 1 (GNU/Linux), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, for GNU/Linux 2.6.32, BuildID[sha1]=d32c249c8e7321857431a0ccd8c9190f3b7487c0, stripped
 2048-Serenity:      ELF 32-bit LSB executable, Intel 80386, version 1 (SYSV), statically linked, stripped
 2048-Xaw:           ELF 64-bit LSB executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, for GNU/Linux 2.6.32, BuildID[sha1]=566076a8373ccfa7cf64ff73a4b4385b18bce7a7, stripped
 2048-Xcb:           ELF 64-bit LSB executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, for GNU/Linux 2.6.32, BuildID[sha1]=1f45dde2f5c9aac70b8bcad872f45d8f962451ea, stripped
@@ -269,6 +272,67 @@ MacOS/10.0/2048-Cocoa.app/Contents/Resources/English.lproj/Localizable.strings: 
 MacOS/10.0/2048-Cocoa.app/Contents/Resources/2048-Cocoa.icns: Mac OS X icon, 49253 bytes, "ics#" type
 MacOS/10.0/2048-Cocoa.app/Contents/PkgInfo: ASCII text, with no line terminators
 MacOS/10.0/2048-Cocoa.app/Contents/MacOS/2048-Cocoa: Mach-O ppc executable, flags:<NOUNDEFS|DYLDLINK|PREBOUND>
+```
+
+### 2048-QtQuick
+
+```
+ldd 2048-QtQuick
+	linux-vdso.so.1 (0x00007ffc08370000)
+	libQt5Quick.so.5 => /lib64/libQt5Quick.so.5 (0x00007f2014465000)
+	libQt5Qml.so.5 => /lib64/libQt5Qml.so.5 (0x00007f2014072000)
+	libQt5Network.so.5 => /lib64/libQt5Network.so.5 (0x00007f2013eef000)
+	libQt5Gui.so.5 => /lib64/libQt5Gui.so.5 (0x00007f2013928000)
+	libQt5Core.so.5 => /lib64/libQt5Core.so.5 (0x00007f2013408000)
+	libstdc++.so.6 => /lib64/libstdc++.so.6 (0x00007f2013220000)
+	libm.so.6 => /lib64/libm.so.6 (0x00007f20130d8000)
+	libgcc_s.so.1 => /lib64/libgcc_s.so.1 (0x00007f20130bd000)
+	libc.so.6 => /lib64/libc.so.6 (0x00007f2012ef1000)
+	libQt5QmlModels.so.5 => /lib64/libQt5QmlModels.so.5 (0x00007f2012e72000)
+	libpthread.so.0 => /lib64/libpthread.so.0 (0x00007f2012e50000)
+	libz.so.1 => /lib64/libz.so.1 (0x00007f2012e36000)
+	libdl.so.2 => /lib64/libdl.so.2 (0x00007f2012e2d000)
+	libgssapi_krb5.so.2 => /lib64/libgssapi_krb5.so.2 (0x00007f2012dd9000)
+	libssl.so.1.1 => /lib64/libssl.so.1.1 (0x00007f2012d3d000)
+	libcrypto.so.1.1 => /lib64/libcrypto.so.1.1 (0x00007f2012a51000)
+	libGL.so.1 => /lib64/libGL.so.1 (0x00007f20129ca000)
+	libpng16.so.16 => /lib64/libpng16.so.16 (0x00007f2012991000)
+	libharfbuzz.so.0 => /lib64/libharfbuzz.so.0 (0x00007f20128c1000)
+	libsystemd.so.0 => /lib64/libsystemd.so.0 (0x00007f2012805000)
+	libicui18n.so.67 => /lib64/libicui18n.so.67 (0x00007f20124fc000)
+	libicuuc.so.67 => /lib64/libicuuc.so.67 (0x00007f2012311000)
+	libpcre2-16.so.0 => /lib64/libpcre2-16.so.0 (0x00007f2012288000)
+	libglib-2.0.so.0 => /lib64/libglib-2.0.so.0 (0x00007f2012159000)
+	/lib64/ld-linux-x86-64.so.2 (0x00007f20149ae000)
+	libkrb5.so.3 => /lib64/libkrb5.so.3 (0x00007f2012081000)
+	libk5crypto.so.3 => /lib64/libk5crypto.so.3 (0x00007f2012069000)
+	libcom_err.so.2 => /lib64/libcom_err.so.2 (0x00007f2012063000)
+	libkrb5support.so.0 => /lib64/libkrb5support.so.0 (0x00007f2012052000)
+	libkeyutils.so.1 => /lib64/libkeyutils.so.1 (0x00007f201204b000)
+	libresolv.so.2 => /lib64/libresolv.so.2 (0x00007f2012031000)
+	libGLX.so.0 => /lib64/libGLX.so.0 (0x00007f2011ffd000)
+	libX11.so.6 => /lib64/libX11.so.6 (0x00007f2011eb6000)
+	libXext.so.6 => /lib64/libXext.so.6 (0x00007f2011ea1000)
+	libGLdispatch.so.0 => /lib64/libGLdispatch.so.0 (0x00007f2011de9000)
+	libfreetype.so.6 => /lib64/libfreetype.so.6 (0x00007f2011d26000)
+	libgraphite2.so.3 => /lib64/libgraphite2.so.3 (0x00007f2011d05000)
+	librt.so.1 => /lib64/librt.so.1 (0x00007f2011cf8000)
+	liblzma.so.5 => /lib64/liblzma.so.5 (0x00007f2011ccc000)
+	libzstd.so.1 => /lib64/libzstd.so.1 (0x00007f2011c16000)
+	liblz4.so.1 => /lib64/liblz4.so.1 (0x00007f2011bf8000)
+	libgcrypt.so.20 => /lib64/libgcrypt.so.20 (0x00007f2011ad4000)
+	libicudata.so.67 => /lib64/libicudata.so.67 (0x00007f200ffbb000)
+	libpcre.so.1 => /lib64/libpcre.so.1 (0x00007f200ff40000)
+	libselinux.so.1 => /lib64/libselinux.so.1 (0x00007f200ff13000)
+	libxcb.so.1 => /lib64/libxcb.so.1 (0x00007f200fee9000)
+	libbz2.so.1 => /lib64/libbz2.so.1 (0x00007f200fed6000)
+	libbrotlidec.so.1 => /lib64/libbrotlidec.so.1 (0x00007f200fec8000)
+	libgpg-error.so.0 => /lib64/libgpg-error.so.0 (0x00007f200fea5000)
+	libpcre2-8.so.0 => /lib64/libpcre2-8.so.0 (0x00007f200fe0f000)
+	libXau.so.6 => /lib64/libXau.so.6 (0x00007f200fe0a000)
+	libbrotlicommon.so.1 => /lib64/libbrotlicommon.so.1 (0x00007f200fde7000)
+ldd 2048-QtQuick | wc -l
+	53
 ```
 
 ### 2048-Qt5
