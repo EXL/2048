@@ -25,10 +25,12 @@ class GameEngineWrapper: public QObject {
 		context->setContextProperty("gameLose", e_lose);
 	}
 public:
-	GameEngineWrapper(QQmlContext *rootContext) {
-		context = rootContext;
+	GameEngineWrapper() {
 		e_init(Qt::Key_Escape, Qt::Key_Left, Qt::Key_Right, Qt::Key_Up, Qt::Key_Down);
 		gameBoard.reserve(BOARD_SIZE);
+	}
+	void setQmlContext(QQmlContext *qmlContext) {
+		context = qmlContext;
 		sync();
 	}
 public slots:
@@ -48,9 +50,11 @@ int main(int argc, char *argv[]) {
 	QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 	QGuiApplication app(argc, argv);
 
+	GameEngineWrapper wrapper;
 	QQmlApplicationEngine engine;
-	GameEngineWrapper wrapper(engine.rootContext());
-	engine.rootContext()->setContextProperty("gameEngine", &wrapper);
+	QQmlContext *context = engine.rootContext();
+	wrapper.setQmlContext(context);
+	context->setContextProperty("gameEngine", &wrapper);
 	QObject::connect(&engine, &QQmlApplicationEngine::objectCreated, &app, [url](QObject *obj, const QUrl &objUrl) {
 		if (!obj && url == objUrl)
 			QCoreApplication::exit(-1);
