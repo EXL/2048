@@ -12,7 +12,7 @@ sudo yum -y install epel-release
 
 sudo yum -y install @development
 sudo yum -y install cmake3
-sudo yum -y install qt5-qtbase-devel # Fedora package: qt5-devel
+sudo yum -y install qt5-qtbase-devel qt5-qtdeclarative-devel # Fedora package: qt5-devel
 
 cd ~/Projects/
 git clone https://github.com/EXL/2048

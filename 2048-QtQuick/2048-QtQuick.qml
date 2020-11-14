@@ -35,7 +35,7 @@ Window {
 
 					Text {
 						anchors.centerIn: parent
-						text: modelData > 0 ? modelData : null
+						text: modelData > 0 ? modelData : ""
 						color: gameEngine.foregroundColor(modelData)
 						font.bold: true; font.pointSize: modelData < 100 ? 24 : modelData < 1000 ? 18 : 14
 					}
