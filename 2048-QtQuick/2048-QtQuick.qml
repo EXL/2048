@@ -18,11 +18,11 @@ Window {
 
 		GridLayout {
 			Layout.alignment: Qt.AlignCenter
-			columns: 4 // FROM C
+			columns: gameEngine.lineSize()
 			columnSpacing: tileMargin; rowSpacing: tileMargin
 
 			Repeater {
-				model: 16 // FROM_C
+				model: gameEngine.boardSize()
 
 				Rectangle {
 					width: tileSize; height: tileSize
