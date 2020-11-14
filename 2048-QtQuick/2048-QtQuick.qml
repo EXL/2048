@@ -7,6 +7,7 @@ Window {
 	property int h: 400
 	property int tileSize: 64
 	property int tileMargin: 16
+	property int lineWidth: gameEngine.lineSize()
 
 	width: w; height: h
 	minimumWidth: w; minimumHeight: h
@@ -16,23 +17,26 @@ Window {
 	ColumnLayout {
 		anchors.fill: parent
 
-		GridLayout {
+		GridView {
+			id: grid
 			Layout.alignment: Qt.AlignCenter
-			columns: gameEngine.lineSize()
-			columnSpacing: tileMargin; rowSpacing: tileMargin
+			width: tileSize * lineWidth + tileMargin * lineWidth; height: tileSize * lineWidth + tileMargin * lineWidth
+			cellWidth: tileSize + tileMargin; cellHeight: tileSize + tileMargin
+			model: gameBoard
 
-			Repeater {
-				model: gameEngine.boardSize()
-
+			delegate: Item {
+				width: grid.cellWidth
+				height: grid.cellHeight
 				Rectangle {
-					width: tileSize; height: tileSize
+					anchors.fill: parent
+					anchors.margins: tileMargin / 2
 					radius: 10
-					color: "red"
+					color: gameEngine.rectColor(modelData)
 
 					Text {
 						anchors.centerIn: parent
-						text: qsTr("text")
-						color: "blue"
+						text: (modelData > 0) ? modelData : ""
+						color: gameEngine.textColor(modelData)
 						font.bold: true
 						font.pointSize: 12
 					}
@@ -52,6 +56,14 @@ Window {
 				width: tileSize; height: tileSize
 				color: "blue"
 			}
+		}
+	}
+
+	Item {
+		focus: true
+		Keys.onPressed: {
+			gameEngine.keyEvent(event.key)
+			gameEngine.updateGameBoard()
 		}
 	}
 }
