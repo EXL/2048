@@ -1,5 +1,5 @@
 // Based on:
-//     https://wiki.gnome.org/Projects/Vala/CairoSample
+//	https://wiki.gnome.org/Projects/Vala/CairoSample
 
 using Gtk;
 using Gdk;

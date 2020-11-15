@@ -46,7 +46,18 @@ function build_juce_port {
 	cd -
 }
 
+function build_vala_port {
+	mkdir -p 2048-Vala/build
+	cd 2048-Vala/build/
+	meson --buildtype release ..
+	ninja -v
+	strip -s 2048-Vala
+	mv 2048-Vala ../../build
+	cd -
+}
+
 function build_all {
+	build_vala_port
 	build_juce_port
 	for port in $CMakeLinuxPorts; do
 		build_port $port
