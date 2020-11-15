@@ -18,6 +18,10 @@ extern uint e_foreground(int value);
 extern uint e_background(int value);
 
 public class Vala2048 : Gtk.Window {
+	// TODO: Delete this.
+	private bool check = true;
+	private DrawingArea drawing_area;
+
 	public Vala2048() {
 		e_init(
 			(int) Gdk.Key.Escape,
@@ -27,25 +31,35 @@ public class Vala2048 : Gtk.Window {
 			(int) Gdk.Key.Down
 		);
 		title = "2048-Vala";
-		destroy.connect(Gtk.main_quit);
 		set_default_size(340, 400);
-		// TODO: Set minimal default size
-		create_widgets();
+		set_resizable(false);
+		create_widgets_and_connects();
 		// TODO: Remove this check
 		for (int i = 0; i < w_board_size; ++i)
 			stderr.printf("%d", w_board[i]);
 	}
 
-	private void create_widgets() {
-		var drawing_area = new DrawingArea();
+	private void create_widgets_and_connects() {
+		destroy.connect(Gtk.main_quit);
+
+		drawing_area = new DrawingArea();
 		drawing_area.draw.connect(on_draw);
 		add(drawing_area);
+
+		key_press_event.connect((event) => {
+			stderr.printf("%u\n", event.keyval);
+			check = false;
+			drawing_area.queue_draw();
+			return true;
+		});
 	}
 
 	private bool on_draw(Widget drawing_area, Context context) {
-		context.set_source_rgb(1, 0, 0);
+		if (check)
+			context.set_source_rgb(1, 0, 0);
+			else context.set_source_rgb(1, 0, 1);
 		context.paint();
-		return true;
+		return false;
 	}
 
 	static int main(string[] args) {
