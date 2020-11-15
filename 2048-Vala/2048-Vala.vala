@@ -1,27 +1,27 @@
-// Based on: https://wiki.gnome.org/Projects/Vala/CairoSample
+// Based on:
+//     https://wiki.gnome.org/Projects/Vala/CairoSample
 
 using Gtk;
 using Gdk;
 using Cairo;
 
+// Exports from C-code.
+extern int *w_board;
 extern int e_win;
 extern int e_lose;
 extern int e_score;
+extern uint w_color_board;
+extern uint w_color_final;
+extern uint w_color_text;
+extern uint w_color_overlay;
 extern int w_line_size;
-extern int *w_board;
-
 extern void e_init(int esc_keycode, int left_keycode, int right_keycode, int up_keycode, int down_keycode);
 extern void e_key(int keycode);
-
 extern uint e_foreground(int val);
 extern uint e_background(int val);
 extern double w_R(uint rgb);
 extern double w_G(uint rgb);
 extern double w_B(uint rgb);
-extern uint w_color_board;
-extern uint w_color_final;
-extern uint w_color_text;
-extern uint w_color_overlay;
 
 public class Vala2048 : Gtk.Window {
 	private const int TILE_SIZE   = 64;
@@ -34,10 +34,10 @@ public class Vala2048 : Gtk.Window {
 		title = "2048-Vala";
 		set_default_size(340, 400);
 		set_resizable(false);
-		connect_widgets();
+		init_widgets();
 	}
 
-	private void connect_widgets() {
+	private void init_widgets() {
 		destroy.connect(main_quit);
 		key_press_event.connect((event) => {
 			e_key((int) event.keyval);
