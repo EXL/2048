@@ -1,3 +1,5 @@
+// Based on: https://wiki.gnome.org/Projects/Vala/CairoSample
+
 using Gtk;
 using Gdk;
 using Cairo;
@@ -27,9 +29,23 @@ public class Vala2048 : Gtk.Window {
 		title = "2048-Vala";
 		destroy.connect(Gtk.main_quit);
 		set_default_size(340, 400);
-
+		// TODO: Set minimal default size
+		create_widgets();
+		// TODO: Remove this check
 		for (int i = 0; i < w_board_size; ++i)
 			stderr.printf("%d", w_board[i]);
+	}
+
+	private void create_widgets() {
+		var drawing_area = new DrawingArea();
+		drawing_area.draw.connect(on_draw);
+		add(drawing_area);
+	}
+
+	private bool on_draw(Widget drawing_area, Context context) {
+		context.set_source_rgb(1, 0, 0);
+		context.paint();
+		return true;
 	}
 
 	static int main(string[] args) {
