@@ -13,23 +13,3 @@ extern double w_R(unsigned rgb) { return ((rgb >> 16) & 0xFF) / 255.0; }
 extern double w_G(unsigned rgb) { return ((rgb >> 8) & 0xFF) / 255.0; }
 extern double w_B(unsigned rgb) { return ((rgb >> 0) & 0xFF) / 255.0; }
 
-
-
-/*
-extern unsigned int e_color_board() {
-	return ;
-}
-
-extern unsigned int e_color_final() {
-	return COLOR_FINAL;
-}
-
-extern unsigned int e_color_text() {
-	return COLOR_TEXT;
-}
-
-extern unsigned int e_color_overlay() {
-	return COLOR_OVERLAY;
-}
-*/
-

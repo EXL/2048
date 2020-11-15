@@ -8,7 +8,6 @@ extern int e_win;
 extern int e_lose;
 extern int e_score;
 extern int w_line_size;
-extern int w_board_size;
 extern int *w_board;
 
 extern void e_init(int esc_keycode, int left_keycode, int right_keycode, int up_keycode, int down_keycode);
@@ -53,8 +52,8 @@ public class Vala2048 : Gtk.Window {
 			for (int y = 0; y < w_line_size; ++y)
 				for (int x = 0; x < w_line_size; ++x)
 					draw_tile(context, w_board[x + y * w_line_size], x, y);
-			return false;
 			draw_final(context);
+			return false;
 		});
 		add(drawing_area);
 	}
@@ -64,6 +63,7 @@ public class Vala2048 : Gtk.Window {
 		int xOffset = offset_coords(x), yOffset = offset_coords(y);
 		context.set_source_rgb(w_R(bkg), w_G(bkg), w_B(bkg));
 		draw_rounded_rectangle(context, xOffset, yOffset, TILE_SIZE, TILE_SIZE, 6);
+		context.select_font_face("Sans", FontSlant.NORMAL, FontWeight.BOLD);
 		if (val > 0) {
 			int size = (val < 100) ? 26 : (val < 1000) ? 22 : 16;
 			string strValue = val.to_string();
@@ -72,14 +72,37 @@ public class Vala2048 : Gtk.Window {
 			context.set_font_size(size);
 			TextExtents extents;
 			context.text_extents(strValue, out extents);
-			int w = ((int) (extents.width)) + 2, h = size;
+			int w = (int) (extents.width) + 2, h = size;
 			context.move_to(xOffset + (TILE_SIZE - w) / 2, yOffset + TILE_SIZE - (TILE_SIZE - h) / 2 - 2);
 			context.show_text(strValue);
 		}
 	}
 
 	private void draw_final(Context context) {
-
+		int width = drawing_area.get_allocated_width(), height = drawing_area.get_allocated_height();
+		int size = 26;
+		if (e_win > 0 || e_lose > 0) {
+			context.set_source_rgba(w_R(w_color_overlay), w_G(w_color_overlay), w_B(w_color_overlay), 0.5);
+			context.paint();
+			context.set_source_rgb(w_R(w_color_final), w_G(w_color_final), w_B(w_color_final));
+			context.set_font_size(size);
+			string strCenter = (e_win > 0) ? "You won!" : "Game Over!";
+			TextExtents extents;
+			context.text_extents(strCenter, out extents);
+			context.move_to(width / 2 - (int) (extents.width) / 2, height / 2);
+			context.show_text(strCenter);
+		}
+		size = 18;
+		context.set_source_rgb(w_R(w_color_text), w_G(w_color_text), w_B(w_color_text));
+		context.select_font_face("Sans", FontSlant.NORMAL, FontWeight.NORMAL);
+		context.set_font_size(size);
+		string strScore = "Score: " + e_score.to_string();
+		TextExtents extents;
+		context.text_extents(strScore, out extents);
+		context.move_to(TILE_MARGIN, height - size);
+		context.show_text("ESC to Restart!");
+		context.move_to(width - (int) (extents.width) - TILE_MARGIN, height - size);
+		context.show_text(strScore);
 	}
 
 	private void draw_rounded_rectangle(Context context, double x, double y, double w, double h, double r) {
