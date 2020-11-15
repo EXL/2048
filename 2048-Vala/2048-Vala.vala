@@ -23,27 +23,28 @@ public class Vala2048 : Gtk.Window {
 	private DrawingArea drawing_area;
 
 	public Vala2048() {
-		e_init(
-			(int) Gdk.Key.Escape,
-			(int) Gdk.Key.Left,
-			(int) Gdk.Key.Right,
-			(int) Gdk.Key.Up,
-			(int) Gdk.Key.Down
-		);
+		e_init((int) Key.Escape, (int) Key.Left, (int) Key.Right, (int) Key.Up, (int) Key.Down);
 		title = "2048-Vala";
 		set_default_size(340, 400);
 		set_resizable(false);
-		create_widgets_and_connects();
+		connect_widgets();
 		// TODO: Remove this check
 		for (int i = 0; i < w_board_size; ++i)
 			stderr.printf("%d", w_board[i]);
 	}
 
-	private void create_widgets_and_connects() {
-		destroy.connect(Gtk.main_quit);
+	private void connect_widgets() {
+		destroy.connect(main_quit);
 
 		drawing_area = new DrawingArea();
-		drawing_area.draw.connect(on_draw);
+		drawing_area.draw.connect((drawing_area, context) => {
+			if (check)
+				context.set_source_rgb(1, 0, 0);
+			else
+				context.set_source_rgb(1, 0, 1);
+			context.paint();
+			return false;
+		});
 		add(drawing_area);
 
 		key_press_event.connect((event) => {
@@ -52,14 +53,6 @@ public class Vala2048 : Gtk.Window {
 			drawing_area.queue_draw();
 			return true;
 		});
-	}
-
-	private bool on_draw(Widget drawing_area, Context context) {
-		if (check)
-			context.set_source_rgb(1, 0, 0);
-			else context.set_source_rgb(1, 0, 1);
-		context.paint();
-		return false;
 	}
 
 	static int main(string[] args) {
