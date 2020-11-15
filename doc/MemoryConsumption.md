@@ -161,6 +161,31 @@ VmSwap:        0 kB
 HugetlbPages:  0 kB
 ```
 
+### 2048-Vala
+
+GNOME System Monitor: 5.7 MiB
+
+```
+cat /proc/`pidof 2048-Vala`/status
+...
+VmPeak:   612144 kB
+VmSize:   556396 kB
+VmLck:         0 kB
+VmPin:         0 kB
+VmHWM:     29848 kB
+VmRSS:     29848 kB
+RssAnon:    5844 kB
+RssFile:   22744 kB
+RssShmem:   1260 kB
+VmData:    38480 kB
+VmStk:       132 kB
+VmExe:        16 kB
+VmLib:     18168 kB
+VmPTE:       180 kB
+VmSwap:        0 kB
+HugetlbPages:  0 kB
+```
+
 ### 2048-Gtk3
 
 GNOME System Monitor: 4.6 MiB

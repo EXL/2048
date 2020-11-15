@@ -11,8 +11,8 @@ CentOS 7 Recipe:
 sudo yum -y install epel-release
 
 sudo yum -y install @development
-sudo yum -y install cmake3
-sudo yum -y install gtk3-devel
+sudo yum -y install meson
+sudo yum -y install vala gtk3-devel
 
 cd ~/Projects/
 git clone https://github.com/EXL/2048

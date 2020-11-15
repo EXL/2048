@@ -7,7 +7,7 @@ Dependencies were obtained:
 2. By `arm-linux-gnueabi-objdump` for MotoMAGX platform.
 3. By `otool -L` command on NeXTSTEP and Mac OS X.
 
-### Sizes
+### Sizes and Rights
 
 ```
 tree -phD 2048-Release/
@@ -34,6 +34,7 @@ tree -phD 2048-Release/
 ├── [-rwxrwxr-x   23K Jun 30 07:19]  2048-Qt5
 ├── [-rwxrwxr-x   23K Nov 14 21:38]  2048-QtQuick
 ├── [-rwxrwxr-x  759K Sep 27 09:18]  2048-Serenity
+├── [-rwxrwxr-x   19K Nov 15 17:57]  2048-Vala
 ├── [-rwxrwxr-x   14K Jun 30 07:20]  2048-Xaw
 ├── [-rwxrwxr-x   14K Jun 30 07:20]  2048-Xcb
 ├── [-rwxrwxr-x   14K Jun 30 07:20]  2048-Xlib
@@ -158,7 +159,7 @@ tree -phD 2048-Release/
         ├── [-r--r--r--  169K Nov 15  1994]  2048-NeXTSTEP.tar.Z
         └── [-r--r--r--  3.2K Nov 15  1994]  2048-NeXTSTEP.tiff
 
-44 directories, 101 files
+44 directories, 102 files
 ```
 
 ### File Types
@@ -187,6 +188,7 @@ file 2048-*
 2048-Qt5:           ELF 64-bit LSB executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, for GNU/Linux 2.6.32, BuildID[sha1]=f63cb42651afdcf8dd866d2d9ed5cea08ef8bfb7, stripped
 2048-QtQuick:       ELF 64-bit LSB executable, x86-64, version 1 (GNU/Linux), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, for GNU/Linux 2.6.32, BuildID[sha1]=d32c249c8e7321857431a0ccd8c9190f3b7487c0, stripped
 2048-Serenity:      ELF 32-bit LSB executable, Intel 80386, version 1 (SYSV), statically linked, stripped
+2048-Vala:          ELF 64-bit LSB executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, for GNU/Linux 2.6.32, BuildID[sha1]=d4d916ea867d9dcb54bf071fbd0c87622d6fbed4, stripped
 2048-Xaw:           ELF 64-bit LSB executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, for GNU/Linux 2.6.32, BuildID[sha1]=566076a8373ccfa7cf64ff73a4b4385b18bce7a7, stripped
 2048-Xcb:           ELF 64-bit LSB executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, for GNU/Linux 2.6.32, BuildID[sha1]=1f45dde2f5c9aac70b8bcad872f45d8f962451ea, stripped
 2048-Xlib:          ELF 64-bit LSB executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, for GNU/Linux 2.6.32, BuildID[sha1]=55e80fe0e4e139ef18c9bee96bcd9f5d66545294, stripped
@@ -518,6 +520,84 @@ ldd 2048-Qt1
 	libXau.so.6 => /lib64/libXau.so.6 (0x00007fe403cc7000)
 ldd 2048-Qt1 | wc -l
 	12
+```
+
+### 2048-Vala
+
+```
+ldd 2048-Vala
+	linux-vdso.so.1 (0x00007ffe6e799000)
+	libgtk-3.so.0 => /lib64/libgtk-3.so.0 (0x00007f7311fc3000)
+	libcairo.so.2 => /lib64/libcairo.so.2 (0x00007f7311ea8000)
+	libgobject-2.0.so.0 => /lib64/libgobject-2.0.so.0 (0x00007f7311e4f000)
+	libglib-2.0.so.0 => /lib64/libglib-2.0.so.0 (0x00007f7311d20000)
+	libc.so.6 => /lib64/libc.so.6 (0x00007f7311b55000)
+	libgdk-3.so.0 => /lib64/libgdk-3.so.0 (0x00007f7311a57000)
+	libgmodule-2.0.so.0 => /lib64/libgmodule-2.0.so.0 (0x00007f7311a4f000)
+	libpangocairo-1.0.so.0 => /lib64/libpangocairo-1.0.so.0 (0x00007f7311a3d000)
+	libX11.so.6 => /lib64/libX11.so.6 (0x00007f73118f6000)
+	libXi.so.6 => /lib64/libXi.so.6 (0x00007f73118e4000)
+	libXfixes.so.3 => /lib64/libXfixes.so.3 (0x00007f73118db000)
+	libcairo-gobject.so.2 => /lib64/libcairo-gobject.so.2 (0x00007f73118cf000)
+	libgdk_pixbuf-2.0.so.0 => /lib64/libgdk_pixbuf-2.0.so.0 (0x00007f73118a2000)
+	libatk-1.0.so.0 => /lib64/libatk-1.0.so.0 (0x00007f7311879000)
+	libatk-bridge-2.0.so.0 => /lib64/libatk-bridge-2.0.so.0 (0x00007f7311842000)
+	libwayland-client.so.0 => /lib64/libwayland-client.so.0 (0x00007f7311832000)
+	libepoxy.so.0 => /lib64/libepoxy.so.0 (0x00007f73116fd000)
+	libfribidi.so.0 => /lib64/libfribidi.so.0 (0x00007f73116df000)
+	libgio-2.0.so.0 => /lib64/libgio-2.0.so.0 (0x00007f7311518000)
+	libm.so.6 => /lib64/libm.so.6 (0x00007f73113d2000)
+	libpangoft2-1.0.so.0 => /lib64/libpangoft2-1.0.so.0 (0x00007f73113b8000)
+	libpango-1.0.so.0 => /lib64/libpango-1.0.so.0 (0x00007f7311366000)
+	libharfbuzz.so.0 => /lib64/libharfbuzz.so.0 (0x00007f7311298000)
+	libfontconfig.so.1 => /lib64/libfontconfig.so.1 (0x00007f731124d000)
+	libfreetype.so.6 => /lib64/libfreetype.so.6 (0x00007f7311188000)
+	libpthread.so.0 => /lib64/libpthread.so.0 (0x00007f7311166000)
+	libpixman-1.so.0 => /lib64/libpixman-1.so.0 (0x00007f73110b9000)
+	libpng16.so.16 => /lib64/libpng16.so.16 (0x00007f7311080000)
+	libxcb-shm.so.0 => /lib64/libxcb-shm.so.0 (0x00007f731107b000)
+	libxcb.so.1 => /lib64/libxcb.so.1 (0x00007f7311051000)
+	libxcb-render.so.0 => /lib64/libxcb-render.so.0 (0x00007f7311040000)
+	libXrender.so.1 => /lib64/libXrender.so.1 (0x00007f7311033000)
+	libXext.so.6 => /lib64/libXext.so.6 (0x00007f731101e000)
+	libz.so.1 => /lib64/libz.so.1 (0x00007f7311004000)
+	librt.so.1 => /lib64/librt.so.1 (0x00007f7310ff9000)
+	libffi.so.6 => /lib64/libffi.so.6 (0x00007f7310fee000)
+	libpcre.so.1 => /lib64/libpcre.so.1 (0x00007f7310f73000)
+	/lib64/ld-linux-x86-64.so.2 (0x00007f731278b000)
+	libXinerama.so.1 => /lib64/libXinerama.so.1 (0x00007f7310f6e000)
+	libXrandr.so.2 => /lib64/libXrandr.so.2 (0x00007f7310f61000)
+	libXcursor.so.1 => /lib64/libXcursor.so.1 (0x00007f7310f54000)
+	libXcomposite.so.1 => /lib64/libXcomposite.so.1 (0x00007f7310f4f000)
+	libXdamage.so.1 => /lib64/libXdamage.so.1 (0x00007f7310f4a000)
+	libxkbcommon.so.0 => /lib64/libxkbcommon.so.0 (0x00007f7310f03000)
+	libwayland-cursor.so.0 => /lib64/libwayland-cursor.so.0 (0x00007f7310ef9000)
+	libwayland-egl.so.1 => /lib64/libwayland-egl.so.1 (0x00007f7310ef4000)
+	libdl.so.2 => /lib64/libdl.so.2 (0x00007f7310eed000)
+	libdbus-1.so.3 => /lib64/libdbus-1.so.3 (0x00007f7310e9c000)
+	libatspi.so.0 => /lib64/libatspi.so.0 (0x00007f7310e63000)
+	libmount.so.1 => /lib64/libmount.so.1 (0x00007f7310e21000)
+	libselinux.so.1 => /lib64/libselinux.so.1 (0x00007f7310df4000)
+	libresolv.so.2 => /lib64/libresolv.so.2 (0x00007f7310dda000)
+	libthai.so.0 => /lib64/libthai.so.0 (0x00007f7310dcf000)
+	libgraphite2.so.3 => /lib64/libgraphite2.so.3 (0x00007f7310dac000)
+	libxml2.so.2 => /lib64/libxml2.so.2 (0x00007f7310c21000)
+	libbz2.so.1 => /lib64/libbz2.so.1 (0x00007f7310c0e000)
+	libbrotlidec.so.1 => /lib64/libbrotlidec.so.1 (0x00007f7310c00000)
+	libXau.so.6 => /lib64/libXau.so.6 (0x00007f7310bfb000)
+	libsystemd.so.0 => /lib64/libsystemd.so.0 (0x00007f7310b3d000)
+	libblkid.so.1 => /lib64/libblkid.so.1 (0x00007f7310b09000)
+	libpcre2-8.so.0 => /lib64/libpcre2-8.so.0 (0x00007f7310a73000)
+	libdatrie.so.1 => /lib64/libdatrie.so.1 (0x00007f7310a6a000)
+	liblzma.so.5 => /lib64/liblzma.so.5 (0x00007f7310a3e000)
+	libbrotlicommon.so.1 => /lib64/libbrotlicommon.so.1 (0x00007f7310a19000)
+	libzstd.so.1 => /lib64/libzstd.so.1 (0x00007f7310963000)
+	liblz4.so.1 => /lib64/liblz4.so.1 (0x00007f7310945000)
+	libgcrypt.so.20 => /lib64/libgcrypt.so.20 (0x00007f7310821000)
+	libgcc_s.so.1 => /lib64/libgcc_s.so.1 (0x00007f7310806000)
+	libgpg-error.so.0 => /lib64/libgpg-error.so.0 (0x00007f73107e3000)
+ldd 2048-Vala | wc -l
+	70
 ```
 
 ### 2048-Gtk3
