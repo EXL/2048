@@ -24,3 +24,6 @@ build*
 # Xcode files.
 xcuserdata/
 *.xcarchive/
+
+# Various output files.
+out/
