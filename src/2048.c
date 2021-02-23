@@ -11,7 +11,7 @@ static int *f_space[BOARD_SIZE];
 static int b_reg[LINE_SIZE], f_reg[LINE_SIZE];
 static int K_ESCAPE, K_LEFT, K_RIGHT, K_UP, K_DOWN;
 
-static inline double math_random() { return rand() / (double) RAND_MAX; }
+static inline int math_random() { return rand() % 100 + 1; }
 
 static inline int tile_at(int x, int y) { return e_board[x + y * LINE_SIZE]; }
 
@@ -106,7 +106,7 @@ static void add_tile(int n) {
 	for (i = 0; i < n; ++i) {
 		const int size = update_space();
 		if (size)
-			*f_space[(int)(math_random() * size) % size] = (math_random() < 0.9) ? 2 : 4;
+			*f_space[(math_random() * size / 100) % size] = (math_random() < 90) ? 2 : 4;
 	}
 }
 
