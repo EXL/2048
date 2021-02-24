@@ -88,7 +88,7 @@ static void displayDebugTextBoard() {
 
 int main(bool hardReset) {
 	int y = 0, x = 0;
-	u16 palette[64];
+//	u16 palette[64];
 
 	e_init(BUTTON_START, BUTTON_LEFT, BUTTON_RIGHT, BUTTON_UP, BUTTON_DOWN);
 
@@ -101,7 +101,7 @@ int main(bool hardReset) {
 
 	SPR_init();
 
-	VDP_setPaletteColors(0, (u16*) palette_black, 64);
+//	VDP_setPaletteColors(0, palette_grey, 64);
 
 	for (y = 0; y < LINE_SIZE; ++y)
 		for (x = 0; x < LINE_SIZE; ++x)
@@ -109,8 +109,21 @@ int main(bool hardReset) {
 
 	// tile = SPR_addSprite(&GM_Tiles, 100, 100, TILE_ATTR(PAL0, TRUE, FALSE, FALSE));
 
-	memcpy(&palette[0], GM_Palette.data, 64 * 2);
-	PAL_fadeIn(0, (4 * 16) - 1, palette, 20, FALSE);
+//	memcpy(&palette[0], GM_Palette.data, 64 * 2);
+//	PAL_fadeIn(0, (4 * 16) - 1, palette, 20, FALSE);
+
+//	palette[0] = 3;
+//	palette[1] = 4;
+
+//	PAL_setPalette(PAL0, palette);
+//	PAL_setPalette(PAL0, GM_Tiles.palette->data);
+
+
+//	VDP_setPaletteColor(15, 0);
+	PAL_setPalette(PAL0, GM_Tiles.palette->data);
+	VDP_setTextPalette(PAL0);
+
+//	VDP_setPaletteColors(0, GM_Tiles.palette->data, 16);
 
 	while(TRUE) {
 		//        handleInput();

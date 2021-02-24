@@ -2,7 +2,7 @@
 ../inc/2048.h
 ../res/gfx.res
 ../res/gfx/Tiles.png
-../src/2048.c
 ../src/boot/rom_head.c
 ../src/boot/sega.s
-../src/main.c
+../src/2048.c
+../src/2048-SMD.c
