@@ -8,7 +8,7 @@
 #define GM_TILE_MARGIN          5
 #define GM_TILE_SIZE            40
 #define GM_WIDTH_AUX            320
-#define GM_HEIGHT_AUX           5
+#define GM_HEIGHT_AUX           10
 #define GM_SCORE_SIZE           6
 #define GM_SCORE_STR_SIZE       (7 + GM_SCORE_SIZE)
 
@@ -34,13 +34,13 @@ static inline int convertValueToIndex(int value) {
 	}
 }
 
-static void drawBoard() {
+static void drawBoard(void) {
 	int i;
 	for (i = 0; i < BOARD_SIZE; ++i)
 		SPR_setFrame(tile[i], convertValueToIndex(e_board[i]));
 }
 
-static void drawText() {
+static void drawText(void) {
 	char strValue[GM_SCORE_SIZE];
 	char strScore[GM_SCORE_STR_SIZE];
 
@@ -49,9 +49,9 @@ static void drawText() {
 	strcat(strScore, strValue);
 
 	/* X and Y coordinates in tiles, 40x28. */
-	VDP_drawText("2048-SMD: https://github.com/EXL/2048", 2, 0);
-	VDP_drawText("Start/A/B to Restart!", 2, 25);
-	VDP_drawText(strScore, 25, 25);
+	VDP_drawText("2048-SMD: https://github.com/EXL/2048", 2, 1);
+	VDP_drawText("Start/A/B to Restart!", 2, 26);
+	VDP_drawText(strScore, 27, 26);
 }
 
 static void joyEvent(u16 joy, u16 changed, u16 state) {
@@ -69,13 +69,17 @@ static void joyEvent(u16 joy, u16 changed, u16 state) {
 		e_key(BUTTON_START);
 }
 
-static void initSprite(int x, int y) {
-	const int xOffset = offsetCoords(x) + GM_WIDTH_AUX / GM_FIELD_OFFSET_SCALE;
-	const int yOffset = offsetCoords(y) + GM_HEIGHT_AUX;
-	tile[x + y * LINE_SIZE] = SPR_addSprite(&GM_Tiles, xOffset, yOffset, TILE_ATTR(PAL0, TRUE, FALSE, FALSE));
+static void initSprites(void) {
+	int y, x;
+	for (y = 0; y < LINE_SIZE; ++y)
+		for (x = 0; x < LINE_SIZE; ++x) {
+			const int xOffset = offsetCoords(x) + GM_WIDTH_AUX / GM_FIELD_OFFSET_SCALE;
+			const int yOffset = offsetCoords(y) + GM_HEIGHT_AUX;
+			tile[x + y * LINE_SIZE] = SPR_addSprite(&GM_Tiles, xOffset, yOffset, TILE_ATTR(PAL0, TRUE, FALSE, FALSE));
+		}
 }
 
-static void displayDebugTextBoard() {
+static void displayDebugTextBoard(void) {
 	int y, x;
 	char tile[5];
 
@@ -87,12 +91,7 @@ static void displayDebugTextBoard() {
 }
 
 int main(bool hardReset) {
-	int y = 0, x = 0;
-//	u16 palette[64];
-
 	e_init(BUTTON_START, BUTTON_LEFT, BUTTON_RIGHT, BUTTON_UP, BUTTON_DOWN);
-
-	//    updateBoard();
 
 	JOY_init();
 	JOY_setEventHandler(joyEvent);
@@ -101,38 +100,15 @@ int main(bool hardReset) {
 
 	SPR_init();
 
-//	VDP_setPaletteColors(0, palette_grey, 64);
+	initSprites();
 
-	for (y = 0; y < LINE_SIZE; ++y)
-		for (x = 0; x < LINE_SIZE; ++x)
-			initSprite(x, y);
-
-	// tile = SPR_addSprite(&GM_Tiles, 100, 100, TILE_ATTR(PAL0, TRUE, FALSE, FALSE));
-
-//	memcpy(&palette[0], GM_Palette.data, 64 * 2);
-//	PAL_fadeIn(0, (4 * 16) - 1, palette, 20, FALSE);
-
-//	palette[0] = 3;
-//	palette[1] = 4;
-
-//	PAL_setPalette(PAL0, palette);
-//	PAL_setPalette(PAL0, GM_Tiles.palette->data);
-
-
-//	VDP_setPaletteColor(15, 0);
 	PAL_setPalette(PAL0, GM_Tiles.palette->data);
-	VDP_setTextPalette(PAL0);
-
-//	VDP_setPaletteColors(0, GM_Tiles.palette->data, 16);
 
 	while(TRUE) {
-		//        handleInput();
-
 		drawBoard();
 		drawText();
-//		SPR_setFrame(tile[5], 4);
-		SPR_update();
 
+		SPR_update();
 		SYS_doVBlankProcess();
 	}
 
