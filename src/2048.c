@@ -1,7 +1,13 @@
 #include "2048.h"
 
-#include <time.h>
-#include <stdlib.h>
+#ifdef mc68000 /* Sega Genesis / Sega Mega Drive Platform. */
+	#include <genesis.h>
+	#define rand random
+#else
+	#include <time.h>
+	#include <stdlib.h>
+#endif
+
 #include <string.h>
 
 int e_board[BOARD_SIZE];
@@ -195,7 +201,9 @@ extern void e_key(int keycode) {
 }
 
 extern void e_init(int esc_keycode, int left_keycode, int right_keycode, int up_keycode, int down_keycode) {
+#ifndef mc68000 /* Sega Genesis / Sega Mega Drive Platform. */
 	srand((unsigned int)time(NULL));
+#endif
 	K_ESCAPE = esc_keycode;
 	K_LEFT = left_keycode;
 	K_RIGHT = right_keycode;
