@@ -18,6 +18,7 @@ static int b_reg[LINE_SIZE], f_reg[LINE_SIZE];
 static int K_ESCAPE, K_LEFT, K_RIGHT, K_UP, K_DOWN;
 
 static inline int math_random() { return rand() % 100 + 1; }
+
 static inline int tile_at(int x, int y) { return e_board[x + y * LINE_SIZE]; }
 
 extern unsigned e_foreground(int value) { return (value < 16) ? COLOR_TEXT : COLOR_TEXT_LIGHT; }
