@@ -39,4 +39,10 @@ make -f $GDK/makefile_wine.gen
 mv out/rom.bin 2048-SMD.bin
 ```
 
-Now run 2048-SMD.bin ROM on any Sega Mega Drive/Sega Genesis emulator or real console.
+## Run ROM
+
+You can run "2048-SMD.bin" ROM on any Sega Mega Drive/Sega Genesis emulator or real console.
+
+![2048-SMD Photo](../image/2048-SMD-Photo.jpg)
+
+*The 2048-SMD game launched on the real Sega Mega Dirve console, author of photo: Roma Setov (@tl072).*
