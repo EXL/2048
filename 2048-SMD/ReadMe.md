@@ -31,7 +31,7 @@ export GDK=/home/exl/Projects/SEGA/SGDK
 
 cd ~/Projects/
 git clone https://github.com/EXL/2048
-cd 2048/2048-SMD
+cd 2048/2048-SMD/
 
 # make -f $GDK/makefile.gen
 make -f $GDK/makefile_wine.gen

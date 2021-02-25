@@ -10,156 +10,160 @@ Dependencies were obtained:
 ### Sizes and Rights
 
 ```
-tree -phD 2048-Release/
+tree -phD --timefmt "%d-%b-%Y %H:%M:%S" 2048-Release/
 2048-Release/
-├── [-rwxrwxr-x   14K Jun 30 07:18]  2048-Gtk1
-├── [-rwxrwxr-x   14K Jun 30 07:18]  2048-Gtk2
-├── [-rwxrwxr-x   14K Jun 30 07:18]  2048-Gtk3
-├── [-rwxrwxr-x  3.6M Oct  5 18:42]  2048-JUCE
-├── [-rwxrwxr-x   14K Jun 30 07:20]  2048-Motif
-├── [-rwxrwxr-x   39K Jun 29 02:56]  2048-MotoMAGX_E8
-├── [-rwxrwxr-x   39K Jun 29 02:56]  2048-MotoMAGX_EM30
-├── [-rwxrwxr-x   39K Jun 29 02:58]  2048-MotoMAGX_EM35
-├── [-rwxrwxr-x   39K Jun 29 02:57]  2048-MotoMAGX_U9
-├── [-rwxrwxr-x   39K Jun 29 02:57]  2048-MotoMAGX_V8
-├── [-rwxrwxr-x   39K Jun 29 02:57]  2048-MotoMAGX_VE66
-├── [-rwxrwxr-x   39K Jun 29 02:57]  2048-MotoMAGX_Z6
-├── [-rwxrwxr-x   39K Jun 29 02:57]  2048-MotoMAGX_Z6W
-├── [-rwxrwxr-x   39K Jun 29 02:57]  2048-MotoMAGX_ZN5
-├── [-rwxrwxr-x   40K Sep 26 01:41]  2048-Photon
-├── [-rwxrwxr-x   23K Jun 30 07:19]  2048-Qt1
-├── [-rwxrwxr-x   31K Jun 30 07:19]  2048-Qt2
-├── [-rwxrwxr-x   31K Jun 30 07:19]  2048-Qt3
-├── [-rwxrwxr-x   23K Jun 30 07:19]  2048-Qt4
-├── [-rwxrwxr-x   23K Jun 30 07:19]  2048-Qt5
-├── [-rwxrwxr-x   23K Nov 14 21:38]  2048-QtQuick
-├── [-rwxrwxr-x  759K Sep 27 09:18]  2048-Serenity
-├── [-rwxrwxr-x   19K Nov 15 17:57]  2048-Vala
-├── [-rwxrwxr-x   14K Jun 30 07:20]  2048-Xaw
-├── [-rwxrwxr-x   14K Jun 30 07:20]  2048-Xcb
-├── [-rwxrwxr-x   14K Jun 30 07:20]  2048-Xlib
-├── [drwxr-xr-x  4.0K Oct 25 06:53]  MacOS
-│   ├── [drwxr-xr-x  4.0K Oct 25 05:04]  10.0
-│   │   └── [drwxr-xr-x  4.0K Oct 25 04:14]  2048-Cocoa.app
-│   │       └── [drwxr-xr-x  4.0K Oct 25 04:14]  Contents
-│   │           ├── [-rw-r--r--   760 Oct 25 04:13]  Info.plist
-│   │           ├── [drwxr-xr-x  4.0K Oct 25 04:14]  MacOS
-│   │           │   └── [-rwxr-xr-x   36K Oct 25 04:14]  2048-Cocoa
-│   │           ├── [-rw-r--r--   275 Oct 25 04:13]  pbdevelopment.plist
-│   │           ├── [-rw-r--r--     8 Oct 25 04:13]  PkgInfo
-│   │           └── [drwxr-xr-x  4.0K Oct 25 04:13]  Resources
-│   │               ├── [-rw-r--r--   48K Oct 25 04:13]  2048-Cocoa.icns
-│   │               ├── [drwxr-xr-x  4.0K Oct 25 04:13]  English.lproj
-│   │               │   ├── [drwxr-xr-x  4.0K Oct 25 04:13]  2048-Cocoa.nib
-│   │               │   │   ├── [-rw-r--r--   688 Oct 25 04:13]  classes.nib
-│   │               │   │   ├── [-rw-r--r--   500 Oct 25 04:13]  info.nib
-│   │               │   │   └── [-rw-r--r--  2.9K Oct 25 04:13]  objects.nib
-│   │               │   ├── [-rw-r--r--   530 Oct 25 04:13]  InfoPlist.strings
-│   │               │   └── [-rw-r--r--   413 Oct 25 04:13]  Localizable.strings
-│   │               └── [-rw-r--r--  1.7K Oct 25 04:13]  ReadMe.md
-│   ├── [drwxr-xr-x  4.0K Nov 13 18:19]  10.13
-│   │   ├── [drwxr-xr-x  4.0K Oct 25 06:30]  2048-Cocoa.app
-│   │   │   └── [drwxr-xr-x  4.0K Oct 25 06:29]  Contents
-│   │   │       ├── [drwxr-xr-x  4.0K Oct 25 06:54]  _CodeSignature
-│   │   │       │   └── [-rw-r--r--  3.8K Oct 25 06:29]  CodeResources
-│   │   │       ├── [-rw-r--r--  1.6K Oct 25 06:29]  Info.plist
-│   │   │       ├── [drwxr-xr-x  4.0K Oct 25 06:54]  MacOS
-│   │   │       │   └── [-rwxr-xr-x   42K Oct 25 06:30]  2048-Cocoa
-│   │   │       ├── [-rw-r--r--     8 Oct 25 06:29]  PkgInfo
-│   │   │       └── [drwxr-xr-x  4.0K Oct 25 06:29]  Resources
-│   │   │           ├── [-rw-r--r--  627K Oct 25 06:29]  AppIcon.icns
-│   │   │           ├── [-rw-r--r--  509K Oct 25 06:29]  Assets.car
-│   │   │           ├── [drwxr-xr-x  4.0K Oct 25 06:54]  Base.lproj
-│   │   │           │   └── [-rw-r--r--  8.9K Oct 25 06:29]  2048-Cocoa.nib
-│   │   │           ├── [drwxr-xr-x  4.0K Oct 25 06:54]  English.lproj
-│   │   │           │   └── [-rw-r--r--   828 Oct 25 06:29]  Localizable.strings
-│   │   │           └── [-rw-r--r--  1.6K Oct 25 06:29]  ReadMe.md
-│   │   └── [drwxr-xr-x  4.0K Nov 13 16:59]  2048-Swift.app
-│   │       └── [drwxr-xr-x  4.0K Nov 13 16:59]  Contents
-│   │           ├── [drwxr-xr-x  4.0K Nov 13 16:59]  _CodeSignature
-│   │           │   └── [-rw-r--r--  9.8K Nov 13 16:59]  CodeResources
-│   │           ├── [drwxr-xr-x  4.0K Nov 13 16:59]  Frameworks
-│   │           │   ├── [-rwxr-xr-x  236K Nov 13 16:59]  libswiftAppKit.dylib
-│   │           │   ├── [-rwxr-xr-x   96K Nov 13 16:59]  libswiftCoreData.dylib
-│   │           │   ├── [-rwxr-xr-x  6.2M Nov 13 16:59]  libswiftCore.dylib
-│   │           │   ├── [-rwxr-xr-x   41K Nov 13 16:59]  libswiftCoreFoundation.dylib
-│   │           │   ├── [-rwxr-xr-x  198K Nov 13 16:59]  libswiftCoreGraphics.dylib
-│   │           │   ├── [-rwxr-xr-x   49K Nov 13 16:59]  libswiftCoreImage.dylib
-│   │           │   ├── [-rwxr-xr-x  104K Nov 13 16:59]  libswiftDarwin.dylib
-│   │           │   ├── [-rwxr-xr-x  338K Nov 13 16:59]  libswiftDispatch.dylib
-│   │           │   ├── [-rwxr-xr-x  2.9M Nov 13 16:59]  libswiftFoundation.dylib
-│   │           │   ├── [-rwxr-xr-x   44K Nov 13 16:59]  libswiftIOKit.dylib
-│   │           │   ├── [-rwxr-xr-x   91K Nov 13 16:59]  libswiftMetal.dylib
-│   │           │   ├── [-rwxr-xr-x   60K Nov 13 16:59]  libswiftObjectiveC.dylib
-│   │           │   ├── [-rwxr-xr-x   73K Nov 13 16:59]  libswiftos.dylib
-│   │           │   ├── [-rwxr-xr-x   57K Nov 13 16:59]  libswiftQuartzCore.dylib
-│   │           │   └── [-rwxr-xr-x   44K Nov 13 16:59]  libswiftXPC.dylib
-│   │           ├── [-rw-r--r--  1.6K Nov 13 16:59]  Info.plist
-│   │           ├── [drwxr-xr-x  4.0K Nov 13 16:59]  MacOS
-│   │           │   └── [-rwxr-xr-x   88K Nov 13 16:59]  2048-Swift
-│   │           ├── [-rw-r--r--     8 Nov 13 16:59]  PkgInfo
-│   │           └── [drwxr-xr-x  4.0K Nov 13 16:59]  Resources
-│   │               ├── [-rw-r--r--  627K Nov 13 16:59]  AppIcon.icns
-│   │               ├── [-rw-r--r--  509K Nov 13 16:59]  Assets.car
-│   │               ├── [drwxr-xr-x  4.0K Nov 13 16:59]  Base.lproj
-│   │               │   └── [-rw-r--r--  8.9K Nov 13 16:59]  2048-Swift.nib
-│   │               ├── [drwxr-xr-x  4.0K Nov 13 16:59]  English.lproj
-│   │               │   └── [-rw-r--r--   828 Nov 13 16:59]  Localizable.strings
-│   │               └── [-rw-r--r--  1.8K Nov 13 16:59]  ReadMe.md
-│   ├── [drwxr-xr-x  4.0K Oct 25 06:53]  10.6
-│   │   └── [drwxr-xr-x  4.0K Oct 25 05:26]  2048-Cocoa.app
-│   │       └── [drwxr-xr-x  4.0K Oct 25 05:26]  Contents
-│   │           ├── [-rw-r--r--  1.5K Oct 25 05:26]  Info.plist
-│   │           ├── [drwxr-xr-x  4.0K Oct 25 06:53]  MacOS
-│   │           │   └── [-rwxr-xr-x   53K Oct 25 05:26]  2048-Cocoa
-│   │           ├── [-rw-r--r--     8 Oct 25 05:26]  PkgInfo
-│   │           └── [drwxr-xr-x  4.0K Oct 25 05:26]  Resources
-│   │               ├── [-rw-r--r--  139K Oct 25 05:26]  2048-Cocoa-modern.icns
-│   │               ├── [drwxr-xr-x  4.0K Oct 25 06:53]  en.lproj
-│   │               │   ├── [-rw-r--r--  8.5K Oct 25 05:26]  2048-Cocoa.nib
-│   │               │   ├── [-rw-r--r--  1.0K Oct 25 05:26]  Credits.rtf
-│   │               │   └── [-rw-r--r--   828 Oct 25 05:26]  Localizable.strings
-│   │               └── [-rw-r--r--  1.3K Oct 25 05:26]  ReadMe.md
-│   └── [drwxr-xr-x  4.0K Oct 25 06:55]  10.8
-│       └── [drwxr-xr-x  4.0K Oct 25 06:00]  2048-Cocoa.app
-│           └── [drwxr-xr-x  4.0K Oct 25 06:00]  Contents
-│               ├── [drwxr-xr-x  4.0K Oct 25 06:55]  _CodeSignature
-│               │   └── [-rw-r--r--  1.4K Oct 25 06:00]  CodeResources
-│               ├── [-rw-r--r--  1.5K Oct 25 06:00]  Info.plist
-│               ├── [drwxr-xr-x  4.0K Oct 25 06:55]  MacOS
-│               │   └── [-rwxr-xr-x   38K Oct 25 06:00]  2048-Cocoa
-│               ├── [-rw-r--r--     8 Oct 25 06:00]  PkgInfo
-│               └── [drwxr-xr-x  4.0K Oct 25 06:01]  Resources
-│                   ├── [-rw-r--r--  627K Oct 25 06:00]  AppIcon.icns
-│                   ├── [drwxr-xr-x  4.0K Oct 25 06:55]  en.lproj
-│                   │   ├── [-rw-r--r--  7.3K Oct 25 06:00]  2048-Cocoa.nib
-│                   │   ├── [-rw-r--r--  1.0K Oct 25 06:00]  Credits.rtf
-│                   │   └── [-rw-r--r--   828 Oct 25 06:00]  Localizable.strings
-│                   └── [-rw-r--r--  1.3K Oct 25 06:00]  ReadMe.md
-├── [drwxrwxr-x  4.0K Jul  8 15:37]  MotoMAGX
-│   ├── [-rw-rw-r--   14K Jun 29 02:58]  2048_MotoMAGX_ZN5_v1.0_28-Jul-2020.mgx
-│   └── [-rw-rw-r--  2.9M Jun 27 05:01]  2048_MotoMAGX_ZN5.webm
-└── [drwxrwxr-x  4.0K Oct 25 03:30]  NeXTSTEP
-    ├── [drwxr-xr-x  4.0K Nov 15  1994]  2048-NeXTSTEP.app
-    │   ├── [-rwxr-xr-x  200K Nov 15  1994]  2048-NeXTSTEP
-    │   ├── [-rw-r--r--   49K Nov 15  1994]  avatar.tiff
-    │   ├── [drwxr-xr-x  4.0K Nov 15  1994]  English.lproj
-    │   │   ├── [drwxr-xr-x  4.0K Sep 26 09:40]  2048-Info.nib
-    │   │   │   ├── [-rw-r--r--    56 Nov 15  1994]  data.classes
-    │   │   │   └── [-rw-r--r--  1.4K Nov 15  1994]  data.nib
-    │   │   └── [drwxr-xr-x  4.0K Nov 15  1994]  2048-NeXTSTEP.nib
-    │   │       ├── [-rw-r--r--   598 Nov 15  1994]  data.classes
-    │   │       └── [-rw-r--r--  2.5K Nov 15  1994]  data.nib
-    │   ├── [-rw-r--r--   15K Nov 15  1994]  icon150.tiff
-    │   └── [-rw-r--r--  3.2K Nov 15  1994]  icon48.tiff
-    └── [drwxr-xr-x  4.0K Nov 15  1994]  2048-NeXTSTEP.pkg
-        ├── [-rw-r--r--   16K Nov 15  1994]  2048-NeXTSTEP.bom
-        ├── [-r--r--r--   798 Nov 15  1994]  2048-NeXTSTEP.info
-        ├── [-rw-r--r--    49 Nov 15  1994]  2048-NeXTSTEP.sizes
-        ├── [-r--r--r--  169K Nov 15  1994]  2048-NeXTSTEP.tar.Z
-        └── [-r--r--r--  3.2K Nov 15  1994]  2048-NeXTSTEP.tiff
+├── [-rwxrwxr-x   14K 30-Jun-2020 07:18:44]  2048-Gtk1
+├── [-rwxrwxr-x   14K 30-Jun-2020 07:18:51]  2048-Gtk2
+├── [-rwxrwxr-x   14K 30-Jun-2020 07:18:58]  2048-Gtk3
+├── [-rwxrwxr-x  3.6M 05-Oct-2020 18:42:18]  2048-JUCE
+├── [-rwxrwxr-x   14K 30-Jun-2020 07:20:56]  2048-Motif
+├── [-rwxrwxr-x   39K 26-Feb-2021 00:24:45]  2048-MotoMAGX_E8
+├── [-rwxrwxr-x   39K 26-Feb-2021 00:24:43]  2048-MotoMAGX_EM30
+├── [-rwxrwxr-x   39K 26-Feb-2021 00:24:49]  2048-MotoMAGX_EM35
+├── [-rwxrwxr-x   39K 26-Feb-2021 00:24:39]  2048-MotoMAGX_U9
+├── [-rwxrwxr-x   39K 26-Feb-2021 00:24:34]  2048-MotoMAGX_V8
+├── [-rwxrwxr-x   39K 26-Feb-2021 00:24:47]  2048-MotoMAGX_VE66
+├── [-rwxrwxr-x   39K 26-Feb-2021 00:24:32]  2048-MotoMAGX_Z6
+├── [-rwxrwxr-x   39K 26-Feb-2021 00:24:37]  2048-MotoMAGX_Z6W
+├── [-rwxrwxr-x   39K 26-Feb-2021 00:24:41]  2048-MotoMAGX_ZN5
+├── [-rwxrwxr-x   40K 26-Sep-2020 01:41:35]  2048-Photon
+├── [-rwxrwxr-x   23K 30-Jun-2020 07:19:20]  2048-Qt1
+├── [-rwxrwxr-x   31K 30-Jun-2020 07:19:26]  2048-Qt2
+├── [-rwxrwxr-x   31K 30-Jun-2020 07:19:32]  2048-Qt3
+├── [-rwxrwxr-x   23K 30-Jun-2020 07:19:39]  2048-Qt4
+├── [-rwxrwxr-x   23K 30-Jun-2020 07:19:45]  2048-Qt5
+├── [-rwxrwxr-x   23K 14-Nov-2020 21:38:30]  2048-QtQuick
+├── [-rwxrwxr-x  759K 27-Sep-2020 09:18:12]  2048-Serenity
+├── [-rw-rw-r--  128K 26-Feb-2021 05:09:46]  2048-SMD.bin
+├── [-rwxrwxr-x   19K 15-Nov-2020 17:57:07]  2048-Vala
+├── [-rwxrwxr-x   14K 30-Jun-2020 07:20:20]  2048-Xaw
+├── [-rwxrwxr-x   14K 30-Jun-2020 07:20:27]  2048-Xcb
+├── [-rwxrwxr-x   14K 30-Jun-2020 07:20:36]  2048-Xlib
+├── [drwxr-xr-x  4.0K 25-Oct-2020 06:53:23]  MacOS
+│   ├── [drwxr-xr-x  4.0K 25-Oct-2020 05:04:30]  10.0
+│   │   └── [drwxr-xr-x  4.0K 25-Oct-2020 04:14:56]  2048-Cocoa.app
+│   │       └── [drwxr-xr-x  4.0K 25-Oct-2020 04:14:47]  Contents
+│   │           ├── [-rw-r--r--   760 25-Oct-2020 04:13:58]  Info.plist
+│   │           ├── [drwxr-xr-x  4.0K 25-Oct-2020 04:14:55]  MacOS
+│   │           │   └── [-rwxr-xr-x   36K 25-Oct-2020 04:14:55]  2048-Cocoa
+│   │           ├── [-rw-r--r--   275 25-Oct-2020 04:13:59]  pbdevelopment.plist
+│   │           ├── [-rw-r--r--     8 25-Oct-2020 04:13:59]  PkgInfo
+│   │           └── [drwxr-xr-x  4.0K 25-Oct-2020 04:13:45]  Resources
+│   │               ├── [-rw-r--r--   48K 25-Oct-2020 04:13:39]  2048-Cocoa.icns
+│   │               ├── [drwxr-xr-x  4.0K 25-Oct-2020 04:13:53]  English.lproj
+│   │               │   ├── [drwxr-xr-x  4.0K 25-Oct-2020 04:13:53]  2048-Cocoa.nib
+│   │               │   │   ├── [-rw-r--r--   688 25-Oct-2020 04:13:53]  classes.nib
+│   │               │   │   ├── [-rw-r--r--   500 25-Oct-2020 04:13:53]  info.nib
+│   │               │   │   └── [-rw-r--r--  2.9K 25-Oct-2020 04:13:54]  objects.nib
+│   │               │   ├── [-rw-r--r--   530 25-Oct-2020 04:13:49]  InfoPlist.strings
+│   │               │   └── [-rw-r--r--   413 25-Oct-2020 04:13:46]  Localizable.strings
+│   │               └── [-rw-r--r--  1.7K 25-Oct-2020 04:13:43]  ReadMe.md
+│   ├── [drwxr-xr-x  4.0K 13-Nov-2020 18:19:06]  10.13
+│   │   ├── [drwxr-xr-x  4.0K 25-Oct-2020 06:30:01]  2048-Cocoa.app
+│   │   │   └── [drwxr-xr-x  4.0K 25-Oct-2020 06:29:57]  Contents
+│   │   │       ├── [drwxr-xr-x  4.0K 25-Oct-2020 06:54:32]  _CodeSignature
+│   │   │       │   └── [-rw-r--r--  3.8K 25-Oct-2020 06:29:57]  CodeResources
+│   │   │       ├── [-rw-r--r--  1.6K 25-Oct-2020 06:29:57]  Info.plist
+│   │   │       ├── [drwxr-xr-x  4.0K 25-Oct-2020 06:54:32]  MacOS
+│   │   │       │   └── [-rwxr-xr-x   42K 25-Oct-2020 06:30:01]  2048-Cocoa
+│   │   │       ├── [-rw-r--r--     8 25-Oct-2020 06:29:57]  PkgInfo
+│   │   │       └── [drwxr-xr-x  4.0K 25-Oct-2020 06:29:57]  Resources
+│   │   │           ├── [-rw-r--r--  627K 25-Oct-2020 06:29:55]  AppIcon.icns
+│   │   │           ├── [-rw-r--r--  509K 25-Oct-2020 06:29:57]  Assets.car
+│   │   │           ├── [drwxr-xr-x  4.0K 25-Oct-2020 06:54:32]  Base.lproj
+│   │   │           │   └── [-rw-r--r--  8.9K 25-Oct-2020 06:29:55]  2048-Cocoa.nib
+│   │   │           ├── [drwxr-xr-x  4.0K 25-Oct-2020 06:54:32]  English.lproj
+│   │   │           │   └── [-rw-r--r--   828 25-Oct-2020 06:29:54]  Localizable.strings
+│   │   │           └── [-rw-r--r--  1.6K 25-Oct-2020 06:29:54]  ReadMe.md
+│   │   └── [drwxr-xr-x  4.0K 13-Nov-2020 16:59:23]  2048-Swift.app
+│   │       └── [drwxr-xr-x  4.0K 13-Nov-2020 16:59:23]  Contents
+│   │           ├── [drwxr-xr-x  4.0K 13-Nov-2020 16:59:23]  _CodeSignature
+│   │           │   └── [-rw-r--r--  9.8K 13-Nov-2020 16:59:33]  CodeResources
+│   │           ├── [drwxr-xr-x  4.0K 13-Nov-2020 16:59:33]  Frameworks
+│   │           │   ├── [-rwxr-xr-x  236K 13-Nov-2020 16:59:30]  libswiftAppKit.dylib
+│   │           │   ├── [-rwxr-xr-x   96K 13-Nov-2020 16:59:31]  libswiftCoreData.dylib
+│   │           │   ├── [-rwxr-xr-x  6.2M 13-Nov-2020 16:59:30]  libswiftCore.dylib
+│   │           │   ├── [-rwxr-xr-x   41K 13-Nov-2020 16:59:31]  libswiftCoreFoundation.dylib
+│   │           │   ├── [-rwxr-xr-x  198K 13-Nov-2020 16:59:31]  libswiftCoreGraphics.dylib
+│   │           │   ├── [-rwxr-xr-x   49K 13-Nov-2020 16:59:31]  libswiftCoreImage.dylib
+│   │           │   ├── [-rwxr-xr-x  104K 13-Nov-2020 16:59:31]  libswiftDarwin.dylib
+│   │           │   ├── [-rwxr-xr-x  338K 13-Nov-2020 16:59:31]  libswiftDispatch.dylib
+│   │           │   ├── [-rwxr-xr-x  2.9M 13-Nov-2020 16:59:32]  libswiftFoundation.dylib
+│   │           │   ├── [-rwxr-xr-x   44K 13-Nov-2020 16:59:32]  libswiftIOKit.dylib
+│   │           │   ├── [-rwxr-xr-x   91K 13-Nov-2020 16:59:32]  libswiftMetal.dylib
+│   │           │   ├── [-rwxr-xr-x   60K 13-Nov-2020 16:59:32]  libswiftObjectiveC.dylib
+│   │           │   ├── [-rwxr-xr-x   73K 13-Nov-2020 16:59:33]  libswiftos.dylib
+│   │           │   ├── [-rwxr-xr-x   57K 13-Nov-2020 16:59:32]  libswiftQuartzCore.dylib
+│   │           │   └── [-rwxr-xr-x   44K 13-Nov-2020 16:59:32]  libswiftXPC.dylib
+│   │           ├── [-rw-r--r--  1.6K 13-Nov-2020 16:59:19]  Info.plist
+│   │           ├── [drwxr-xr-x  4.0K 13-Nov-2020 16:59:33]  MacOS
+│   │           │   └── [-rwxr-xr-x   88K 13-Nov-2020 16:59:33]  2048-Swift
+│   │           ├── [-rw-r--r--     8 13-Nov-2020 16:59:19]  PkgInfo
+│   │           └── [drwxr-xr-x  4.0K 13-Nov-2020 16:59:19]  Resources
+│   │               ├── [-rw-r--r--  627K 13-Nov-2020 16:59:17]  AppIcon.icns
+│   │               ├── [-rw-r--r--  509K 13-Nov-2020 16:59:19]  Assets.car
+│   │               ├── [drwxr-xr-x  4.0K 13-Nov-2020 16:59:17]  Base.lproj
+│   │               │   └── [-rw-r--r--  8.9K 13-Nov-2020 16:59:17]  2048-Swift.nib
+│   │               ├── [drwxr-xr-x  4.0K 13-Nov-2020 16:59:15]  English.lproj
+│   │               │   └── [-rw-r--r--   828 13-Nov-2020 16:59:15]  Localizable.strings
+│   │               └── [-rw-r--r--  1.8K 13-Nov-2020 16:59:15]  ReadMe.md
+│   ├── [drwxr-xr-x  4.0K 25-Oct-2020 06:53:54]  10.6
+│   │   └── [drwxr-xr-x  4.0K 25-Oct-2020 05:26:56]  2048-Cocoa.app
+│   │       └── [drwxr-xr-x  4.0K 25-Oct-2020 05:26:53]  Contents
+│   │           ├── [-rw-r--r--  1.5K 25-Oct-2020 05:26:45]  Info.plist
+│   │           ├── [drwxr-xr-x  4.0K 25-Oct-2020 06:53:49]  MacOS
+│   │           │   └── [-rwxr-xr-x   53K 25-Oct-2020 05:26:56]  2048-Cocoa
+│   │           ├── [-rw-r--r--     8 25-Oct-2020 05:26:45]  PkgInfo
+│   │           └── [drwxr-xr-x  4.0K 25-Oct-2020 05:26:56]  Resources
+│   │               ├── [-rw-r--r--  139K 25-Oct-2020 05:26:56]  2048-Cocoa-modern.icns
+│   │               ├── [drwxr-xr-x  4.0K 25-Oct-2020 06:53:00]  en.lproj
+│   │               │   ├── [-rw-r--r--  8.5K 25-Oct-2020 05:26:56]  2048-Cocoa.nib
+│   │               │   ├── [-rw-r--r--  1.0K 25-Oct-2020 05:26:53]  Credits.rtf
+│   │               │   └── [-rw-r--r--   828 25-Oct-2020 05:26:53]  Localizable.strings
+│   │               └── [-rw-r--r--  1.3K 25-Oct-2020 05:26:53]  ReadMe.md
+│   └── [drwxr-xr-x  4.0K 25-Oct-2020 06:55:54]  10.8
+│       └── [drwxr-xr-x  4.0K 25-Oct-2020 06:00:28]  2048-Cocoa.app
+│           └── [drwxr-xr-x  4.0K 25-Oct-2020 06:00:28]  Contents
+│               ├── [drwxr-xr-x  4.0K 25-Oct-2020 06:55:42]  _CodeSignature
+│               │   └── [-rw-r--r--  1.4K 25-Oct-2020 06:00:28]  CodeResources
+│               ├── [-rw-r--r--  1.5K 25-Oct-2020 06:00:28]  Info.plist
+│               ├── [drwxr-xr-x  4.0K 25-Oct-2020 06:55:42]  MacOS
+│               │   └── [-rwxr-xr-x   38K 25-Oct-2020 06:00:28]  2048-Cocoa
+│               ├── [-rw-r--r--     8 25-Oct-2020 06:00:28]  PkgInfo
+│               └── [drwxr-xr-x  4.0K 25-Oct-2020 06:01:09]  Resources
+│                   ├── [-rw-r--r--  627K 25-Oct-2020 06:00:27]  AppIcon.icns
+│                   ├── [drwxr-xr-x  4.0K 25-Oct-2020 06:55:42]  en.lproj
+│                   │   ├── [-rw-r--r--  7.3K 25-Oct-2020 06:00:26]  2048-Cocoa.nib
+│                   │   ├── [-rw-r--r--  1.0K 25-Oct-2020 06:00:26]  Credits.rtf
+│                   │   └── [-rw-r--r--   828 25-Oct-2020 06:00:26]  Localizable.strings
+│                   └── [-rw-r--r--  1.3K 25-Oct-2020 06:00:26]  ReadMe.md
+├── [drwxrwxr-x  4.0K 26-Feb-2021 05:11:35]  MotoMAGX
+│   ├── [-rw-rw-r--   14K 26-Feb-2021 03:02:35]  2048_MotoMAGX_ZN5_v1.0_26-Feb-2021.mgx
+│   └── [-rw-rw-r--   14K 29-Jun-2020 02:58:16]  2048_MotoMAGX_ZN5_v1.0_28-Jul-2020.mgx
+├── [drwxrwxr-x  4.0K 26-Feb-2021 05:12:58]  NeXTSTEP
+│   ├── [drwxr-xr-x  4.0K 15-Nov-1994 09:08:22]  2048-NeXTSTEP.app
+│   │   ├── [-rwxr-xr-x  192K 15-Nov-1994 09:08:16]  2048-NeXTSTEP
+│   │   ├── [-rw-r--r--   49K 15-Nov-1994 09:07:11]  avatar.tiff
+│   │   ├── [drwxr-xr-x  4.0K 15-Nov-1994 09:07:57]  English.lproj
+│   │   │   ├── [drwxr-xr-x  4.0K 15-Nov-2020 13:29:37]  2048-Info.nib
+│   │   │   │   ├── [-rw-r--r--    56 15-Nov-1994 09:07:11]  data.classes
+│   │   │   │   └── [-rw-r--r--  1.4K 15-Nov-1994 09:07:11]  data.nib
+│   │   │   └── [drwxr-xr-x  4.0K 15-Nov-2020 13:29:37]  2048-NeXTSTEP.nib
+│   │   │       ├── [-rw-r--r--   598 15-Nov-1994 09:07:11]  data.classes
+│   │   │       └── [-rw-r--r--  2.5K 15-Nov-1994 09:07:11]  data.nib
+│   │   ├── [-rw-r--r--   15K 15-Nov-1994 09:07:11]  icon150.tiff
+│   │   └── [-rw-r--r--  3.2K 15-Nov-1994 09:07:11]  icon48.tiff
+│   └── [drwxr-xr-x  4.0K 15-Nov-1994 09:09:59]  2048-NeXTSTEP.pkg
+│       ├── [-rw-r--r--   16K 15-Nov-1994 09:09:59]  2048-NeXTSTEP.bom
+│       ├── [-r--r--r--   798 15-Nov-1994 09:09:58]  2048-NeXTSTEP.info
+│       ├── [-rw-r--r--    49 15-Nov-1994 09:09:59]  2048-NeXTSTEP.sizes
+│       ├── [-r--r--r--  169K 15-Nov-1994 09:09:58]  2048-NeXTSTEP.tar.Z
+│       └── [-r--r--r--  3.2K 15-Nov-1994 09:09:58]  2048-NeXTSTEP.tiff
+└── [drwxr-xr-x  4.0K 26-Feb-2021 05:12:07]  Videos
+    ├── [-rw-rw-r--  2.9M 27-Jun-2020 05:01:59]  2048-MotoMAGX_ZN5.webm
+    └── [-rw-r--r--   69M 26-Feb-2021 04:51:36]  2048-SMD.mp4
 
-44 directories, 102 files
+45 directories, 105 files
 ```
 
 ### File Types
@@ -188,14 +192,15 @@ file 2048-*
 2048-Qt5:           ELF 64-bit LSB executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, for GNU/Linux 2.6.32, BuildID[sha1]=f63cb42651afdcf8dd866d2d9ed5cea08ef8bfb7, stripped
 2048-QtQuick:       ELF 64-bit LSB executable, x86-64, version 1 (GNU/Linux), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, for GNU/Linux 2.6.32, BuildID[sha1]=d32c249c8e7321857431a0ccd8c9190f3b7487c0, stripped
 2048-Serenity:      ELF 32-bit LSB executable, Intel 80386, version 1 (SYSV), statically linked, stripped
+2048-SMD.bin:       Sega Mega Drive / Genesis ROM image: "2048-SMD        " (GM 00000000-00, (C) EXL 2021    )
 2048-Vala:          ELF 64-bit LSB executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, for GNU/Linux 2.6.32, BuildID[sha1]=d4d916ea867d9dcb54bf071fbd0c87622d6fbed4, stripped
 2048-Xaw:           ELF 64-bit LSB executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, for GNU/Linux 2.6.32, BuildID[sha1]=566076a8373ccfa7cf64ff73a4b4385b18bce7a7, stripped
 2048-Xcb:           ELF 64-bit LSB executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, for GNU/Linux 2.6.32, BuildID[sha1]=1f45dde2f5c9aac70b8bcad872f45d8f962451ea, stripped
 2048-Xlib:          ELF 64-bit LSB executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, for GNU/Linux 2.6.32, BuildID[sha1]=55e80fe0e4e139ef18c9bee96bcd9f5d66545294, stripped
 
 file MotoMAGX/*
+MotoMAGX/2048_MotoMAGX_ZN5_v1.0_26-Feb-2021.mgx: 7-zip archive data, version 0.4
 MotoMAGX/2048_MotoMAGX_ZN5_v1.0_28-Jul-2020.mgx: 7-zip archive data, version 0.4
-MotoMAGX/2048_MotoMAGX_ZN5.webm:                 WebM
 
 find NeXTSTEP/ -type f -exec file {} \;
 NeXTSTEP/2048-NeXTSTEP.app/icon150.tiff: TIFF image data, little-endian, direntries=19, height=150, bps=15744, compression=LZW, PhotometricIntepretation=RGB, name=/home/exl/Projects/2048/image/icon/avatar.tiff, orientation=upper-left, width=150
@@ -274,6 +279,10 @@ MacOS/10.0/2048-Cocoa.app/Contents/Resources/English.lproj/Localizable.strings: 
 MacOS/10.0/2048-Cocoa.app/Contents/Resources/2048-Cocoa.icns: Mac OS X icon, 49253 bytes, "ics#" type
 MacOS/10.0/2048-Cocoa.app/Contents/PkgInfo: ASCII text, with no line terminators
 MacOS/10.0/2048-Cocoa.app/Contents/MacOS/2048-Cocoa: Mach-O ppc executable, flags:<NOUNDEFS|DYLDLINK|PREBOUND>
+
+file Videos/*
+Videos/2048-MotoMAGX_ZN5.webm: WebM
+Videos/2048-SMD.mp4:           ISO Media, MP4 Base Media v1 [IS0 14496-12:2003]
 ```
 
 ### 2048-QtQuick
