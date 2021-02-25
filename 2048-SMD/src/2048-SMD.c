@@ -108,7 +108,7 @@ int main(bool hardReset) {
 	VDP_setScreenWidth320();
 	SPR_init();
 	initSprites();
-	PAL_setPalette(PAL0, GM_Tiles.palette->data);
+	PAL_fadeIn(0, (4 * 16) - 1, GM_Tiles.palette->data, 10, FALSE);
 
 	while(TRUE) {
 		drawBoard();
