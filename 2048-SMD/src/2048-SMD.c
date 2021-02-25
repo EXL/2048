@@ -45,11 +45,9 @@ static void drawBoard(void) {
 static void drawText(void) {
 	char strValue[GM_SCORE_SIZE];
 	char strScore[GM_SCORE_STR_SIZE];
-
 	intToStr(e_score, strValue, GM_SCORE_SIZE - 1);
 	strcpy(strScore, "Score: ");
 	strcat(strScore, strValue);
-
 	/* X and Y coordinates in tiles, 40x28. */
 	VDP_drawText("2048-SMD: https://github.com/EXL/2048/", 1, 1);
 	VDP_drawText("Start/A/B to Restart!", 1, 26);
@@ -69,7 +67,6 @@ static void drawFinal(void) {
 static void joyEvent(u16 joy, u16 changed, u16 state) {
 	if (joy == JOY_1 || joy == JOY_2) {
 		const u16 value = changed & state;
-
 		if (value & BUTTON_LEFT)
 			e_key(BUTTON_LEFT);
 		else if (value & BUTTON_RIGHT)
@@ -81,7 +78,6 @@ static void joyEvent(u16 joy, u16 changed, u16 state) {
 		else if (value & BUTTON_START || value & BUTTON_A || value & BUTTON_B)
 			SYS_reset();
 			/* e_key(BUTTON_START); */
-
 		if (!e_win && !e_lose && state)
 			XGM_startPlayPCM(SFX_TURN, 1, SOUND_PCM_CH2);
 	}
@@ -93,6 +89,7 @@ static void initSprites(void) {
 		for (x = 0; x < LINE_SIZE; ++x) {
 			const int xOffset = offsetCoords(x) + GM_WIDTH_AUX / GM_FIELD_OFFSET_SCALE;
 			const int yOffset = offsetCoords(y) + GM_HEIGHT_AUX;
+			/* PAL0: '0..15' colors, '0' for background color, '15' for text color. */
 			tile[x + y * LINE_SIZE] = SPR_addSprite(&GM_Tiles, xOffset, yOffset, TILE_ATTR(PAL0, TRUE, FALSE, FALSE));
 		}
 }
@@ -108,7 +105,7 @@ int main(bool hardReset) {
 	VDP_setScreenWidth320();
 	SPR_init();
 	initSprites();
-	PAL_fadeIn(0, (4 * 16) - 1, GM_Tiles.palette->data, 10, FALSE);
+	PAL_fadeIn(0, (4 * 16) - 1, GM_Tiles.palette->data, 10, FALSE); /* from '0' to '63' color indexes. */
 
 	while(TRUE) {
 		drawBoard();
