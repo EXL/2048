@@ -1,6 +1,8 @@
 2048-SMD
 ========
 
+![2048-SMD Picodrive Screenshot 1](../image/2048-SMD-Picodrive-Screenshot1.png) ![2048-SMD Picodrive Screenshot 2](../image/2048-SMD-Picodrive-Screenshot2.png) ![2048-SMD Picodrive Screenshot 3](../image/2048-SMD-Picodrive-Screenshot3.png)
+
 Port 2048 game to [Sega Mega Drive/Sega Genesis](https://en.wikipedia.org/wiki/Sega_Genesis) consoles with using [SGDK](https://github.com/Stephane-D/SGDK) development kit.
 
 ## Install SGDK v1.60
@@ -34,10 +36,7 @@ cd 2048/2048-SMD
 # make -f $GDK/makefile.gen
 make -f $GDK/makefile_wine.gen
 
-mv ../out/rom.bin 2048-SMD.bin
+mv out/rom.bin 2048-SMD.bin
 ```
 
 Now run 2048-SMD.bin ROM on any Sega Mega Drive/Sega Genesis emulator or real console.
-
-Check 68000K version of NeXTSTEP!!!
-Check MotoMAGX version size!
