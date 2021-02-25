@@ -1,6 +1,6 @@
 #include "2048.h"
 
-#ifdef mc68000 /* Sega Mega Drive and Sega Genesis platform. */
+#if defined(mc68000) && !defined(NeXT) /* Sega Mega Drive and Sega Genesis platform only. */
 	#include <genesis.h>
 	#define rand random
 #else
@@ -201,7 +201,7 @@ extern void e_key(int keycode) {
 }
 
 extern void e_init(int esc_keycode, int left_keycode, int right_keycode, int up_keycode, int down_keycode) {
-#ifndef mc68000 /* Sega Mega Drive and Sega Genesis platform. */
+#if !defined(mc68000) || defined(NeXT) /* Sega Mega Drive and Sega Genesis platform only. */
 	srand((unsigned int)time(NULL));
 #endif
 	K_ESCAPE = esc_keycode;
