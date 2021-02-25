@@ -6,6 +6,12 @@ function clean {
 	rm -Rf util/2048/
 }
 
+function build_all {
+	cd 2048-MotoMAGX/
+	./build.sh
+	cd -
+}
+
 function build_mgx {
 	mkdir -p util/2048
 	cp 2048-MotoMAGX/2048-MotoMAGX_ZN5 util/2048
@@ -19,6 +25,7 @@ function build_mgx {
 
 function main {
 	cd "`dirname $0`/../"
+	build_all
 	build_mgx
 	clean
 	cd -
