@@ -1,6 +1,6 @@
 #include "2048.h"
 
-#ifdef mc68000 /* Sega Genesis / Sega Mega Drive Platform. */
+#ifdef mc68000 /* Sega Mega Drive and Sega Genesis platform. */
 	#include <genesis.h>
 	#define rand random
 #else
@@ -18,26 +18,25 @@ static int b_reg[LINE_SIZE], f_reg[LINE_SIZE];
 static int K_ESCAPE, K_LEFT, K_RIGHT, K_UP, K_DOWN;
 
 static inline int math_random() { return rand() % 100 + 1; }
-
 static inline int tile_at(int x, int y) { return e_board[x + y * LINE_SIZE]; }
 
-extern unsigned e_foreground(int value) { return (value < 16) ? COLOR_TEXT : 0xFFF9F6F2; }
+extern unsigned e_foreground(int value) { return (value < 16) ? COLOR_TEXT : COLOR_TEXT_LIGHT; }
 
 extern unsigned e_background(int value) {
 	switch (value) {
-		case    2: return 0xFFEEE4DA;
-		case    4: return 0xFFEDE0C8;
-		case    8: return 0xFFF2B179;
-		case   16: return 0xFFF59563;
-		case   32: return 0xFFF67C5F;
-		case   64: return 0xFFF65E3B;
-		case  128: return 0xFFEDCF72;
-		case  256: return 0xFFEDCC61;
-		case  512: return 0xFFEDC850;
-		case 1024: return 0xFFEDC53F;
-		case 2048: return 0xFFEDC22E;
+		case    2: return    COLOR_TILE_2;
+		case    4: return    COLOR_TILE_4;
+		case    8: return    COLOR_TILE_8;
+		case   16: return   COLOR_TILE_16;
+		case   32: return   COLOR_TILE_32;
+		case   64: return   COLOR_TILE_64;
+		case  128: return  COLOR_TILE_128;
+		case  256: return  COLOR_TILE_256;
+		case  512: return  COLOR_TILE_512;
+		case 1024: return COLOR_TILE_1024;
+		case 2048: return COLOR_TILE_2048;
 	}
-	return 0xFFCDC1B4;
+	return COLOR_TILE_0;
 }
 
 static void set_line(int index, int *line) {
@@ -201,7 +200,7 @@ extern void e_key(int keycode) {
 }
 
 extern void e_init(int esc_keycode, int left_keycode, int right_keycode, int up_keycode, int down_keycode) {
-#ifndef mc68000 /* Sega Genesis / Sega Mega Drive Platform. */
+#ifndef mc68000 /* Sega Mega Drive and Sega Genesis platform. */
 	srand((unsigned int)time(NULL));
 #endif
 	K_ESCAPE = esc_keycode;
