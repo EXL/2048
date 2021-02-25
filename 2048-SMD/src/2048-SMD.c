@@ -3,6 +3,7 @@
 #include <genesis.h>
 
 #include "gfx.h"
+#include "sfx.h"
 
 #define GM_FIELD_OFFSET_SCALE   5
 #define GM_TILE_MARGIN          5
@@ -11,6 +12,7 @@
 #define GM_HEIGHT_AUX           10
 #define GM_SCORE_SIZE           6
 #define GM_SCORE_STR_SIZE       (7 + GM_SCORE_SIZE)
+#define SFX_TURN                64
 
 static Sprite *tile[BOARD_SIZE];
 
@@ -65,18 +67,24 @@ static void drawFinal(void) {
 }
 
 static void joyEvent(u16 joy, u16 changed, u16 state) {
-	const u16 value = changed & state;
+	if (joy == JOY_1 || joy == JOY_2) {
+		const u16 value = changed & state;
 
-	if (value & BUTTON_LEFT)
-		e_key(BUTTON_LEFT);
-	else if (value & BUTTON_RIGHT)
-		e_key(BUTTON_RIGHT);
-	else if (value & BUTTON_UP)
-		e_key(BUTTON_UP);
-	else if (value & BUTTON_DOWN)
-		e_key(BUTTON_DOWN);
-	else if (value & BUTTON_START || value & BUTTON_A || value & BUTTON_B)
-		e_key(BUTTON_START);
+		if (value & BUTTON_LEFT)
+			e_key(BUTTON_LEFT);
+		else if (value & BUTTON_RIGHT)
+			e_key(BUTTON_RIGHT);
+		else if (value & BUTTON_UP)
+			e_key(BUTTON_UP);
+		else if (value & BUTTON_DOWN)
+			e_key(BUTTON_DOWN);
+		else if (value & BUTTON_START || value & BUTTON_A || value & BUTTON_B)
+			SYS_reset();
+			/* e_key(BUTTON_START); */
+
+		if (!e_win && !e_lose && state)
+			XGM_startPlayPCM(SFX_TURN, 1, SOUND_PCM_CH2);
+	}
 }
 
 static void initSprites(void) {
@@ -95,19 +103,17 @@ int main(bool hardReset) {
 	JOY_init();
 	JOY_setEventHandler(joyEvent);
 
+	XGM_setPCM(SFX_TURN, GM_Turn, sizeof(GM_Turn));
+
 	VDP_setScreenWidth320();
-
 	SPR_init();
-
 	initSprites();
-
 	PAL_setPalette(PAL0, GM_Tiles.palette->data);
 
 	while(TRUE) {
 		drawBoard();
 		drawText();
 		drawFinal();
-
 		SPR_update();
 		SYS_doVBlankProcess();
 	}

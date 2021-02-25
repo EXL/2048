@@ -1,7 +1,13 @@
 ../ReadMe.md
 ../inc/2048.h
 ../res/gfx.res
-../res/gfx/Tiles.png
+../res/gfx/MD_Tiles_480x40.png
+../res/gfx/MD_YouWon_Normal.png
+../res/gfx/MD_YouWon_Mirrored.png
+../res/gfx/MD_GameOver_Normal.png
+../res/gfx/MD_GameOver_Mirrored.png
+../res/sfx.res
+../res/sfx/MD_Turn.wav
 ../src/boot/rom_head.c
 ../src/boot/sega.s
 ../src/2048.c

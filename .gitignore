@@ -27,3 +27,7 @@ xcuserdata/
 
 # Various output files.
 out/
+
+# Generated SMD files.
+2048-SMD/res/gfx.h
+2048-SMD/res/sfx.h
