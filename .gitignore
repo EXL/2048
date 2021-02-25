@@ -12,8 +12,8 @@ a.out
 2048-Photon/x86/o-g/2048-Photon_g
 
 # Build directories.
-build-*
-build*
+build-*/
+build*/
 
 # Mac OS X and macOS files.
 .DS_Store
