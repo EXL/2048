@@ -12,3 +12,5 @@ export GDK=/home/exl/Projects/SEGA/SGDK
 make -f $GDK/makefile.gen
 make -f $GDK/makefile_wine.gen
 ```
+
+Check 68000K version of NeXTSTEP!!!

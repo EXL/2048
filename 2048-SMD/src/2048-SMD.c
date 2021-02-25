@@ -49,9 +49,19 @@ static void drawText(void) {
 	strcat(strScore, strValue);
 
 	/* X and Y coordinates in tiles, 40x28. */
-	VDP_drawText("2048-SMD: https://github.com/EXL/2048", 2, 1);
-	VDP_drawText("Start/A/B to Restart!", 2, 26);
+	VDP_drawText("2048-SMD: https://github.com/EXL/2048/", 1, 1);
+	VDP_drawText("Start/A/B to Restart!", 1, 26);
 	VDP_drawText(strScore, 27, 26);
+}
+
+static void drawFinal(void) {
+	if (e_win) {
+		VDP_drawImage(BG_A, &GM_YouWon_Normal, 2, 6);
+		VDP_drawImage(BG_A, &GM_YouWon_Mirrored, 33, 6);
+	} else if (e_lose) {
+		VDP_drawImage(BG_A, &GM_GameOver_Normal, 2, 4);
+		VDP_drawImage(BG_A, &GM_GameOver_Mirrored, 33, 4);
+	}
 }
 
 static void joyEvent(u16 joy, u16 changed, u16 state) {
@@ -79,17 +89,6 @@ static void initSprites(void) {
 		}
 }
 
-static void displayDebugTextBoard(void) {
-	int y, x;
-	char tile[5];
-
-	for (y = 0; y < LINE_SIZE; ++y)
-		for (x = 0; x < LINE_SIZE; ++x) {
-			intToStr(e_board[x + y * LINE_SIZE], tile, 5);
-			VDP_drawText(tile, x * 6, y * 4);
-		}
-}
-
 int main(bool hardReset) {
 	e_init(BUTTON_START, BUTTON_LEFT, BUTTON_RIGHT, BUTTON_UP, BUTTON_DOWN);
 
@@ -107,6 +106,7 @@ int main(bool hardReset) {
 	while(TRUE) {
 		drawBoard();
 		drawText();
+		drawFinal();
 
 		SPR_update();
 		SYS_doVBlankProcess();
