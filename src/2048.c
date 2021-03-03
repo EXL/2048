@@ -7,8 +7,11 @@
 	#include <time.h>
 	#include <stdlib.h>
 #endif
-
 #include <string.h>
+
+#if defined(__THINK__) /* The Symantec THINK C IDE for Classic Mac OS. */
+#define inline
+#endif
 
 int e_board[BOARD_SIZE];
 int e_win, e_lose, e_score;
