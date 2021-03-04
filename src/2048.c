@@ -8,10 +8,8 @@
 	#include <stdlib.h>
 #endif
 #include <string.h>
-
-#if defined(__THINK__) /* The Symantec THINK C IDE for Classic Mac OS. */
-#define inline
-#endif
+#define E_RANDOM         (rand() % 100 + 1)
+#define E_TILE_AT(x, y)  (e_board[(x) + ((y) * LINE_SIZE)])
 
 int e_board[BOARD_SIZE];
 int e_win, e_lose, e_score;
@@ -19,10 +17,6 @@ int e_win, e_lose, e_score;
 static int *f_space[BOARD_SIZE];
 static int b_reg[LINE_SIZE], f_reg[LINE_SIZE];
 static int K_ESCAPE, K_LEFT, K_RIGHT, K_UP, K_DOWN;
-
-static inline int math_random() { return rand() % 100 + 1; }
-
-static inline int tile_at(int x, int y) { return e_board[x + y * LINE_SIZE]; }
 
 extern unsigned e_foreground(int value) { return (value < 16) ? COLOR_TEXT : COLOR_TEXT_LIGHT; }
 
@@ -60,7 +54,7 @@ static int compare(int *line_first, int *line_second) {
 static int *get_line(int index, int *reg) {
 	int i;
 	for (i = 0; i < LINE_SIZE; ++i)
-		reg[i] = tile_at(i, index);
+		reg[i] = E_TILE_AT(i, index);
 	return reg;
 }
 
@@ -115,7 +109,7 @@ static void add_tile(int n) {
 	for (i = 0; i < n; ++i) {
 		const int size = update_space();
 		if (size)
-			*f_space[(math_random() * size / 100) % size] = (math_random() < 90) ? 2 : 4;
+			*f_space[(E_RANDOM * size / 100) % size] = (E_RANDOM < 90) ? 2 : 4;
 	}
 }
 
@@ -164,8 +158,8 @@ static int can_move() {
 		return 1;
 	for (x = 0; x < LINE_SIZE; ++x)
 		for (y = 0; y < LINE_SIZE; ++y)
-			if ((x < (LINE_SIZE - 1) && tile_at(x, y) == tile_at(x + 1, y)) ||
-			    (y < (LINE_SIZE - 1) && tile_at(x, y) == tile_at(x, y + 1)))
+			if ((x < (LINE_SIZE - 1) && E_TILE_AT(x, y) == E_TILE_AT(x + 1, y)) ||
+			    (y < (LINE_SIZE - 1) && E_TILE_AT(x, y) == E_TILE_AT(x, y + 1)))
 				return 1;
 	return 0;
 }
