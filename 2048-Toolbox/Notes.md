@@ -5,3 +5,4 @@
 5. Menu submenu check +
 6. (c) sign -
 7. Link to tutorial -
+8. App Icon -
