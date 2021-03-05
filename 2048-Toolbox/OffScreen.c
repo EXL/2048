@@ -4,7 +4,6 @@
 static GrafPtr wmPort;
 static GrafPort offPort;
 static WindowPtr windowPtr;
-static WindowRecord windowRec;
 
 void MakeOffScreen() {
 	Rect windRect;
@@ -151,7 +150,7 @@ void InitAll(void) {
 	SetPort(wmPort);
 	SetEventMask(everyEvent);
 
-	windowPtr = GetNewWindow(128, &windowRec, (WindowPtr) -1L);
+	windowPtr = GetNewWindow(128, 0L, (WindowPtr) -1L);
 	MakeOffScreen();
 }
 
