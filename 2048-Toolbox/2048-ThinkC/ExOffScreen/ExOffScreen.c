@@ -104,8 +104,10 @@ void HandleActivate(EventRecord *event) {
 	WindowPtr whichWindow;
 	whichWindow = (WindowPtr) event->message;
 	if (whichWindow == windowPtr)
-		if (event->modifiers & activeFlag)
+		if (event->modifiers & activeFlag) {
+			EraseRect(&thePort->portRect);
 			SetPort(whichWindow);
+		}
 }
 
 void HandleEvent() {

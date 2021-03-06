@@ -13,3 +13,4 @@
 13. Refactor finish -
 14. First draw from Offscreen +
 15. Check Random() func +
+16. `mac2unix` notes -
