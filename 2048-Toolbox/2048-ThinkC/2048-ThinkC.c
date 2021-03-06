@@ -1,12 +1,17 @@
 #include "2048.h"
 
 #include <MacHeaders>
+#include <Constants.h>
+#include <QDOffscreen.h>
 
 #define RSRC 128
 #define KIND 'GW'
 #define MENU_APPLE 128
 #define MENU_GAME 129
 #define MENU_TILE 130
+#define TILE_SIZE 48
+#define TILE_MARGIN 12
+#define OFFCOORD(coord) (coord * (TILE_MARGIN + TILE_SIZE) + TILE_MARGIN)
 
 static MenuHandle appleMenu, gameMenu, tileMenu;
 
@@ -16,6 +21,12 @@ static void HandleEvents(void);
 static void AdjustMenus(void);
 static void HandleMenus(long select);
 static void HandleMouseDown(EventRecord *theEvent);
+
+class GameWindow;
+
+static GameWindow *window;
+
+static int roundRect = 1;
 
 class GameWindow : indirect {
 	Rect drag;
@@ -31,15 +42,25 @@ public:
 	short Drag(Point where);
 	short Update(void);
 	short Draw(void);
+	short DrawTile(int value, int x, int y);
+	short DrawFinal(void);
+	short Damage(void);
 };
 
 GameWindow::GameWindow(void) {
+	int fID;
 	theWindow = GetNewWindow(RSRC, NULL, (void *) -1L);
 	drag = screenBits.bounds;
 	((WindowPeek)theWindow)->windowKind = KIND;
 	SetWRefCon(theWindow, (long)this);
 	SetPort(theWindow);
 	ShowWindow(theWindow);
+	
+	GetFNum("\pChicago", &fID);
+	
+	TextFont(fID);
+//	TextFace(bold);
+//	TextMode(NoSrcCopy);
 }
 
 GameWindow::~GameWindow(void) {
@@ -81,8 +102,76 @@ short GameWindow::Update(void) {
 	return 0;
 }
 
+short GameWindow::Damage(void) {
+	InvalRect(&drag);
+	return 0;
+}
+
 short GameWindow::Draw(void) {
-	EraseRect(&drag);
+	int x, y;
+	
+	// EraseRect(&drag);
+	
+	for (y = 0; y < LINE_SIZE; ++y)
+		for (x = 0; x < LINE_SIZE; ++x)
+			DrawTile(e_board[x + y * LINE_SIZE], x, y);
+	DrawFinal();
+	
+	return 0;
+}
+
+short GameWindow::DrawTile(int value, int x, int y) {
+	Rect tileRect;
+	Rect tileShadowRect;
+	Str15 strNum;
+	const int xOffset = OFFCOORD(x);
+	const int yOffset = OFFCOORD(y);
+	const int zOffset = 4;
+	//RGBColor fgColor;
+	
+	SetRect(&tileRect, xOffset, yOffset, xOffset + TILE_SIZE, yOffset + TILE_SIZE);
+	SetRect(&tileShadowRect, xOffset + zOffset, 
+	yOffset + zOffset, xOffset + TILE_SIZE + zOffset, 
+	yOffset + TILE_SIZE + zOffset);
+		
+	ForeColor(blackColor);
+	
+	PenSize(2, 2);
+	
+	EraseRect(&tileRect);
+	EraseRect(&tileShadowRect);
+	
+	if (roundRect)
+		PaintRoundRect(&tileShadowRect, 20, 20);
+	else
+		PaintRect(&tileShadowRect);
+	
+	if (value) {
+		const short size = (value < 100) ? 20 : (value < 1000) ? 16 : 14;
+	//	ForeColor(whiteColor);
+			
+		
+		if (roundRect) {
+			EraseRoundRect(&tileRect, 20, 20);
+			FrameRoundRect(&tileRect, 20, 20);
+		} else {
+			EraseRect(&tileRect);
+			FrameRect(&tileRect);
+		}
+	
+		MoveTo(xOffset + 10, yOffset + 40);
+		NumToString(value, strNum);
+		
+		TextSize(size);
+		
+		DrawString(strNum);
+	}
+	
+	return 0;
+}
+
+short GameWindow::DrawFinal(void) {
+	// Draw
 	return 0;
 }
 
@@ -103,12 +192,20 @@ static void SetUpMenus(void) {
 	InsertMenu(appleMenu = GetMenu(MENU_APPLE), 0);
 	AddResMenu(appleMenu, 'DRVR');
 	InsertMenu(gameMenu = GetMenu(MENU_GAME), 0);
+	InsertMenu(tileMenu = GetMenu(MENU_TILE), hierMenu);
 	
 	DrawMenuBar();
 }
 
 static void AdjustMenus(void) {
 	// check mark here	
+	if (roundRect) {
+		CheckItem(tileMenu, 1, true);
+		CheckItem(tileMenu, 2, false);
+	} else {
+		CheckItem(tileMenu, 1, false);
+		CheckItem(tileMenu, 2, true);
+	}
 }
 
 static void HandleMenus(long select) {
@@ -132,19 +229,34 @@ static void HandleMenus(long select) {
 		case MENU_GAME: {
 			switch (menuItem) {
 				case 1: {
-					// e_key(reset);
+					e_key(kEscapeOrClear);
+					window->Damage();
 					break;
 				}
-				case 2: {
-					InsertMenu(tileMenu = GetMenu(MENU_TILE), 0);
-					break;
-				}
+//				case 2: {
+//					//InsertMenu(tileMenu = GetMenu(MENU_TILE), 0);
+//					break;
+//				}
 				/* case 3: */ // Separator.
 				case 4: {
 					ExitToShell();
 					break;
 				}
 			}
+			break;
+		}
+		case MENU_TILE: {
+			switch (menuItem) {
+				case 1: {
+					roundRect = 1;
+					break;
+				}
+				case 2: {
+					roundRect = 0;
+					break;
+				}
+			}
+			window->Damage();
 			break;
 		}
 	}
@@ -188,7 +300,7 @@ static void HandleEvents(void) {
 	
 	HiliteMenu(0); // ?
 	SystemTask(); // ?
-	// AdjustMenus();
+	AdjustMenus();
 	
 	if (GetNextEvent(everyEvent, &theEvent)) {
 		switch (theEvent.what) {
@@ -198,8 +310,12 @@ static void HandleEvents(void) {
 			}
 			case keyDown:
 			case autoKey: {
+				unsigned int theChar = theEvent.message & charCodeMask;
 				if ((theEvent.modifiers & cmdKey) != 0)
 					HandleMenus(MenuKey((char)(theEvent.message & charCodeMask)));
+				else
+					e_key(theChar);
+				window->Damage();
 				break;
 			}
 			case updateEvt: {
@@ -217,11 +333,10 @@ static void HandleEvents(void) {
 }
 
 int main(void) {
-	// e_init(kEscapeCharCode, kLeftArrowCharCode, kRightArrowCharCode, kUpArrowCharCode, kDownArrowCharCode);
+	e_init(kEscapeOrClear, kLeftCursor, kRightCursor, kUpCursor, kDownCursor);
 	InitAll();
 	SetUpMenus();
-	
-	new(GameWindow);
+	window = new(GameWindow);
 
 	for (;;)
 		HandleEvents();
