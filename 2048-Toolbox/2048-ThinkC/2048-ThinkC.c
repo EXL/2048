@@ -69,7 +69,7 @@ static void MakeOffScreen(void) {
 class GameWindow : indirect {
 	Rect drag;
 	WindowPtr theWindow;
-	
+
 public:
 	GameWindow(void);
 	~GameWindow(void);
@@ -95,9 +95,9 @@ GameWindow::GameWindow(void) {
 	SetWRefCon(theWindow, (long)this);
 	SetPort(theWindow);
 	ShowWindow(theWindow);
-	
+
 	GetFNum("\pChicago", &fID);
-	
+
 	TextFont(fID);
 //	TextFace(bold);
 //	TextMode(NoSrcCopy);
@@ -175,14 +175,14 @@ short GameWindow::OffScreenDrawing(void) {
 
 short GameWindow::Draw(void) {
 	int x, y;
-	
+
 	EraseRect(&thePort->portRect);
-	
+
 	for (y = 0; y < LINE_SIZE; ++y)
 		for (x = 0; x < LINE_SIZE; ++x)
 			DrawTile(e_board[x + y * LINE_SIZE], x, y);
 	DrawFinal();
-	
+
 	return 0;
 }
 
@@ -194,32 +194,32 @@ short GameWindow::DrawTile(int value, int x, int y) {
 	const int yOffset = OFFCOORD(y);
 	const int zOffset = 2;
 	//RGBColor fgColor;
-	
+
 	SetRect(&tileRect, xOffset, yOffset, xOffset + TILE_SIZE, yOffset + TILE_SIZE);
-	SetRect(&tileShadowRect, xOffset + zOffset, 
-	yOffset + zOffset, xOffset + TILE_SIZE + zOffset, 
+	SetRect(&tileShadowRect, xOffset + zOffset,
+	yOffset + zOffset, xOffset + TILE_SIZE + zOffset,
 	yOffset + TILE_SIZE + zOffset);
-		
+
 	ForeColor(blackColor);
-	
+
 	PenSize(2, 2);
-	
+
 	EraseRect(&tileRect);
 	EraseRect(&tileShadowRect);
-	
+
 	if (roundRect)
 		PaintRoundRect(&tileShadowRect, 20, 20);
 	else
 		PaintRect(&tileShadowRect);
-	
+
 	if (value) {
-		const short size = 
-			(value < 10) ? 30 : (value < 100) ? 24 : (value < 1000) ? 18 : 12;	
-		const short xO = 
+		const short size =
+			(value < 10) ? 30 : (value < 100) ? 24 : (value < 1000) ? 18 : 12;
+		const short xO =
 			(value < 10) ? 13 : (value < 100) ? 8 : (value < 1000) ? 7 : 8;
-		const short yO = 
+		const short yO =
 			(value < 10) ? 34 : (value < 100) ? 33 : (value < 1000) ? 30 : 28;
-		
+
 		if (roundRect) {
 			EraseRoundRect(&tileRect, 20, 20);
 			FrameRoundRect(&tileRect, 20, 20);
@@ -227,15 +227,15 @@ short GameWindow::DrawTile(int value, int x, int y) {
 			EraseRect(&tileRect);
 			FrameRect(&tileRect);
 		}
-	
+
 		MoveTo(xOffset + xO, yOffset + yO);
 		NumToString(value, strNum);
-		
+
 		TextSize(size);
-		
+
 		DrawString(strNum);
 	}
-	
+
 	return 0;
 }
 
@@ -243,7 +243,7 @@ short GameWindow::DrawFinal(void) {
 	char strScore[16];
 	const int height = theWindow->portRect.bottom - theWindow->portRect.top;
 	const int width = theWindow->portRect.right - theWindow->portRect.left;
-	const int w = 
+	const int w =
 		(e_score < 10) ? 52 :
 		(e_score < 100) ? 60 :
 		(e_score < 1000) ? 67 :
@@ -254,9 +254,9 @@ short GameWindow::DrawFinal(void) {
 		Rect scoreRect;
 		int i;
 		SetRect(&text, 30, 100, 30 + 197, 100 + 50);
-		SetRect(&scoreRect, 
+		SetRect(&scoreRect,
 			TILE_MARGIN - 5,
-			height - 10 - 13, 
+			height - 10 - 13,
 			width - TILE_MARGIN + 5, height - 5);
 		EraseRect(&text);
 		FrameRect(&text);
@@ -274,16 +274,16 @@ short GameWindow::DrawFinal(void) {
 	}
 
 	sprintf(strScore, "Score: %d", e_score);
-	
+
 	TextSize(12);
-	
+
 	MoveTo(TILE_MARGIN, height - 10);
 	DrawString("\pESC to Restart!");
-	
+
 	MoveTo(width - TILE_MARGIN - w, height - 10);
-	
+
 	DrawString(c2pstr(strScore));
-	
+
 	return 0;
 }
 
@@ -293,7 +293,7 @@ pascal void restartProc(void) {
 
 static void InitAll(void) {
 	MaxApplZone(); // ?
-	
+
 	InitGraf(&thePort);
 	InitFonts();
 	InitWindows();
@@ -301,7 +301,7 @@ static void InitAll(void) {
 	TEInit(); // ?
 	InitDialogs(restartProc);
 	InitCursor();
-	
+
 	FlushEvents(everyEvent, 0);
 	GetWMgrPort(&wmPort);
 	SetPort(wmPort);
@@ -313,12 +313,12 @@ static void SetUpMenus(void) {
 	AddResMenu(appleMenu, 'DRVR');
 	InsertMenu(gameMenu = GetMenu(MENU_GAME), 0);
 	InsertMenu(tileMenu = GetMenu(MENU_TILE), hierMenu);
-	
+
 	DrawMenuBar();
 }
 
 static void AdjustMenus(void) {
-	// check mark here	
+	// check mark here
 	if (roundRect) {
 		CheckItem(tileMenu, 1, true);
 		CheckItem(tileMenu, 2, false);
@@ -337,7 +337,7 @@ static void HandleMenus(long select) {
 	short menuItem = LoWord(select);
 	Str255 menuName;
 	GrafPtr savePort;
-	
+
 	switch (menuId) {
 		case MENU_APPLE: {
 			if (menuItem == 1) {
@@ -426,11 +426,11 @@ static void HandleMouseDown(EventRecord *theEvent) {
 
 static void HandleEvents(void) {
 	EventRecord theEvent;
-	
+
 	HiliteMenu(0); // ?
 	SystemTask(); // ?
 	AdjustMenus();
-	
+
 	if (GetNextEvent(everyEvent, &theEvent)) {
 		switch (theEvent.what) {
 			case mouseDown: {
@@ -473,8 +473,8 @@ int main(void) {
 
 	for (;;)
 		HandleEvents();
-	
+
 	delete window;
-	
+
 	return 0;
 }
