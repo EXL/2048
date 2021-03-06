@@ -10,11 +10,11 @@
 10. Scores Game Over / win +
 11. Window offset down height +
 12. Bump date +
-13. Refactor finish -
+13. Refactor finish +
 14. First draw from Offscreen +
 15. Check Random() func +
 16. `mac2unix` notes -
 17. Create Diskette Image with source code -
 18. Toolbox and QuickDraw notes -
 19. Casts style in Engine +
-20. SysBeep() func -
+20. SysBeep() func +

@@ -1,9 +1,18 @@
+/*
+ * Useful information and simple tutorial:
+ * 	https://nondisplayable.ca/2018/05/23/what-think-c-doesnt-tell-you.html
+ *
+ * Offscreen drawing technique was copied from Flight Simulator demonstration program:
+ * 	http://ftp.knoppix.nl/infomac/_Development/src/flight-simulator-20-c.hqx
+ * 	Flight Simulator (c) Chris Moll, 1992, chris@carnival.lbl.gov
+ */
+
 #include "2048.h"
 
 #include <MacHeaders>
-#include <Constants.h> /* For Macintosh keycodes. */
+#include <Constants.h>       /* For Macintosh keycodes. */
 
-#include <cstdio.h>    /* For sprintf() function. */
+#include <stdio.h>           /* For sprintf() function. */
 
 #define RSRC_ID              128
 #define MENU_APPLE           128
@@ -42,8 +51,8 @@ public:
 	void Select(void);
 	void Close(Point aPoint);
 
-	void Activate(short aActive);
-	void Update(EventRecord *aEvent);
+	void Activate(void);
+	void Update(void);
 	void Damage(void);
 
 	void OffScreenDraw(void);
@@ -77,26 +86,23 @@ public:
 	void AdjustMenus(void);
 
 	void HandleEvents(void);
-	void HandleMouseDown(EventRecord *aEvent);
+	void HandleMouse(EventRecord *aEvent);
+	void HandleKeys(EventRecord *aEvent);
 	void HandleMenus(long aSelect);
 	void HandleAppleMenu(short aItem);
 };
 
 pascal void RestartProc(void) {
+	SysBeep(60);
 	ExitToShell();
 }
 
 Window::Window(void) {
 	qRoundRect = qOffScreenDrawing = true;
-
 	pWin = GetNewWindow(RSRC_ID, NULL, (void *) -1L);
 	rectScr = screenBits.bounds;
 	rectWin = pWin->portRect;
-
-	SetWRefCon(pWin, (long) this); // TODO: ???
 	SetPort(pWin);
-	ShowWindow(pWin); // TODO: ???
-
 	SetFont();
 }
 
@@ -110,7 +116,6 @@ void Window::SetFont(void) {
 	TextFont(fontID);
 }
 
-// TODO: Comment here.
 void Window::InitOffScreenDrawing(void) {
 	int bytes;
 	Rect r;
@@ -131,7 +136,7 @@ void Window::InitOffScreenDrawing(void) {
 	bytes = ((r.right + 15) / 16) * 2;
 	space = NewPtr((long) bytes * r.bottom);
 	if (MemErr) {
-		SysBeep(1); // TODO: Check.
+		SysBeep(30);
 		return;
 	}
 
@@ -154,27 +159,18 @@ void Window::Close(Point aPoint) {
 		ExitToShell();
 }
 
-void Window::Activate(short aActive) {
-	if (aActive) // TODO: Check active?
-		SetPort(pWin);
+void Window::Activate(void) {
+	SetPort(pWin);
 }
 
-void Window::Update(EventRecord *aEvent) {
-	GrafPtr savePort;
-	WindowPtr whichWindow; // TODO: ??
-	whichWindow = (WindowPtr) aEvent->message;
-	BeginUpdate(whichWindow);
-	GetPort(&savePort);
-	SetPort(whichWindow);
-	if (whichWindow == pWin) {
-		EraseRect(&rectWin);
-		if (qOffScreenDrawing)
-			OffScreenDraw();
-		else
-			InScreenDraw();
-	}
-	EndUpdate(whichWindow);
-	SetPort(savePort);
+void Window::Update(void) {
+	BeginUpdate(pWin);
+	EraseRect(&rectWin);
+	if (qOffScreenDrawing)
+		OffScreenDraw();
+	else
+		InScreenDraw();
+	EndUpdate(pWin);
 }
 
 void Window::Damage(void) {
@@ -198,7 +194,6 @@ void Window::OffScreenDraw(void) {
 
 void Window::InScreenDraw(void) {
 	int x, y;
-	EraseRect(&rectWin); // TODO???????????????????
 	for (y = 0; y < LINE_SIZE; ++y)
 		for (x = 0; x < LINE_SIZE; ++x)
 			DrawTile(e_board[x + y * LINE_SIZE], x, y);
@@ -324,14 +319,14 @@ Application::~Application(void) {
 }
 
 void Application::InitMac(void) {
-	MaxApplZone(); // TODO: ???
+	MaxApplZone();
 
 	InitGraf(&thePort);
 	InitFonts();
 	InitWindows();
 	InitMenus();
-	TEInit(); // TODO: ???
-	InitDialogs(RestartProc); // TODO: ???
+	TEInit();
+	InitDialogs(RestartProc);
 	InitCursor();
 
 	FlushEvents(everyEvent, 0);
@@ -354,8 +349,8 @@ void Application::InitWindow(void) {
 
 void Application::Run(void) {
 	for (;;) {
-		HiliteMenu(0); // TODO: WTF?
-		SystemTask(); // TODO: Comment here?
+		SystemTask();
+		HiliteMenu(0);
 		AdjustMenus();
 		HandleEvents();
 	}
@@ -372,34 +367,27 @@ void Application::HandleEvents(void) {
 	if (GetNextEvent(everyEvent, &event)) {
 		switch (event.what) {
 			case mouseDown: {
-				HandleMouseDown(&event);
+				HandleMouse(&event);
 				break;
 			}
 			case keyDown:
 			case autoKey: {
-				const char key = event.message & charCodeMask;
-				if ((event.modifiers & cmdKey) != 0)
-					HandleMenus(MenuKey(key));
-				else
-					e_key((unsigned int) key);
-				pWindow->Damage();
+				HandleKeys(&event);
 				break;
 			}
 			case updateEvt: {
-				//if (((WindowPeek) event.message)->windowKind == WIND_KIND)
-					pWindow->Update(&event); // TODO: Why event?
+				pWindow->Update();
 				break;
 			}
 			case activateEvt: {
-				//if (((WindowPeek) event.message)->windowKind == WIND_KIND)
-					pWindow->Activate(event.modifiers & 0x01); // TODO: Why this?
+				pWindow->Activate();
 				break;
 			}
 		}
 	}
 }
 
-void Application::HandleMouseDown(EventRecord *aEvent) {
+void Application::HandleMouse(EventRecord *aEvent) {
 	WindowPeek peek;
 	const short where = FindWindow(aEvent->where, &peek);
 	switch (where) {
@@ -412,21 +400,34 @@ void Application::HandleMouseDown(EventRecord *aEvent) {
 			break;
 		}
 		case inDrag: {
-			//if (peek->windowKind == WIND_KIND)
 			pWindow->Drag(aEvent->where);
 			break;
 		}
 		case inContent: {
-			//if (peek->windowKind == WIND_KIND)
-				pWindow->Select();
+			pWindow->Select();
 			break;
 		}
 		case inGoAway: {
-			//if (peek->windowKind == WIND_KIND)
 			pWindow->Close(aEvent->where);
 			break;
 		}
 	}
+}
+
+void Application::HandleKeys(EventRecord *aEvent) {
+	const char key = aEvent->message & charCodeMask;
+	if ((aEvent->modifiers & cmdKey) != 0)
+		HandleMenus(MenuKey(key));
+	else
+		switch (key) {
+			case 'r': { e_key(kEscapeOrClear); break; }
+			case 'w': { e_key(kUpCursor); break; }
+			case 'a': { e_key(kLeftCursor); break; }
+			case 's': { e_key(kDownCursor); break; }
+			case 'd': { e_key(kRightCursor); break; }
+			default: { e_key((unsigned int) key); break; }
+		}
+	pWindow->Damage();
 }
 
 void Application::HandleMenus(long aSelect) {
