@@ -2,7 +2,8 @@
 
 #include <MacHeaders>
 #include <Constants.h>
-#include <QDOffscreen.h>
+
+#include <stdio.h>
 
 #define RSRC 128
 #define KIND 'GW'
@@ -15,18 +16,55 @@
 
 static MenuHandle appleMenu, gameMenu, tileMenu;
 
+pascal void restartProc(void);
 static void InitAll(void);
 static void SetUpMenus(void);
 static void HandleEvents(void);
 static void AdjustMenus(void);
 static void HandleMenus(long select);
 static void HandleMouseDown(EventRecord *theEvent);
+static void MakeOffScreen(void);
 
 class GameWindow;
 
+static GrafPtr wmPort;
 static GameWindow *window;
+static WindowPtr windowPtr;
+static GrafPort offPort;
 
 static int roundRect = 1;
+static int offScreenDrawing = 1;
+
+/* Make Offscreen drawing fucntion by Chris Moll: chris@carnival.lbl.gov */
+/* Copied from Flight Simulator demonstration program: */
+/* 	http://ftp.knoppix.nl/infomac/_Development/src/flight-simulator-20-c.hqx */
+static void MakeOffScreen(void) {
+	Rect windRect;
+	QDPtr newSpace;
+	int rwBytes;
+
+	windRect = windowPtr->portRect;
+	windRect.bottom = windRect.bottom - windRect.top;
+	windRect.top = 0;
+	windRect.right = windRect.right - windRect.left;
+	windRect.left = 0;
+
+	OpenPort(&offPort);
+	offPort.portRect = windRect;
+	offPort.portBits.bounds = windRect;
+	SetRectRgn(offPort.visRgn, 0, 0, windRect.right, windRect.bottom);
+	SetRectRgn(offPort.clipRgn, 0, 0, windRect.right, windRect.bottom);
+
+	rwBytes = ((windRect.right + 15) / 16) * 2;
+	newSpace = NewPtr((long) rwBytes * windRect.bottom);
+	if (MemErr)
+		return;
+
+	offPort.portBits.rowBytes = rwBytes;
+	offPort.portBits.baseAddr = newSpace;
+	SetPort(&offPort);
+	EraseRect(&offPort.portRect);
+}
 
 class GameWindow : indirect {
 	Rect drag;
@@ -40,7 +78,7 @@ public:
 	short Select(void);
 	short TrackClose(Point where);
 	short Drag(Point where);
-	short Update(void);
+	short Update(EventRecord *event);
 	short Draw(void);
 	short DrawTile(int value, int x, int y);
 	short DrawFinal(void);
@@ -50,6 +88,7 @@ public:
 GameWindow::GameWindow(void) {
 	int fID;
 	theWindow = GetNewWindow(RSRC, NULL, (void *) -1L);
+	windowPtr = theWindow;
 	drag = screenBits.bounds;
 	((WindowPeek)theWindow)->windowKind = KIND;
 	SetWRefCon(theWindow, (long)this);
@@ -65,11 +104,10 @@ GameWindow::GameWindow(void) {
 
 GameWindow::~GameWindow(void) {
 	DisposeWindow(theWindow);
-	delete this;
 }
 
 short GameWindow::Activate(short active) {
-	DrawGrowIcon(theWindow);
+	//DrawGrowIcon(theWindow);
 	if (active)
 		SetPort(theWindow);
 	return 0;
@@ -91,26 +129,46 @@ short GameWindow::Drag(Point where) {
 	return 0;
 }
 
-short GameWindow::Update(void) {
-	WindowPtr savePort;
+short GameWindow::Update(EventRecord *event) {
+	GrafPtr savePort;
+	WindowPtr whichWindow;
+	whichWindow = (WindowPtr) event->message;
+	BeginUpdate(whichWindow);
 	GetPort(&savePort);
-	SetPort(theWindow);
-	BeginUpdate(theWindow);
-	Draw();
-	EndUpdate(theWindow);
+	SetPort(whichWindow);
+	if (whichWindow == windowPtr) {
+		EraseRect(&whichWindow->portRect);
+		Draw();
+	}
+	EndUpdate(whichWindow);
 	SetPort(savePort);
 	return 0;
 }
 
 short GameWindow::Damage(void) {
-	InvalRect(&drag);
+	if (offScreenDrawing) {
+		SetPort(&offPort);
+		EraseRect(&thePort->portRect);
+		Draw();
+		CopyBits(
+			&offPort.portBits,
+			&windowPtr->portBits,
+			&offPort.portRect,
+			&windowPtr->portRect,
+			srcCopy,
+			0L
+		);
+		SetPort(windowPtr);
+	} else {
+		InvalRect(&drag);
+	}
 	return 0;
 }
 
 short GameWindow::Draw(void) {
 	int x, y;
 	
-	// EraseRect(&drag);
+	EraseRect(&thePort->portRect);
 	
 	for (y = 0; y < LINE_SIZE; ++y)
 		for (x = 0; x < LINE_SIZE; ++x)
@@ -126,7 +184,7 @@ short GameWindow::DrawTile(int value, int x, int y) {
 	Str15 strNum;
 	const int xOffset = OFFCOORD(x);
 	const int yOffset = OFFCOORD(y);
-	const int zOffset = 4;
+	const int zOffset = 2;
 	//RGBColor fgColor;
 	
 	SetRect(&tileRect, xOffset, yOffset, xOffset + TILE_SIZE, yOffset + TILE_SIZE);
@@ -147,9 +205,12 @@ short GameWindow::DrawTile(int value, int x, int y) {
 		PaintRect(&tileShadowRect);
 	
 	if (value) {
-		const short size = (value < 100) ? 20 : (value < 1000) ? 16 : 14;
-	//	ForeColor(whiteColor);
-			
+		const short size = 
+			(value < 10) ? 30 : (value < 100) ? 24 : (value < 1000) ? 18 : 12;	
+		const short xO = 
+			(value < 10) ? 13 : (value < 100) ? 8 : (value < 1000) ? 7 : 8;
+		const short yO = 
+			(value < 10) ? 34 : (value < 100) ? 33 : (value < 1000) ? 30 : 28;
 		
 		if (roundRect) {
 			EraseRoundRect(&tileRect, 20, 20);
@@ -159,7 +220,7 @@ short GameWindow::DrawTile(int value, int x, int y) {
 			FrameRect(&tileRect);
 		}
 	
-		MoveTo(xOffset + 10, yOffset + 40);
+		MoveTo(xOffset + xO, yOffset + yO);
 		NumToString(value, strNum);
 		
 		TextSize(size);
@@ -171,8 +232,46 @@ short GameWindow::DrawTile(int value, int x, int y) {
 }
 
 short GameWindow::DrawFinal(void) {
-	// Draw
+	char strScore[16];
+	const int height = theWindow->portRect.bottom - theWindow->portRect.top;
+	const int width = theWindow->portRect.right - theWindow->portRect.left;
+	const int w = 
+		(e_score < 10) ? 52 :
+		(e_score < 100) ? 60 :
+		(e_score < 1000) ? 67 :
+		(e_score < 10000) ? 75 : 84;
+
+	if (e_win || e_lose) {
+		Rect text;
+		int i;
+		SetRect(&text, 30, 100, 30 + 197, 100 + 50);
+		EraseRect(&text);
+		FrameRect(&text);
+		PenSize(1, 1);
+		for (i = 0; i < width; i += 2) {
+			MoveTo(i, 0);
+			LineTo(i, height);
+		}
+		TextSize(30);
+		MoveTo((e_win) ? 52 : 34, 135);
+		DrawString((e_win) ? "\pYou Won!" : "\pGame Over!");
+	}
+
+	sprintf(strScore, "Score: %d", e_score);
+	
+	TextSize(12);
+	
+	MoveTo(TILE_MARGIN, height - 10);
+	DrawString("\pESC to Restart!");
+	
+	MoveTo(width - TILE_MARGIN - w, height - 10); 
+	DrawString(c2pstr(strScore));
+	
 	return 0;
+}
+
+pascal void restartProc(void) {
+	ExitToShell();
 }
 
 static void InitAll(void) {
@@ -180,12 +279,16 @@ static void InitAll(void) {
 	
 	InitGraf(&thePort);
 	InitFonts();
-	FlushEvents(everyEvent, 0);
 	InitWindows();
 	InitMenus();
 	TEInit(); // ?
-	InitDialogs(0L);
+	InitDialogs(restartProc);
 	InitCursor();
+	
+	FlushEvents(everyEvent, 0);
+	GetWMgrPort(&wmPort);
+	SetPort(wmPort);
+	SetEventMask(everyEvent);
 }
 
 static void SetUpMenus(void) {
@@ -206,6 +309,10 @@ static void AdjustMenus(void) {
 		CheckItem(tileMenu, 1, false);
 		CheckItem(tileMenu, 2, true);
 	}
+	if (offScreenDrawing)
+		CheckItem(gameMenu, 4, true);
+	else
+		CheckItem(gameMenu, 4, false);
 }
 
 static void HandleMenus(long select) {
@@ -239,6 +346,11 @@ static void HandleMenus(long select) {
 //				}
 				/* case 3: */ // Separator.
 				case 4: {
+					offScreenDrawing = !offScreenDrawing;
+					window->Damage();
+					break;
+				}
+				case 6: {
 					ExitToShell();
 					break;
 				}
@@ -283,8 +395,8 @@ static void HandleMouseDown(EventRecord *theEvent) {
 			if (wp->windowKind == KIND)
 				if (wp != (WindowPeek)FrontWindow())
 					((GameWindow *)(((WindowPeek)wp)->refCon))->Select();
-				else
-					((GameWindow *)(((WindowPeek)wp)->refCon))->Update();
+				//else
+				//	((GameWindow *)(((WindowPeek)wp)->refCon))->Update(theEvent);
 			break;
 		}
 		case inGoAway: {
@@ -320,7 +432,7 @@ static void HandleEvents(void) {
 			}
 			case updateEvt: {
 				if (((WindowPeek)theEvent.message)->windowKind == KIND)
-					((GameWindow *)(((WindowPeek)theEvent.message)->refCon))->Update();
+					((GameWindow *)(((WindowPeek)theEvent.message)->refCon))->Update(&theEvent);
 				break;
 			}
 			case activateEvt: {
@@ -332,14 +444,20 @@ static void HandleEvents(void) {
 	}
 }
 
+
+/* Tutorial:
+ * https://nondisplayable.ca/2018/05/23/what-think-c-doesnt-tell-you.html */
 int main(void) {
 	e_init(kEscapeOrClear, kLeftCursor, kRightCursor, kUpCursor, kDownCursor);
 	InitAll();
 	SetUpMenus();
 	window = new(GameWindow);
+	MakeOffScreen();
 
 	for (;;)
 		HandleEvents();
+	
+	delete window;
 	
 	return 0;
 }
