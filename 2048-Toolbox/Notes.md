@@ -14,3 +14,7 @@
 14. First draw from Offscreen +
 15. Check Random() func +
 16. `mac2unix` notes -
+17. Create Diskette Image with source code -
+18. Toolbox and QuickDraw notes -
+19. Casts style in Engine +
+20. SysBeep() func -
