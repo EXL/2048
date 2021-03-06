@@ -1,6 +1,6 @@
 #include "2048.h"
 
-#if defined(mc68000) && !defined(NeXT) /* Sega Mega Drive and Sega Genesis platform only. */
+#if defined(mc68000) && !defined(NeXT) /* GCC on Sega Mega Drive and Sega Genesis platform. */
 	#include <genesis.h>
 	#define rand random
 #else
@@ -8,7 +8,12 @@
 	#include <stdlib.h>
 #endif
 #include <string.h>
-#define E_RANDOM         (rand() % 100 + 1)
+
+#if defined(THINK_C) /* Symantec THINK C IDE on Classic Mac OS platform. */
+#define rand Random
+#endif
+
+#define E_RANDOM         ((unsigned int) rand() % 100 + 1)
 #define E_TILE_AT(x, y)  (e_board[(x) + ((y) * LINE_SIZE)])
 
 int e_board[BOARD_SIZE];
@@ -198,8 +203,10 @@ extern void e_key(int keycode) {
 }
 
 extern void e_init(int esc_keycode, int left_keycode, int right_keycode, int up_keycode, int down_keycode) {
-#if !defined(mc68000) || defined(NeXT) /* Sega Mega Drive and Sega Genesis platform only. */
+#if !defined(mc68000) || defined(NeXT) /* GCC on Sega Mega Drive and Sega Genesis platform. */
+#if !defined(THINK_C) /* Symantec THINK C IDE on Classic Mac OS platform. */
 	srand((unsigned int)time(NULL));
+#endif
 #endif
 	K_ESCAPE = esc_keycode;
 	K_LEFT = left_keycode;

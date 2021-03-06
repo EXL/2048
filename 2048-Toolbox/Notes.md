@@ -7,6 +7,9 @@
 7. Link to tutorial +
 8. App Icon +
 9. OffScreen Drawing + Comment about fuction author +
-10. Scores Game Over / win -
-11. Window offset down height -
-12. Bump date -
+10. Scores Game Over / win +
+11. Window offset down height +
+12. Bump date +
+13. Refactor finish -
+14. First draw from Offscreen +
+15. Check Random() func +
