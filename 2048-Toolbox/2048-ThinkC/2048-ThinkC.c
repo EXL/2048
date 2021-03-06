@@ -83,6 +83,7 @@ public:
 	short DrawTile(int value, int x, int y);
 	short DrawFinal(void);
 	short Damage(void);
+	short OffScreenDrawing(void);
 };
 
 GameWindow::GameWindow(void) {
@@ -138,7 +139,10 @@ short GameWindow::Update(EventRecord *event) {
 	SetPort(whichWindow);
 	if (whichWindow == windowPtr) {
 		EraseRect(&whichWindow->portRect);
-		Draw();
+		if (offScreenDrawing)
+			OffScreenDrawing();
+		else
+			Draw();
 	}
 	EndUpdate(whichWindow);
 	SetPort(savePort);
@@ -147,22 +151,26 @@ short GameWindow::Update(EventRecord *event) {
 
 short GameWindow::Damage(void) {
 	if (offScreenDrawing) {
-		SetPort(&offPort);
-		EraseRect(&thePort->portRect);
-		Draw();
-		CopyBits(
-			&offPort.portBits,
-			&windowPtr->portBits,
-			&offPort.portRect,
-			&windowPtr->portRect,
-			srcCopy,
-			0L
-		);
-		SetPort(windowPtr);
+		OffScreenDrawing();
 	} else {
 		InvalRect(&drag);
 	}
 	return 0;
+}
+
+short GameWindow::OffScreenDrawing(void) {
+	SetPort(&offPort);
+	EraseRect(&thePort->portRect);
+	Draw();
+	CopyBits(
+		&offPort.portBits,
+		&windowPtr->portBits,
+		&offPort.portRect,
+		&windowPtr->portRect,
+		srcCopy,
+		0L
+	);
+	SetPort(windowPtr);
 }
 
 short GameWindow::Draw(void) {
@@ -243,8 +251,13 @@ short GameWindow::DrawFinal(void) {
 
 	if (e_win || e_lose) {
 		Rect text;
+		Rect scoreRect;
 		int i;
 		SetRect(&text, 30, 100, 30 + 197, 100 + 50);
+		SetRect(&scoreRect, 
+			TILE_MARGIN - 5,
+			height - 10 - 13, 
+			width - TILE_MARGIN + 5, height - 5);
 		EraseRect(&text);
 		FrameRect(&text);
 		PenSize(1, 1);
@@ -255,6 +268,9 @@ short GameWindow::DrawFinal(void) {
 		TextSize(30);
 		MoveTo((e_win) ? 52 : 34, 135);
 		DrawString((e_win) ? "\pYou Won!" : "\pGame Over!");
+		EraseRect(&scoreRect);
+		PenSize(2, 2);
+		FrameRect(&scoreRect);
 	}
 
 	sprintf(strScore, "Score: %d", e_score);
@@ -264,7 +280,8 @@ short GameWindow::DrawFinal(void) {
 	MoveTo(TILE_MARGIN, height - 10);
 	DrawString("\pESC to Restart!");
 	
-	MoveTo(width - TILE_MARGIN - w, height - 10); 
+	MoveTo(width - TILE_MARGIN - w, height - 10);
+	
 	DrawString(c2pstr(strScore));
 	
 	return 0;
