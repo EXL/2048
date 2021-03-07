@@ -1,4 +1,7 @@
 /*
+ * 2048-ThinkC.c: UI implementation of puzzle game "2048" for Classic Mac OS.
+ * IDE: Symantec THINK C 5.0.2
+ *
  * Useful information and simple tutorial:
  * 	https://nondisplayable.ca/2018/05/23/what-think-c-doesnt-tell-you.html
  *
@@ -32,14 +35,14 @@
 #define OFFSET_COORD(coord)  (coord * (TILE_MARGIN + TILE_SIZE) + TILE_MARGIN)
 
 class Window : indirect {
-	WindowPtr pWin;
+	WindowPtr pWinPtr;
 	GrafPort  pOffScr;
 
 	Rect rectScr;
 	Rect rectWin;
 
-	short qRoundRect;
-	short qOffScreenDrawing;
+	Boolean qRoundRect;
+	Boolean qOffScreenDrawing;
 public:
 	Window(void);
 	~Window(void);
@@ -57,15 +60,14 @@ public:
 
 	void OffScreenDraw(void);
 	void InScreenDraw(void);
-
 	void DrawTile(int aVal, int aX, int aY);
 	void DrawFinal(void);
 	void DrawEnd(int aW, int aH);
 
-	short IsRoundRect(void);
-	void SetRoundRect(short aRoundRect);
-	short IsOffScreenDrawing(void);
-	void SetOffScreenDrawing(short aOffScreenDrawing);
+	Boolean IsRoundRect(void);
+	void SetRoundRect(Boolean aRoundRect);
+	Boolean IsOffScreenDrawing(void);
+	void SetOffScreenDrawing(Boolean aOffScreenDrawing);
 };
 
 class Application : indirect {
@@ -84,7 +86,6 @@ public:
 
 	void Run(void);
 	void AdjustMenus(void);
-
 	void HandleEvents(void);
 	void HandleMouse(EventRecord *aEvent);
 	void HandleKeys(EventRecord *aEvent);
@@ -99,15 +100,16 @@ pascal void RestartProc(void) {
 
 Window::Window(void) {
 	qRoundRect = qOffScreenDrawing = true;
-	pWin = GetNewWindow(RSRC_ID, NULL, (void *) -1L);
+	pWinPtr = GetNewWindow(RSRC_ID, NULL, (void *) -1L);
 	rectScr = screenBits.bounds;
-	rectWin = pWin->portRect;
-	SetPort(pWin);
+	rectWin = pWinPtr->portRect;
+
+	SetPort(pWinPtr);
 	SetFont();
 }
 
 Window::~Window(void) {
-	DisposeWindow(pWin);
+	DisposeWindow(pWinPtr);
 }
 
 void Window::SetFont(void) {
@@ -120,8 +122,7 @@ void Window::InitOffScreenDrawing(void) {
 	int bytes;
 	Rect r;
 	QDPtr space;
-
-	r = pWin->portRect;
+	r = pWinPtr->portRect;
 	r.bottom = r.bottom - r.top;
 	r.top = 0;
 	r.right = r.right - r.left;
@@ -147,36 +148,33 @@ void Window::InitOffScreenDrawing(void) {
 }
 
 void Window::Drag(Point aPoint, WindowPtr aWinPtr) {
-	if (pWin == aWinPtr)
-		DragWindow(pWin, aPoint, &rectScr);
+	if (pWinPtr == aWinPtr)
+		DragWindow(pWinPtr, aPoint, &rectScr);
 }
 
 void Window::Select(WindowPtr aWinPtr) {
-	if (pWin == aWinPtr)
-		if (pWin != FrontWindow())
-			SelectWindow(pWin);
-		else
-			Damage();
+	if ((pWinPtr == aWinPtr) && (pWinPtr != FrontWindow()))
+		SelectWindow(pWinPtr);
 }
 
 void Window::Close(Point aPoint, WindowPtr aWinPtr) {
-	if ((pWin == aWinPtr) && TrackGoAway(pWin, aPoint))
+	if ((pWinPtr == aWinPtr) && TrackGoAway(pWinPtr, aPoint))
 		ExitToShell();
 }
 
 void Window::Activate(void) {
-	SetPort(pWin);
+	SetPort(pWinPtr);
 }
 
 void Window::Update(void) {
-	BeginUpdate(pWin);
-	EraseRect(&rectWin);
-	if (qOffScreenDrawing && pWin == FrontWindow()) {
+	BeginUpdate(pWinPtr);
+
+	if (qOffScreenDrawing && pWinPtr == FrontWindow())
 		OffScreenDraw();
-	}
 	else
 		InScreenDraw();
-	EndUpdate(pWin);
+
+	EndUpdate(pWinPtr);
 }
 
 void Window::Damage(void) {
@@ -188,18 +186,20 @@ void Window::Damage(void) {
 
 void Window::OffScreenDraw(void) {
 	SetPort(&pOffScr);
-	EraseRect(&rectWin);
+
 	InScreenDraw();
 	CopyBits(
-		&pOffScr.portBits, &pWin->portBits,
-		&pOffScr.portRect, &pWin->portRect,
+		&pOffScr.portBits, &pWinPtr->portBits,
+		&pOffScr.portRect, &pWinPtr->portRect,
 		srcCopy, NULL
 	);
-	SetPort(pWin);
+
+	SetPort(pWinPtr);
 }
 
 void Window::InScreenDraw(void) {
 	int x, y;
+	EraseRect(&rectWin);
 	for (y = 0; y < LINE_SIZE; ++y)
 		for (x = 0; x < LINE_SIZE; ++x)
 			DrawTile(e_board[x + y * LINE_SIZE], x, y);
@@ -212,13 +212,13 @@ void Window::DrawTile(int aVal, int aX, int aY) {
 	Str15 strValue;
 	const int i = OFFSET_COORD(aX);
 	const int j = OFFSET_COORD(aY);
-
 	SetRect(&rectTile, i, j, i + TILE_SIZE, j + TILE_SIZE);
 	SetRect(
 		&rectShadow,
 		i + OFFSET_SHADOW, j + OFFSET_SHADOW,
 		i + TILE_SIZE + OFFSET_SHADOW, j + TILE_SIZE + OFFSET_SHADOW
 	);
+
 	ForeColor(blackColor);
 	PenSize(2, 2);
 	EraseRect(&rectTile);
@@ -263,6 +263,7 @@ void Window::DrawFinal(void) {
 
 	if (e_win || e_lose)
 		DrawEnd(w, h);
+
 	sprintf(strScore, "Score: %d", e_score);
 	TextSize(12);
 	MoveTo(TILE_MARGIN, h - 10);
@@ -275,13 +276,13 @@ void Window::DrawEnd(int aW, int aH) {
 	int i;
 	Rect rectText;
 	Rect rectStatus;
-
 	SetRect(&rectText, 30, 100, 30 + 197, 100 + 50);
 	SetRect(
 		&rectStatus,
 		TILE_MARGIN - 5, aH - 10 - 13,
 		aW - TILE_MARGIN + 5, aH - 5
 	);
+
 	EraseRect(&rectText);
 	FrameRect(&rectText);
 	PenSize(1, 1);
@@ -297,24 +298,25 @@ void Window::DrawEnd(int aW, int aH) {
 	FrameRect(&rectStatus);
 }
 
-short Window::IsRoundRect(void) {
+Boolean Window::IsRoundRect(void) {
 	return qRoundRect;
 }
 
-short Window::IsOffScreenDrawing(void) {
-	return qOffScreenDrawing;
-}
-
-void Window::SetRoundRect(short aRoundRect) {
+void Window::SetRoundRect(Boolean aRoundRect) {
 	qRoundRect = aRoundRect;
 }
 
-void Window::SetOffScreenDrawing(short aOffScreenDrawing) {
+Boolean Window::IsOffScreenDrawing(void) {
+	return qOffScreenDrawing;
+}
+
+void Window::SetOffScreenDrawing(Boolean aOffScreenDrawing) {
 	qOffScreenDrawing = aOffScreenDrawing;
 }
 
 Application::Application(void) {
 	e_init(kEscapeOrClear, kLeftCursor, kRightCursor, kUpCursor, kDownCursor);
+
 	InitMac();
 	SetUpMenus();
 	InitWindow();
@@ -372,51 +374,42 @@ void Application::HandleEvents(void) {
 	EventRecord event;
 	if (GetNextEvent(everyEvent, &event)) {
 		switch (event.what) {
-			case mouseDown: {
+			case mouseDown:
 				HandleMouse(&event);
 				break;
-			}
 			case keyDown:
-			case autoKey: {
+			case autoKey:
 				HandleKeys(&event);
 				break;
-			}
-			case updateEvt: {
+			case updateEvt:
 				pWindow->Update();
 				break;
-			}
-			case activateEvt: {
+			case activateEvt:
 				pWindow->Activate();
 				break;
-			}
 		}
 	}
 }
 
 void Application::HandleMouse(EventRecord *aEvent) {
-	WindowPtr pWin;
-	const short where = FindWindow(aEvent->where, &pWin);
+	WindowPtr winPtr;
+	const short where = FindWindow(aEvent->where, &winPtr);
 	switch (where) {
-		case inSysWindow: {
-			SystemClick(aEvent, pWin);
+		case inSysWindow:
+			SystemClick(aEvent, winPtr);
 			break;
-		}
-		case inMenuBar: {
+		case inMenuBar:
 			HandleMenus(MenuSelect(aEvent->where));
 			break;
-		}
-		case inDrag: {
-			pWindow->Drag(aEvent->where, pWin);
+		case inDrag:
+			pWindow->Drag(aEvent->where, winPtr);
 			break;
-		}
-		case inContent: {
-			pWindow->Select(pWin);
+		case inContent:
+			pWindow->Select(winPtr);
 			break;
-		}
-		case inGoAway: {
-			pWindow->Close(aEvent->where, pWin);
+		case inGoAway:
+			pWindow->Close(aEvent->where, winPtr);
 			break;
-		}
 	}
 }
 
@@ -426,12 +419,12 @@ void Application::HandleKeys(EventRecord *aEvent) {
 		HandleMenus(MenuKey(key));
 	else
 		switch (key) {
-			case 'r': { e_key(kEscapeOrClear); break; }
-			case 'w': { e_key(kUpCursor); break; }
-			case 'a': { e_key(kLeftCursor); break; }
-			case 's': { e_key(kDownCursor); break; }
-			case 'd': { e_key(kRightCursor); break; }
-			default: { e_key((unsigned int) key); break; }
+			case 'r': e_key(kEscapeOrClear);     break;
+			case 'w': e_key(kUpCursor);          break;
+			case 'a': e_key(kLeftCursor);        break;
+			case 's': e_key(kDownCursor);        break;
+			case 'd': e_key(kRightCursor);       break;
+			default : e_key((unsigned int) key); break;
 		}
 	pWindow->Damage();
 }
@@ -440,47 +433,38 @@ void Application::HandleMenus(long aSelect) {
 	const short menu = HiWord(aSelect);
 	const short item = LoWord(aSelect);
 	switch (menu) {
-		case MENU_APPLE: {
-			if (item == MENU_ITEM_ABOUT) {
+		case MENU_APPLE:
+			if (item == MENU_ITEM_ABOUT)
 				Alert(RSRC_ID, NULL);
-				break;
-			}
-			HandleAppleMenu(item);
+			else
+				HandleAppleMenu(item);
 			break;
-		}
-		case MENU_GAME: {
+		case MENU_GAME:
 			switch (item) {
-				case MENU_ITEM_RESET: {
+				case MENU_ITEM_RESET:
 					e_key(kEscapeOrClear);
 					pWindow->Damage();
 					break;
-				}
-				case MENU_ITEM_DRAWING: {
+				case MENU_ITEM_DRAWING:
 					pWindow->SetOffScreenDrawing(!pWindow->IsOffScreenDrawing());
 					pWindow->Damage();
 					break;
-				}
-				case MENU_ITEM_QUIT: {
+				case MENU_ITEM_QUIT:
 					ExitToShell();
 					break;
-				}
 			}
 			break;
-		}
-		case MENU_TILE: {
+		case MENU_TILE:
 			switch (item) {
-				case MENU_ITEM_ROUND: {
+				case MENU_ITEM_ROUND:
 					pWindow->SetRoundRect(true);
 					break;
-				}
-				case MENU_ITEM_RECT: {
+				case MENU_ITEM_RECT:
 					pWindow->SetRoundRect(false);
 					break;
-				}
 			}
 			pWindow->Damage();
 			break;
-		}
 	}
 }
 
