@@ -1,7 +1,7 @@
 2048-ThinkC
 ===========
 
-![2048-ThinkC Classic Mac OS System 6 Screenshot](../../image/2048-ThinkC-Screenshot-MacOS-6-1.png) ![2048-ThinkC Classic Mac OS System 6 Screenshot](../../image/2048-ThinkC-Screenshot-MacOS-6-1.png)
+![2048-ThinkC Classic Mac OS System 6 Screenshot](../../image/2048-ThinkC-Screenshot-MacOS-6.png)
 
 Port 2048 game to the classic Mac OS platform ([System 6](https://en.wikipedia.org/wiki/System_6)) with using [Macintosh Toolbox](https://en.wikipedia.org/wiki/Macintosh_Toolbox) and [QuickDraw](https://en.wikipedia.org/wiki/QuickDraw) technologies.
 
@@ -42,6 +42,14 @@ See [NotesClassicMacOS.md](../../doc/NotesClassicMacOS.md) document for some add
 
 ## Classic MacOS Development Environment
 
+Symantec THINK C:
+
+![Symantec THINK C application, classic Mac OS System 6 Screenshot](../../image/ThinkC-Screenshot-MacOS-6.png)
+
+Apple ResEdit:
+
+![Apple ResEdit application, classic Mac OS System 6 Screenshot](../../image/ResEdit-Screenshot-MacOS-6.png)
+
 ## Versions
 
 1. [Mini vMac 36.04](https://www.gryphel.com/c/minivmac/dnld_std.html)
@@ -51,5 +59,7 @@ See [NotesClassicMacOS.md](../../doc/NotesClassicMacOS.md) document for some add
 5. [ImportFl 1.2.2](https://www.gryphel.com/d/minivmac/extras/importfl/importfl-1.2.2.zip)
 
 ## Additional Screenshots
+
+2048-ThinkC application running on Mac OS 8.1:
 
 ![2048-ThinkC Classic Mac OS 8.1 Screenshot 1](../../image/2048-ThinkC-Screenshot-MacOS-8-1.png) ![2048-ThinkC Classic Mac OS 8.1 Screenshot 2](../../image/2048-ThinkC-Screenshot-MacOS-8-2.png) ![2048-ThinkC Classic Mac OS 8.1 Screenshot 3](../../image/2048-ThinkC-Screenshot-MacOS-8-3.png)
