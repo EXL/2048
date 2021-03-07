@@ -47,9 +47,9 @@ public:
 	void SetFont(void);
 	void InitOffScreenDrawing(void);
 
-	void Drag(Point aPoint);
-	void Select(void);
-	void Close(Point aPoint);
+	void Drag(Point aPoint, WindowPtr aWinPtr);
+	void Select(WindowPtr aWinPtr);
+	void Close(Point aPoint, WindowPtr aWinPtr);
 
 	void Activate(void);
 	void Update(void);
@@ -146,16 +146,21 @@ void Window::InitOffScreenDrawing(void) {
 	EraseRect(&pOffScr.portRect);
 }
 
-void Window::Drag(Point aPoint) {
-	DragWindow(pWin, aPoint, &rectScr);
+void Window::Drag(Point aPoint, WindowPtr aWinPtr) {
+	if (pWin == aWinPtr)
+		DragWindow(pWin, aPoint, &rectScr);
 }
 
-void Window::Select(void) {
-	SelectWindow(pWin);
+void Window::Select(WindowPtr aWinPtr) {
+	if (pWin == aWinPtr)
+		if (pWin != FrontWindow())
+			SelectWindow(pWin);
+		else
+			Damage();
 }
 
-void Window::Close(Point aPoint) {
-	if (TrackGoAway(pWin, aPoint))
+void Window::Close(Point aPoint, WindowPtr aWinPtr) {
+	if ((pWin == aWinPtr) && TrackGoAway(pWin, aPoint))
 		ExitToShell();
 }
 
@@ -166,8 +171,9 @@ void Window::Activate(void) {
 void Window::Update(void) {
 	BeginUpdate(pWin);
 	EraseRect(&rectWin);
-	if (qOffScreenDrawing)
+	if (qOffScreenDrawing && pWin == FrontWindow()) {
 		OffScreenDraw();
+	}
 	else
 		InScreenDraw();
 	EndUpdate(pWin);
@@ -388,11 +394,11 @@ void Application::HandleEvents(void) {
 }
 
 void Application::HandleMouse(EventRecord *aEvent) {
-	WindowPeek peek;
-	const short where = FindWindow(aEvent->where, &peek);
+	WindowPtr pWin;
+	const short where = FindWindow(aEvent->where, &pWin);
 	switch (where) {
 		case inSysWindow: {
-			SystemClick(aEvent, peek);
+			SystemClick(aEvent, pWin);
 			break;
 		}
 		case inMenuBar: {
@@ -400,15 +406,15 @@ void Application::HandleMouse(EventRecord *aEvent) {
 			break;
 		}
 		case inDrag: {
-			pWindow->Drag(aEvent->where);
+			pWindow->Drag(aEvent->where, pWin);
 			break;
 		}
 		case inContent: {
-			pWindow->Select();
+			pWindow->Select(pWin);
 			break;
 		}
 		case inGoAway: {
-			pWindow->Close(aEvent->where);
+			pWindow->Close(aEvent->where, pWin);
 			break;
 		}
 	}
@@ -480,12 +486,8 @@ void Application::HandleMenus(long aSelect) {
 
 void Application::HandleAppleMenu(short aItem) {
 	Str255 menuName;
-	GrafPtr savePort;
-
-	GetPort(&savePort);
 	GetItem(hAppleMenu, aItem, menuName);
 	OpenDeskAcc(menuName);
-	SetPort(savePort);
 }
 
 int main(void) {
