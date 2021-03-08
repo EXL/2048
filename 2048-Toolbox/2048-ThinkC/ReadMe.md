@@ -3,7 +3,7 @@
 
 ![2048-ThinkC Classic Mac OS System 6 Screenshot](../../image/2048-ThinkC-Screenshot-MacOS-6.png)
 
-Port 2048 game to the classic Mac OS platform ([System 6](https://en.wikipedia.org/wiki/System_6)) with using [Macintosh Toolbox](https://en.wikipedia.org/wiki/Macintosh_Toolbox) and [QuickDraw](https://en.wikipedia.org/wiki/QuickDraw) technologies.
+Port 2048 game to the [classic Mac OS](https://en.wikipedia.org/wiki/Classic_Mac_OS) platform (System 1-6) with using [Macintosh Toolbox](https://en.wikipedia.org/wiki/Macintosh_Toolbox) and [QuickDraw](https://en.wikipedia.org/wiki/QuickDraw) technologies.
 
 ## Setup Mini vMac Environment
 

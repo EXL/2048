@@ -1,11 +1,26 @@
 Classic Mac OS Notes
 ====================
 
+## Mac OS 8.1 Notes
+
+I choose for Mac OS 8.1 development [Metrowerks CodeWarrior IDE 3.2](https://en.wikipedia.org/wiki/CodeWarrior) and [Metrowerks Constructor for Mac OS 2.4.5](https://en.wikipedia.org/wiki/PowerPlant) which are included to the [CodeWarrior Pro 4](https://macintoshgarden.org/apps/codewarrior-pro-4) distribution CD. The compilers included in this package can compile code in the [С](https://en.wikipedia.org/wiki/C_(programming_language)) and [C++](https://en.wikipedia.org/wiki/C%2B%2B) programming languages for [Motorola 68000](https://en.wikipedia.org/wiki/Motorola_68000) and [PowerPC](https://en.wikipedia.org/wiki/PowerPC) architectures. Standard Apple technologies such as [Macintosh Toolbox](https://en.wikipedia.org/wiki/Macintosh_Toolbox) and [QuickDraw](https://en.wikipedia.org/wiki/QuickDraw) can be used with Metrowerks CodeWarrior IDE alongside with C and C++ language standard libraries.
+
+The CodeWarrior Pro 4 package includes object-oriented [Metrowerks PowerPlant](https://en.wikipedia.org/wiki/PowerPlant) application framework, which is similar to the Think Class Library from THINK C integrated development environment. I think a lot of things in the Metrowerks CodeWarrior IDE come from the Symantec THINK C world.
+
+### Tasks List
+
+1. [x] Find option to enable `bool` keyword for C++.
+2. [ ] Create project skeleton.
+3. [ ] Find some offscreen drawing examples.
+4. [ ] What is QuickDraw Ex?
+
 ## Mac OS System 6 Notes
 
 I took for development under classic [Mac OS System 6](https://en.wikipedia.org/wiki/System_6) the [Symantec THINK C 5.0.2](https://en.wikipedia.org/wiki/THINK_C) IDE and [Apple ResEdit 2.1.1](https://en.wikipedia.org/wiki/ResEdit) program which is already included to the THINK C distribution kit. THINK C expands a traditional [C language](https://en.wikipedia.org/wiki/C_(programming_language)) syntax with basic [object-oriented programming (OOP)](https://en.wikipedia.org/wiki/Object-oriented_programming) concepts such as single inheritance, object and classes, these extensions make programming more familar and convenient. Standard Apple technologies such as [Macintosh Toolbox](https://en.wikipedia.org/wiki/Macintosh_Toolbox) and [QuickDraw](https://en.wikipedia.org/wiki/QuickDraw) can be used with THINK C alongside with [ANSI C](https://en.wikipedia.org/wiki/ANSI_C) language standard library.
 
-### TODO List
+The THINK C offered the programmer a powerful object-oriented Think Class Library (TCL) framework, which was used extensively for Macintosh application development.
+
+### Tasks List
 
 1. [x] Check `NumberToStr()` function and `Str15` type for small Pascal strings.
 2. [x] Check `THINK_C` compilator macro define on Symantec THINK C 5.0.2 IDE.
@@ -28,6 +43,8 @@ I took for development under classic [Mac OS System 6](https://en.wikipedia.org/
 19. [x] Bring C-casts to the one style in game engine.
 20. [x] Check argument of `SysBeep()` function.
 21. [x] Fix bug with wrong desk acc drawing on the application window, like "Calculator" applet.
+22. [x] Set date seed for `Random()` function.
+23. [x] Set private section for some classes methods and polish code.
 
 ### References and Books List
 

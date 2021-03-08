@@ -43,11 +43,11 @@ class Window : indirect {
 
 	Boolean qRoundRect;
 	Boolean qOffScreenDrawing;
+
 public:
 	Window(void);
 	~Window(void);
 
-	void SetFont(void);
 	void InitOffScreenDrawing(void);
 
 	void Drag(Point aPoint, WindowPtr aWinPtr);
@@ -58,16 +58,19 @@ public:
 	void Update(void);
 	void Damage(void);
 
+	Boolean IsRoundRect(void);
+	void SetRoundRect(Boolean aRoundRect);
+	Boolean IsOffScreenDrawing(void);
+	void SetOffScreenDrawing(Boolean aOffScreenDrawing);
+
+private:
+	void SetFont(void);
+
 	void OffScreenDraw(void);
 	void InScreenDraw(void);
 	void DrawTile(int aVal, int aX, int aY);
 	void DrawFinal(void);
 	void DrawEnd(int aW, int aH);
-
-	Boolean IsRoundRect(void);
-	void SetRoundRect(Boolean aRoundRect);
-	Boolean IsOffScreenDrawing(void);
-	void SetOffScreenDrawing(Boolean aOffScreenDrawing);
 };
 
 class Application : indirect {
@@ -76,15 +79,18 @@ class Application : indirect {
 	MenuHandle hAppleMenu;
 	MenuHandle hGameMenu;
 	MenuHandle hTileMenu;
+
 public:
 	Application(void);
 	~Application(void);
 
+	void Run(void);
+
+private:
 	void InitMac(void);
 	void SetUpMenus(void);
 	void InitWindow(void);
 
-	void Run(void);
 	void AdjustMenus(void);
 	void HandleEvents(void);
 	void HandleMouse(EventRecord *aEvent);
@@ -104,18 +110,12 @@ Window::Window(void) {
 	rectScr = screenBits.bounds;
 	rectWin = pWinPtr->portRect;
 
-	SetPort(pWinPtr);
+	Activate();
 	SetFont();
 }
 
 Window::~Window(void) {
 	DisposeWindow(pWinPtr);
-}
-
-void Window::SetFont(void) {
-	int fontID;
-	GetFNum("\pChicago", &fontID);
-	TextFont(fontID);
 }
 
 void Window::InitOffScreenDrawing(void) {
@@ -182,6 +182,28 @@ void Window::Damage(void) {
 		OffScreenDraw();
 	else
 		InvalRect(&rectWin);
+}
+
+Boolean Window::IsRoundRect(void) {
+	return qRoundRect;
+}
+
+void Window::SetRoundRect(Boolean aRoundRect) {
+	qRoundRect = aRoundRect;
+}
+
+Boolean Window::IsOffScreenDrawing(void) {
+	return qOffScreenDrawing;
+}
+
+void Window::SetOffScreenDrawing(Boolean aOffScreenDrawing) {
+	qOffScreenDrawing = aOffScreenDrawing;
+}
+
+void Window::SetFont(void) {
+	int fontID;
+	GetFNum("\pChicago", &fontID);
+	TextFont(fontID);
 }
 
 void Window::OffScreenDraw(void) {
@@ -298,22 +320,6 @@ void Window::DrawEnd(int aW, int aH) {
 	FrameRect(&rectStatus);
 }
 
-Boolean Window::IsRoundRect(void) {
-	return qRoundRect;
-}
-
-void Window::SetRoundRect(Boolean aRoundRect) {
-	qRoundRect = aRoundRect;
-}
-
-Boolean Window::IsOffScreenDrawing(void) {
-	return qOffScreenDrawing;
-}
-
-void Window::SetOffScreenDrawing(Boolean aOffScreenDrawing) {
-	qOffScreenDrawing = aOffScreenDrawing;
-}
-
 Application::Application(void) {
 	e_init(kEscapeOrClear, kLeftCursor, kRightCursor, kUpCursor, kDownCursor);
 
@@ -324,6 +330,15 @@ Application::Application(void) {
 
 Application::~Application(void) {
 	delete pWindow;
+}
+
+void Application::Run(void) {
+	for (;;) {
+		SystemTask();
+		HiliteMenu(0);
+		AdjustMenus();
+		HandleEvents();
+	}
 }
 
 void Application::InitMac(void) {
@@ -339,6 +354,8 @@ void Application::InitMac(void) {
 
 	FlushEvents(everyEvent, 0);
 	SetEventMask(everyEvent);
+
+	GetDateTime((unsigned long *) &qd.randSeed);
 }
 
 void Application::SetUpMenus(void) {
@@ -353,15 +370,6 @@ void Application::SetUpMenus(void) {
 void Application::InitWindow(void) {
 	pWindow = new(Window);
 	pWindow->InitOffScreenDrawing();
-}
-
-void Application::Run(void) {
-	for (;;) {
-		SystemTask();
-		HiliteMenu(0);
-		AdjustMenus();
-		HandleEvents();
-	}
 }
 
 void Application::AdjustMenus(void) {
