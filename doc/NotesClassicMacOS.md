@@ -3,16 +3,16 @@ Classic Mac OS Notes
 
 ## Mac OS 8.1 Notes
 
-I choose for Mac OS 8.1 development [Metrowerks CodeWarrior IDE 3.2](https://en.wikipedia.org/wiki/CodeWarrior) and [Metrowerks Constructor for Mac OS 2.4.5](https://en.wikipedia.org/wiki/PowerPlant) which are included to the [CodeWarrior Pro 4](https://macintoshgarden.org/apps/codewarrior-pro-4) distribution CD. The compilers included in this package can compile code in the [С](https://en.wikipedia.org/wiki/C_(programming_language)) and [C++](https://en.wikipedia.org/wiki/C%2B%2B) programming languages for [Motorola 68000](https://en.wikipedia.org/wiki/Motorola_68000) and [PowerPC](https://en.wikipedia.org/wiki/PowerPC) architectures. Standard Apple technologies such as [Macintosh Toolbox](https://en.wikipedia.org/wiki/Macintosh_Toolbox) and [QuickDraw](https://en.wikipedia.org/wiki/QuickDraw) can be used with Metrowerks CodeWarrior IDE alongside with C and C++ language standard libraries.
+I choose for Mac OS 8.1 development [Metrowerks CodeWarrior IDE 3.2](https://en.wikipedia.org/wiki/CodeWarrior) and [Metrowerks Constructor 2.4.5](https://en.wikipedia.org/wiki/PowerPlant) which are included to the [CodeWarrior Pro 4](https://macintoshgarden.org/apps/codewarrior-pro-4) distribution CD. The compilers provided with this package can compile [С](https://en.wikipedia.org/wiki/C_(programming_language)) and [C++](https://en.wikipedia.org/wiki/C%2B%2B) code for [Motorola 68000](https://en.wikipedia.org/wiki/Motorola_68000) and [PowerPC](https://en.wikipedia.org/wiki/PowerPC) architectures. Standard Apple technologies such as [Macintosh Toolbox](https://en.wikipedia.org/wiki/Macintosh_Toolbox) and [QuickDraw](https://en.wikipedia.org/wiki/QuickDraw) can be used with Metrowerks CodeWarrior IDE alongside with C and C++ standard libraries.
 
-The CodeWarrior Pro 4 package includes object-oriented [Metrowerks PowerPlant](https://en.wikipedia.org/wiki/PowerPlant) application framework, which is similar to the Think Class Library from THINK C integrated development environment. I think a lot of things in the Metrowerks CodeWarrior IDE come from the Symantec THINK C world.
+The CodeWarrior Pro 4 package includes object-oriented [Metrowerks PowerPlant](https://en.wikipedia.org/wiki/PowerPlant) application framework, which is similar to the Think Class Library (TCL) from the Symantec THINK C integrated development environment. I think a lot of good things in the Metrowerks CodeWarrior IDE come from the Symantec THINK C world.
 
 ### Tasks List
 
 1. [x] Find option to enable `bool` keyword for C++.
-2. [ ] Create project skeleton.
-3. [ ] Find some offscreen drawing examples.
-4. [ ] What is QuickDraw Ex?
+2. [x] Create project skeleton.
+3. [x] Find some offscreen drawing examples.
+4. [ ] What is QuickDraw GX?
 
 ## Mac OS System 6 Notes
 
