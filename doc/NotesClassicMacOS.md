@@ -42,9 +42,10 @@ The THINK C offered the programmer a powerful object-oriented Think Class Librar
 18. [x] Add notes about Macintosh Toolbox and QuickDraw technologies.
 19. [x] Bring C-casts to the one style in game engine.
 20. [x] Check argument of `SysBeep()` function.
-21. [x] Fix bug with wrong desk acc drawing on the application window, like "Calculator" applet.
+21. [x] Fix bug with wrong Desk Accessories (DA) drawing above the application window, like "Calculator" applet.
 22. [x] Set date seed for `Random()` function.
 23. [x] Set private section for some classes methods and polish code.
+24. [x] Add "..." to the "About 2048-ThinkC" menu item.
 
 ### References and Books List
 
