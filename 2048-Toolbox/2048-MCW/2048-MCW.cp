@@ -1,10 +1,21 @@
 #include "2048.h"
 
-#include <Events.h>    // For Mac OS keycodes.
-#include <Sound.h>     // For `SysBeep()` function.
-#include <OSUtils.h>   // For environ functions.
-#include <Processes.h> // For `ExitToShell() function.
+#include <Dialogs.h>
+#include <Events.h>
+#include <Fonts.h>
+#include <MacTypes.h>
+#include <MacWindows.h>
+#include <Menus.h>
+#include <NumberFormatting.h>
+#include <OSUtils.h>
+#include <Processes.h>
+#include <Quickdraw.h>
+#include <QuickdrawText.h>
+#include <Sound.h> 
+#include <TextEdit.h>
 
+#define RSRC_ID 128
+#define MENU_APPLE 128
 #define ROUND_RECT_RAD 20
 #define TILE_SIZE 64
 #define TILE_MARGIN 16
@@ -21,7 +32,8 @@ public:
 		mRectScr = qd.screenBits.bounds;
 		SetRect(&lRectInit, 50, 50, 340 + 50, 400 + 50);
 		SetRect(&mRectWin, 0, 0, 340, 400);
-		mWinPtr = NewCWindow(nil, &lRectInit, "\p2048-MCW", true, documentProc, (WindowPtr) -1, true, 0);
+		mWinPtr = NewCWindow(nil, &lRectInit, "\p2048-D", true, documentProc, (WindowPtr) -1L, true, 0);
+		//mWinPtr = GetNewCWindow(128, nil, (WindowPtr) -1L);
 	}
 	~Window(void) {
 		DisposeWindow(mWinPtr);
@@ -107,6 +119,8 @@ private:
 
 class Application {
 	Window *mWindow;
+	
+	Handle mMenuBar;
 public:
 	Application(void) {
 		e_init(kEscapeCharCode, kLeftArrowCharCode, kRightArrowCharCode, kUpArrowCharCode, kDownArrowCharCode);
@@ -133,8 +147,20 @@ public:
 		InitDialogs(nil);
 		InitCursor();
 		
-		FlushEvents(0, everyEvent);
+		FlushEvents(nullEvent, everyEvent);
 		SetEventMask(everyEvent);
+		
+	}
+	void InitMenuBar(void) {
+		mMenuBar = GetNewMBar(RSRC_ID);
+		if (mMenuBar == nil) {
+			SysBeep(60);
+			ExitToShell();
+		}
+		SetMenuBar(mMenuBar);
+		DisposeHandle(mMenuBar);
+		AppendResMenu(GetMenuHandle(MENU_APPLE), 'DRVR');
+		DrawMenuBar();
 	}
 	void InitWindow(void) {
 		mWindow = new Window();
@@ -185,6 +211,7 @@ int main(void) {
 	Application *app = new Application();
 	if (app->CheckColorMac()) {
 		app->InitMac();
+		app->InitMenuBar();
 		app->InitWindow();
 		app->Run();
 	}
