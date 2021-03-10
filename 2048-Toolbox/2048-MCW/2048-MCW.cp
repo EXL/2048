@@ -12,6 +12,7 @@
 #include <Processes.h>
 #include <Quickdraw.h>
 #include <QuickdrawText.h>
+#include <QDOffscreen.h>
 #include <Sound.h>
 #include <TextEdit.h>
 #include <ToolUtils.h>
@@ -33,23 +34,37 @@
 
 class Window {
 	WindowPtr mWinPtr;
+	GWorldPtr mOffScr;
 
 	Rect mRectScr;
 	Rect mRectWin;
 
 	bool qRoundRect;
 	bool qQdGxMode;
+
+	int mX;
 public:
 	Window(void) {
+		mX = 0;
 		qRoundRect = qQdGxMode = true;
 		mWinPtr = GetNewCWindow(RSRC_ID, nil, (WindowPtr) -1L);
 		mRectScr = qd.screenBits.bounds;
 		mRectWin = mWinPtr->portRect;
 	}
 	~Window(void) {
+		DisposeGWorld(mOffScr);
 		DisposeWindow(mWinPtr);
 	}
 
+	void SetOffScreen(void) {
+		OSErr lError = NewGWorld(&mOffScr, 0, &mRectWin, nil, nil, 0L);
+		if (lError) {
+			SysBeep(60);
+			ExitToShell();
+		}
+		LockPixels(GetGWorldPixMap(mOffScr));
+		SetGWorld((CGrafPtr) mOffScr, nil);
+	}
 	void SetFont(void) {
 		// TODO: Chicago font here.
 		TextFont(kFontIDGeneva);
@@ -74,8 +89,21 @@ public:
 		SetPort(mWinPtr);
 	}
 	void Update(void) {
+//		SetGWorld((CGrafPtr) mWinPtr, GetMainDevice());
 		BeginUpdate(mWinPtr);
+
+		SetGWorld((CGrafPtr) mOffScr, nil);
+
 		Draw();
+
+		SetGWorld((CGrafPtr) mWinPtr, GetMainDevice());
+
+		CopyBits(
+			&((GrafPtr) mOffScr)->portBits, &((GrafPtr) mWinPtr)->portBits,
+			&mOffScr->portRect, &mWinPtr->portRect,
+			srcCopy, nil
+		);
+
 		EndUpdate(mWinPtr);
 	}
 	void Damage(void) {
@@ -97,6 +125,8 @@ public:
 
 private:
 	void Draw(void) {
+		//EraseRect(&mRectWin); // TODO??
+
 		RGBColor lBackground;
 		lBackground.red = 0xFFFF;
 		RGBForeColor(&lBackground);
@@ -137,7 +167,11 @@ private:
 		}
 	}
 	void DrawFinal(void) {
-
+		DrawTile(2048, mX, 4);
+		mX++;
+		if (mX >= 4) {
+			mX=0;
+		}
 	}
 };
 
@@ -190,6 +224,7 @@ public:
 	void InitWindow(void) {
 		mWindow = new Window();
 		mWindow->Activate();
+		mWindow->SetOffScreen();
 		mWindow->SetFont();
 	}
 	void Run(void) {
