@@ -3,7 +3,7 @@ Classic Mac OS Notes
 
 ## Mac OS 8.1 Notes
 
-I choose for Mac OS 8.1 development [Metrowerks CodeWarrior IDE 3.2](https://en.wikipedia.org/wiki/CodeWarrior) and [Metrowerks Constructor 2.4.5](https://en.wikipedia.org/wiki/PowerPlant) which are included to the [CodeWarrior Pro 4](https://macintoshgarden.org/apps/codewarrior-pro-4) distribution CD. The compilers provided with this package can compile [С](https://en.wikipedia.org/wiki/C_(programming_language)) and [C++](https://en.wikipedia.org/wiki/C%2B%2B) code for [Motorola 68000](https://en.wikipedia.org/wiki/Motorola_68000) and [PowerPC](https://en.wikipedia.org/wiki/PowerPC) architectures. Standard Apple technologies such as [Macintosh Toolbox](https://en.wikipedia.org/wiki/Macintosh_Toolbox) and [QuickDraw](https://en.wikipedia.org/wiki/QuickDraw) can be used with Metrowerks CodeWarrior IDE alongside with C and C++ standard libraries.
+I choose for Mac OS 8.1 development [Metrowerks CodeWarrior IDE 3.2](https://en.wikipedia.org/wiki/CodeWarrior), [Metrowerks Constructor 2.4.5](https://en.wikipedia.org/wiki/PowerPlant), and [Apple ResEdit 2.1.3](https://en.wikipedia.org/wiki/ResEdit) which are included to the [CodeWarrior Pro 4](https://macintoshgarden.org/apps/codewarrior-pro-4) distribution CD. The compilers provided with this package can compile [С](https://en.wikipedia.org/wiki/C_(programming_language)) and [C++](https://en.wikipedia.org/wiki/C%2B%2B) code for [Motorola 68000](https://en.wikipedia.org/wiki/Motorola_68000) and [PowerPC](https://en.wikipedia.org/wiki/PowerPC) architectures. Standard Apple technologies such as [Macintosh Toolbox](https://en.wikipedia.org/wiki/Macintosh_Toolbox) and [QuickDraw](https://en.wikipedia.org/wiki/QuickDraw) can be used with Metrowerks CodeWarrior IDE alongside with C and C++ standard libraries.
 
 The CodeWarrior Pro 4 package includes object-oriented [Metrowerks PowerPlant](https://en.wikipedia.org/wiki/PowerPlant) application framework, which is similar to the Think Class Library (TCL) from the Symantec THINK C integrated development environment. I think a lot of good things in the Metrowerks CodeWarrior IDE come from the Symantec THINK C world.
 
@@ -13,6 +13,8 @@ The CodeWarrior Pro 4 package includes object-oriented [Metrowerks PowerPlant](h
 2. [x] Create project skeleton.
 3. [x] Find some offscreen drawing examples.
 4. [ ] What is QuickDraw GX?
+5. [x] Create GUI skeleton: MenuBar, Menus, Windows, Resources, About dialog, etc.
+6. [ ] Implement basic offscreen drawing.
 
 ## Mac OS System 6 Notes
 
@@ -47,7 +49,7 @@ The THINK C offered the programmer a powerful object-oriented Think Class Librar
 23. [x] Set private section for some classes methods and polish code.
 24. [x] Add "..." to the "About 2048-ThinkC" menu item.
 
-### References and Books List
+## References and Books List
 
 1. [Macintosh C Programming By Example, 1991](https://vintageapple.org/macprogramming/pdf/Macintosh_C_Programming_By_Example_1991.pdf)
 2. [More Macintosh Toolbox, 1993](http://mirror.informatimago.com/next/developer.apple.com/documentation/mac/pdf/MoreMacintoshToolbox.pdf)
@@ -56,6 +58,7 @@ The THINK C offered the programmer a powerful object-oriented Think Class Librar
 5. [THINK C Version 5 Standard Libraries Reference, 1991](http://mirror.macintosharchive.org/max1zzz.co.uk/+Mac%20OS%20Classic/Programming/THINK%20Pascal/Think_C_Version_5_Standard_Libraries_Reference_1991.pdf)
 6. [THINK C Version 5 Object-oriented Programming Manual, 1991](http://mirror.macintosharchive.org/max1zzz.co.uk/+Mac%20OS%20Classic/Programming/THINK%20Pascal/Think_C_Version_5_Object-Oriented_Programming_Manual_1991.pdf)
 7. [ResEdit Reference For ResEdit 2.1, 1995](https://developer.apple.com/library/archive/documentation/mac/pdf/ResEditReference.pdf)
+8. [Metrowerks Code Warrior Programming, 1995](https://vintageapple.org/macprogramming/pdf/Metrowerks_Code_Worrior_Programming_1995.pdf)
 
 You can find literature, documentation, and source code on the following sites:
 

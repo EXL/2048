@@ -12,47 +12,44 @@
 #include <Processes.h>
 #include <Quickdraw.h>
 #include <QuickdrawText.h>
-#include <Sound.h> 
+#include <Sound.h>
 #include <TextEdit.h>
+#include <ToolUtils.h>
 
-#define RSRC_ID 128
-#define MENU_APPLE 128
-#define MENU_GAME 129
-#define MENU_TILES 130
-#define MENU_ITEM_ABOUT 1
-#define MENU_ITEM_ROUND 1
-#define MENU_ITEM_RECT 2
-#define MENU_ITEM_RESET 1
-#define MENU_ITEM_QD_GX 4
-#define MENU_ITEM_QUIT 6
-#define ROUND_RECT_RAD 20
-#define TILE_SIZE 64
-#define TILE_MARGIN 16
+#define RSRC_ID              128
+#define MENU_APPLE           128
+#define MENU_GAME            129
+#define MENU_TILES           130
+#define MENU_ITEM_ABOUT      1
+#define MENU_ITEM_ROUND      1
+#define MENU_ITEM_QD_GX      4
+#define MENU_ITEM_QUIT       6
+#define MENU_ITEM_RECT       2
+#define MENU_ITEM_RESET      1
+#define TILE_SIZE            64
+#define TILE_MARGIN          16
+#define ROUND_RECT_RAD       20
 #define OFFSET_COORD(coord)  (coord * (TILE_MARGIN + TILE_SIZE) + TILE_MARGIN)
 
 class Window {
 	WindowPtr mWinPtr;
-	
+
 	Rect mRectScr;
 	Rect mRectWin;
-	
+
 	bool qRoundRect;
 	bool qQdGxMode;
 public:
 	Window(void) {
-		// TODO: Check this shit.
-		//Rect lRectInit;
-		mRectScr = qd.screenBits.bounds;
-		//SetRect(&lRectInit, 50, 50, 340 + 50, 400 + 50);
-		//SetRect(&mRectWin, 0, 0, 340, 400);
-		//mWinPtr = NewCWindow(nil, &lRectInit, "\p2048-D", true, documentProc, (WindowPtr) -1L, true, 0);
+		qRoundRect = qQdGxMode = true;
 		mWinPtr = GetNewCWindow(RSRC_ID, nil, (WindowPtr) -1L);
+		mRectScr = qd.screenBits.bounds;
 		mRectWin = mWinPtr->portRect;
 	}
 	~Window(void) {
 		DisposeWindow(mWinPtr);
 	}
-	
+
 	void SetFont(void) {
 		// TODO: Chicago font here.
 		TextFont(kFontIDGeneva);
@@ -60,18 +57,6 @@ public:
 		TextMode(srcCopy);
 	}
 
-	void Activate(void) {
-		SetPort(mWinPtr);
-	}
-	void Update(void) {
-		BeginUpdate(mWinPtr);
-		Draw();
-		EndUpdate(mWinPtr);
-	}	
-	void Damage(void) {
-		InvalRect(&mRectWin);
-	}
-	
 	void Drag(Point aPoint, WindowPtr aWinPtr) {
 		if (mWinPtr == aWinPtr)
 			DragWindow(mWinPtr, aPoint, &mRectScr);
@@ -83,6 +68,18 @@ public:
 	void Close(Point aPoint, WindowPtr aWinPtr) {
 		if ((mWinPtr == aWinPtr) && TrackGoAway(mWinPtr, aPoint))
 			ExitToShell();
+	}
+
+	void Activate(void) {
+		SetPort(mWinPtr);
+	}
+	void Update(void) {
+		BeginUpdate(mWinPtr);
+		Draw();
+		EndUpdate(mWinPtr);
+	}
+	void Damage(void) {
+		InvalRect(&mRectWin);
 	}
 
 	void SetRoundRect(bool aRoundRect) {
@@ -103,9 +100,9 @@ private:
 		RGBColor lBackground;
 		lBackground.red = 0xFFFF;
 		RGBForeColor(&lBackground);
-		
+
 		PaintRect(&mRectWin);
-		
+
 		for (int y = 0; y < LINE_SIZE; ++y)
 			for (int x = 0; x < LINE_SIZE; ++x)
 				DrawTile(e_board[x + y * LINE_SIZE], x, y);
@@ -115,39 +112,38 @@ private:
 		RGBColor lColorTile;
 		Rect lRectTile;
 		Str15 lStrValue;
-		
+
 		const int lX = OFFSET_COORD(aX);
 		const int lY = OFFSET_COORD(aY);
-		
+
 		lColorTile.red = Random();
 		lColorTile.blue = Random();
 		lColorTile.green = Random();
-		
+
 		RGBForeColor(&lColorTile);
-		
+
 		SetRect(&lRectTile, lX, lY, lX + TILE_SIZE, lY + TILE_SIZE);
 		PaintRoundRect(&lRectTile, ROUND_RECT_RAD, ROUND_RECT_RAD);
-		
+
 		if (aVal) {
 			MoveTo(lX + 20, lY + 40);
 			RGBBackColor(&lColorTile);
 			InvertColor(&lColorTile);
 			RGBForeColor(&lColorTile);
-			
+
 			NumToString(aVal, lStrValue);
-			
+
 			DrawString(lStrValue);
 		}
 	}
 	void DrawFinal(void) {
-	
+
 	}
 };
 
 class Application {
 	Window *mWindow;
-	
-	Handle mMenuBar;
+
 	MenuHandle mMenuApple;
 	MenuHandle mMenuGame;
 	MenuHandle mMenuTiles;
@@ -158,7 +154,7 @@ public:
 	~Application(void) {
 		delete mWindow;
 	}
-	
+
 	bool CheckColorMac(void) {
 		SysEnvRec lEnvWorld;
 		SysEnvirons(curSysEnvVers, &lEnvWorld);
@@ -169,6 +165,8 @@ public:
 		return true;
 	}
 	void InitMac(void) {
+		MaxApplZone();
+
 		InitGraf(&qd.thePort);
 		InitFonts();
 		InitWindows();
@@ -176,19 +174,17 @@ public:
 		TEInit();
 		InitDialogs(nil);
 		InitCursor();
-		
-		FlushEvents(nullEvent, everyEvent);
+
+		FlushEvents(everyEvent, 0);
 		SetEventMask(everyEvent);
-		
 	}
 	void InitMenuBar(void) {
-		mMenuBar = GetNewMBar(RSRC_ID);
-		SetMenuBar(mMenuBar);
-		DisposeHandle(mMenuBar);
-		//AppendResMenu(GetMenuHandle(MENU_APPLE), 'DRVR');
-		
-		InitMenus();
-		
+		Handle lMenuBar = GetNewMBar(RSRC_ID);
+		SetMenuBar(lMenuBar);
+		DisposeHandle(lMenuBar);
+
+		SetUpMenus();
+
 		DrawMenuBar();
 	}
 	void InitWindow(void) {
@@ -203,15 +199,15 @@ public:
 		}
 	}
 private:
-	void InitMenus(void) {
+	void SetUpMenus(void) {
 		InsertMenu(mMenuApple = GetMenu(MENU_APPLE), 0);
-		AppendResMenu(mMenuApple, 'DRVR'); /// ????
+		AppendResMenu(mMenuApple, 'DRVR');
 		InsertMenu(mMenuGame = GetMenu(MENU_GAME), 0);
 		InsertMenu(mMenuTiles = GetMenu(MENU_TILES), hierMenu);
 	}
 	void AdjustMenus(void) {
 		HiliteMenu(0);
-	
+
 		CheckItem(mMenuTiles, MENU_ITEM_ROUND, mWindow->IsRoundRect());
 		CheckItem(mMenuTiles, MENU_ITEM_RECT, !mWindow->IsRoundRect());
 		CheckItem(mMenuGame, MENU_ITEM_QD_GX, mWindow->IsQdGxMode());
@@ -223,16 +219,19 @@ private:
 				case mouseDown:
 					HandleMouse(&lEvent);
 					break;
+				case keyDown:
+				case autoKey:
+					HandleKeys(&lEvent);
+					mWindow->Damage();
+					break;
 				case updateEvt:
 					mWindow->Update();
 					break;
-				case keyDown:
-				case autoKey:
-					e_key(lEvent.message & charCodeMask);
-					mWindow->Damage();
+				case activateEvt:
+					mWindow->Activate();
 					break;
 			}
-		}	
+		}
 	}
 	void HandleMouse(const EventRecord *aEvent) {
 		WindowPtr lWinPtr;
@@ -255,9 +254,23 @@ private:
 				break;
 		}
 	}
+	void HandleKeys(const EventRecord *aEvent) {
+		const char lKey = aEvent->message & charCodeMask;
+		if ((aEvent->modifiers & cmdKey) != 0)
+			HandleMenus(MenuKey(lKey));
+		else
+			switch (lKey) {
+				case 'r': e_key(kEscapeCharCode);     break;
+				case 'w': e_key(kUpArrowCharCode);    break;
+				case 'a': e_key(kLeftArrowCharCode);  break;
+				case 's': e_key(kDownArrowCharCode);  break;
+				case 'd': e_key(kRightArrowCharCode); break;
+				default : e_key((unsigned int) lKey); break;
+			}
+	}
 	void HandleMenus(long aSelect) {
-		const short lMenu HiWord(aSelect);
-		const short lItem LoWord(aSelect);
+		const short lMenu = HiWord(aSelect);
+		const short lItem = LoWord(aSelect);
 		switch (lMenu) {
 			case MENU_APPLE:
 				if (lItem == MENU_ITEM_ABOUT)
