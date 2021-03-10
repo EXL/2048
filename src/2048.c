@@ -23,9 +23,9 @@ static int *f_space[BOARD_SIZE];
 static int b_reg[LINE_SIZE], f_reg[LINE_SIZE];
 static int K_ESCAPE, K_LEFT, K_RIGHT, K_UP, K_DOWN;
 
-extern unsigned e_foreground(int value) { return (value < 16) ? COLOR_TEXT : COLOR_TEXT_LIGHT; }
+extern unsigned BIG e_foreground(int value) { return (value < 16) ? COLOR_TEXT : COLOR_TEXT_LIGHT; }
 
-extern unsigned e_background(int value) {
+extern unsigned BIG e_background(int value) {
 	switch (value) {
 		case    2: return    COLOR_TILE_2;
 		case    4: return    COLOR_TILE_4;

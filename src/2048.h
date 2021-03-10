@@ -5,6 +5,12 @@
 extern "C" {
 #endif
 
+#if defined(macintosh) /* Classic Mac OS platform. */
+#define BIG long
+#else
+#define BIG
+#endif
+
 #define LINE_SIZE                           4
 #define BOARD_SIZE                          LINE_SIZE * LINE_SIZE
 #define END_GAME_TARGET                     2048
@@ -36,8 +42,8 @@ extern int e_board[BOARD_SIZE];
 extern void e_init(int esc_keycode, int left_keycode, int right_keycode, int up_keycode, int down_keycode);
 extern void e_key(int keycode);
 
-extern unsigned e_foreground(int value);
-extern unsigned e_background(int value);
+extern unsigned BIG e_foreground(int value);
+extern unsigned BIG e_background(int value);
 
 #ifdef __cplusplus
 }
