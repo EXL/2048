@@ -1,5 +1,6 @@
 #include "2048.h"
 
+#include <Devices.h>
 #include <Dialogs.h>
 #include <Events.h>
 #include <Fonts.h>
@@ -16,6 +17,14 @@
 
 #define RSRC_ID 128
 #define MENU_APPLE 128
+#define MENU_GAME 129
+#define MENU_TILES 130
+#define MENU_ITEM_ABOUT 1
+#define MENU_ITEM_ROUND 1
+#define MENU_ITEM_RECT 2
+#define MENU_ITEM_RESET 1
+#define MENU_ITEM_QD_GX 4
+#define MENU_ITEM_QUIT 6
 #define ROUND_RECT_RAD 20
 #define TILE_SIZE 64
 #define TILE_MARGIN 16
@@ -23,17 +32,22 @@
 
 class Window {
 	WindowPtr mWinPtr;
+	
 	Rect mRectScr;
 	Rect mRectWin;
+	
+	bool qRoundRect;
+	bool qQdGxMode;
 public:
 	Window(void) {
 		// TODO: Check this shit.
-		Rect lRectInit;
+		//Rect lRectInit;
 		mRectScr = qd.screenBits.bounds;
-		SetRect(&lRectInit, 50, 50, 340 + 50, 400 + 50);
-		SetRect(&mRectWin, 0, 0, 340, 400);
-		mWinPtr = NewCWindow(nil, &lRectInit, "\p2048-D", true, documentProc, (WindowPtr) -1L, true, 0);
-		//mWinPtr = GetNewCWindow(128, nil, (WindowPtr) -1L);
+		//SetRect(&lRectInit, 50, 50, 340 + 50, 400 + 50);
+		//SetRect(&mRectWin, 0, 0, 340, 400);
+		//mWinPtr = NewCWindow(nil, &lRectInit, "\p2048-D", true, documentProc, (WindowPtr) -1L, true, 0);
+		mWinPtr = GetNewCWindow(RSRC_ID, nil, (WindowPtr) -1L);
+		mRectWin = mWinPtr->portRect;
 	}
 	~Window(void) {
 		DisposeWindow(mWinPtr);
@@ -69,6 +83,19 @@ public:
 	void Close(Point aPoint, WindowPtr aWinPtr) {
 		if ((mWinPtr == aWinPtr) && TrackGoAway(mWinPtr, aPoint))
 			ExitToShell();
+	}
+
+	void SetRoundRect(bool aRoundRect) {
+		qRoundRect = aRoundRect;
+	}
+	bool IsRoundRect(void) const {
+		return qRoundRect;
+	}
+	void SetQdGxMode(bool aQdGxMode) {
+		qQdGxMode = aQdGxMode;
+	}
+	bool IsQdGxMode(void) const {
+		return qQdGxMode;
 	}
 
 private:
@@ -121,6 +148,9 @@ class Application {
 	Window *mWindow;
 	
 	Handle mMenuBar;
+	MenuHandle mMenuApple;
+	MenuHandle mMenuGame;
+	MenuHandle mMenuTiles;
 public:
 	Application(void) {
 		e_init(kEscapeCharCode, kLeftArrowCharCode, kRightArrowCharCode, kUpArrowCharCode, kDownArrowCharCode);
@@ -153,13 +183,12 @@ public:
 	}
 	void InitMenuBar(void) {
 		mMenuBar = GetNewMBar(RSRC_ID);
-		if (mMenuBar == nil) {
-			SysBeep(60);
-			ExitToShell();
-		}
 		SetMenuBar(mMenuBar);
 		DisposeHandle(mMenuBar);
-		AppendResMenu(GetMenuHandle(MENU_APPLE), 'DRVR');
+		//AppendResMenu(GetMenuHandle(MENU_APPLE), 'DRVR');
+		
+		InitMenus();
+		
 		DrawMenuBar();
 	}
 	void InitWindow(void) {
@@ -168,10 +197,25 @@ public:
 		mWindow->SetFont();
 	}
 	void Run(void) {
-		for (;;)
+		for (;;) {
+			AdjustMenus();
 			HandleEvents();
+		}
 	}
 private:
+	void InitMenus(void) {
+		InsertMenu(mMenuApple = GetMenu(MENU_APPLE), 0);
+		AppendResMenu(mMenuApple, 'DRVR'); /// ????
+		InsertMenu(mMenuGame = GetMenu(MENU_GAME), 0);
+		InsertMenu(mMenuTiles = GetMenu(MENU_TILES), hierMenu);
+	}
+	void AdjustMenus(void) {
+		HiliteMenu(0);
+	
+		CheckItem(mMenuTiles, MENU_ITEM_ROUND, mWindow->IsRoundRect());
+		CheckItem(mMenuTiles, MENU_ITEM_RECT, !mWindow->IsRoundRect());
+		CheckItem(mMenuGame, MENU_ITEM_QD_GX, mWindow->IsQdGxMode());
+	}
 	void HandleEvents(void) {
 		EventRecord lEvent;
 		if (WaitNextEvent(everyEvent, &lEvent, 0, nil)) {
@@ -194,6 +238,12 @@ private:
 		WindowPtr lWinPtr;
 		const short lWhere = FindWindow(aEvent->where, &lWinPtr);
 		switch (lWhere) {
+			case inSysWindow:
+				SystemClick(aEvent, lWinPtr);
+				break;
+			case inMenuBar:
+				HandleMenus(MenuSelect(aEvent->where));
+				break;
 			case inDrag:
 				mWindow->Drag(aEvent->where, lWinPtr);
 				break;
@@ -204,6 +254,49 @@ private:
 				mWindow->Close(aEvent->where, lWinPtr);
 				break;
 		}
+	}
+	void HandleMenus(long aSelect) {
+		const short lMenu HiWord(aSelect);
+		const short lItem LoWord(aSelect);
+		switch (lMenu) {
+			case MENU_APPLE:
+				if (lItem == MENU_ITEM_ABOUT)
+					Alert(RSRC_ID, nil);
+				else
+					HandleAppleMenu(lItem);
+				break;
+			case MENU_GAME:
+				switch (lItem) {
+					case MENU_ITEM_RESET:
+						e_key(kEscapeCharCode);
+						mWindow->Damage();
+						break;
+					case MENU_ITEM_QD_GX:
+						mWindow->SetQdGxMode(!mWindow->IsQdGxMode());
+						mWindow->Damage();
+						break;
+					case MENU_ITEM_QUIT:
+						ExitToShell();
+						break;
+				}
+				break;
+			case MENU_TILES:
+				switch (lItem) {
+					case MENU_ITEM_ROUND:
+						mWindow->SetRoundRect(true);
+						break;
+					case MENU_ITEM_RECT:
+						mWindow->SetRoundRect(false);
+						break;
+				}
+				mWindow->Damage();
+				break;
+		}
+	}
+	void HandleAppleMenu(long aItem) {
+		Str255 lMenuItemName;
+		GetMenuItemText(mMenuApple, aItem, lMenuItemName);
+		OpenDeskAcc(lMenuItemName);
 	}
 };
 
