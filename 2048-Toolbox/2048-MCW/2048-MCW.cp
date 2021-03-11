@@ -17,6 +17,8 @@
 #include <TextEdit.h>
 #include <ToolUtils.h>
 
+#include <stdio.h>
+
 #define RSRC_ID              128
 #define MENU_APPLE           128
 #define MENU_GAME            129
@@ -30,6 +32,8 @@
 #define TILE_SIZE            64
 #define TILE_MARGIN          16
 #define ROUND_RECT_RAD       20
+#define STRING_SCORE_LENGTH  16
+#define PATTERN_BACKGROUND   1
 #define OFFSET_COORD(coord)  (coord * (TILE_MARGIN + TILE_SIZE) + TILE_MARGIN)
 
 class Window {
@@ -42,14 +46,16 @@ class Window {
 	bool qRoundRect;
 	bool qQdGxMode;
 
-	int mX;
+	Pattern mPattern;
 public:
 	Window(void) {
-		mX = 0;
 		qRoundRect = qQdGxMode = true;
+
 		mWinPtr = GetNewCWindow(RSRC_ID, nil, (WindowPtr) -1L);
 		mRectScr = qd.screenBits.bounds;
 		mRectWin = mWinPtr->portRect;
+
+		GetIndPattern(&mPattern, RSRC_ID, PATTERN_BACKGROUND);
 	}
 	~Window(void) {
 		DisposeGWorld(mOffScr);
@@ -66,10 +72,9 @@ public:
 		SetGWorld((CGrafPtr) mOffScr, nil);
 	}
 	void SetFont(void) {
-		// TODO: Chicago font here.
-		TextFont(kFontIDGeneva);
-		TextSize(20);
-		TextMode(srcCopy);
+		short lFontID;
+		GetFNum("\pCharcoal", &lFontID);
+		TextFont(lFontID);
 	}
 
 	void Drag(Point aPoint, WindowPtr aWinPtr) {
@@ -89,7 +94,6 @@ public:
 		SetPort(mWinPtr);
 	}
 	void Update(void) {
-//		SetGWorld((CGrafPtr) mWinPtr, GetMainDevice());
 		BeginUpdate(mWinPtr);
 
 		SetGWorld((CGrafPtr) mOffScr, nil);
@@ -125,53 +129,84 @@ public:
 
 private:
 	void Draw(void) {
-		//EraseRect(&mRectWin); // TODO??
-
-		RGBColor lBackground;
-		lBackground.red = 0xFFFF;
-		RGBForeColor(&lBackground);
-
-		PaintRect(&mRectWin);
-
+		RGBBackColor(&GetRgbColor(COLOR_BOARD));
+		EraseRect(&mRectWin);
 		for (int y = 0; y < LINE_SIZE; ++y)
 			for (int x = 0; x < LINE_SIZE; ++x)
 				DrawTile(e_board[x + y * LINE_SIZE], x, y);
 		DrawFinal();
 	}
 	void DrawTile(int aVal, int aX, int aY) {
-		RGBColor lColorTile;
+		const RGBColor lColorTile = GetRgbColor(e_background(aVal));
+		RGBForeColor(&lColorTile);
 		Rect lRectTile;
-		Str15 lStrValue;
-
 		const int lX = OFFSET_COORD(aX);
 		const int lY = OFFSET_COORD(aY);
-
-		lColorTile.red = Random();
-		lColorTile.blue = Random();
-		lColorTile.green = Random();
-
-		RGBForeColor(&lColorTile);
-
 		SetRect(&lRectTile, lX, lY, lX + TILE_SIZE, lY + TILE_SIZE);
-		PaintRoundRect(&lRectTile, ROUND_RECT_RAD, ROUND_RECT_RAD);
+
+		if (qRoundRect)
+			PaintRoundRect(&lRectTile, ROUND_RECT_RAD, ROUND_RECT_RAD);
+		else
+			PaintRect(&lRectTile);
 
 		if (aVal) {
-			MoveTo(lX + 20, lY + 40);
+			const short size = (aVal < 10) ? 34 : (aVal < 100) ? 28 : (aVal < 1000) ? 26 : 22;
+			TextFace(bold);
+			TextSize(size);
 			RGBBackColor(&lColorTile);
-			InvertColor(&lColorTile);
-			RGBForeColor(&lColorTile);
-
+			RGBForeColor(&GetRgbColor(e_foreground(aVal)));
+			Str15 lStrValue;
 			NumToString(aVal, lStrValue);
-
+			const int llX = StringWidth(lStrValue);
+			const int llY = size - 4;
+			MoveTo(lX + (TILE_SIZE - llX - 1) / 2, lY + TILE_SIZE - (TILE_SIZE - llY) / 2 - 2);
 			DrawString(lStrValue);
 		}
 	}
 	void DrawFinal(void) {
-		DrawTile(2048, mX, 4);
-		mX++;
-		if (mX >= 4) {
-			mX=0;
-		}
+		const int lW = mRectWin.right - mRectWin.left;
+		const int lH = mRectWin.bottom - mRectWin.top;
+
+		if (e_win || e_lose)
+			DrawEnd(lW, lH);
+		else
+			RGBForeColor(&GetRgbColor(COLOR_TEXT));
+
+		TextFace(normal);
+		TextSize(18);
+		MoveTo(TILE_MARGIN, lH - TILE_MARGIN);
+		DrawString("\pESC to Restart!");
+		char strScore[STRING_SCORE_LENGTH];
+		sprintf(strScore, "Score: %d", e_score);
+		const int lX = StringWidth(c2pstr(strScore));
+		MoveTo(lW - lX - TILE_MARGIN, lH - TILE_MARGIN);
+		DrawString((const unsigned char *) strScore);
+	}
+	void DrawEnd(int aW, int aH) {
+		RGBBackColor(&GetRgbColor(COLOR_OVERLAY));
+		RGBForeColor(&GetRgbColor(COLOR_FINAL));
+		PenState lPenState;
+		GetPenState(&lPenState);
+		PenPat(&mPattern);
+		PenMode(patBic);
+		PaintRect(&mRectWin);
+		SetPenState(&lPenState);
+
+		const unsigned char * lStrFinal = (e_win) ? "\pYou Won!" : "\pGame Over";
+		TextSize(34);
+		const int lX = StringWidth(lStrFinal);
+		MoveTo(aW / 2 - lX / 2, aH / 2);
+		DrawString(lStrFinal);
+	}
+
+	RGBColor GetRgbColor(unsigned BIG aRgb) const {
+		// Not sure about the endianness (byte order). M68K and PPC are big-endian (BE).
+		// Why colors use `short` in range 0x0000-0xFFFF? Is the last byte in 0xFF00 in use?
+		RGBColor lColor;
+		lColor.red   = ((aRgb >> 16) & 0xFF) << 8;
+		lColor.green = ((aRgb >> 8)  & 0xFF) << 8;
+		lColor.blue  = ((aRgb >> 0)  & 0xFF) << 8;
+		return lColor;
 	}
 };
 

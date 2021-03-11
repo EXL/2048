@@ -12,9 +12,12 @@ The CodeWarrior Pro 4 package includes object-oriented [Metrowerks PowerPlant](h
 1. [x] Find option to enable `bool` keyword for C++.
 2. [x] Create project skeleton.
 3. [x] Find some offscreen drawing examples.
-4. [ ] What is QuickDraw GX?
+4. [ ] What is QuickDraw GX? Try to implement it.
 5. [x] Create GUI skeleton: MenuBar, Menus, Windows, Resources, About dialog, etc.
-6. [ ] Implement basic offscreen drawing.
+6. [x] Implement basic offscreen drawing.
+7. [x] Update engine source code.
+8. [x] Finish general game drawing.
+9. [ ] Check it on Mac OS 7.
 
 ## Mac OS System 6 Notes
 
@@ -48,6 +51,7 @@ The THINK C offered the programmer a powerful object-oriented Think Class Librar
 22. [x] Set date seed for `Random()` function.
 23. [x] Set private section for some classes methods and polish code.
 24. [x] Add "..." to the "About 2048-ThinkC" menu item.
+25. [x] Update engine source code.
 
 ## References and Books List
 
