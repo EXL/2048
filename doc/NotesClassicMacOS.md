@@ -52,6 +52,7 @@ The THINK C offered the programmer a powerful object-oriented Think Class Librar
 23. [x] Set private section for some classes methods and polish code.
 24. [x] Add "..." to the "About 2048-ThinkC" menu item.
 25. [x] Update engine source code.
+26. [x] Fix random initialization.
 
 ## References and Books List
 

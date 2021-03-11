@@ -88,6 +88,7 @@ public:
 
 private:
 	void InitMac(void);
+	void InitGameEngine(void);
 	void SetUpMenus(void);
 	void InitWindow(void);
 
@@ -321,9 +322,8 @@ void Window::DrawEnd(int aW, int aH) {
 }
 
 Application::Application(void) {
-	e_init(kEscapeOrClear, kLeftCursor, kRightCursor, kUpCursor, kDownCursor);
-
 	InitMac();
+	InitGameEngine();
 	SetUpMenus();
 	InitWindow();
 }
@@ -356,6 +356,10 @@ void Application::InitMac(void) {
 	SetEventMask(everyEvent);
 
 	GetDateTime((unsigned long *) &qd.randSeed);
+}
+
+void Application::InitGameEngine(void) {
+	e_init(kEscapeOrClear, kLeftCursor, kRightCursor, kUpCursor, kDownCursor);
 }
 
 void Application::SetUpMenus(void) {
