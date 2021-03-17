@@ -22,6 +22,7 @@
 #include <GXGraphics.h>
 #include <GXMath.h>
 #include <GXTypes.h>
+#include <FontLibrary.h>
 #include <GraphicsLibraries.h>
 #include <OffscreenLibrary.h>
 #include <QDLibrary.h>
@@ -194,6 +195,10 @@ private:
 	}
 	void DrawGx(void) {
 		GXDrawShape(mShapeBkgGx);
+		for (int y = 0; y < LINE_SIZE; ++y)
+			for (int x = 0; x < LINE_SIZE; ++x)
+				DrawTileGx(e_board[x + y * LINE_SIZE], x, y);
+		DrawFinalGx();
 		GXDrawShape(mOffScrGx.draw);
 	}
 	void DrawTile(int aVal, int aX, int aY) {
@@ -223,6 +228,83 @@ private:
 			DrawString(lStrValue);
 		}
 	}
+	void DrawTileGx(int aVal, int aX, int aY) {
+		const int lX = OFFSET_COORD(aX);
+		const int lY = OFFSET_COORD(aY);
+
+		gxShape lShapeTile;
+
+		if (qRoundRect) {
+			const int lR = 10;
+			const long lPathGeometry[] = {
+				1,
+				12,
+				0x24900000, /// TODO: Comments here. hex(0b001001001001)
+				ff(lX + lR), ff(lY), // on
+				ff(lX + TILE_SIZE - lR), ff(lY), // on
+				ff(lX + TILE_SIZE), ff(lY), // off
+				ff(lX + TILE_SIZE), ff(lY + lR), // on
+				ff(lX + TILE_SIZE), ff(lY + TILE_SIZE - lR), // on
+				ff(lX + TILE_SIZE), ff(lY + TILE_SIZE), // off
+				ff(lX + TILE_SIZE - lR), ff(lY + TILE_SIZE), // on
+				ff(lX + lR), ff(lY + TILE_SIZE), // on
+				ff(lX), ff(lY + TILE_SIZE), // off
+				ff(lX), ff(lY + TILE_SIZE - lR), // on
+				ff(lX), ff(lY + lR), // on
+				ff(lX), ff(lY) // off
+			};
+			lShapeTile = GXNewPaths((gxPaths *) lPathGeometry);
+		} else {
+			gxRectangle lRectTile;
+			lRectTile.left = ff(lX);
+			lRectTile.top = ff(lY);
+			lRectTile.right = ff(lX + TILE_SIZE);
+			lRectTile.bottom = ff(lY + TILE_SIZE);
+			lShapeTile = GXNewRectangle(&lRectTile);
+		}
+
+		RGBColor lColorTile = GetRgbColor(e_background(aVal));
+		SetShapeRGB(lShapeTile, lColorTile.red, lColorTile.green, lColorTile.blue);
+		GXSetShapeTransform(lShapeTile, mOffScrGx.xform);
+		GXDrawShape(lShapeTile);
+
+		if (aVal) {
+			char lStrValue[5];
+			snprintf(lStrValue, 5, "%d", aVal);
+
+			gxPoint lPos;
+			gxRectangle lRectBounds;
+			GXGetShapeCenter(lShapeTile, 0L, &lPos);
+
+			gxShape lShapeText = NewCString(lStrValue, &lPos);
+			SetShapeCommonFont(lShapeText, newyorkFont);
+			SetShapeCommonFace(lShapeText, gxBold);
+
+			GXSetShapeTextSize(lShapeText,
+				(aVal < 10)   ? ff(32) :
+				(aVal < 100)  ? ff(26) :
+				(aVal < 1000) ? ff(24) : ff(20)
+			);
+
+			RGBColor lColorText = GetRgbColor(e_foreground(aVal));
+			SetShapeRGB(lShapeText, lColorText.red, lColorText.green, lColorText.blue);
+
+			GXGetShapeBounds(lShapeText, 0L, &lRectBounds);
+
+			GXMoveShapeTo(
+				lShapeText,
+				lPos.x - (lRectBounds.right - lRectBounds.left) / 2 - ff(2),
+				lPos.y + (lRectBounds.bottom - lRectBounds.top) / 2 - ff(2)
+			);
+
+			GXSetShapeTransform(lShapeText, mOffScrGx.xform);
+
+			GXDrawShape(lShapeText);
+
+			GXDisposeShape(lShapeText);
+		}
+		GXDisposeShape(lShapeTile);
+	}
 	void DrawFinal(void) {
 		const int lW = mRectWin.right - mRectWin.left;
 		const int lH = mRectWin.bottom - mRectWin.top;
@@ -241,6 +323,24 @@ private:
 		const int lX = StringWidth(c2pstr(strScore));
 		MoveTo(lW - lX - TILE_MARGIN, lH - TILE_MARGIN);
 		DrawString((const unsigned char *) strScore);
+	}
+	void DrawFinalGx(void) {
+#if 0
+		gxShape lSh;
+		gxColor s;
+		gxRectangle lR = { ff(0), ff(0), ff(300), ff(400) };
+		s.space = gxARGB32Space;
+		s.profile = nil;
+		s.element.rgba.red = 0xFFFF;
+		s.element.rgba.green = 0x0000;
+		s.element.rgba.blue = 0x0000;
+		s.element.rgba.alpha = 0x0;
+
+		lSh = GXNewRectangle(&lR);
+		GXSetShapeColor(lSh, &s);
+		GXSetShapeTransform(lSh, mOffScrGx.xform);
+		GXDrawShape(lSh);
+#endif
 	}
 	void DrawEnd(int aW, int aH) {
 		RGBBackColor(&GetRgbColor(COLOR_OVERLAY));

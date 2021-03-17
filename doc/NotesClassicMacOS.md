@@ -25,6 +25,9 @@ The CodeWarrior Pro 4 package includes object-oriented [Metrowerks PowerPlant](h
 14. [ ] Add alerts instead of beeps.
 15. [x] Implement skeleton QuickDraw + QuickDraw GX drawing.
 16. [ ] Implement QuickDraw GX general game drawing.
+17. [ ] Optimize QuickDraw GX shape drawing and release/free/dispose shapes.
+18. [ ] Draw some QuickDraw GX logo.
+19. [ ] Find way to some transparents drawing.
 
 ## Mac OS System 6 Notes
 
@@ -60,6 +63,7 @@ The THINK C offered the programmer a powerful object-oriented Think Class Librar
 24. [x] Add "..." to the "About 2048-ThinkC" menu item.
 25. [x] Update engine source code.
 26. [x] Fix random initialization.
+27. [ ] Fix font setting for offscreen.
 
 ## References and Books List
 
