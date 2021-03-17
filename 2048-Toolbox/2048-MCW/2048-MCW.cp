@@ -47,6 +47,7 @@ class Window {
 	bool qQdGxMode;
 
 	Pattern mPattern;
+
 public:
 	Window(void) {
 		qRoundRect = qQdGxMode = true;
@@ -216,6 +217,7 @@ class Application {
 	MenuHandle mMenuApple;
 	MenuHandle mMenuGame;
 	MenuHandle mMenuTiles;
+
 public:
 	Application(void) {
 		e_init(kEscapeCharCode, kLeftArrowCharCode, kRightArrowCharCode, kUpArrowCharCode, kDownArrowCharCode);
@@ -268,6 +270,7 @@ public:
 			HandleEvents();
 		}
 	}
+
 private:
 	void SetUpMenus(void) {
 		InsertMenu(mMenuApple = GetMenu(MENU_APPLE), 0);

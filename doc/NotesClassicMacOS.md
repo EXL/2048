@@ -18,6 +18,10 @@ The CodeWarrior Pro 4 package includes object-oriented [Metrowerks PowerPlant](h
 7. [x] Update engine source code.
 8. [x] Finish general game drawing.
 9. [ ] Check it on Mac OS 7.
+10. [ ] Add movable about dialog with a window title bar. Will complicate the code too much.
+11. [x] Setup environment for building QuickDraw examples.
+12. [x] Create QuickDraw + QuickDrawGX switch example.
+13. [ ] Add links to ftp.apple.com archive.
 
 ## Mac OS System 6 Notes
 
