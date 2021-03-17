@@ -92,12 +92,16 @@ public:
 	void SetOffScreenGx(void) {
 		gxBitmap lGxBitmap;
 		gxShape lGxShapeOffScr;
-		gxRectangle lGxRectBkg = { ff(0), ff(0), ff(340), ff(400) }; // TODO: drop constants.
+		gxRectangle lGxRectBkg;
+		lGxRectBkg.left = ff(mRectWin.left);
+		lGxRectBkg.right = ff(mRectWin.right);
+		lGxRectBkg.top = ff(mRectWin.top);
+		lGxRectBkg.bottom = ff(mRectWin.bottom);
 
 		lGxBitmap.width = mRectWin.right - mRectWin.left;
 		lGxBitmap.height = mRectWin.bottom - mRectWin.top;
-		lGxBitmap.pixelSize = 8;
-		lGxBitmap.space = gxIndexedSpace;
+		lGxBitmap.pixelSize = 8 * 4;
+		lGxBitmap.space = gxRGB32Space;
 		lGxBitmap.set = CTableToColorSet(GetCTable(8));
 		lGxBitmap.profile = nil;
 		lGxBitmap.image = nil;
@@ -109,7 +113,8 @@ public:
 
 		mShapeBkgGx = GXNewRectangle(&lGxRectBkg);
 		GXSetShapeTransform(mShapeBkgGx, mOffScrGx.xform);
-		SetShapeRGB(mShapeBkgGx, 65000, 0, 0);
+		RGBColor lColorBkg = GetRgbColor(COLOR_BOARD);
+		SetShapeRGB(mShapeBkgGx, lColorBkg.red, lColorBkg.green, lColorBkg.blue);
 	}
 	void SetFont(void) {
 		short lFontID;
@@ -257,10 +262,14 @@ private:
 	RGBColor GetRgbColor(unsigned BIG aRgb) const {
 		// Not sure about the endianness (byte order). M68K and PPC are big-endian (BE).
 		// Why colors use `short` in range 0x0000-0xFFFF? Is the last byte in 0xFF00 in use?
+		// More information: https://stackoverflow.com/a/12043639
+		const unsigned char red8   = (unsigned char) ((aRgb & 0xFF0000) >> 16);
+		const unsigned char green8 = (unsigned char) ((aRgb & 0x00FF00) >> 8);
+		const unsigned char blue8  = (unsigned char) ((aRgb & 0x0000FF) >> 0);
 		RGBColor lColor;
-		lColor.red   = ((aRgb >> 16) & 0xFF) << 8;
-		lColor.green = ((aRgb >> 8)  & 0xFF) << 8;
-		lColor.blue  = ((aRgb >> 0)  & 0xFF) << 8;
+		lColor.red   = ((unsigned short) red8 << 8) | red8;
+		lColor.green = ((unsigned short) green8 << 8) | green8;
+		lColor.blue  = ((unsigned short) blue8 << 8) | blue8;
 		return lColor;
 	}
 };
