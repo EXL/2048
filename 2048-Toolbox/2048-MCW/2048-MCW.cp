@@ -4,6 +4,7 @@
 #include <Dialogs.h>
 #include <Events.h>
 #include <Fonts.h>
+#include <MacMemory.h>
 #include <MacTypes.h>
 #include <MacWindows.h>
 #include <Menus.h>
@@ -16,6 +17,14 @@
 #include <Sound.h>
 #include <TextEdit.h>
 #include <ToolUtils.h>
+
+#include <GXEnvironment.h>
+#include <GXGraphics.h>
+#include <GXMath.h>
+#include <GXTypes.h>
+#include <GraphicsLibraries.h>
+#include <OffscreenLibrary.h>
+#include <QDLibrary.h>
 
 #include <stdio.h>
 
@@ -40,17 +49,22 @@ class Window {
 	WindowPtr mWinPtr;
 	GWorldPtr mOffScr;
 
+	offscreen mOffScrGx;
+	gxShape mShapeBkgGx;
+
 	Rect mRectScr;
 	Rect mRectWin;
 
 	bool qRoundRect;
 	bool qQdGxMode;
+	bool qQdGxAvailable;
 
 	Pattern mPattern;
 
 public:
-	Window(void) {
-		qRoundRect = qQdGxMode = true;
+	Window(bool aUseQuickDrawGx) {
+		qRoundRect = true;
+		qQdGxAvailable = qQdGxMode = aUseQuickDrawGx;
 
 		mWinPtr = GetNewCWindow(RSRC_ID, nil, (WindowPtr) -1L);
 		mRectScr = qd.screenBits.bounds;
@@ -60,6 +74,8 @@ public:
 	}
 	~Window(void) {
 		DisposeGWorld(mOffScr);
+		if (qQdGxAvailable)
+			DisposeOffscreen(&mOffScrGx);
 		DisposeWindow(mWinPtr);
 	}
 
@@ -70,7 +86,30 @@ public:
 			ExitToShell();
 		}
 		LockPixels(GetGWorldPixMap(mOffScr));
-		SetGWorld((CGrafPtr) mOffScr, nil);
+		if (!qQdGxAvailable)
+			SetGWorld((CGrafPtr) mOffScr, nil);
+	}
+	void SetOffScreenGx(void) {
+		gxBitmap lGxBitmap;
+		gxShape lGxShapeOffScr;
+		gxRectangle lGxRectBkg = { ff(0), ff(0), ff(340), ff(400) }; // TODO: drop constants.
+
+		lGxBitmap.width = mRectWin.right - mRectWin.left;
+		lGxBitmap.height = mRectWin.bottom - mRectWin.top;
+		lGxBitmap.pixelSize = 8;
+		lGxBitmap.space = gxIndexedSpace;
+		lGxBitmap.set = CTableToColorSet(GetCTable(8));
+		lGxBitmap.profile = nil;
+		lGxBitmap.image = nil;
+
+		SetDefaultViewPort(GXNewWindowViewPort(mWinPtr));
+
+		lGxShapeOffScr = GXNewBitmap(&lGxBitmap, nil);
+		CreateOffscreen(&mOffScrGx, lGxShapeOffScr);
+
+		mShapeBkgGx = GXNewRectangle(&lGxRectBkg);
+		GXSetShapeTransform(mShapeBkgGx, mOffScrGx.xform);
+		SetShapeRGB(mShapeBkgGx, 65000, 0, 0);
 	}
 	void SetFont(void) {
 		short lFontID;
@@ -96,23 +135,17 @@ public:
 	}
 	void Update(void) {
 		BeginUpdate(mWinPtr);
-
-		SetGWorld((CGrafPtr) mOffScr, nil);
-
-		Draw();
-
-		SetGWorld((CGrafPtr) mWinPtr, GetMainDevice());
-
-		CopyBits(
-			&((GrafPtr) mOffScr)->portBits, &((GrafPtr) mWinPtr)->portBits,
-			&mOffScr->portRect, &mWinPtr->portRect,
-			srcCopy, nil
-		);
-
+		if (qQdGxMode)
+			UpdateQuickDrawGx();
+		else
+			UpdateQuickDraw();
 		EndUpdate(mWinPtr);
 	}
 	void Damage(void) {
-		InvalRect(&mRectWin);
+		if (qQdGxMode)
+			DrawGx();
+		else
+			InvalRect(&mRectWin);
 	}
 
 	void SetRoundRect(bool aRoundRect) {
@@ -129,6 +162,23 @@ public:
 	}
 
 private:
+	void UpdateQuickDraw(void) {
+		SetGWorld((CGrafPtr) mOffScr, nil);
+
+		Draw();
+
+		SetGWorld((CGrafPtr) mWinPtr, GetMainDevice());
+
+		CopyBits(
+			&((GrafPtr) mOffScr)->portBits, &((GrafPtr) mWinPtr)->portBits,
+			&mOffScr->portRect, &mWinPtr->portRect,
+			srcCopy, nil
+		);
+	}
+	void UpdateQuickDrawGx(void) {
+		SetPort(mWinPtr);
+		DrawGx();
+	}
 	void Draw(void) {
 		RGBBackColor(&GetRgbColor(COLOR_BOARD));
 		EraseRect(&mRectWin);
@@ -136,6 +186,10 @@ private:
 			for (int x = 0; x < LINE_SIZE; ++x)
 				DrawTile(e_board[x + y * LINE_SIZE], x, y);
 		DrawFinal();
+	}
+	void DrawGx(void) {
+		GXDrawShape(mShapeBkgGx);
+		GXDrawShape(mOffScrGx.draw);
 	}
 	void DrawTile(int aVal, int aX, int aY) {
 		const RGBColor lColorTile = GetRgbColor(e_background(aVal));
@@ -218,11 +272,16 @@ class Application {
 	MenuHandle mMenuGame;
 	MenuHandle mMenuTiles;
 
+	bool qUseQuickDrawGx;
+	gxGraphicsClient mGxGraphicsClient;
+
 public:
 	Application(void) {
 		e_init(kEscapeCharCode, kLeftArrowCharCode, kRightArrowCharCode, kUpArrowCharCode, kDownArrowCharCode);
 	}
 	~Application(void) {
+		if (qUseQuickDrawGx)
+			GXDisposeGraphicsClient(mGxGraphicsClient);
 		delete mWindow;
 	}
 
@@ -237,6 +296,8 @@ public:
 	}
 	void InitMac(void) {
 		MaxApplZone();
+		MoreMasters(); MoreMasters(); MoreMasters();
+		MoreMasters(); MoreMasters(); MoreMasters();
 
 		InitGraf(&qd.thePort);
 		InitFonts();
@@ -249,6 +310,11 @@ public:
 		FlushEvents(everyEvent, 0);
 		SetEventMask(everyEvent);
 	}
+	void InitQuickDrawGx(void) {
+		CheckQuickDrawGx();
+		if (qUseQuickDrawGx)
+			mGxGraphicsClient = GXNewGraphicsClient(nil, 2000L * 1024L, 0L);
+	}
 	void InitMenuBar(void) {
 		Handle lMenuBar = GetNewMBar(RSRC_ID);
 		SetMenuBar(lMenuBar);
@@ -259,10 +325,12 @@ public:
 		DrawMenuBar();
 	}
 	void InitWindow(void) {
-		mWindow = new Window();
+		mWindow = new Window(qUseQuickDrawGx);
 		mWindow->Activate();
 		mWindow->SetOffScreen();
 		mWindow->SetFont();
+		if (qUseQuickDrawGx)
+			mWindow->SetOffScreenGx();
 	}
 	void Run(void) {
 		for (;;) {
@@ -272,6 +340,11 @@ public:
 	}
 
 private:
+	void CheckQuickDrawGx(void) {
+		// TODO: proper check.
+		// TODO: warning alert.
+		qUseQuickDrawGx = true;
+	}
 	void SetUpMenus(void) {
 		InsertMenu(mMenuApple = GetMenu(MENU_APPLE), 0);
 		AppendResMenu(mMenuApple, 'DRVR');
@@ -283,6 +356,9 @@ private:
 
 		CheckItem(mMenuTiles, MENU_ITEM_ROUND, mWindow->IsRoundRect());
 		CheckItem(mMenuTiles, MENU_ITEM_RECT, !mWindow->IsRoundRect());
+
+		if (!qUseQuickDrawGx)
+			DisableItem(mMenuGame, MENU_ITEM_QD_GX);
 		CheckItem(mMenuGame, MENU_ITEM_QD_GX, mWindow->IsQdGxMode());
 	}
 	void HandleEvents(void) {
@@ -387,14 +463,15 @@ private:
 };
 
 int main(void) {
-	Application *app = new Application();
-	if (app->CheckColorMac()) {
-		app->InitMac();
-		app->InitMenuBar();
-		app->InitWindow();
-		app->Run();
+	Application *lApp = new Application();
+	if (lApp->CheckColorMac()) {
+		lApp->InitMac();
+		lApp->InitQuickDrawGx();
+		lApp->InitMenuBar();
+		lApp->InitWindow();
+		lApp->Run();
 	}
-	delete app;
+	delete lApp;
 	ExitToShell();
 	return 0;
 }

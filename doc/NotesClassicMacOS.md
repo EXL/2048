@@ -22,6 +22,9 @@ The CodeWarrior Pro 4 package includes object-oriented [Metrowerks PowerPlant](h
 11. [x] Setup environment for building QuickDraw examples.
 12. [x] Create QuickDraw + QuickDrawGX switch example.
 13. [ ] Add links to ftp.apple.com archive.
+14. [ ] Add alerts instead of beeps.
+15. [x] Implement skeleton QuickDraw + QuickDraw GX drawing.
+16. [ ] Implement QuickDraw GX general game drawing.
 
 ## Mac OS System 6 Notes
 
