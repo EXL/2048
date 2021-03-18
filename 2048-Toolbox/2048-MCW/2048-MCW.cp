@@ -30,11 +30,9 @@
 #include <stdio.h>
 
 #define RSRC_ID              128
-#define STR_ERR_CANNOT_RUN   1
-#define STR_ERR_QD_COLOR_D   2
-#define STR_ERR_OFF_BUFF_D   3
-#define STR_WAR_QD_GX        4
-#define STR_WAR_QD_GX_D      5
+#define ALERT_ERR_COLOR      129
+#define ALERT_ERR_BUFFER     130
+#define ALERT_WARN_QD_GX     131
 #define MENU_APPLE           128
 #define MENU_GAME            129
 #define MENU_TILES           130
@@ -52,23 +50,6 @@
 #define OFFSET_COORD(coord)  (coord * (TILE_MARGIN + TILE_SIZE) + TILE_MARGIN)
 #define WW(rect)             (rect.right - rect.left)
 #define HH(rect)             (rect.bottom - rect.top)
-
-static void ShowAlert(AlertType aType, short aTitle, short aText) {
-	AlertStdAlertParamRec lAlertParam;
-	lAlertParam.movable = true;
-	lAlertParam.helpButton = false;
-	lAlertParam.filterProc = nil;
-	lAlertParam.defaultText = "\pOK";
-	lAlertParam.cancelText = nil;
-	lAlertParam.otherText = nil;
-	lAlertParam.defaultButton = 1;
-	lAlertParam.cancelButton = 0;
-	lAlertParam.position = kWindowDefaultPosition;
-	Str255 lStrErrorTitle, lStrErrorText;
-	GetIndString(lStrErrorTitle, RSRC_ID, aTitle);
-	GetIndString(lStrErrorText, RSRC_ID, aText);
-	StandardAlert(aType, lStrErrorTitle, lStrErrorText, &lAlertParam, nil);
-}
 
 class Window {
 	WindowPtr mWinPtr;
@@ -123,7 +104,7 @@ public:
 	void SetOffScreen(void) {
 		OSErr lError = NewGWorld(&mOffScr, 0, &mRectWin, nil, nil, 0L);
 		if (lError) {
-			ShowAlert(kAlertStopAlert, STR_ERR_CANNOT_RUN, STR_ERR_OFF_BUFF_D);
+			Alert(ALERT_ERR_BUFFER, nil);
 			ExitToShell();
 		}
 		LockPixels(GetGWorldPixMap(mOffScr));
@@ -469,7 +450,7 @@ public:
 		SysEnvRec lEnvWorld;
 		SysEnvirons(curSysEnvVers, &lEnvWorld);
 		if (!lEnvWorld.hasColorQD) {
-			ShowAlert(kAlertStopAlert, STR_ERR_CANNOT_RUN, STR_ERR_QD_COLOR_D);
+			Alert(ALERT_ERR_COLOR, nil);
 			return false;
 		}
 		return true;
@@ -526,7 +507,7 @@ private:
 	void CheckQuickDrawGx(void) {
 		qUseQuickDrawGx = (Gestalt(gestaltGraphicsVersion, nil) == noErr);
 		if (!qUseQuickDrawGx)
-			ShowAlert(kAlertNoteAlert, STR_WAR_QD_GX, STR_WAR_QD_GX_D);
+			Alert(ALERT_WARN_QD_GX, nil);
 	}
 	void SetUpMenus(void) {
 		InsertMenu(mMenuApple = GetMenu(MENU_APPLE), 0);
@@ -606,7 +587,7 @@ private:
 		switch (lMenu) {
 			case MENU_APPLE:
 				if (lItem == MENU_ITEM_ABOUT)
-					Alert(RSRC_ID, nil);
+					ShowAboutModalDialog();
 				else
 					HandleAppleMenu(lItem);
 				break;
@@ -642,6 +623,15 @@ private:
 		Str255 lMenuItemName;
 		GetMenuItemText(mMenuApple, aItem, lMenuItemName);
 		OpenDeskAcc(lMenuItemName);
+	}
+	void ShowAboutModalDialog(void) {
+		DialogPtr lDialogAbout = GetNewDialog(RSRC_ID, nil, (WindowPtr) -1L);
+		SetDialogDefaultItem(lDialogAbout, 1); // "OK" button.
+		short lAnswer = 0;
+		do
+			ModalDialog(nil, &lAnswer);
+		while (lAnswer == 0);
+		DisposeDialog(lDialogAbout);
 	}
 };
 
