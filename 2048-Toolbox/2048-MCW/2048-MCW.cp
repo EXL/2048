@@ -45,6 +45,8 @@
 #define STRING_SCORE_LENGTH  16
 #define PATTERN_BACKGROUND   1
 #define OFFSET_COORD(coord)  (coord * (TILE_MARGIN + TILE_SIZE) + TILE_MARGIN)
+#define WW(rect)             (rect.right - rect.left)
+#define HH(rect)             (rect.bottom - rect.top)
 
 class Window {
 	WindowPtr mWinPtr;
@@ -52,6 +54,9 @@ class Window {
 
 	offscreen mOffScrGx;
 	gxShape mShapeBkgGx;
+	gxShape mShapeSignGx;
+	gxShape mShapeOverlayGx;
+	gxShape mShapeRestartGx;
 
 	Rect mRectScr;
 	Rect mRectWin;
@@ -75,11 +80,24 @@ public:
 	}
 	~Window(void) {
 		DisposeGWorld(mOffScr);
-		if (qQdGxAvailable)
+		if (qQdGxAvailable) {
+			GXDisposeShape(mShapeRestartGx);
+			GXDisposeShape(mShapeOverlayGx);
+			GXDisposeShape(mShapeSignGx);
+			GXDisposeShape(mShapeBkgGx);
 			DisposeOffscreen(&mOffScrGx);
+		}
 		DisposeWindow(mWinPtr);
 	}
 
+	void SetWindowDefaultViewPort(void) {
+		SetDefaultViewPort(GXNewWindowViewPort(mWinPtr));
+	}
+	void SetFont(void) {
+		short lFontID;
+		GetFNum("\pCharcoal", &lFontID);
+		TextFont(lFontID);
+	}
 	void SetOffScreen(void) {
 		OSErr lError = NewGWorld(&mOffScr, 0, &mRectWin, nil, nil, 0L);
 		if (lError) {
@@ -92,35 +110,53 @@ public:
 	}
 	void SetOffScreenGx(void) {
 		gxBitmap lGxBitmap;
-		gxShape lGxShapeOffScr;
-		gxRectangle lGxRectBkg;
-		lGxRectBkg.left = ff(mRectWin.left);
-		lGxRectBkg.right = ff(mRectWin.right);
-		lGxRectBkg.top = ff(mRectWin.top);
-		lGxRectBkg.bottom = ff(mRectWin.bottom);
-
-		lGxBitmap.width = mRectWin.right - mRectWin.left;
-		lGxBitmap.height = mRectWin.bottom - mRectWin.top;
+		lGxBitmap.width = WW(mRectWin);
+		lGxBitmap.height = HH(mRectWin);
 		lGxBitmap.pixelSize = 8 * 4;
 		lGxBitmap.space = gxRGB32Space;
 		lGxBitmap.set = CTableToColorSet(GetCTable(8));
 		lGxBitmap.profile = nil;
 		lGxBitmap.image = nil;
 
-		SetDefaultViewPort(GXNewWindowViewPort(mWinPtr));
-
+		gxShape lGxShapeOffScr;
 		lGxShapeOffScr = GXNewBitmap(&lGxBitmap, nil);
 		CreateOffscreen(&mOffScrGx, lGxShapeOffScr);
-
-		mShapeBkgGx = GXNewRectangle(&lGxRectBkg);
-		GXSetShapeTransform(mShapeBkgGx, mOffScrGx.xform);
+		GXDisposeShape(lGxShapeOffScr);
+	}
+	void InitStaticShapesGx(void) {
+		mShapeBkgGx = GXNewRectangle(&GetGxRectangle(&mRectWin));
 		RGBColor lColorBkg = GetRgbColor(COLOR_BOARD);
 		SetShapeRGB(mShapeBkgGx, lColorBkg.red, lColorBkg.green, lColorBkg.blue);
-	}
-	void SetFont(void) {
-		short lFontID;
-		GetFNum("\pCharcoal", &lFontID);
-		TextFont(lFontID);
+		GXSetShapeTransform(mShapeBkgGx, mOffScrGx.xform);
+
+		mShapeSignGx = NewCString("GX", nil);
+		SetShapeCommonFont(mShapeSignGx, timesFont);
+		SetShapeCommonFace(mShapeSignGx, gxBold);
+		GXSetShapeTextSize(mShapeSignGx, ff(200));
+		RGBColor lColorSign = GetRgbColor(COLOR_TILE_0);
+		SetShapeRGB(mShapeSignGx, lColorSign.red, lColorSign.green, lColorSign.blue);
+		SetShapeCommonTransfer(mShapeSignGx, gxBlendMode);
+		gxRectangle lRectSign;
+		GXGetShapeBounds(mShapeSignGx, 0L, &lRectSign);
+		GXRotateShape(mShapeSignGx, ff(45), WW(lRectSign), HH(lRectSign));
+		GXMoveShapeTo(mShapeSignGx, ff(WW(mRectWin) / 2) - WW(lRectSign) / 2, ff(HH(mRectWin) / 2) - HH(lRectSign) / 2);
+		GXSetShapeTransform(mShapeSignGx, mOffScrGx.xform);
+
+		mShapeOverlayGx = GXNewRectangle(&GetGxRectangle(&mRectWin));
+		RGBColor lColorOverlay = GetRgbColor(COLOR_OVERLAY);
+		SetShapeRGB(mShapeOverlayGx, lColorOverlay.red, lColorOverlay.green, lColorOverlay.blue);
+		SetShapeCommonTransfer(mShapeOverlayGx, gxBlendMode);
+		GXSetShapeTransform(mShapeOverlayGx, mOffScrGx.xform);
+
+		gxPoint lPointRestart;
+		lPointRestart.x = ff(TILE_MARGIN);
+		lPointRestart.y = ff(HH(mRectWin) - TILE_MARGIN);
+		mShapeRestartGx = NewCString("ESC to Restart!", &lPointRestart);
+		SetShapeCommonFont(mShapeRestartGx, genevaFont);
+		GXSetShapeTextSize(mShapeRestartGx, ff(18));
+		RGBColor lColorText = GetRgbColor(COLOR_TEXT);
+		SetShapeRGB(mShapeRestartGx, lColorText.red, lColorText.green, lColorText.blue);
+		GXSetShapeTransform(mShapeRestartGx, mOffScrGx.xform);
 	}
 
 	void Drag(Point aPoint, WindowPtr aWinPtr) {
@@ -195,6 +231,7 @@ private:
 	}
 	void DrawGx(void) {
 		GXDrawShape(mShapeBkgGx);
+		GXDrawShape(mShapeSignGx);
 		for (int y = 0; y < LINE_SIZE; ++y)
 			for (int x = 0; x < LINE_SIZE; ++x)
 				DrawTileGx(e_board[x + y * LINE_SIZE], x, y);
@@ -231,118 +268,98 @@ private:
 	void DrawTileGx(int aVal, int aX, int aY) {
 		const int lX = OFFSET_COORD(aX);
 		const int lY = OFFSET_COORD(aY);
-
 		gxShape lShapeTile;
-
 		if (qRoundRect) {
-			const int lR = 10;
+			const int lR = 10;                               // Rounded rectangle corner radius.
 			const long lPathGeometry[] = {
-				1,
-				12,
-				0x24900000, /// TODO: Comments here. hex(0b001001001001)
-				ff(lX + lR), ff(lY), // on
-				ff(lX + TILE_SIZE - lR), ff(lY), // on
-				ff(lX + TILE_SIZE), ff(lY), // off
-				ff(lX + TILE_SIZE), ff(lY + lR), // on
-				ff(lX + TILE_SIZE), ff(lY + TILE_SIZE - lR), // on
-				ff(lX + TILE_SIZE), ff(lY + TILE_SIZE), // off
-				ff(lX + TILE_SIZE - lR), ff(lY + TILE_SIZE), // on
-				ff(lX + lR), ff(lY + TILE_SIZE), // on
-				ff(lX), ff(lY + TILE_SIZE), // off
-				ff(lX), ff(lY + TILE_SIZE - lR), // on
-				ff(lX), ff(lY + lR), // on
-				ff(lX), ff(lY) // off
+				1,                                           // Number of contours.
+				12,                                          // Number of points.
+				0x24900000,                                  // Points mask, hex(0b001001001001).
+				ff(lX + lR), ff(lY),                         // On, simple point.
+				ff(lX + TILE_SIZE - lR), ff(lY),             // On, simple point.                      12  1      2  3
+				ff(lX + TILE_SIZE), ff(lY),                  // Off, quadratic bezier control point.    .  .      .  .
+				ff(lX + TILE_SIZE), ff(lY + lR),             // On, simple point.
+				ff(lX + TILE_SIZE), ff(lY + TILE_SIZE - lR), // On, simple point.                    11 .            . 4
+				ff(lX + TILE_SIZE), ff(lY + TILE_SIZE),      // Off, quadratic bezier control point.
+				ff(lX + TILE_SIZE - lR), ff(lY + TILE_SIZE), // On, simple point.
+				ff(lX + lR), ff(lY + TILE_SIZE),             // On, simple point.                    10 .            . 5
+				ff(lX), ff(lY + TILE_SIZE),                  // Off, quadratic bezier control point.
+				ff(lX), ff(lY + TILE_SIZE - lR),             // On, simple point.                     9 .  .      .  . 6
+				ff(lX), ff(lY + lR),                         // On, simple point.
+				ff(lX), ff(lY)                               // Off, quadratic bezier control point.       8      7
 			};
 			lShapeTile = GXNewPaths((gxPaths *) lPathGeometry);
-		} else {
-			gxRectangle lRectTile;
-			lRectTile.left = ff(lX);
-			lRectTile.top = ff(lY);
-			lRectTile.right = ff(lX + TILE_SIZE);
-			lRectTile.bottom = ff(lY + TILE_SIZE);
-			lShapeTile = GXNewRectangle(&lRectTile);
-		}
-
+		} else
+			lShapeTile = GXNewRectangle(&GetGxRectangle(lX, lX + TILE_SIZE, lY, lY + TILE_SIZE));
 		RGBColor lColorTile = GetRgbColor(e_background(aVal));
 		SetShapeRGB(lShapeTile, lColorTile.red, lColorTile.green, lColorTile.blue);
 		GXSetShapeTransform(lShapeTile, mOffScrGx.xform);
 		GXDrawShape(lShapeTile);
 
 		if (aVal) {
-			char lStrValue[5];
-			snprintf(lStrValue, 5, "%d", aVal);
-
-			gxPoint lPos;
-			gxRectangle lRectBounds;
-			GXGetShapeCenter(lShapeTile, 0L, &lPos);
-
-			gxShape lShapeText = NewCString(lStrValue, &lPos);
+			Str15 lStrValue;
+			NumToString(aVal, lStrValue);
+			gxShape lShapeText = NewPString((const char *) lStrValue, nil);
 			SetShapeCommonFont(lShapeText, newyorkFont);
 			SetShapeCommonFace(lShapeText, gxBold);
-
 			GXSetShapeTextSize(lShapeText,
 				(aVal < 10)   ? ff(32) :
 				(aVal < 100)  ? ff(26) :
-				(aVal < 1000) ? ff(24) : ff(20)
+				(aVal < 1000) ? ff(24) :
+				/* else */      ff(20)
 			);
-
 			RGBColor lColorText = GetRgbColor(e_foreground(aVal));
 			SetShapeRGB(lShapeText, lColorText.red, lColorText.green, lColorText.blue);
-
+			gxRectangle lRectBounds;
 			GXGetShapeBounds(lShapeText, 0L, &lRectBounds);
-
-			GXMoveShapeTo(
-				lShapeText,
-				lPos.x - (lRectBounds.right - lRectBounds.left) / 2 - ff(2),
-				lPos.y + (lRectBounds.bottom - lRectBounds.top) / 2 - ff(2)
-			);
-
+			gxPoint lPos;
+			GXGetShapeCenter(lShapeTile, 0L, &lPos);
+			const Fixed lP = ff(2);
+			GXMoveShapeTo(lShapeText, lPos.x - WW(lRectBounds) / 2 - lP, lPos.y + HH(lRectBounds) / 2 - lP);
 			GXSetShapeTransform(lShapeText, mOffScrGx.xform);
-
 			GXDrawShape(lShapeText);
-
 			GXDisposeShape(lShapeText);
 		}
 		GXDisposeShape(lShapeTile);
 	}
 	void DrawFinal(void) {
-		const int lW = mRectWin.right - mRectWin.left;
-		const int lH = mRectWin.bottom - mRectWin.top;
-
 		if (e_win || e_lose)
-			DrawEnd(lW, lH);
+			DrawEnd();
 		else
 			RGBForeColor(&GetRgbColor(COLOR_TEXT));
 
 		TextFace(normal);
 		TextSize(18);
-		MoveTo(TILE_MARGIN, lH - TILE_MARGIN);
+		MoveTo(TILE_MARGIN, HH(mRectWin) - TILE_MARGIN);
 		DrawString("\pESC to Restart!");
-		char strScore[STRING_SCORE_LENGTH];
-		sprintf(strScore, "Score: %d", e_score);
-		const int lX = StringWidth(c2pstr(strScore));
-		MoveTo(lW - lX - TILE_MARGIN, lH - TILE_MARGIN);
-		DrawString((const unsigned char *) strScore);
+		char lStrScore[STRING_SCORE_LENGTH];
+		sprintf(lStrScore, "Score: %d", e_score);
+		const unsigned char * lStrScorePascal = c2pstr(lStrScore);
+		const int lX = StringWidth(lStrScorePascal);
+		MoveTo(WW(mRectWin) - lX - TILE_MARGIN, HH(mRectWin) - TILE_MARGIN);
+		DrawString(lStrScorePascal);
 	}
 	void DrawFinalGx(void) {
-#if 0
-		gxShape lSh;
-		gxColor s;
-		gxRectangle lR = { ff(0), ff(0), ff(300), ff(400) };
-		s.space = gxARGB32Space;
-		s.profile = nil;
-		s.element.rgba.red = 0xFFFF;
-		s.element.rgba.green = 0x0000;
-		s.element.rgba.blue = 0x0000;
-		s.element.rgba.alpha = 0x0;
+		if (e_win || e_lose)
+			DrawEndGx();
 
-		lSh = GXNewRectangle(&lR);
-		GXSetShapeColor(lSh, &s);
-		GXSetShapeTransform(lSh, mOffScrGx.xform);
-		GXDrawShape(lSh);
-#endif
+		GXDrawShape(mShapeRestartGx);
+
+		char lStrScore[STRING_SCORE_LENGTH];
+		sprintf(lStrScore, "Score: %d", e_score);
+		gxShape lShapeScore = NewCString(lStrScore, nil);
+		SetShapeCommonFont(lShapeScore, genevaFont);
+		GXSetShapeTextSize(lShapeScore, ff(18));
+		RGBColor lColorText = GetRgbColor(COLOR_TEXT);
+		SetShapeRGB(lShapeScore, lColorText.red, lColorText.green, lColorText.blue);
+		gxRectangle lRectScore;
+		GXGetShapeBounds(lShapeScore, 0L, &lRectScore);
+		GXMoveShapeTo(lShapeScore, ff(WW(mRectWin) - TILE_MARGIN) - WW(lRectScore), ff(HH(mRectWin) - TILE_MARGIN));
+		GXSetShapeTransform(lShapeScore, mOffScrGx.xform);
+		GXDrawShape(lShapeScore);
+		GXDisposeShape(lShapeScore);
 	}
-	void DrawEnd(int aW, int aH) {
+	void DrawEnd(void) {
 		RGBBackColor(&GetRgbColor(COLOR_OVERLAY));
 		RGBForeColor(&GetRgbColor(COLOR_FINAL));
 		PenState lPenState;
@@ -355,8 +372,24 @@ private:
 		const unsigned char * lStrFinal = (e_win) ? "\pYou Won!" : "\pGame Over";
 		TextSize(34);
 		const int lX = StringWidth(lStrFinal);
-		MoveTo(aW / 2 - lX / 2, aH / 2);
+		MoveTo(WW(mRectWin) / 2 - lX / 2, HH(mRectWin) / 2);
 		DrawString(lStrFinal);
+	}
+	void DrawEndGx(void) {
+		GXDrawShape(mShapeOverlayGx);
+
+		gxShape lShapeFinal = NewCString((e_win) ? "You Won!" : "Game Over!", nil);
+		SetShapeCommonFont(lShapeFinal, newyorkFont);
+		SetShapeCommonFace(lShapeFinal, gxBold);
+		GXSetShapeTextSize(lShapeFinal, ff(36));
+		RGBColor lColorFinal = GetRgbColor(COLOR_FINAL);
+		SetShapeRGB(lShapeFinal, lColorFinal.red, lColorFinal.green, lColorFinal.blue);
+		gxRectangle lRectFinal;
+		GXGetShapeBounds(lShapeFinal, 0L, &lRectFinal);
+		GXMoveShapeTo(lShapeFinal, ff(WW(mRectWin) / 2) - WW(lRectFinal) / 2, ff(HH(mRectWin) / 2) - HH(lRectFinal) / 2);
+		GXSetShapeTransform(lShapeFinal, mOffScrGx.xform);
+		GXDrawShape(lShapeFinal);
+		GXDisposeShape(lShapeFinal);
 	}
 
 	RGBColor GetRgbColor(unsigned BIG aRgb) const {
@@ -371,6 +404,19 @@ private:
 		lColor.green = ((unsigned short) green8 << 8) | green8;
 		lColor.blue  = ((unsigned short) blue8 << 8) | blue8;
 		return lColor;
+	}
+
+	gxRectangle GetGxRectangle(const Rect *aRect) const {
+		return GetGxRectangle(aRect->left, aRect->right, aRect->top, aRect->bottom);
+	}
+
+	gxRectangle GetGxRectangle(register short aL, register short aR, register short aT, register short aB) const {
+		gxRectangle lRectangle;
+		lRectangle.left = ff(aL);
+		lRectangle.right = ff(aR);
+		lRectangle.top = ff(aT);
+		lRectangle.bottom = ff(aB);
+		return lRectangle;
 	}
 };
 
@@ -438,8 +484,11 @@ public:
 		mWindow->Activate();
 		mWindow->SetOffScreen();
 		mWindow->SetFont();
-		if (qUseQuickDrawGx)
+		if (qUseQuickDrawGx) {
+			mWindow->SetWindowDefaultViewPort();
 			mWindow->SetOffScreenGx();
+			mWindow->InitStaticShapesGx();
+		}
 	}
 	void Run(void) {
 		for (;;) {

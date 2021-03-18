@@ -12,7 +12,7 @@ The CodeWarrior Pro 4 package includes object-oriented [Metrowerks PowerPlant](h
 1. [x] Find option to enable `bool` keyword for C++.
 2. [x] Create project skeleton.
 3. [x] Find some offscreen drawing examples.
-4. [ ] What is QuickDraw GX? Try to implement it.
+4. [x] What is QuickDraw GX? Try to implement it.
 5. [x] Create GUI skeleton: MenuBar, Menus, Windows, Resources, About dialog, etc.
 6. [x] Implement basic offscreen drawing.
 7. [x] Update engine source code.
@@ -24,10 +24,10 @@ The CodeWarrior Pro 4 package includes object-oriented [Metrowerks PowerPlant](h
 13. [ ] Add links to ftp.apple.com archive.
 14. [ ] Add alerts instead of beeps.
 15. [x] Implement skeleton QuickDraw + QuickDraw GX drawing.
-16. [ ] Implement QuickDraw GX general game drawing.
-17. [ ] Optimize QuickDraw GX shape drawing and release/free/dispose shapes.
-18. [ ] Draw some QuickDraw GX logo.
-19. [ ] Find way to some transparents drawing.
+16. [x] Implement QuickDraw GX general game drawing.
+17. [x] Optimize QuickDraw GX shape drawing and release/free/dispose shapes.
+18. [x] Draw some QuickDraw GX logo.
+19. [x] Find a way to some transparents drawing.
 
 ## Mac OS System 6 Notes
 
