@@ -4,6 +4,7 @@
 #include <Dialogs.h>
 #include <Events.h>
 #include <Fonts.h>
+#include <Gestalt.h>
 #include <MacMemory.h>
 #include <MacTypes.h>
 #include <MacWindows.h>
@@ -14,7 +15,6 @@
 #include <Quickdraw.h>
 #include <QuickdrawText.h>
 #include <QDOffscreen.h>
-#include <Sound.h>
 #include <TextEdit.h>
 #include <ToolUtils.h>
 
@@ -30,6 +30,11 @@
 #include <stdio.h>
 
 #define RSRC_ID              128
+#define STR_ERR_CANNOT_RUN   1
+#define STR_ERR_QD_COLOR_D   2
+#define STR_ERR_OFF_BUFF_D   3
+#define STR_WAR_QD_GX        4
+#define STR_WAR_QD_GX_D      5
 #define MENU_APPLE           128
 #define MENU_GAME            129
 #define MENU_TILES           130
@@ -47,6 +52,23 @@
 #define OFFSET_COORD(coord)  (coord * (TILE_MARGIN + TILE_SIZE) + TILE_MARGIN)
 #define WW(rect)             (rect.right - rect.left)
 #define HH(rect)             (rect.bottom - rect.top)
+
+static void ShowAlert(AlertType aType, short aTitle, short aText) {
+	AlertStdAlertParamRec lAlertParam;
+	lAlertParam.movable = true;
+	lAlertParam.helpButton = false;
+	lAlertParam.filterProc = nil;
+	lAlertParam.defaultText = "\pOK";
+	lAlertParam.cancelText = nil;
+	lAlertParam.otherText = nil;
+	lAlertParam.defaultButton = 1;
+	lAlertParam.cancelButton = 0;
+	lAlertParam.position = kWindowDefaultPosition;
+	Str255 lStrErrorTitle, lStrErrorText;
+	GetIndString(lStrErrorTitle, RSRC_ID, aTitle);
+	GetIndString(lStrErrorText, RSRC_ID, aText);
+	StandardAlert(aType, lStrErrorTitle, lStrErrorText, &lAlertParam, nil);
+}
 
 class Window {
 	WindowPtr mWinPtr;
@@ -101,7 +123,7 @@ public:
 	void SetOffScreen(void) {
 		OSErr lError = NewGWorld(&mOffScr, 0, &mRectWin, nil, nil, 0L);
 		if (lError) {
-			SysBeep(60);
+			ShowAlert(kAlertStopAlert, STR_ERR_CANNOT_RUN, STR_ERR_OFF_BUFF_D);
 			ExitToShell();
 		}
 		LockPixels(GetGWorldPixMap(mOffScr));
@@ -432,19 +454,22 @@ class Application {
 
 public:
 	Application(void) {
+		mWindow = nil;
+		qUseQuickDrawGx = false;
 		e_init(kEscapeCharCode, kLeftArrowCharCode, kRightArrowCharCode, kUpArrowCharCode, kDownArrowCharCode);
 	}
 	~Application(void) {
 		if (qUseQuickDrawGx)
 			GXDisposeGraphicsClient(mGxGraphicsClient);
-		delete mWindow;
+		if (mWindow)
+			delete mWindow;
 	}
 
 	bool CheckColorMac(void) {
 		SysEnvRec lEnvWorld;
 		SysEnvirons(curSysEnvVers, &lEnvWorld);
 		if (!lEnvWorld.hasColorQD) {
-			SysBeep(30);
+			ShowAlert(kAlertStopAlert, STR_ERR_CANNOT_RUN, STR_ERR_QD_COLOR_D);
 			return false;
 		}
 		return true;
@@ -499,9 +524,9 @@ public:
 
 private:
 	void CheckQuickDrawGx(void) {
-		// TODO: proper check.
-		// TODO: warning alert.
-		qUseQuickDrawGx = true;
+		qUseQuickDrawGx = (Gestalt(gestaltGraphicsVersion, nil) == noErr);
+		if (!qUseQuickDrawGx)
+			ShowAlert(kAlertNoteAlert, STR_WAR_QD_GX, STR_WAR_QD_GX_D);
 	}
 	void SetUpMenus(void) {
 		InsertMenu(mMenuApple = GetMenu(MENU_APPLE), 0);
@@ -621,15 +646,13 @@ private:
 };
 
 int main(void) {
-	Application *lApp = new Application();
-	if (lApp->CheckColorMac()) {
-		lApp->InitMac();
-		lApp->InitQuickDrawGx();
-		lApp->InitMenuBar();
-		lApp->InitWindow();
-		lApp->Run();
+	Application lApp;
+	lApp.InitMac();
+	if (lApp.CheckColorMac()) {
+		lApp.InitQuickDrawGx();
+		lApp.InitMenuBar();
+		lApp.InitWindow();
+		lApp.Run();
 	}
-	delete lApp;
-	ExitToShell();
 	return 0;
 }
