@@ -17,17 +17,20 @@ The CodeWarrior Pro 4 package includes object-oriented [Metrowerks PowerPlant](h
 6. [x] Implement basic offscreen drawing.
 7. [x] Update engine source code.
 8. [x] Finish general game drawing.
-9. [ ] Check it on Mac OS 7.
-10. [ ] Add movable about dialog with a window title bar. Will complicate the code too much.
+9. [x] Check it on Mac OS 7 and Mac OS 6.
+10. [x] Add about dialog with a window title bar.
 11. [x] Setup environment for building QuickDraw examples.
 12. [x] Create QuickDraw + QuickDrawGX switch example.
-13. [ ] Add links to ftp.apple.com archive.
-14. [ ] Add alerts instead of beeps.
+13. [x] Add links to ftp.apple.com archive and QuickDraw GX books.
+14. [x] Add alerts instead of beeps.
 15. [x] Implement skeleton QuickDraw + QuickDraw GX drawing.
 16. [x] Implement QuickDraw GX general game drawing.
 17. [x] Optimize QuickDraw GX shape drawing and release/free/dispose shapes.
 18. [x] Draw some QuickDraw GX logo.
 19. [x] Find a way to some transparents drawing.
+20. [x] Check standard dialogs.
+21. [ ] Check on various Mac OS on PowerPC architecture.
+22. [ ] Documentation files and instructions.
 
 ## Mac OS System 6 Notes
 
@@ -63,7 +66,8 @@ The THINK C offered the programmer a powerful object-oriented Think Class Librar
 24. [x] Add "..." to the "About 2048-ThinkC" menu item.
 25. [x] Update engine source code.
 26. [x] Fix random initialization.
-27. [ ] Fix font setting for offscreen.
+27. [x] Fix font setting for offscreen.
+28. [x] Update engine sources.
 
 ## References and Books List
 
@@ -75,6 +79,7 @@ The THINK C offered the programmer a powerful object-oriented Think Class Librar
 6. [THINK C Version 5 Object-oriented Programming Manual, 1991](http://mirror.macintosharchive.org/max1zzz.co.uk/+Mac%20OS%20Classic/Programming/THINK%20Pascal/Think_C_Version_5_Object-Oriented_Programming_Manual_1991.pdf)
 7. [ResEdit Reference For ResEdit 2.1, 1995](https://developer.apple.com/library/archive/documentation/mac/pdf/ResEditReference.pdf)
 8. [Metrowerks Code Warrior Programming, 1995](https://vintageapple.org/macprogramming/pdf/Metrowerks_Code_Worrior_Programming_1995.pdf)
+9. [QuickDraw GX Graphics, 1994](https://vintageapple.org/inside_r/pdf/QD_GX_Graphics_1994.pdf)
 
 You can find literature, documentation, and source code on the following sites:
 
@@ -83,3 +88,4 @@ You can find literature, documentation, and source code on the following sites:
 3. [Macintosh Archive](http://mirror.macintosharchive.org/max1zzz.co.uk/+Mac%20OS%20Classic/)
 4. [Infomac Mirro](http://ftp.knoppix.nl/infomac/)
 5. [Apple Documentation Archive](https://developer.apple.com/library/archive/navigation/)
+6. [Apple FTP Archive](https://macintoshgarden.org/apps/ftpapplecom-archive)
