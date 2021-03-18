@@ -49,6 +49,7 @@ public:
 	~Window(void);
 
 	void InitOffScreenDrawing(void);
+	void SetFont(void);
 
 	void Drag(Point aPoint, WindowPtr aWinPtr);
 	void Select(WindowPtr aWinPtr);
@@ -64,8 +65,6 @@ public:
 	void SetOffScreenDrawing(Boolean aOffScreenDrawing);
 
 private:
-	void SetFont(void);
-
 	void OffScreenDraw(void);
 	void InScreenDraw(void);
 	void DrawTile(int aVal, int aX, int aY);
@@ -112,7 +111,6 @@ Window::Window(void) {
 	rectWin = pWinPtr->portRect;
 
 	Activate();
-	SetFont();
 }
 
 Window::~Window(void) {
@@ -146,6 +144,12 @@ void Window::InitOffScreenDrawing(void) {
 	pOffScr.portBits.baseAddr = space;
 	SetPort(&pOffScr);
 	EraseRect(&pOffScr.portRect);
+}
+
+void Window::SetFont(void) {
+	int fontID;
+	GetFNum("\pChicago", &fontID);
+	TextFont(fontID);
 }
 
 void Window::Drag(Point aPoint, WindowPtr aWinPtr) {
@@ -199,12 +203,6 @@ Boolean Window::IsOffScreenDrawing(void) {
 
 void Window::SetOffScreenDrawing(Boolean aOffScreenDrawing) {
 	qOffScreenDrawing = aOffScreenDrawing;
-}
-
-void Window::SetFont(void) {
-	int fontID;
-	GetFNum("\pChicago", &fontID);
-	TextFont(fontID);
 }
 
 void Window::OffScreenDraw(void) {
@@ -373,7 +371,9 @@ void Application::SetUpMenus(void) {
 
 void Application::InitWindow(void) {
 	pWindow = new(Window);
+	pWindow->SetFont();
 	pWindow->InitOffScreenDrawing();
+	pWindow->SetFont();
 }
 
 void Application::AdjustMenus(void) {
