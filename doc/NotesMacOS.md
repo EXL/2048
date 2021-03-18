@@ -1,6 +1,15 @@
 Mac OS Notes
 ============
 
+## Mac OS X 10.0 Tips
+
+### QEMU install and run recipes:
+
+```bash
+qemu-system-ppc -L pc-bios -boot d -M mac99 -m 1024 -hda os_x10_0.img -cdrom osx_100_4k78_install.iso
+qemu-system-ppc -L pc-bios -boot c -M mac99 -m 1024 -hda os_x10_0.img
+```
+
 ## Mac OS X 10.6.8 "Snow Leopard" problems
 
 ### Problem with `NSFont *` instance variables.
