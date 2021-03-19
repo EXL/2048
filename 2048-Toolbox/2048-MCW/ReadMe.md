@@ -22,9 +22,10 @@ Port 2048 game to the [classic Mac OS](https://en.wikipedia.org/wiki/Classic_Mac
 4. Set "FAT MacOS Toolbox" instead of "68K Debug MacOS Toolbox" target.
 5. In the main menu choose "Project" => "Make", wait for the compilation process to complete.
 6. Get resulted executable files in the "2048-MCW" directory with following names:
-  - 2048-MCW 68K - Final (release) version for [Motorola 68000](https://en.wikipedia.org/wiki/Motorola_68000) architecture.
-  - 2048-MCW PPC - Final (release) version for [PowerPC](https://en.wikipedia.org/wiki/PowerPC) architecture.
-  - 2048-MCW - Final (release) FAT version for both architectures.
+
+   - **2048-MCW 68K** - Final (release) version for [Motorola 68000](https://en.wikipedia.org/wiki/Motorola_68000) architecture.
+   - **2048-MCW PPC** - Final (release) version for [PowerPC](https://en.wikipedia.org/wiki/PowerPC) architecture.
+   - **2048-MCW** - Final (release) FAT version for both architectures.
 
 ## Building using Metrowerks CodeWarrior MPW
 
