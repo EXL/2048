@@ -1,5 +1,6 @@
 #include "2048.h"
 
+#include <CodeFragments.h>
 #include <Devices.h>
 #include <Dialogs.h>
 #include <Events.h>
@@ -506,6 +507,9 @@ public:
 private:
 	void CheckQuickDrawGx(void) {
 		qUseQuickDrawGx = (Gestalt(gestaltGraphicsVersion, nil) == noErr);
+#if defined(powerc) || defined(__powerc)
+		qUseQuickDrawGx &= ((Ptr) GXNewGraphicsClient != (Ptr) kUnresolvedCFragSymbolAddress);
+#endif
 		if (!qUseQuickDrawGx)
 			Alert(ALERT_WARN_QD_GX, nil);
 	}
