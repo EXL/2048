@@ -19,18 +19,22 @@ Port 2048 game to the [classic Mac OS](https://en.wikipedia.org/wiki/Classic_Mac
 4. Repeat steps 2-4 for the each of the other archives on "THINK C 2", "THINK C 3", and "THINK C 4" disks.
 5. Insert "THINK C 1" disk, and move "THINK C 5.0" and "THINK C Debugger 5.0" executable files into the "THINK C 5.0 Folder" in your "Development" folder.
 
-## Build & Run
+## Build
 
-1. Drag-and-drop "TODO" floppy disk image to the Mini vMac emulator window, then open "2048-ThinkC:2048-ThinkC.π" project file with Symantec THINK C IDE.
-2. In the main menu choose "Project" => "Build Application...", then click "Yes" button.
-3. Save application as 2048-ThinkC with "Smart Link" option, replace existing file.
-4. Quit Symantec THINK C IDE.
-5. Open "2048-ThinkC:2048-ThinkC.π.rsrc" resource file with Apple ResEdit program.
-6. In the main menu choose "File" => "Get File/Folder Info...", select 2048-ThinkC executable file and click "Get Info" button.
-7. Change "Creator:" field from "????" to "Thnk", unset "Inited" and set "Has BNDL" checkmarks.
-8. Close "Info for 2048-ThinkC" window and save changes. These actions will set the icon for the 2048-ThinkC application.
-9. Quit Apple ResEdit program.
-10. Double-click on the 2048-ThinkC file to run application.
+1. Drag-and-drop "TODO" floppy disk image to the Mini vMac emulator window, then copy folder with name "2048-ThinkC" on your main storage drive.
+2. Open "2048-ThinkC:2048-ThinkC.π" project file with Symantec THINK C IDE.
+3. In the main menu choose "Project" => "Build Application...", then click "Yes" button.
+4. Save application as 2048-ThinkC with "Smart Link" option, replace existing file.
+5. Get resulted executable file for [Motorola 68000](https://en.wikipedia.org/wiki/Motorola_68000) architecture in the "2048-ThinkC" directory.
+
+### Installing the application icon manually with ResEdit
+
+These actions aren't required if you are using my "2048-ThinkC.π" project file in the Symantec THINK C IDE.
+
+1. Open "2048-ThinkC:2048-ThinkC.π.rsrc" resource file with Apple ResEdit program.
+2. In the main menu choose "File" => "Get File/Folder Info...", select 2048-ThinkC executable file and click "Get Info" button.
+3. Change "Creator:" field from "????" to "Thnk", unset "Inited" and set "Has BNDL" checkmarks.
+4. Close "Info for 2048-ThinkC" window and save changes. These actions will set the icon for the 2048-ThinkC application.
 
 ## Additional Information
 
@@ -44,7 +48,7 @@ The [ExOffScreen](../ExOffScreen) example shows fast offscreen drawing implement
 
 See [NotesClassicMacOS.md](../../doc/NotesClassicMacOS.md) document for some additional information.
 
-## Classic MacOS Development Environment
+## Classic Mac OS Systems Development Environment
 
 Symantec THINK C 5.0.2:
 

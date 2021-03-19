@@ -29,9 +29,11 @@ The CodeWarrior Pro 4 package includes object-oriented [Metrowerks PowerPlant](h
 18. [x] Draw some QuickDraw GX logo.
 19. [x] Find a way to some transparents drawing.
 20. [x] Check standard dialogs.
-21. [ ] Check on various Mac OS on PowerPC architecture.
-22. [ ] Documentation files and instructions.
+21. [x] Check on various Mac OS and PowerPC architecture.
+22. [x] Documentation files, screens and instructions.
 23. [x] Enable weak linkage of QuickDrawGXLib for PowerPC build.
+24. [ ] Test Metrowerks CodeWarrior and Apple MPWs.
+25. [ ] Create floppy image disk with executable, sources, and project files.
 
 ## Mac OS System 6 Notes
 
