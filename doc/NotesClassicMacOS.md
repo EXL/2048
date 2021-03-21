@@ -38,8 +38,11 @@ The [Macintosh Programmer's Workshop](https://en.wikipedia.org/wiki/Macintosh_Pr
 25. [ ] Create floppy image disk with executable, sources, and project files.
 26. [x] Add CodeWarrior MPW instructions and screenshots.
 27. [x] Add `LF` => `CR` conversion list of files.
-28. [ ] Check various memory consumption.
+28. [x] Check various memory consumption.
 29. [ ] Include ReadMe.md files to the source directories.
+30. [x] Transfer problems of Motorola 68000 executable files. Use archives or floppy disk images.
+31. [x] Check game on the Mac OS System 6 with color display. It's works! There is crash on the "About 2048-MCW..." dialog though.
+32. [ ] Connection with Carbon.
 
 ## Mac OS System 6 Notes
 
@@ -77,7 +80,7 @@ The THINK C offered the programmer a powerful object-oriented Think Class Librar
 26. [x] Fix random initialization.
 27. [x] Fix font setting for offscreen drawing.
 28. [x] Update engine sources.
-29. [ ] Check games on the Mac OS System 6 with color display.
+29. [x] Check game on the Mac OS System 6 with color display.
 
 ## References and Books List
 

@@ -8,6 +8,7 @@ Information were obtained:
 3. By using `showmem -P $PID` command on QNX.
 4. By using `ps aux` command on NeXTSTEP.
 5. By using `ps aux` and `top` commands on Mac OS X.
+6. In the "Apple Menu" => "About This Computer..." monitor on classic Mac OS.
 
 *Note: `$PID` is Process Identifier of the executable file.*
 
@@ -385,8 +386,6 @@ top
     84  84 30   anon       Selecting     6164    1732   0.0  2048-Serenity
 ```
 
-![System Monitor on Serenity OS Screenshot](../image/System-Monitor-Serenity-Screenshot.png)
-
 ```
 Virtual:    6164 kB
 Physical:   1732 kB
@@ -501,4 +500,22 @@ exl               9026   0.0  0.5  4430908  29188   ??  S     4:46PM   0:00.77 /
 top
 PID   COMMAND      %CPU TIME     #TH   #WQ  #PORT MEM    PURG   CMPRS  PGRP PPID STATE    BOOSTS          %CPU_ME %CPU_OTHRS UID  FAULTS    COW      MSGSENT   MSGRECV   SYSBSD     SYSMACH
 9075  2048-Swift   0.0  00:00.85 5     3    214   11M    592K   0B     9075 1    sleeping *0[11]          0.00000 0.00000    501  10414     462      9858      2003      7418       19749
+```
+
+### 2048-Think C
+
+```
+Mac OS System 6.0.8.1: 384 KB
+Mac OS System 7.5.3:   384 KB
+Mac OS 8.1:            400 KB
+Mac OS 9.0:            452 KB
+```
+
+### 2048-MCW
+
+```
+Mac OS System 6.0.8.1: 1024 KB
+Mac OS System 7.5.3:   1024 KB
+Mac OS 8.1:            1 MB
+Mac OS 9.0:            1.2 MB
 ```

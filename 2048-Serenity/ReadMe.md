@@ -88,3 +88,9 @@ HackStudio for Serenity OS:
     i686-pc-serenity-g++ --version
     i686-pc-serenity-g++ (GCC) 10.1.0
     ```
+
+## Additional Screenshots
+
+System Monitor in Serenity OS:
+
+![System Monitor on Serenity OS Screenshot](../image/System-Monitor-Serenity-Screenshot.png)

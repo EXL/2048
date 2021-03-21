@@ -6,7 +6,7 @@
 | QuickDraw    | ![2048-MCW Classic Mac OS System 7.5.3 + QuickDraw Screenshot](../../image/2048-MCW-MacOS-7-QD-Screenshot-1.png) | ![2048-MCW Classic Mac OS 8.1 + QuickDraw Screenshot](../../image/2048-MCW-MacOS-8-QD-Screenshot-3.png) | ![2048-MCW Classic Mac OS 9.0 + QuickDraw Screenshot](../../image/2048-MCW-MacOS-9-QD-Screenshot-5.png) |
 | QuickDraw GX | ![2048-MCW Classic Mac OS System 7.5.3 + QuickDraw GX Screenshot](../../image/2048-MCW-MacOS-7-QD-GX-Screenshot-2.png) | ![2048-MCW Classic Mac OS 8.1 + QuickDraw GX Screenshot](../../image/2048-MCW-MacOS-8-QD-GX-Screenshot-4.png) | ![2048-MCW Classic Mac OS 9.0 + QuickDraw GX Screenshot](../../image/2048-MCW-MacOS-9-QD-GX-Screenshot-6.png) |
 
-The "2048" game for the [classic Mac OS](https://en.wikipedia.org/wiki/Classic_Mac_OS) platform (System 7-9) with using [Macintosh Toolbox](https://en.wikipedia.org/wiki/Macintosh_Toolbox), [QuickDraw](https://en.wikipedia.org/wiki/QuickDraw), and [QuickDraw GX](https://en.wikipedia.org/wiki/QuickDraw_GX) technologies.
+The "2048" game for the [classic Mac OS](https://en.wikipedia.org/wiki/Classic_Mac_OS) platform (System 7-9) with using [Macintosh Toolbox](https://en.wikipedia.org/wiki/Macintosh_Toolbox), [QuickDraw](https://en.wikipedia.org/wiki/QuickDraw), and [QuickDraw GX](https://en.wikipedia.org/wiki/QuickDraw_GX) technologies. It's also works on the Mac OS System 6 with Color QuickDraw and [Macintosh II](https://en.wikipedia.org/wiki/Macintosh_II) ROM but there is a crash in the "About 2048-MCW..." dialog.
 
 ## Setup Basilisk II Environment
 
