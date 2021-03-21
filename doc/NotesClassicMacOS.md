@@ -7,6 +7,8 @@ I choose for Mac OS 8.1 development [Metrowerks CodeWarrior IDE 3.2](https://en.
 
 The CodeWarrior Pro 4 package includes object-oriented [Metrowerks PowerPlant](https://en.wikipedia.org/wiki/PowerPlant) application framework, which is similar to the Think Class Library (TCL) from the Symantec THINK C integrated development environment. I think a lot of good things in the Metrowerks CodeWarrior IDE come from the Symantec THINK C world.
 
+The [Macintosh Programmer's Workshop](https://en.wikipedia.org/wiki/Macintosh_Programmer%27s_Workshop) (MPW) is a software development environment for the Classic Mac OS operating system, written by Apple, which was later superseded by the Metrowerks CodeWarrior IDE. MPW provided a collection of compilers and tools inside command line "MPW Shell" environment which was similar to UNIX-shells in desing but with a "worksheet" interface, allowing the user to select and run arbitrary sections of a shell script or to redo commands with no retyping. Metrowerks added to the Apple MPW own compilers, various auxiliary scripts, and some utilities. A set of "CodeWarrior MPW" tools is included in the **CodeWarrior Pro 4** distribution and requires preliminary manual configuration.
+
 ### Tasks List
 
 1. [x] Find option to enable `bool` keyword for C++.
@@ -32,8 +34,11 @@ The CodeWarrior Pro 4 package includes object-oriented [Metrowerks PowerPlant](h
 21. [x] Check on various Mac OS and PowerPC architecture.
 22. [x] Documentation files, screens and instructions.
 23. [x] Enable weak linkage of QuickDrawGXLib for PowerPC build.
-24. [ ] Test Metrowerks CodeWarrior and Apple MPWs.
+24. [x] Check Metrowerks CodeWarrior and Apple MPWs.
 25. [ ] Create floppy image disk with executable, sources, and project files.
+26. [ ] Add CodeWarrior MPW instruction and screenshots to ReadMe and Makefile, `LF` and `CR` hint in documents.
+27. [ ] Check various memory consumption.
+28. [ ] Include ReadMe.md files to the source directories.
 
 ## Mac OS System 6 Notes
 

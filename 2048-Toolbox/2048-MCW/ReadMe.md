@@ -22,14 +22,46 @@ Port 2048 game to the [classic Mac OS](https://en.wikipedia.org/wiki/Classic_Mac
 4. Set "FAT MacOS Toolbox" instead of "68K Debug MacOS Toolbox" target.
 5. In the main menu choose "Project" => "Make", wait for the compilation process to complete.
 6. Get resulted executable files in the "2048-MCW" directory with following names:
-
    - **2048-MCW 68K** - Final (release) version for [Motorola 68000](https://en.wikipedia.org/wiki/Motorola_68000) architecture.
    - **2048-MCW PPC** - Final (release) version for [PowerPC](https://en.wikipedia.org/wiki/PowerPC) architecture.
    - **2048-MCW** - Final (release) FAT version for both architectures.
 
 ## Building using Metrowerks CodeWarrior MPW
 
-// TODO: Apple MPW, description.
+*Note:* This instruction aren't recommended, use CodeWarrior IDE instead.
+
+Please use Metrowerks CodeWarrior MPW instead of vanilla [Macintosh Programmer's Workshop](https://en.wikipedia.org/wiki/Macintosh_Programmer%27s_Workshop) by Apple.
+
+### Configure CodeWarrior MPW
+
+1. Go to the "CodeWarrior Pro 4:CodeWarrior MPW:MPW:" directory, open "MW Read Me" file and read it.
+2. Go to the "CodeWarrior Pro 4:CodeWarrior MPW:MPW:Scripts" directory, open "CW_Max_Dup_Update" in the MPW Shell.
+3. Select all text by `Command + A` keys combination then push `Command + Enter` to execute selected lines.
+4. In the file dialog that opens, select "CodeWarrior Pro 4:Metrowerks CodeWarrior" directory but not open it then click "Directory" button.
+5. The script will generate many "Duplicate" commands, click "OK" button, then select all commands by using `Shift + Arrows` keys.
+6. Push `Command + Enter` keys combination to execute "Dublicate" commands, if the overwrite dialog appears, press "No" button. When copying is completed the mouse cursor becomes normal.
+7. Exit "MPW Shell" program using `Command + Q` or select "File" => "Quit" menu item in the main menu, then click "Don't Save" button.
+
+### Build and Run
+
+#### 1st way
+
+1. Go to the "2048-MCW" directory, open "Makefile" using MPW Shell.
+2. Push `Command + B` or select "Build" => "Build..." item in the main menu.
+3. Type "2048-MCW" without double quotes in the "Program Name?" window and click "OK" button.
+4. Wait for the compilation process and push `Command + Enter` for run application.
+
+#### 2nd way
+
+1. Go to the "CodeWarrior Pro 4:CodeWarrior MPW:MPW" and run "MPW Shell" program.
+2. Type and execute by `Command + Enter` following commands for building application:
+    ```
+    Directory "Mac OS 8.1:2048-MCW"
+    Files
+    BuildProgram "2048-MCW"
+    ```
+    *Note:* "Mac OS 8.1" is name of your storage drive.
+3. Push `Command + Enter` for run application.
 
 ## Additional Information
 
@@ -47,9 +79,14 @@ Metrowerks CodeWarrior IDE 3.2 (part of Metrowerks CodeWarrior Pro 4 distributio
 
 ![Metrowerks CodeWarrior IDE application, classic Mac OS 8.1 Screenshot 2](../../image/MCW-MacOS-8_1-Screenshot_2.png)
 
+Apple MPW 3.4.2:
+
+![Apple MPW, Metrowerks CodeWarrior MPW programming shell, classic Mac OS 8.1 Screenshot](../../image/MPW-MacOS-8_1-Screenshot.png)
+
 ## Versions
 
 1. [Basilisk II 1.0](https://github.com/cebix/macemu)
 2. [Apple Mac OS 8.1](https://winworldpc.com/download/7724c394-e280-9362-c382-11c3a6e28094)
-3. [CodeWarrior Pro 4](https://macintoshgarden.org/sites/macintoshgarden.org/files/apps/CWPro4Tools.cdr_.zip) (with CodeWarrior IDE version 3.2 build 0158)
-4. [ResEdit 2.1.3](https://en.wikipedia.org/wiki/ResEdit)
+3. [Metrowerks CodeWarrior Pro 4](https://macintoshgarden.org/sites/macintoshgarden.org/files/apps/CWPro4Tools.cdr_.zip) (with Metrowerks CodeWarrior IDE version 3.2 build 0158)
+4. [Apple ResEdit 2.1.3](https://en.wikipedia.org/wiki/ResEdit)
+5. [Apple MPW 3.4.2](https://en.wikipedia.org/wiki/Macintosh_Programmer%27s_Workshop) (with Metrowerks CodeWarrior MPW extensions and tools)

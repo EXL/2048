@@ -63,7 +63,7 @@ Apple ResEdit 2.1.1:
 1. [Mini vMac 36.04](https://www.gryphel.com/c/minivmac/dnld_std.html)
 2. [Apple Mac OS 6.0.8.1 [International]](https://winworldpc.com/download/aa9141cd-d7aa-11e7-a73f-fa163e9022f0)
 3. [Symantec THINK C 5.0.2](https://macintoshgarden.org/sites/macintoshgarden.org/files/apps/think_c_5-0-2.zip)
-4. [ResEdit 2.1.1](https://en.wikipedia.org/wiki/ResEdit)
+4. [Apple ResEdit 2.1.1](https://en.wikipedia.org/wiki/ResEdit)
 5. [ImportFl 1.2.2](https://www.gryphel.com/d/minivmac/extras/importfl/importfl-1.2.2.zip)
 
 ## Additional Screenshots
