@@ -3,13 +3,13 @@
 
 ![2048-ThinkC Classic Mac OS System 6 Screenshot](../../image/2048-ThinkC-Screenshot-MacOS-6.png)
 
-Port 2048 game to the [classic Mac OS](https://en.wikipedia.org/wiki/Classic_Mac_OS) platform (System 1-6) with using [Macintosh Toolbox](https://en.wikipedia.org/wiki/Macintosh_Toolbox) and [QuickDraw](https://en.wikipedia.org/wiki/QuickDraw) technologies.
+The "2048" game for the [classic Mac OS](https://en.wikipedia.org/wiki/Classic_Mac_OS) platform (System 1-6) with using [Macintosh Toolbox](https://en.wikipedia.org/wiki/Macintosh_Toolbox) and [QuickDraw](https://en.wikipedia.org/wiki/QuickDraw) technologies.
 
 ## Setup Mini vMac Environment
 
 1. Install [Mac OS System 6](https://winworldpc.com/product/mac-os-0-6/system-6x) into [Mini vMac](https://en.wikipedia.org/wiki/VMac) emulator through [Mini vMac Setup](https://www.emaculation.com/doku.php/mini_vmac_setup) installation guide.
-2. Copy [TeachText](https://en.wikipedia.org/wiki/TeachText) application from installation floppy disk to the "System Folder".
-3. Install [Symantec THINK C](https://macintoshgarden.org/apps/think-c) IDE through [think_c_5-0-2.zip](https://macintoshgarden.org/sites/macintoshgarden.org/files/apps/think_c_5-0-2.zip) ZIP-archive: unpack it and drag-and-drop floppy disks images into Mini vMac emulator window.
+2. Copy [TeachText](https://en.wikipedia.org/wiki/TeachText) application from installation floppy disk to the "System Folder" directory.
+3. Install [Symantec THINK C](https://macintoshgarden.org/apps/think-c) IDE using [think_c_5-0-2.zip](https://macintoshgarden.org/sites/macintoshgarden.org/files/apps/think_c_5-0-2.zip) ZIP-archive: unpack it and drag-and-drop floppy disks images into Mini vMac emulator window.
 
 ### Symantec THINK C Installation Procedure
 
@@ -21,7 +21,7 @@ Port 2048 game to the [classic Mac OS](https://en.wikipedia.org/wiki/Classic_Mac
 
 ## Build
 
-1. Drag-and-drop "TODO" floppy disk image to the Mini vMac emulator window, then copy folder with name "2048-ThinkC" on your main storage drive.
+1. Drag-and-drop "TODO" floppy disk image to the Mini vMac emulator window, then copy "2048-ThinkC" folder on the storage drive.
 2. Open "2048-ThinkC:2048-ThinkC.π" project file with Symantec THINK C IDE.
 3. In the main menu choose "Project" => "Build Application...", then click "Yes" button.
 4. Save application as 2048-ThinkC with "Smart Link" option, replace existing file.
@@ -29,7 +29,7 @@ Port 2048 game to the [classic Mac OS](https://en.wikipedia.org/wiki/Classic_Mac
 
 ### Installing the application icon manually with ResEdit
 
-These actions aren't required if you are using my "2048-ThinkC.π" project file in the Symantec THINK C IDE.
+*Note.* These actions aren't required if you are using "2048-ThinkC.π" project file in the Symantec THINK C IDE.
 
 1. Open "2048-ThinkC:2048-ThinkC.π.rsrc" resource file with Apple ResEdit program.
 2. In the main menu choose "File" => "Get File/Folder Info...", select 2048-ThinkC executable file and click "Get Info" button.
@@ -38,9 +38,20 @@ These actions aren't required if you are using my "2048-ThinkC.π" project file 
 
 ## Additional Information
 
-You can use [ImportFl](https://www.gryphel.com/c/minivmac/extras/importfl/index.html) application to transfer files inside the classic Mac OS. Just drag-and-drop ImportFl image on the Mini vMac emulator window, run "ImportFl" executable file, and drag-and-drop your files and save them on the Mac OS disk.
+You can use [ImportFl](https://www.gryphel.com/c/minivmac/extras/importfl/index.html) application to transfer files inside the classic Mac OS. Just drag-and-drop ImportFl image on the Mini vMac emulator window, run "ImportFl" executable file, then drag-and-drop your files and save them on the Mac OS disk.
 
-This repository contains the source files with the Unix **LR** [line breaks](https://en.wikipedia.org/wiki/Newline) for convenience. Don't forget to change the line breaks to **CR**, which are used in classic macOS. This can be easily done using the `unix2mac` utility which is included in the "dos2unix" package. The reverse process can be done with `mac2unix` utility.
+This repository contains the source files with the Unix **LR** [line breaks](https://en.wikipedia.org/wiki/Newline) for convenience. Don't forget to change line breaks to **CR**, which are used in classic macOS. This can be easily done using the `unix2mac` utility which is included in the "dos2unix" package.
+
+```sh
+unix2mac 2048.c
+unix2mac 2048.h
+unix2mac 2048-Think.c
+unix2mac ReadMe.md
+unix2mac ExOffScreen/ExOffScreen.c # Optional.
+unix2mac ExOffScreen/ReadMe.md     # Optional.
+```
+
+The reverse process can be done with `mac2unix` utility.
 
 The [Macintosh Toolbox with THINK C](https://nondisplayable.ca/2018/05/23/what-think-c-doesnt-tell-you.html) manual describes the basics of classic Mac OS System 1-6 programming with using Apple Macintosh Toolbox framework and Symantec THINK C IDE.
 
@@ -48,7 +59,7 @@ The [ExOffScreen](../ExOffScreen) example shows fast offscreen drawing implement
 
 See [NotesClassicMacOS.md](../../doc/NotesClassicMacOS.md) document for some additional information.
 
-## Classic Mac OS Systems Development Environment
+## Classic Mac OS System Development Environment
 
 Symantec THINK C 5.0.2:
 

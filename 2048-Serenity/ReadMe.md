@@ -3,7 +3,7 @@
 
 ![2048-Serenity Serenity OS Screenshot](../image/2048-Serenity-Screenshot.png)
 
-[Serenity OS](https://github.com/SerenityOS/serenity) by Andreas Kling.
+The "2048" game for the [Serenity OS](https://github.com/SerenityOS/serenity) by Andreas Kling.
 
 See [SerenityOS build instructions](https://github.com/SerenityOS/serenity/blob/master/Documentation/BuildInstructions.md) for information about building Serenity OS before compiling this game.
 

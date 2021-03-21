@@ -3,7 +3,7 @@
 
 ![2048-SMD Picodrive Screenshot 1](../image/2048-SMD-Picodrive-Screenshot1.png) ![2048-SMD Picodrive Screenshot 2](../image/2048-SMD-Picodrive-Screenshot2.png) ![2048-SMD Picodrive Screenshot 3](../image/2048-SMD-Picodrive-Screenshot3.png)
 
-Port 2048 game to the [Sega Mega Drive/Sega Genesis](https://en.wikipedia.org/wiki/Sega_Genesis) consoles with using [SGDK](https://github.com/Stephane-D/SGDK) development kit.
+The "2048" game for the [Sega Mega Drive/Sega Genesis](https://en.wikipedia.org/wiki/Sega_Genesis) consoles with using [SGDK](https://github.com/Stephane-D/SGDK) development kit.
 
 ## Install SGDK v1.60
 

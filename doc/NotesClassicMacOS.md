@@ -3,11 +3,11 @@ Classic Mac OS Notes
 
 ## Mac OS 8.1 Notes
 
-I choose for Mac OS 8.1 development [Metrowerks CodeWarrior IDE 3.2](https://en.wikipedia.org/wiki/CodeWarrior), [Metrowerks Constructor 2.4.5](https://en.wikipedia.org/wiki/PowerPlant), and [Apple ResEdit 2.1.3](https://en.wikipedia.org/wiki/ResEdit) which are included to the [CodeWarrior Pro 4](https://macintoshgarden.org/apps/codewarrior-pro-4) distribution CD. The compilers provided with this package can compile [С](https://en.wikipedia.org/wiki/C_(programming_language)) and [C++](https://en.wikipedia.org/wiki/C%2B%2B) code for [Motorola 68000](https://en.wikipedia.org/wiki/Motorola_68000) and [PowerPC](https://en.wikipedia.org/wiki/PowerPC) architectures. Standard Apple technologies such as [Macintosh Toolbox](https://en.wikipedia.org/wiki/Macintosh_Toolbox) and [QuickDraw](https://en.wikipedia.org/wiki/QuickDraw) can be used with Metrowerks CodeWarrior IDE alongside with C and C++ standard libraries.
+I choose for Mac OS 8.1 development [Metrowerks CodeWarrior IDE 3.2](https://en.wikipedia.org/wiki/CodeWarrior), [Metrowerks Constructor 2.4.5](https://en.wikipedia.org/wiki/PowerPlant), and [Apple ResEdit 2.1.3](https://en.wikipedia.org/wiki/ResEdit) programs which are included to the [CodeWarrior Pro 4](https://macintoshgarden.org/apps/codewarrior-pro-4) distribution CD. The compilers provided with this package can compile [С](https://en.wikipedia.org/wiki/C_(programming_language)) and [C++](https://en.wikipedia.org/wiki/C%2B%2B) code for [Motorola 68000](https://en.wikipedia.org/wiki/Motorola_68000) and [PowerPC](https://en.wikipedia.org/wiki/PowerPC) architectures. Standard Apple technologies such as [Macintosh Toolbox](https://en.wikipedia.org/wiki/Macintosh_Toolbox), [QuickDraw](https://en.wikipedia.org/wiki/QuickDraw), and [QuickDraw GX](https://en.wikipedia.org/wiki/QuickDraw_GX) can be used with Metrowerks CodeWarrior IDE alongside with C and C++ standard libraries.
 
 The CodeWarrior Pro 4 package includes object-oriented [Metrowerks PowerPlant](https://en.wikipedia.org/wiki/PowerPlant) application framework, which is similar to the Think Class Library (TCL) from the Symantec THINK C integrated development environment. I think a lot of good things in the Metrowerks CodeWarrior IDE come from the Symantec THINK C world.
 
-The [Macintosh Programmer's Workshop](https://en.wikipedia.org/wiki/Macintosh_Programmer%27s_Workshop) (MPW) is a software development environment for the Classic Mac OS operating system, written by Apple, which was later superseded by the Metrowerks CodeWarrior IDE. MPW provided a collection of compilers and tools inside command line "MPW Shell" environment which was similar to UNIX-shells in desing but with a "worksheet" interface, allowing the user to select and run arbitrary sections of a shell script or to redo commands with no retyping. Metrowerks added to the Apple MPW own compilers, various auxiliary scripts, and some utilities. A set of "CodeWarrior MPW" tools is included in the **CodeWarrior Pro 4** distribution and requires preliminary manual configuration.
+The [Macintosh Programmer's Workshop](https://en.wikipedia.org/wiki/Macintosh_Programmer%27s_Workshop) (MPW) is a software development environment for the Classic Mac OS operating system, written by Apple, which was later superseded by the Metrowerks CodeWarrior IDE. MPW provided a collection of compilers and tools inside command line "MPW Shell" environment which was similar to UNIX-shells in desing but with a "worksheet" interface, allowing the user to select and run arbitrary sections of a shell script or to redo commands with no retyping. Metrowerks added to the Apple MPW own compilers, various auxiliary scripts, and some utilities. A set of "CodeWarrior MPW" tools is included in the **CodeWarrior Pro 4** distribution and requires preliminary manual configuration describes in [2048-MCW/ReadMe.md](2048-Toolbox/2048-MCW/ReadMe.md) document.
 
 ### Tasks List
 
@@ -19,26 +19,27 @@ The [Macintosh Programmer's Workshop](https://en.wikipedia.org/wiki/Macintosh_Pr
 6. [x] Implement basic offscreen drawing.
 7. [x] Update engine source code.
 8. [x] Finish general game drawing.
-9. [x] Check it on Mac OS 7 and Mac OS 6.
+9. [x] Check it on Mac OS System 6, Mac OS System 7 and Mac OS 9.
 10. [x] Add about dialog with a window title bar.
 11. [x] Setup environment for building QuickDraw examples.
 12. [x] Create QuickDraw + QuickDrawGX switch example.
-13. [x] Add links to ftp.apple.com archive and QuickDraw GX books.
+13. [x] Add links to the "ftp.apple.com" archive and QuickDraw GX books.
 14. [x] Add alerts instead of beeps.
 15. [x] Implement skeleton QuickDraw + QuickDraw GX drawing.
 16. [x] Implement QuickDraw GX general game drawing.
-17. [x] Optimize QuickDraw GX shape drawing and release/free/dispose shapes.
-18. [x] Draw some QuickDraw GX logo.
+17. [x] Optimize QuickDraw GX shapes drawing and release/free/dispose these shapes.
+18. [x] Draw some QuickDraw GX logo on game board background.
 19. [x] Find a way to some transparents drawing.
 20. [x] Check standard dialogs.
-21. [x] Check on various Mac OS and PowerPC architecture.
-22. [x] Documentation files, screens and instructions.
+21. [x] Check executables on various Mac OS versions and PowerPC architecture.
+22. [x] Add some documentation files, screens and instructions.
 23. [x] Enable weak linkage of QuickDrawGXLib for PowerPC build.
-24. [x] Check Metrowerks CodeWarrior and Apple MPWs.
+24. [x] Check Metrowerks CodeWarrior and Apple MPWs environments.
 25. [ ] Create floppy image disk with executable, sources, and project files.
-26. [ ] Add CodeWarrior MPW instruction and screenshots to ReadMe and Makefile, `LF` and `CR` hint in documents.
-27. [ ] Check various memory consumption.
-28. [ ] Include ReadMe.md files to the source directories.
+26. [x] Add CodeWarrior MPW instructions and screenshots.
+27. [x] Add `LF` => `CR` conversion list of files.
+28. [ ] Check various memory consumption.
+29. [ ] Include ReadMe.md files to the source directories.
 
 ## Mac OS System 6 Notes
 
@@ -49,20 +50,20 @@ The THINK C offered the programmer a powerful object-oriented Think Class Librar
 ### Tasks List
 
 1. [x] Check `NumberToStr()` function and `Str15` type for small Pascal strings.
-2. [x] Check `THINK_C` compilator macro define on Symantec THINK C 5.0.2 IDE.
+2. [x] Check `THINK_C` compiler macro define on Symantec THINK C 5.0.2 IDE.
 3. [x] Disable scrollbars and growing icon for application window.
 4. [x] Find constant values for control keys.
 5. [x] Find a way to call submenu from the main menu.
-6. [x] Change the (c) sign to good one (hint: ©).
-7. [x] Add link to the Macintosh Toolbox with THINK C tutorial.
+6. [x] Change the (c) sign to the good one (hint: ©).
+7. [x] Add link to the "Macintosh Toolbox with THINK C" tutorial.
 8. [x] Find a way to set application icon.
-9. [x] Implement offscreen drawing and mention the author of the functions.
+9. [x] Implement offscreen drawing and mention the author of these functions.
 10. [x] Make game score visible on the final.
 11. [x] Set proper `x` and `y` coords for window and dialog.
 12. [x] Bump date in about dialog.
 13. [x] Refactor all code with [OOP](https://en.wikipedia.org/wiki/Object-oriented_programming)-style.
 14. [x] Set first frame also as offscreen drawing.
-15. [x] Check `Random()` function and use it instead `rand()` from huge ANSI C language library. This will allow to use ANSI-small library and reduce the size of executable file.
+15. [x] Check `Random()` function and use it instead of `rand()` from huge ANSI C language library. This will allow to use ANSI-small library and reduce the size of executable file.
 16. [x] Add notes about `mac2unix` and `unix2mac` utilites.
 17. [ ] Create floppy disk image with source code of classic Mac OS projects.
 18. [x] Add notes about Macintosh Toolbox and QuickDraw technologies.
@@ -74,8 +75,9 @@ The THINK C offered the programmer a powerful object-oriented Think Class Librar
 24. [x] Add "..." to the "About 2048-ThinkC" menu item.
 25. [x] Update engine source code.
 26. [x] Fix random initialization.
-27. [x] Fix font setting for offscreen.
+27. [x] Fix font setting for offscreen drawing.
 28. [x] Update engine sources.
+29. [ ] Check games on the Mac OS System 6 with color display.
 
 ## References and Books List
 
@@ -94,6 +96,6 @@ You can find literature, documentation, and source code on the following sites:
 1. [Vintage Apple](https://vintageapple.org/)
 2. [Informatimago Mirror](http://mirror.informatimago.com/next/developer.apple.com/documentation/)
 3. [Macintosh Archive](http://mirror.macintosharchive.org/max1zzz.co.uk/+Mac%20OS%20Classic/)
-4. [Infomac Mirro](http://ftp.knoppix.nl/infomac/)
+4. [Infomac Mirror](http://ftp.knoppix.nl/infomac/)
 5. [Apple Documentation Archive](https://developer.apple.com/library/archive/navigation/)
 6. [Apple FTP Archive](https://macintoshgarden.org/apps/ftpapplecom-archive)
