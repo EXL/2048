@@ -6,7 +6,7 @@
 | QuickDraw    | ![2048-MCW Classic Mac OS System 7.5.3 + QuickDraw Screenshot](../../image/2048-MCW-MacOS-7-QD-Screenshot-1.png) | ![2048-MCW Classic Mac OS 8.1 + QuickDraw Screenshot](../../image/2048-MCW-MacOS-8-QD-Screenshot-3.png) | ![2048-MCW Classic Mac OS 9.0 + QuickDraw Screenshot](../../image/2048-MCW-MacOS-9-QD-Screenshot-5.png) |
 | QuickDraw GX | ![2048-MCW Classic Mac OS System 7.5.3 + QuickDraw GX Screenshot](../../image/2048-MCW-MacOS-7-QD-GX-Screenshot-2.png) | ![2048-MCW Classic Mac OS 8.1 + QuickDraw GX Screenshot](../../image/2048-MCW-MacOS-8-QD-GX-Screenshot-4.png) | ![2048-MCW Classic Mac OS 9.0 + QuickDraw GX Screenshot](../../image/2048-MCW-MacOS-9-QD-GX-Screenshot-6.png) |
 
-The "2048" game for the [classic Mac OS](https://en.wikipedia.org/wiki/Classic_Mac_OS) platform (System 7-9) with using [Macintosh Toolbox](https://en.wikipedia.org/wiki/Macintosh_Toolbox), [QuickDraw](https://en.wikipedia.org/wiki/QuickDraw), and [QuickDraw GX](https://en.wikipedia.org/wiki/QuickDraw_GX) technologies. It's also works on the Mac OS System 6 with Color QuickDraw and [Macintosh II](https://en.wikipedia.org/wiki/Macintosh_II) ROM but there is a crash in the "About 2048-MCW..." dialog.
+The "2048" game for the [classic Mac OS](https://en.wikipedia.org/wiki/Classic_Mac_OS) platform (System 7-9) with using [Macintosh Toolbox](https://en.wikipedia.org/wiki/Macintosh_Toolbox), [QuickDraw](https://en.wikipedia.org/wiki/QuickDraw), and [QuickDraw GX](https://en.wikipedia.org/wiki/QuickDraw_GX) technologies. It's also works on the Mac OS System 6 with Color QuickDraw (32-Bit QuickDraw) and [Macintosh II](https://en.wikipedia.org/wiki/Macintosh_II) ROM but there is a crash in the "About 2048-MCW..." dialog. Perhaps the 2048-MCW application will work on older versions of the classic Mac OS Systems too.
 
 ## Setup Basilisk II Environment
 
@@ -104,3 +104,11 @@ Apple MPW 3.4.2:
 3. [Metrowerks CodeWarrior Pro 4](https://macintoshgarden.org/sites/macintoshgarden.org/files/apps/CWPro4Tools.cdr_.zip) (with Metrowerks CodeWarrior IDE version 3.2 build 0158)
 4. [Apple ResEdit 2.1.3](https://en.wikipedia.org/wiki/ResEdit)
 5. [Apple MPW 3.4.2](https://en.wikipedia.org/wiki/Macintosh_Programmer%27s_Workshop) (with Metrowerks CodeWarrior MPW extensions and tools)
+
+## Additional Screenshots
+
+The 2048-MCW application running on Mac OS System 6.0.8.1 with a different number of colors:
+
+| "256" Colors | "Thousands" Colors | "Millions" Colors |
+|--------------|--------------------|-------------------|
+| ![2048-MCW Classic Mac OS System 6.0.8.1 + 32-bit QuickDraw + "256" Colors Screenshot](../../image/2048-MCW-MacOS-6-QD-256-Screenshot-7.png) | ![2048-MCW Classic Mac OS System 6.0.8.1 + 32-bit QuickDraw + "Thousands" Colors Screenshot](../../image/2048-MCW-MacOS-6-QD-Thousands-Screenshot-8.png) | ![2048-MCW Classic Mac OS System 6.0.8.1 + 32-bit QuickDraw + "Millions" Colors Screenshot](../../image/2048-MCW-MacOS-6-QD-Millions-Screenshot-9.png) |

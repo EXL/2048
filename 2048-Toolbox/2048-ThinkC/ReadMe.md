@@ -79,6 +79,6 @@ Apple ResEdit 2.1.1:
 
 ## Additional Screenshots
 
-2048-ThinkC application running on the classic Mac OS 8.1:
+The 2048-ThinkC application running on the classic Mac OS 8.1:
 
 ![2048-ThinkC Classic Mac OS 8.1 Screenshot 1](../../image/2048-ThinkC-Screenshot-MacOS-8-1.png) ![2048-ThinkC Classic Mac OS 8.1 Screenshot 2](../../image/2048-ThinkC-Screenshot-MacOS-8-2.png) ![2048-ThinkC Classic Mac OS 8.1 Screenshot 3](../../image/2048-ThinkC-Screenshot-MacOS-8-3.png)
