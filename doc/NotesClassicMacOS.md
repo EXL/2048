@@ -1,13 +1,23 @@
 Classic Mac OS Notes
 ====================
 
+## Mac OS 9.0 Notes
+
+// TODO: CodeWarrior Pro 8.
+
+### Task List
+
+1. [x] Install MCW IDE and find some Carbon code example.
+2. [x] Rename directory from 2048-Toolbox to 2048-Carbon.
+3. [ ] Add Carbon skeleton project for MCW IDE.
+
 ## Mac OS 8.1 Notes
 
 I choose for Mac OS 8.1 development [Metrowerks CodeWarrior IDE 3.2](https://en.wikipedia.org/wiki/CodeWarrior), [Metrowerks Constructor 2.4.5](https://en.wikipedia.org/wiki/PowerPlant), and [Apple ResEdit 2.1.3](https://en.wikipedia.org/wiki/ResEdit) programs which are included to the [CodeWarrior Pro 4](https://macintoshgarden.org/apps/codewarrior-pro-4) distribution CD. The compilers provided with this package can compile [С](https://en.wikipedia.org/wiki/C_(programming_language)) and [C++](https://en.wikipedia.org/wiki/C%2B%2B) code for [Motorola 68000](https://en.wikipedia.org/wiki/Motorola_68000) and [PowerPC](https://en.wikipedia.org/wiki/PowerPC) architectures. Standard Apple technologies such as [Macintosh Toolbox](https://en.wikipedia.org/wiki/Macintosh_Toolbox), [QuickDraw](https://en.wikipedia.org/wiki/QuickDraw), and [QuickDraw GX](https://en.wikipedia.org/wiki/QuickDraw_GX) can be used with Metrowerks CodeWarrior IDE alongside with C and C++ standard libraries.
 
 The CodeWarrior Pro 4 package includes object-oriented [Metrowerks PowerPlant](https://en.wikipedia.org/wiki/PowerPlant) application framework, which is similar to the Think Class Library (TCL) from the Symantec THINK C integrated development environment. I think a lot of good things in the Metrowerks CodeWarrior IDE come from the Symantec THINK C world.
 
-The [Macintosh Programmer's Workshop](https://en.wikipedia.org/wiki/Macintosh_Programmer%27s_Workshop) (MPW) is a software development environment for the Classic Mac OS operating system, written by Apple, which was later superseded by the Metrowerks CodeWarrior IDE. MPW provided a collection of compilers and tools inside command line "MPW Shell" environment which was similar to UNIX-shells in desing but with a "worksheet" interface, allowing the user to select and run arbitrary sections of a shell script or to redo commands with no retyping. Metrowerks added to the Apple MPW own compilers, various auxiliary scripts, and some utilities. A set of "CodeWarrior MPW" tools is included in the **CodeWarrior Pro 4** distribution and requires preliminary manual configuration describes in [2048-MCW/ReadMe.md](2048-Toolbox/2048-MCW/ReadMe.md) document.
+The [Macintosh Programmer's Workshop](https://en.wikipedia.org/wiki/Macintosh_Programmer%27s_Workshop) (MPW) is a software development environment for the Classic Mac OS operating system, written by Apple, which was later superseded by the Metrowerks CodeWarrior IDE. MPW provided a collection of compilers and tools inside command line "MPW Shell" environment which was similar to UNIX-shells in desing but with a "worksheet" interface, allowing the user to select and run arbitrary sections of a shell script or to redo commands with no retyping. Metrowerks added to the Apple MPW own compilers, various auxiliary scripts, and some utilities. A set of "CodeWarrior MPW" tools is included in the **CodeWarrior Pro 4** distribution and requires preliminary manual configuration describes in [2048-Carbon/2048-MCW/ReadMe.md](../2048-Carbon/2048-MCW/ReadMe.md) document.
 
 ### Tasks List
 
@@ -93,6 +103,8 @@ The THINK C offered the programmer a powerful object-oriented Think Class Librar
 7. [ResEdit Reference For ResEdit 2.1, 1995](https://developer.apple.com/library/archive/documentation/mac/pdf/ResEditReference.pdf)
 8. [Metrowerks Code Warrior Programming, 1995](https://vintageapple.org/macprogramming/pdf/Metrowerks_Code_Worrior_Programming_1995.pdf)
 9. [QuickDraw GX Graphics, 1994](https://vintageapple.org/inside_r/pdf/QD_GX_Graphics_1994.pdf)
+10. [Building and Managing Programs in MPW, 1996](https://sites.google.com/site/macintoshprogrammersworkshop/files)
+11. [Carbon Porting Guide, 2002](http://mirror.informatimago.com/next/developer.apple.com/documentation/Carbon/Conceptual/carbon_porting_guide/carbonporting.pdf) | [Web version](https://developer.apple.com/library/archive/documentation/Carbon/Conceptual/carbon_porting_guide/cpg_intro_struct/cpg_intro_struct.html#//apple_ref/doc/uid/TP30000991)
 
 You can find literature, documentation, and source code on the following sites:
 
