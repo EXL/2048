@@ -13,7 +13,7 @@ The "2048" game for the [classic Mac OS](https://en.wikipedia.org/wiki/Classic_M
 
 *Note.* The [QuickDraw GX](https://en.wikipedia.org/wiki/QuickDraw_GX) 2D graphics engine [isn't supported](http://mirror.informatimago.com/next/developer.apple.com/documentation/Carbon/Reference/Carbon_Spec_Porting/QuickDraw_GX.html) in Carbon API.
 
-## Setup Sheep Shaver Environment
+## Setup Sheep Shaver Development Environment
 
 1. Install [Mac OS 9.0](https://winworldpc.com/product/mac-os-9/90) into [Sheep Shaver](https://en.wikipedia.org/wiki/SheepShaver) emulator through [Sheep Shaver Setup](https://www.emaculation.com/doku.php/sheepshaver_setup) installation guide.
 
@@ -45,6 +45,8 @@ The "2048" game for the [classic Mac OS](https://en.wikipedia.org/wiki/Classic_M
     ```
 
     *Note.* The "Mac OS 9" is name of storage drive with installed Mac OS 9.
+
+3. Install [ResEdit 2.1.3](https://macintoshgarden.org/apps/resedit) by Apple.
 
 ## Building CFM/PEF executable using Metrowerks CodeWarrior IDE
 

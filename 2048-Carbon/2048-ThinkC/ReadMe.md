@@ -5,7 +5,7 @@
 
 The "2048" game for the [classic Mac OS](https://en.wikipedia.org/wiki/Classic_Mac_OS) platform (System 1-6) with using [Macintosh Toolbox](https://en.wikipedia.org/wiki/Macintosh_Toolbox) and [QuickDraw](https://en.wikipedia.org/wiki/QuickDraw) technologies.
 
-## Setup Mini vMac Environment
+## Setup Mini vMac Development Environment
 
 1. Install [Mac OS System 6](https://winworldpc.com/product/mac-os-0-6/system-6x) into [Mini vMac](https://en.wikipedia.org/wiki/VMac) emulator through [Mini vMac Setup](https://www.emaculation.com/doku.php/mini_vmac_setup) installation guide.
 2. Copy [TeachText](https://en.wikipedia.org/wiki/TeachText) application from installation floppy disk to the "System Folder" directory.
@@ -29,7 +29,7 @@ The "2048" game for the [classic Mac OS](https://en.wikipedia.org/wiki/Classic_M
 
 ### Installing the application icon manually with ResEdit
 
-*Note.* These actions aren't required if you are using "2048-ThinkC.π" project file in the Symantec THINK C IDE.
+*Note.* These actions aren't required if you are using "2048-ThinkC.π" project file in the Symantec THINK C IDE. The ResEdit program by Apple located in the "Mac OS 6:Development:THINK C 5.0 Utilities:ResEdit 2.1.1" directory where "Mac OS 6" is the storage drive.
 
 1. Open "2048-ThinkC:2048-ThinkC.π.rsrc" resource file with Apple ResEdit program.
 2. In the main menu choose "File" => "Get File/Folder Info...", select 2048-ThinkC executable file and click "Get Info" button.

@@ -8,11 +8,12 @@
 
 The "2048" game for the [classic Mac OS](https://en.wikipedia.org/wiki/Classic_Mac_OS) platform (System 7-9) with using [Macintosh Toolbox](https://en.wikipedia.org/wiki/Macintosh_Toolbox), [QuickDraw](https://en.wikipedia.org/wiki/QuickDraw), and [QuickDraw GX](https://en.wikipedia.org/wiki/QuickDraw_GX) technologies. It's also works on the Mac OS System 6 with Color QuickDraw (32-Bit QuickDraw) and [Macintosh II](https://en.wikipedia.org/wiki/Macintosh_II) ROM but there is a crash in the "About 2048-MCW..." dialog. Perhaps the 2048-MCW application will work on older versions of the classic Mac OS Systems too.
 
-## Setup Basilisk II Environment
+## Setup Basilisk II Development Environment
 
 1. Install [Mac OS 8.1](https://winworldpc.com/product/mac-os-8/81) into [Basilisk II](https://en.wikipedia.org/wiki/Basilisk_II) emulator through [Basilisk II Setup](https://www.emaculation.com/doku.php/basilisk_ii_setup) installation guide.
 2. Install [CodeWarrior Pro 4](https://macintoshgarden.org/apps/codewarrior-pro-4) Tools and IDE which requires at least 500 MB for installation.
-3. *Optional.* Install [QuickDraw GX](https://macintoshgarden.org/apps/quickdraw-gx) library: v1.1.2 for Mac OS System 7 or v1.1.6 for Mac OS 8 and Mac OS 9.
+3. Unpack ResEdit program by Apple from "CW Pro 4 Tools:Apple Development Tools" directory to the storage drive.
+4. *Optional.* Install [QuickDraw GX](https://macintoshgarden.org/apps/quickdraw-gx) library: v1.1.2 for Mac OS System 7 or v1.1.6 for Mac OS 8 and Mac OS 9.
 
 ## Building using Metrowerks CodeWarrior IDE
 
