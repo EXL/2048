@@ -1,7 +1,6 @@
 #include <MacHeaders>
 #include <Constants.h>
 
-static GrafPtr wmPort;
 static GrafPort offPort;
 static WindowPtr windowPtr;
 
@@ -148,8 +147,6 @@ void InitAll(void) {
 	InitCursor();
 
 	FlushEvents(everyEvent, 0);
-	GetWMgrPort(&wmPort); /* Whole screen port that window manager uses. */
-	SetPort(wmPort);
 	SetEventMask(everyEvent);
 
 	windowPtr = GetNewWindow(128, 0L, (WindowPtr) -1L);

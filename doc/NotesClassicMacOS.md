@@ -12,6 +12,7 @@ Classic Mac OS Notes
 3. [x] Add Carbon skeleton project for MCW IDE on Mac OS 9.
 4. [ ] Find ResEdit or its analog and create all resources.
 5. [ ] Implement basic drawing.
+6. [ ] Add Classic Mac OS binaries size information.
 
 ## Mac OS 8 Notes
 

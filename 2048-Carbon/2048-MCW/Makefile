@@ -87,7 +87,7 @@ OBJECTS_PPC       = 2048.c.x ¶
 		-c {SIGNATURE} ¶
 		-o {APPNAME}
 
-{APPNAME} ÄÄ Makefile 2048-MCW.r "2048-MCW.µ.rsrc"
+{APPNAME} ÄÄ Makefile 2048-MCW.r 2048-MCW.rsrc
 	Rez -append -o {APPNAME} 2048-MCW.r
 	SetFile {APPNAME} -t APPL -c {SIGNATURE} -a B
 

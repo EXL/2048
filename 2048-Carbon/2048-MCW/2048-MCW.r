@@ -1,6 +1,6 @@
 #include "Types.r"
 
-include "2048-MCW.µ.rsrc";
+include "2048-MCW.rsrc";
 
 resource 'SIZE' (-1) {
 	reserved,
