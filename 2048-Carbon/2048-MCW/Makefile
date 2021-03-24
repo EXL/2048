@@ -1,4 +1,4 @@
-#   Makefile for building FAT executable for Mac OS System 7-9 both M68K and PPC architectures.
+#   MPW Shell Makefile for building FAT executable for Mac OS System 7-9 both M68K and PPC architectures.
 #   Please use Metrowerks CodeWarrior MPW Shell instead of vanilla Apple MPW Shell.
 #   See "ReadMe.md" file for configuring and building instructions.
 #

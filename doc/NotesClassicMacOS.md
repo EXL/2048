@@ -1,7 +1,7 @@
 Classic Mac OS Notes
 ====================
 
-## Mac OS 9.0 Notes
+## Mac OS 9 Notes
 
 // TODO: CodeWarrior Pro 8.
 
@@ -9,9 +9,11 @@ Classic Mac OS Notes
 
 1. [x] Install MCW IDE and find some Carbon code example.
 2. [x] Rename directory from 2048-Toolbox to 2048-Carbon.
-3. [ ] Add Carbon skeleton project for MCW IDE.
+3. [x] Add Carbon skeleton project for MCW IDE on Mac OS 9.
+4. [ ] Find ResEdit or its analog and create all resources.
+5. [ ] Implement basic drawing.
 
-## Mac OS 8.1 Notes
+## Mac OS 8 Notes
 
 I choose for Mac OS 8.1 development [Metrowerks CodeWarrior IDE 3.2](https://en.wikipedia.org/wiki/CodeWarrior), [Metrowerks Constructor 2.4.5](https://en.wikipedia.org/wiki/PowerPlant), and [Apple ResEdit 2.1.3](https://en.wikipedia.org/wiki/ResEdit) programs which are included to the [CodeWarrior Pro 4](https://macintoshgarden.org/apps/codewarrior-pro-4) distribution CD. The compilers provided with this package can compile [С](https://en.wikipedia.org/wiki/C_(programming_language)) and [C++](https://en.wikipedia.org/wiki/C%2B%2B) code for [Motorola 68000](https://en.wikipedia.org/wiki/Motorola_68000) and [PowerPC](https://en.wikipedia.org/wiki/PowerPC) architectures. Standard Apple technologies such as [Macintosh Toolbox](https://en.wikipedia.org/wiki/Macintosh_Toolbox), [QuickDraw](https://en.wikipedia.org/wiki/QuickDraw), and [QuickDraw GX](https://en.wikipedia.org/wiki/QuickDraw_GX) can be used with Metrowerks CodeWarrior IDE alongside with C and C++ standard libraries.
 
