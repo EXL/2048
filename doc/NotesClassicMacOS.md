@@ -10,9 +10,11 @@ Classic Mac OS Notes
 1. [x] Install MCW IDE and find some Carbon code example.
 2. [x] Rename directory from 2048-Toolbox to 2048-Carbon.
 3. [x] Add Carbon skeleton project for MCW IDE on Mac OS 9.
-4. [ ] Find ResEdit or its analog and create all resources.
+4. [x] Find ResEdit or its analog and create all resources.
 5. [ ] Implement basic drawing.
 6. [ ] Add Classic Mac OS binaries size information.
+7. [ ] Clear "2048-Carbon.rsrc" resource file.
+8. [ ] Implement Offscreen drawing with Carbon.
 
 ## Mac OS 8 Notes
 

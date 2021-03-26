@@ -38,11 +38,11 @@
 #define MENU_GAME            129
 #define MENU_TILES           130
 #define MENU_ITEM_ABOUT      1
-#define MENU_ITEM_ROUND      1
+#define MENU_ITEM_RESET      1
 #define MENU_ITEM_QD_GX      4
 #define MENU_ITEM_QUIT       6
+#define MENU_ITEM_ROUND      1
 #define MENU_ITEM_RECT       2
-#define MENU_ITEM_RESET      1
 #define TILE_SIZE            64
 #define TILE_MARGIN          16
 #define ROUND_RECT_RAD       20
@@ -96,11 +96,6 @@ public:
 
 	void SetWindowDefaultViewPort(void) {
 		SetDefaultViewPort(GXNewWindowViewPort(mWinPtr));
-	}
-	void SetFont(void) {
-		short lFontID;
-		GetFNum("\pCharcoal", &lFontID);
-		TextFont(lFontID);
 	}
 	void SetOffScreen(void) {
 		OSErr lError = NewGWorld(&mOffScr, 0, &mRectWin, nil, nil, 0L);
@@ -161,6 +156,11 @@ public:
 		RGBColor lColorText = GetRgbColor(COLOR_TEXT);
 		SetShapeRGB(mShapeRestartGx, lColorText.red, lColorText.green, lColorText.blue);
 		GXSetShapeTransform(mShapeRestartGx, mOffScrGx.xform);
+	}
+	void SetFont(void) {
+		short lFontID;
+		GetFNum("\pCharcoal", &lFontID);
+		TextFont(lFontID);
 	}
 
 	void Drag(Point aPoint, WindowPtr aWinPtr) {
@@ -256,15 +256,15 @@ private:
 			PaintRect(&lRectTile);
 
 		if (aVal) {
-			const short size = (aVal < 10) ? 34 : (aVal < 100) ? 28 : (aVal < 1000) ? 26 : 22;
+			const short lSize = (aVal < 10) ? 34 : (aVal < 100) ? 28 : (aVal < 1000) ? 26 : 22;
 			TextFace(bold);
-			TextSize(size);
+			TextSize(lSize);
 			RGBBackColor(&lColorTile);
 			RGBForeColor(&GetRgbColor(e_foreground(aVal)));
 			Str15 lStrValue;
 			NumToString(aVal, lStrValue);
 			const int llX = StringWidth(lStrValue);
-			const int llY = size - 4;
+			const int llY = lSize - 4;
 			MoveTo(lX + (TILE_SIZE - llX - 1) / 2, lY + TILE_SIZE - (TILE_SIZE - llY) / 2 - 2);
 			DrawString(lStrValue);
 		}
@@ -338,7 +338,7 @@ private:
 		DrawString("\pESC to Restart!");
 		char lStrScore[STRING_SCORE_LENGTH];
 		sprintf(lStrScore, "Score: %d", e_score);
-		const unsigned char * lStrScorePascal = c2pstr(lStrScore);
+		const unsigned char *lStrScorePascal = c2pstr(lStrScore);
 		const int lX = StringWidth(lStrScorePascal);
 		MoveTo(WW(mRectWin) - lX - TILE_MARGIN, HH(mRectWin) - TILE_MARGIN);
 		DrawString(lStrScorePascal);
@@ -373,7 +373,7 @@ private:
 		PaintRect(&mRectWin);
 		SetPenState(&lPenState);
 
-		const unsigned char * lStrFinal = (e_win) ? "\pYou Won!" : "\pGame Over";
+		const unsigned char *lStrFinal = (e_win) ? "\pYou Won!" : "\pGame Over";
 		TextSize(34);
 		const int lX = StringWidth(lStrFinal);
 		MoveTo(WW(mRectWin) / 2 - lX / 2, HH(mRectWin) / 2);
@@ -409,11 +409,9 @@ private:
 		lColor.blue  = ((unsigned short) blue8 << 8) | blue8;
 		return lColor;
 	}
-
 	gxRectangle GetGxRectangle(const Rect *aRect) const {
 		return GetGxRectangle(aRect->left, aRect->right, aRect->top, aRect->bottom);
 	}
-
 	gxRectangle GetGxRectangle(register short aL, register short aR, register short aT, register short aB) const {
 		gxRectangle lRectangle;
 		lRectangle.left = ff(aL);
