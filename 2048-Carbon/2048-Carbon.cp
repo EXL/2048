@@ -13,6 +13,7 @@
 #define MENU_APPLE           128
 #define MENU_GAME            129
 #define MENU_TILES           130
+#define MENU_GAME_OS_X       131
 #define MENU_ITEM_ABOUT      1
 #define MENU_ITEM_RESET      1
 #define MENU_ITEM_QUIT       4
@@ -26,6 +27,11 @@
 #define WW(rect)             (rect.right - rect.left)
 #define HH(rect)             (rect.bottom - rect.top)
 
+static pascal OSErr QuitAppleEventHandler(const AppleEvent *, AppleEvent *, UInt32) {
+	ExitToShell();
+	return noErr;
+}
+
 class Window {
 	WindowPtr mWinPtr;
 	GWorldPtr mOffScr;
@@ -34,10 +40,12 @@ class Window {
 	Rect mRectWin;
 
 	bool qRoundRect;
+	bool qIsMacOS_X;
 
 public:
-	Window(void) {
+	Window(bool aIsMacOS_X) {
 		qRoundRect = true;
+		qIsMacOS_X = aIsMacOS_X;
 
 		mWinPtr = GetNewCWindow(RSRC_ID, nil, (WindowPtr) -1);
 		BitMap lBitMapScr;
@@ -46,9 +54,7 @@ public:
 		GetPortBounds(GetWindowPort(mWinPtr), &mRectWin);
 	}
 	~Window(void) {
-#if !defined(__MACH__)
 		DisposeGWorld(mOffScr);
-#endif
 		DisposeWindow(mWinPtr);
 	}
 
@@ -160,7 +166,8 @@ private:
 		else
 			RGBForeColor(&lColorText);
 
-		TextFace(normal);
+		if (!qIsMacOS_X)
+			TextFace(normal);
 		TextSize(18);
 		MoveTo(TILE_MARGIN, HH(mRectWin) - TILE_MARGIN);
 		DrawString("\pESC to Restart!");
@@ -215,9 +222,12 @@ class Application {
 	MenuHandle mMenuGame;
 	MenuHandle mMenuTiles;
 
+	bool qIsMacOS_X;
+
 public:
 	Application(void) {
 		mWindow = nil;
+		qIsMacOS_X = false;
 		e_init(kEscapeCharCode, kLeftArrowCharCode, kRightArrowCharCode, kUpArrowCharCode, kDownArrowCharCode);
 	}
 	~Application(void) {
@@ -225,11 +235,18 @@ public:
 			delete mWindow;
 	}
 
-	void InitMac(void) {
+	bool InitMac(void) {
 		InitCursor();
 
 		FlushEvents(everyEvent, 0);
 		SetEventMask(everyEvent);
+
+		OSErr lErr = AEInstallEventHandler(
+			kCoreEventClass, kAEQuitApplication,
+			NewAEEventHandlerUPP((AEEventHandlerProcPtr) QuitAppleEventHandler),
+			0, false
+		);
+		return lErr == noErr;
 	}
 	void InitMenuBar(void) {
 		Handle lMenuBar = GetNewMBar(RSRC_ID);
@@ -238,13 +255,20 @@ public:
 
 		SetUpMenus();
 
+		if (qIsMacOS_X)
+			DeleteMenu(MENU_GAME);
+		else
+			DeleteMenu(MENU_GAME_OS_X);
+
 		DrawMenuBar();
 	}
 	bool InitWindow(void) {
-		mWindow = new Window();
+		mWindow = new Window(qIsMacOS_X);
 		mWindow->Activate();
+
 		if (!mWindow->SetOffScreen())
 			return false;
+
 		mWindow->SetFont();
 		return true;
 	}
@@ -258,8 +282,13 @@ public:
 private:
 	void SetUpMenus(void) {
 		InsertMenu(mMenuApple = GetMenu(MENU_APPLE), 0);
-		AppendResMenu(mMenuApple, 'DRVR');
-		InsertMenu(mMenuGame = GetMenu(MENU_GAME), 0);
+		long lRes;
+		OSErr lErr = Gestalt(gestaltMenuMgrAttr, &lRes);
+		if (!lErr && (lRes & gestaltMenuMgrAquaLayoutMask)) {
+			qIsMacOS_X = true;
+			InsertMenu(mMenuGame = GetMenu(MENU_GAME_OS_X), 0);
+		} else
+			InsertMenu(mMenuGame = GetMenu(MENU_GAME), 0);
 		InsertMenu(mMenuTiles = GetMenu(MENU_TILES), hierMenu);
 	}
 	void AdjustMenus(void) {
@@ -330,6 +359,7 @@ private:
 					ShowAboutModalDialog();
 				break;
 			case MENU_GAME:
+			case MENU_GAME_OS_X:
 				switch (lItem) {
 					case MENU_ITEM_RESET:
 						e_key(kEscapeCharCode);
@@ -366,9 +396,10 @@ private:
 
 int main(void) {
 	Application lApp;
-	lApp.InitMac();
-	lApp.InitMenuBar();
-	if (lApp.InitWindow())
-		lApp.Run();
+	if (lApp.InitMac()) {
+		lApp.InitMenuBar();
+		if (lApp.InitWindow())
+			lApp.Run();
+	}
 	return 0;
 }
