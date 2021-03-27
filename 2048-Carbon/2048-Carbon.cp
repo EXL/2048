@@ -1,6 +1,10 @@
 #include "2048.h"
 
+#if defined(__MACH__)        // Mac OS X
+#include <Carbon/Carbon.h>
+#else
 #include <Carbon.h>
+#endif
 
 #include <stdio.h>
 
@@ -42,7 +46,9 @@ public:
 		GetPortBounds(GetWindowPort(mWinPtr), &mRectWin);
 	}
 	~Window(void) {
+#if !defined(__MACH__)
 		DisposeGWorld(mOffScr);
+#endif
 		DisposeWindow(mWinPtr);
 	}
 
@@ -81,12 +87,11 @@ public:
 	void Update(void) {
 		BeginUpdate(mWinPtr);
 
-		SetGWorld((CGrafPtr) mOffScr, nil);
+		SetGWorld(mOffScr, nil);
 
 		Draw();
 
-		SetGWorld((CGrafPtr) mWinPtr, GetMainDevice());
-
+		SetGWorld(GetWindowPort(mWinPtr), GetMainDevice());
 		Rect lRectOffScr;
 		GetPortBounds(mOffScr, &lRectOffScr);
 		CopyBits(
@@ -94,6 +99,8 @@ public:
 			&lRectOffScr, &mRectWin,
 			srcCopy, nil
 		);
+
+		QDFlushPortBuffer(GetQDGlobalsThePort(), nil); // TODO: check this.
 
 		EndUpdate(mWinPtr);
 	}

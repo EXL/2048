@@ -17,6 +17,9 @@ Classic Mac OS Notes
 8. [x] Implement Offscreen drawing with Carbon.
 9. [ ] Check executable file on Mac OS X.
 10. [ ] Create "Project Builder" project for Mac OS X Carbon version.
+11. [x] Fix crash on Mac OS X.
+12. [ ] Get and read two Carbon API examples on Mac OS X: simple and NIB-based.
+13. [ ] Fix menus on Mac OS X.
 
 ## Mac OS 8 Notes
 
