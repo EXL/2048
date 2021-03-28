@@ -13,11 +13,12 @@
 #define kBundleShortVersion __OUTPUT_FILENAME__ " version 1.0, 24-Mar-2021"
 
 // Change this to the string to display in the Finder's Get Info window
-#define kBundleGetInfo kBundleShortVersion ", Copyright \U00A9 2021 by EXL.  All rights reserved."
+#define kBundleGetInfo kBundleShortVersion ", Copyright \U00A9 2021 by EXL. All rights reserved."
 
 plist {
 	dictionary {
 		key "CFBundleIdentifier" value string kBundleIdentifier
+		key "CFBundleIconFile" value string "128"
 
 		key "CFBundleName" value string __OUTPUT_FILENAME__
 		key "CFBundleGetInfoString" value string kBundleGetInfo

@@ -20,7 +20,8 @@ Classic Mac OS Notes
 11. [x] Fix crash on Mac OS X.
 12. [x] Get and read two Carbon API examples on Mac OS X: simple and NIB-based.
 13. [x] Fix menus on Mac OS X.
-14. [ ] It is possible to set icon for Mac OS X Carbon API application compiled on Mac OS 9?
+14. [x] It is possible to set icon for Mac OS X Carbon API application compiled on Mac OS 9? Yes.
+15. [ ] Set some modern about dialog, like 2048-Cocoa application.
 
 ## Mac OS 8 Notes
 

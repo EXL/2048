@@ -48,19 +48,16 @@ The "2048" game for the [classic Mac OS](https://en.wikipedia.org/wiki/Classic_M
 
 3. Install [ResEdit 2.1.3](https://macintoshgarden.org/apps/resedit) by Apple.
 
-## Building CFM/PEF executable using Metrowerks CodeWarrior IDE
+## Building CFM/PEF executable using Metrowerks CodeWarrior IDE in Mac OS 9
 
-1. Attach "TODO" floppy disk image on "Volumes" tab in the Basilisk II emulator and start Mac OS 8.1 with it.
-2. Copy "2048-MCW" folder from floppy disk to the storage drive.
-3. Open "2048-MCW:2048-MCW.μ" project file with Metrowerks CodeWarrior IDE.
-4. Set "FAT MacOS Toolbox" instead of "68K Debug MacOS Toolbox" target.
+1. Attach "TODO" floppy disk image on "Volumes" tab in the Sheep Shaver emulator and start Mac OS 9 with it.
+2. Copy "2048-Carbon" folder from floppy disk to the storage drive.
+3. Open "2048-Carbon:2048-Carbon.mcp" project file with Metrowerks CodeWarrior IDE.
+4. Set "Carbon Toolbox Final" instead of "Carbon Toolbox Debug" target.
 5. In the main menu choose "Project" => "Make", wait for the compilation process to complete.
-6. Get resulted executable files in the "2048-MCW" directory with following names:
+6. Get resulted 2048-Carbon executable file for [PowerPC](https://en.wikipedia.org/wiki/PowerPC) architecture in the "2048-Carbon" directory.
 
-   - **2048-MCW 68K** - Final (release) version for [Motorola 68000](https://en.wikipedia.org/wiki/Motorola_68000) architecture.
-   - **2048-MCW PPC** - Final (release) version for [PowerPC](https://en.wikipedia.org/wiki/PowerPC) architecture.
-   - **2048-MCW** - Final (release) FAT version for both architectures.
-
+// TODO: Building MachO
 ## Building using Metrowerks CodeWarrior MPW
 
 *Note.* This instructions aren't recommended, use CodeWarrior IDE instead.
