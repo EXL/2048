@@ -21,9 +21,9 @@ Classic Mac OS Notes
 12. [x] Get and read two Carbon API examples on Mac OS X: simple and NIB-based.
 13. [x] Fix menus on Mac OS X.
 14. [x] It is possible to set icon for Mac OS X Carbon API application compiled on Mac OS 9? Yes.
-15. [ ] Work on about dialog: moveable, background, etc.
+15. [x] Work on about dialog: moveable, background, etc.
 16. [x] Drop sudo Sheep Shaver.
-17. [ ] Add information about MoreIsBetter. http://mirror.informatimago.com/next/developer.apple.com/samplecode/MoreIsBetter/index.html
+17. [x] Add information about [MoreIsBetter](http://mirror.informatimago.com/next/developer.apple.com/samplecode/MoreIsBetter/index.html) example.
 
 ## Mac OS 8 Notes
 

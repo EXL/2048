@@ -6,8 +6,6 @@
 #include <Carbon.h>
 #endif
 
-#include <Events.h>
-
 #include <stdio.h>
 
 #define RSRC_ID              128
@@ -123,6 +121,10 @@ public:
 		return qRoundRect;
 	}
 
+	Rect *GetRectScreen(void) {
+		return &mRectScr;
+	}
+
 private:
 	void Draw(void) {
 		const RGBColor lColorBoard = GetRgbColor(COLOR_BOARD);
@@ -216,82 +218,6 @@ private:
 		return lColor;
 	}
 };
-
-static Window *G_WIN = nil;
-
-pascal Boolean ModalFilterProc (DialogRef dialog, EventRecord *event, short *itemHit) {
-	return StdFilterProc(dialog, event, itemHit);
-}
-
-pascal void MoveableModalDialog (ModalFilterUPP mfp, DialogItemIndex *itemHit)
-{
-	//
-	//	I just made this logic up.
-	//	In a perfect world, I would steal the implementation
-	//	of the real ModalDialog and tweak it a little bit.
-	//	Consider it a to-do item.
-	//
-
-	EventRecord		event;
-	DialogRef		pop, dummy;
-	WindowRef		whichWindow;
-	short			partCode;
-	Boolean			handledIt = false;
-
-	pop = GetDialogFromWindow (FrontWindow( ));
-	*itemHit = -1;
-
-	do
-	{
-		WaitNextEvent (everyEvent & ~highLevelEventMask, &event, GetCaretTime( ), NULL);
-
-		switch (event.what)
-		{
-			case mouseDown:
-
-				partCode = FindWindow (event.where, &whichWindow);
-
-				if (whichWindow != GetDialogWindow (pop))
-				{
-					#if TARGET_API_MAC_CARBON
-						SysBeep(10);
-					#else
-						if (partCode == inSysWindow)
-							SystemClick (&event,whichWindow);
-						else
-							SysBeep(10);
-					#endif
-
-					break;
-				}
-
-				if (inDrag == partCode)
-				{
-					Rect dragBounds;
-
-
-					dragBounds = (**GetMainDevice ( )).gdRect;
-					InsetRect (&dragBounds, 4, 4);
-					DragWindow (GetDialogWindow (pop), event.where, &dragBounds);
-
-					break;
-				}
-
-				// fall thru
-
-			default:
-
-				if (mfp)
-					handledIt = InvokeModalFilterUPP (pop,&event,itemHit,mfp);
-
-				if (!handledIt && IsDialogEvent(&event))
-					DialogSelect(&event,&dummy,itemHit);
-				G_WIN->Update();
-				break;
-		}
-	}
-	while (*itemHit == -1);
-}
 
 class Application {
 	Window *mWindow;
@@ -462,38 +388,39 @@ private:
 		}
 	}
 	void ShowAboutModalDialog(void) {
+		DialogPtr lDialogPtr = GetNewDialog(RSRC_ID, nil, (WindowPtr) -1);
+		SetDialogDefaultItem(lDialogPtr, 1); // "OK" button.
 
-		DialogPtr lDialogAbout = GetNewDialog(RSRC_ID, nil, (WindowPtr) -1);
-		SetDialogDefaultItem(lDialogAbout, 1); // "OK" button.
-		short lAnswer = 0;
+		// This piece of code was inherited from "MoreIsBetter" example:
+		// http://mirror.informatimago.com/next/developer.apple.com/samplecode/MoreIsBetter/index.html
+		EventRecord lEvent;
+		DialogItemIndex lItemIndex = -1;
+		DialogRef lDialogRef = GetDialogFromWindow(FrontWindow());
+		do {
+			WaitNextEvent(everyEvent & ~highLevelEventMask, &lEvent, 0, nil);
+			switch (lEvent.what) {
+				case mouseDown: {
+					WindowPtr lWinPtr;
+					const WindowPartCode lWinPart = FindWindow(lEvent.where, &lWinPtr);
+					if (lWinPtr != GetDialogWindow(lDialogRef)) {
+						SysBeep(30);
+						break;
+					}
+					if (inDrag == lWinPart) {
+						DragWindow(GetDialogWindow(lDialogRef), lEvent.where, mWindow->GetRectScreen());
+						break;
+					}
+				}
+				// Fallthrough.
+				default:
+					if (IsDialogEvent(&lEvent))
+						DialogSelect(&lEvent, &lDialogRef, &lItemIndex);
+					mWindow->Update();
+					break;
+			}
+		} while (lItemIndex == -1);
 
-		G_WIN = mWindow;
-
-		ModalFilterUPP modalFilterUPP = NewModalFilterUPP(ModalFilterProc);
-
-		MoveableModalDialog(modalFilterUPP, &lAnswer);
-
-		DisposeModalFilterUPP(modalFilterUPP);
-
-		DisposeDialog(lDialogAbout);
-
-	/*
-	Str255 l = "\pTEst";
-	Str255 r = "\pErra";
-
-	AlertStdAlertParamRec lAlertParam;
-	lAlertParam.movable = true;
-	lAlertParam.helpButton = false;
-	lAlertParam.filterProc = nil;
-	lAlertParam.defaultText = "\pOK";
-	lAlertParam.cancelText = nil;
-	lAlertParam.otherText = nil;
-	lAlertParam.defaultButton = 1;
-	lAlertParam.cancelButton = 0;
-	lAlertParam.position = kWindowDefaultPosition;
-
-	StandardAlert(kAlertNoteAlert, l, r, &lAlertParam, nil);
-	*/
+		DisposeDialog(lDialogPtr);
 	}
 };
 

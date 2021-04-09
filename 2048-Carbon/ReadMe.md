@@ -1,10 +1,12 @@
 https://en.wikipedia.org/wiki/Fork_(file_system)
 https://en.wikipedia.org/wiki/Resource_fork
 
-(limitations)
+(limitations about forks)
+
+Examples:
 
 https://github.com/steventroughtonsmith/BitPaint/
-
+http://mirror.informatimago.com/next/developer.apple.com/samplecode/MoreIsBetter/index.html
 
 2048-Carbon
 ===========
