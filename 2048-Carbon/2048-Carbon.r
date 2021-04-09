@@ -1,5 +1,5 @@
 /*
- *  Permit this Carbon application to launch on OS X
+ *  Contains some resources and permit this Carbon application to launch on OS X.
  *
  *  Copyright © 1997-2002 Metrowerks Corporation.  All Rights Reserved.
  *
@@ -12,21 +12,24 @@
 #include <Dialogs.r>
 #include <Icons.r>
 
-/*---------------------------- icns ¥ Carbon on OS X icon information ---------------------------*/
-
+/*---------------------------- dlgx ¥ Carbon on OS X about dialog information -------------------*/
+/*
 resource 'dlgx' (128) {
 	versionZero {
-
+		kDialogFlagsHandleMovableModal +
+		kDialogFlagsUseThemeControls +
+		kDialogFlagsUseThemeBackground +
+		kDialogFlagsUseControlHierarchy
 	}
 };
-
+*/
 /*---------------------------- icns ¥ Carbon on OS X icon information ---------------------------*/
 
 // read 'icns' (-16455) "2048-Carbon.icns";
-
 read 'icns' (128) "2048-Carbon.icns";
 
 /*---------------------------- carb ¥ Carbon on OS X launch information -------------------------*/
+
 type 'carb' {
 
 };
