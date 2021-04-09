@@ -8,11 +8,22 @@
  *       <http://www.metrowerks.com/>
  */
 
+#include <Carbon.r>
+#include <Dialogs.r>
 #include <Icons.r>
 
 /*---------------------------- icns ¥ Carbon on OS X icon information ---------------------------*/
 
+resource 'dlgx' (128) {
+	versionZero {
+
+	}
+};
+
+/*---------------------------- icns ¥ Carbon on OS X icon information ---------------------------*/
+
 // read 'icns' (-16455) "2048-Carbon.icns";
+
 read 'icns' (128) "2048-Carbon.icns";
 
 /*---------------------------- carb ¥ Carbon on OS X launch information -------------------------*/

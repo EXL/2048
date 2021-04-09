@@ -17,11 +17,11 @@ The "2048" game for the [classic Mac OS](https://en.wikipedia.org/wiki/Classic_M
 
 1. Install [Mac OS 9.0](https://winworldpc.com/product/mac-os-9/90) into [Sheep Shaver](https://en.wikipedia.org/wiki/SheepShaver) emulator through [Sheep Shaver Setup](https://www.emaculation.com/doku.php/sheepshaver_setup) installation guide.
 
-    *Note.* If you are using Linux, please disable SELinux for the current session and run Sheep Shaver from root to rid off "Cannot map Low Memory Globals: Operation not permitted." Sheep Shaver error.
+    *Note.* If you are using Linux, please disable SELinux for the current session and disable `mmap_min_addr` to rid off "Cannot map Low Memory Globals: Operation not permitted." error.
 
     ```bash
     sudo setenforce 0
-    sudo SheepShaver
+    echo 0 | sudo tee /proc/sys/vm/mmap_min_addr
     ```
 
 2. Install [CodeWarrior Pro 8](https://macintoshgarden.org/apps/codewarrior-pro-8x) Tools and IDE which requires at least 1 GB for installation.
