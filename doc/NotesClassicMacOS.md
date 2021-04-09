@@ -68,6 +68,21 @@ The [Macintosh Programmer's Workshop](https://en.wikipedia.org/wiki/Macintosh_Pr
 31. [x] Check game on the Mac OS System 6 with color display. It's works! There is crash on the "About 2048-MCW..." dialog though.
 32. [ ] Connection with Carbon.
 
+## A/UX Notes
+
+TODO: Desc AUX
+TODO: Desc AUX Dev Tools inbox
+TODO: Use BasiliskII for move files (README)
+
+### Task List
+
+1. [x] Port and run X11 version.
+2. [ ] Port and run Toolbox version.
+3. [ ] Add compiler info and version to document.
+4. [ ] Create "old" directory for ported engine.
+5. [ ] Note about 256 MB RAM on Shoebill command.
+6. [x] Compile and test Macintosh Toolbox for A/UX code sample.
+
 ## Mac OS System 6 Notes
 
 I took for development under classic [Mac OS System 6](https://en.wikipedia.org/wiki/System_6) the [Symantec THINK C 5.0.2](https://en.wikipedia.org/wiki/THINK_C) IDE and [Apple ResEdit 2.1.1](https://en.wikipedia.org/wiki/ResEdit) program which is already included to the THINK C distribution kit. THINK C expands a traditional [C language](https://en.wikipedia.org/wiki/C_(programming_language)) syntax with basic [object-oriented programming (OOP)](https://en.wikipedia.org/wiki/Object-oriented_programming) concepts such as single inheritance, object and classes, these extensions make programming more familar and convenient. Standard Apple technologies such as [Macintosh Toolbox](https://en.wikipedia.org/wiki/Macintosh_Toolbox) and [QuickDraw](https://en.wikipedia.org/wiki/QuickDraw) can be used with THINK C alongside with [ANSI C](https://en.wikipedia.org/wiki/ANSI_C) language standard library.
