@@ -24,6 +24,7 @@ Classic Mac OS Notes
 15. [x] Work on about dialog: moveable, background, etc.
 16. [x] Drop sudo Sheep Shaver.
 17. [x] Add information about [MoreIsBetter](http://mirror.informatimago.com/next/developer.apple.com/samplecode/MoreIsBetter/index.html) example.
+18. [ ] Check on Intel-based Mac OS.
 
 ## Mac OS 8 Notes
 
@@ -79,9 +80,13 @@ TODO: Use BasiliskII for move files (README)
 1. [x] Port and run X11 version.
 2. [ ] Port and run Toolbox version.
 3. [ ] Add compiler info and version to document.
-4. [ ] Create "old" directory for ported engine.
+4. [ ] Create "old" directory for ported engine, patch file?
 5. [ ] Note about 256 MB RAM on Shoebill command.
 6. [x] Compile and test Macintosh Toolbox for A/UX code sample.
+7. [ ] Add links to ReadMe.md files.
+8. [ ] #ifdef AUX #endif AUX.
+9. [ ] Check code style on K&R function declarations.
+10. [ ] Add some information about DeRez call.
 
 ## Mac OS System 6 Notes
 
