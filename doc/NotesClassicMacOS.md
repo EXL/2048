@@ -77,7 +77,7 @@ TODO: Use BasiliskII for move files (README)
 
 ### Task List
 
-1. [x] Port and run X11 version.
+1. [x] Port and run X11 version, 2048-Xlib.
 2. [ ] Port and run Toolbox version.
 3. [ ] Add compiler info and version to document.
 4. [ ] Create "old" directory for ported engine, patch file?
@@ -86,7 +86,9 @@ TODO: Use BasiliskII for move files (README)
 7. [ ] Add links to ReadMe.md files.
 8. [ ] #ifdef AUX #endif AUX.
 9. [ ] Check code style on K&R function declarations.
-10. [ ] Add some information about DeRez call.
+10. [ ] Add some information about `DeRez` utility.
+11. [ ] Add some information about `fcnvt` utility.
+12. [ ] Test 2048-Xaw build.
 
 ## Mac OS System 6 Notes
 

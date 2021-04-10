@@ -23,10 +23,10 @@ static int *f_space[BOARD_SIZE];
 static int b_reg[LINE_SIZE], f_reg[LINE_SIZE];
 static int K_ESCAPE, K_LEFT, K_RIGHT, K_UP, K_DOWN;
 
-extern unsigned BIG e_foreground(val) { return (val < 16) ? COLOR_TEXT : COLOR_TEXT_LIGHT; }
+extern unsigned BIG e_foreground(value) unsigned value; { return (value < 16) ? COLOR_TEXT : COLOR_TEXT_LIGHT; }
 
-extern unsigned BIG e_background(value2) {
-	switch (value2) {
+extern unsigned BIG e_background(value) unsigned value; {
+	switch (value) {
 		case    2: return    COLOR_TILE_2;
 		case    4: return    COLOR_TILE_4;
 		case    8: return    COLOR_TILE_8;
@@ -202,7 +202,8 @@ extern void e_key(keycode) int keycode; {
 		e_lose = 1;
 }
 
-extern void e_init(esc_keycode, left_keycode, right_keycode, up_keycode, down_keycode) {
+extern void e_init(esc_keycode, left_keycode, right_keycode, up_keycode, down_keycode)
+	int esc_keycode; int left_keycode; int right_keycode; int up_keycode; int down_keycode; {
 #if !defined(mc68000) || defined(NeXT) /* GCC on Sega Mega Drive and Sega Genesis platform. */
 #if !defined(THINK_C) /* Symantec THINK C IDE on Classic Mac OS platform. */
 	srand((unsigned int) time(NULL));
