@@ -5,11 +5,16 @@
 #include <types.h>
 #include <windows.h>
 
-#include <sys/crtctl.h>
-
 #include <stdio.h>
 
-#define RSRC_ID                 128
+#define RSRC_ID              128
+#define TILE_SIZE            64
+#define TILE_MARGIN          16
+#define ROUND_RECT_RAD       20
+#define STRING_SCORE_LENGTH  16
+#define OFFSET_COORD(coord)  (coord * (TILE_MARGIN + TILE_SIZE) + TILE_MARGIN)
+#define WW(rect)             (rect.right - rect.left)
+#define HH(rect)             (rect.bottom - rect.top)
 
 static void InitMac();
 static void CreateWindow();
@@ -25,6 +30,10 @@ static void WinSelect();
 static void WinClose();
 static void OffScreenDraw();
 static void InScreenDraw();
+static void DrawTile();
+static void DrawFinal();
+static void DrawEnd();
+static void GetRgbColor();
 static void Run();
 static void AdjustMenus();
 static void HandleEvents();
@@ -37,10 +46,14 @@ static WindowPtr gWinPtr = nil;
 static CGrafPtr gCGrafPtr = nil;
 static Rect gRectScr;
 static Rect gRectWin;
+
 static Boolean gInBackground = false;
+static Boolean gColorTiles = true;
+static Boolean gRoundRect = true;
 
 main() {
-	e_init(ESC, CLE, CRI, CUP, CDN);
+	e_init(27, 28, 29, 30, 31);
+	//e_init(ESC, CLE, CRI, CUP, CDN);
 	//e_init(kEscapeCharCode, kLeftArrowCharCode, kRightArrowCharCode, kUpArrowCharCode, kDownArrowCharCode);
 	InitMac();
 	CreateWindow();
@@ -168,7 +181,8 @@ static void WinUpdate(aWinPtr) WindowPtr aWinPtr; {
 }
 
 static void WinDamage() {
-	OffScreenDraw();
+	// OffScreenDraw();
+	InvalRect(&gRectWin);
 }
 
 static void WinDrag(aPoint, aWinPtr) Point aPoint; WindowPtr aWinPtr; {
@@ -200,12 +214,105 @@ static void OffScreenDraw() {
 }
 
 static void InScreenDraw() {
-	RGBColor color;
-	color.red = 0xFFFF;
-	color.green = 0x0000;
-	color.blue = 0x0000;
-	RGBBackColor(&color);
+	int y, x;
+	RGBColor lColorBoard;
+	GetRgbColor(COLOR_BOARD, &lColorBoard);
+	RGBBackColor(&lColorBoard);
 	EraseRect(&gRectWin);
+	for (y = 0; y < LINE_SIZE; ++y)
+		for (x = 0; x < LINE_SIZE; ++x)
+			DrawTile(e_board[x + y * LINE_SIZE], x, y);
+	DrawFinal();
+}
+
+static void DrawTile(aVal, aX, aY) int aVal; int aX; int aY; {
+	Rect lRectTile;
+	RGBColor lColorTile, lColorText;
+	int lX = OFFSET_COORD(aX);
+	int lY = OFFSET_COORD(aY);
+	GetRgbColor(e_background(aVal), &lColorTile);
+	GetRgbColor(e_foreground(aVal), &lColorText);
+	RGBForeColor(&lColorTile);
+	SetRect(&lRectTile, lX, lY, lX + TILE_SIZE, lY + TILE_SIZE);
+
+	if (gRoundRect)
+		PaintRoundRect(&lRectTile, ROUND_RECT_RAD, ROUND_RECT_RAD);
+	else
+		PaintRect(&lRectTile);
+
+	if (aVal) {
+		int llX, llY;
+		Str15 lStrValue;
+		short lSize = (aVal < 10) ? 34 : (aVal < 100) ? 28 : (aVal < 1000) ? 26 : 22;
+		TextFace(bold);
+		TextSize(lSize);
+		RGBBackColor(&lColorTile);
+		RGBForeColor(&lColorText);
+		NumToString(aVal, lStrValue);
+		llX = StringWidth(lStrValue);
+		llY = lSize - 4;
+		MoveTo(lX + (TILE_SIZE - llX - 1) / 2, lY + TILE_SIZE - (TILE_SIZE - llY) / 2 - 2);
+		DrawString(lStrValue);
+	}
+}
+
+static void DrawFinal() {
+	char lStrScore[STRING_SCORE_LENGTH];
+	unsigned char *lStrScorePascal;
+	int lX;
+	RGBColor lColorText;
+	GetRgbColor(COLOR_TEXT, &lColorText);
+
+	if (e_win || e_lose)
+		DrawEnd();
+	else
+		RGBForeColor(&lColorText);
+
+	TextFace(normal);
+	TextSize(18);
+	MoveTo(TILE_MARGIN, HH(gRectWin) - TILE_MARGIN);
+	DrawString("\pESC to Restart!");
+	sprintf(lStrScore, "Score: %d", e_score);
+	lStrScorePascal = (unsigned char *) c2pstr(lStrScore);
+	lX = StringWidth(lStrScorePascal);
+	MoveTo(WW(gRectWin) - lX - TILE_MARGIN, HH(gRectWin) - TILE_MARGIN);
+	DrawString(lStrScorePascal);
+}
+
+static void DrawEnd() {
+	int lX;
+	RGBColor lColorOverlay, lColorFinal;
+	PenState lPenState;
+	unsigned char *lStrFinal = (unsigned char *) ((e_win) ? "\pYou Won!" : "\pGame Over!");
+	GetRgbColor(COLOR_OVERLAY, &lColorOverlay);
+	GetRgbColor(COLOR_FINAL, &lColorFinal);
+
+	RGBBackColor(&lColorOverlay);
+	RGBForeColor(&lColorFinal);
+	GetPenState(&lPenState);
+	PenPat(qd.gray);
+	PenMode(patBic);
+	PaintRect(&gRectWin);
+	SetPenState(&lPenState);
+
+	TextSize(34);
+	lX = StringWidth(lStrFinal);
+	MoveTo(WW(gRectWin) / 2 - lX / 2, HH(gRectWin) / 2);
+	DrawString(lStrFinal);
+}
+
+static void GetRgbColor(aRgb, aColor) unsigned BIG aRgb; RGBColor *aColor; {
+	// Not sure about the endianness (byte order). M68K and PPC are big-endian (BE).
+	// Why colors use `short` in range 0x0000-0xFFFF? Is the last byte in 0xFF00 in use?
+	// More information: https://stackoverflow.com/a/12043639
+	RGBColor lColor;
+	unsigned char red8   = (unsigned char) ((aRgb & 0xFF0000) >> 16);
+	unsigned char green8 = (unsigned char) ((aRgb & 0x00FF00) >> 8);
+	unsigned char blue8  = (unsigned char) ((aRgb & 0x0000FF) >> 0);
+	lColor.red   = ((unsigned short) red8 << 8) | red8;
+	lColor.green = ((unsigned short) green8 << 8) | green8;
+	lColor.blue  = ((unsigned short) blue8 << 8) | blue8;
+	*aColor = lColor;
 }
 
 static void Run() {
@@ -271,7 +378,11 @@ static void HandleMenus(aSelect) long aSelect; {
 }
 
 static void HandleKeys(aEvent) EventRecord *aEvent; {
-
+	char lKey = aEvent->message & charCodeMask;
+	if ((aEvent->modifiers & cmdKey) != 0)
+		HandleMenus(MenuKey(lKey));
+	else
+		e_key((int) lKey);
 }
 
 static void DeInit() {
