@@ -7,12 +7,13 @@
 #include <X11/Xaw/Box.h>
 #include <X11/Core.h>
 #include <X11/StringDefs.h>
+#include <X11/keysym.h>
 
 #include <stdio.h>
 #include <stdlib.h>
 
-#define VALUE_MAX_SIZE 5 // "2048\0"
-#define SCORE_MAX_SIZE 16 // "Score: 999999..."
+#define VALUE_MAX_SIZE 5  /* "2048\0" */
+#define SCORE_MAX_SIZE 16 /* "Score: 999999..." */
 
 static int WIDTH  = 340;
 static int HEIGHT = 400;
@@ -60,7 +61,7 @@ static void draw_tile(display, window, value, x, y, win, lose) Display *display;
 		size = (value < 100) ? 24 : (value < 1000) ? 18 : 14;
 		if (font_small && font_middle && font_large)
 			current_font = (value < 100) ? font_large : (value < 1000) ? font_middle : font_small;
-		snprintf(str_value, VALUE_MAX_SIZE, "%d", value);
+		sprintf(str_value, "%d", value);
 		if (current_font)
 			XSetFont(display, gc, current_font->fid);
 		w = (current_font) ? XTextWidth(current_font, str_value, strlen(str_value)) : 10;
@@ -72,10 +73,10 @@ static void draw_tile(display, window, value, x, y, win, lose) Display *display;
 	}
 }
 
-static void draw_final(display, window) Display *display; Window window; int win; int lose; {
-	char strScore[SCORE_MAX_SIZE] = { '\0' };
-	char *strReset = "ESC to Restart!";
+static void draw_final(display, window, win, lose) Display *display; Window window; int win; int lose; {
+	char strScore[39];
 	int w;
+	char *strReset = "ESC to Restart!";
 	int h = 20;
 	if (win || lose) {
 		int w;
@@ -87,18 +88,19 @@ static void draw_final(display, window) Display *display; Window window; int win
 		XDrawString(display, window, gc, WIDTH / 2 - (w - 3) / 2, HEIGHT / 2,
 			center, strlen(center));
 	}
+	memset(strScore, 0, SCORE_MAX_SIZE);
 	XSetForeground(display, gc, (win || lose) ? fade_color(COLOR_TEXT) : COLOR_TEXT);
 	if (font_normal)
 		XSetFont(display, gc, font_normal->fid);
 	XDrawString(display, window, gc, TILE_MARGIN, HEIGHT - h,
 		strReset, strlen(strReset));
-	snprintf(strScore, SCORE_MAX_SIZE, "Score: %d", e_score);
+	sprintf(strScore, "Score: %d", e_score);
 	w = (font_normal) ? XTextWidth(font_normal, strScore, strlen(strScore)) : 50;
 	XDrawString(display, window, gc, WIDTH - (w - 3) - TILE_MARGIN, HEIGHT - h,
 		strScore, strlen(strScore));
 }
 
-static void expose_event(widget, client, event) Widget widget; _X_UNUSED XtPointer client; _X_UNUSED XExposeEvent *event; {
+static void expose_event(widget, client, event) Widget widget; XtPointer client; XExposeEvent *event; {
 	int y, x;
 	Display *display = XtDisplay(widget);
 	Window window = XtWindow(widget);
@@ -110,38 +112,41 @@ static void expose_event(widget, client, event) Widget widget; _X_UNUSED XtPoint
 	draw_final(display, window, e_win, e_lose);
 }
 
-static void key_press_event(widget, client, event) Widget widget; _X_UNUSED XtPointer client; XKeyPressedEvent *event; {
+static void key_press_event(widget, client, event) Widget widget; XtPointer client; XKeyPressedEvent *event; {
 	KeySym keysym = XtGetActionKeysym((XEvent *) event, NULL);
 	if (keysym == XK_q)
 		quit();
 	else {
 		e_key(keysym);
 		event->type = Expose;
-		XtDispatchEventToWidget(widget, (XEvent *) event);
+		//XtDispatchEventToWidget(widget, (XEvent *) event);
 	}
 }
 
-static void client_message_event(widget, client, event) _X_UNUSED Widget widget; _X_UNUSED XtPointer client; XEvent *event; {
+static void client_message_event(widget, client, event) Widget widget; XtPointer client; XEvent *event; {
 	if (event->type == ClientMessage && (Atom)event->xclient.data.l[0] == wm_delete_window)
 		quit();
 }
 
 int main(argc, argv) int argc; char *argv[]; {
-	e_init(XK_Escape, XK_Left, XK_Right, XK_Up, XK_Down);
-
+	int n, m;
+	Display *display;
 	Arg box_args[2];
 	Arg core_args[4];
+
 	Widget top = XtAppInitialize(&context, "2048-Xaw", NULL, 0, &argc, argv, NULL, NULL, 0);
 	Widget box = XtCreateManagedWidget("box", boxWidgetClass, top, NULL, 0);
 	Widget drawing = XtCreateManagedWidget("core", coreWidgetClass, box, NULL, 0);
 
-	int n = 0;
+	e_init(XK_Escape, XK_Left, XK_Right, XK_Up, XK_Down);
+
+	n = 0;
 	XtSetArg(core_args[n], XtNwidth, WIDTH); n++;
 	XtSetArg(core_args[n], XtNheight, HEIGHT); n++;
 	XtSetArg(core_args[n], XtNborderWidth, 0); n++;
 	XtSetArg(core_args[n], XtNbackground, COLOR_BOARD); n++;
 	XtSetValues(drawing, core_args, n);
-	int m = 0;
+	m = 0;
 	XtSetArg(box_args[m], XtNhSpace, 0); m++;
 	XtSetArg(box_args[m], XtNvSpace, 0); m++;
 	XtSetValues(box, box_args, m);
@@ -150,7 +155,7 @@ int main(argc, argv) int argc; char *argv[]; {
 	XtAddEventHandler(drawing, ExposureMask, FALSE, (void *) expose_event, NULL);
 	XtAddEventHandler(drawing, KeyPressMask, FALSE, (void *) key_press_event, NULL);
 
-	Display *display = XtDisplay(drawing);
+	display = XtDisplay(drawing);
 
 	font_small = XLoadQueryFont(display, "-adobe-helvetica-bold-r-normal--20-140-100-100-p-105-iso8859-1");
 	font_middle = XLoadQueryFont(display, "-adobe-helvetica-bold-r-normal--25-180-100-100-p-138-iso8859-1");

@@ -19,7 +19,7 @@ XLIB_LIBS        = -lX11
 XLIB_TARGET      = 2048-Xlib
 
 XAW_CFLAGS       = -I/usr/include -I/usr/include/X11 -B /usr/lib/big/ -O
-XAW_LIBS         = -lX11 -lXaw
+XAW_LIBS         = -lXaw -lXmu -lXt -lX11
 XAW_TARGET       = 2048-Xaw
 
 all: $(AUX_TARGET) $(XLIB_TARGET) $(XAW_TARGET)

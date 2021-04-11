@@ -89,6 +89,9 @@ TODO: Use BasiliskII for move files (README)
 10. [ ] Add some information about `DeRez` utility.
 11. [ ] Add some information about `fcnvt` utility.
 12. [ ] Test 2048-Xaw build.
+13. [ ] Add short offscreen drawing function.
+14. [x] Implement general drawing.
+15. [ ] Disable offscreen drawing by default (buggy).
 
 ## Mac OS System 6 Notes
 
