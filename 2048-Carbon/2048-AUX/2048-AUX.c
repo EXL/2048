@@ -15,7 +15,9 @@ static void InitMac();
 static void CreateWindow();
 static void SetFont();
 static Boolean CreateOffScreen();
+static void DestroyOffscreen();
 static void WinActivate();
+static void WinFocus();
 static void WinUpdate();
 static void WinDamage();
 static void WinDrag();
@@ -29,13 +31,13 @@ static void HandleEvents();
 static void HandleMouse();
 static void HandleMenus();
 static void HandleKeys();
-static void DestroyOffscreen();
 static void DeInit();
 
 static WindowPtr gWinPtr = nil;
 static CGrafPtr gCGrafPtr = nil;
 static Rect gRectScr;
 static Rect gRectWin;
+static Boolean gInBackground = false;
 
 main() {
 	e_init(ESC, CLE, CRI, CUP, CDN);
@@ -74,6 +76,8 @@ static void CreateWindow() {
 	WinActivate(gWinPtr);
 }
 
+// Offscreen initialization and deinitialization functions were copied from Ravel FTN 2.0:
+// https://github.com/mcyril/ravel-ftn/blob/master/Ravel%202.0%20%C6%92/RavelQUILL%202.0%20%C6%92/Source%20%C6%92/DialogLib.c
 static Boolean CreateOffScreen(aCGrafPtr, aRectWin) CGrafPtr *aCGrafPtr; Rect *aRectWin; {
 	GrafPtr lSavePort;
 	CGrafPtr lNewPort;
@@ -130,6 +134,13 @@ static Boolean CreateOffScreen(aCGrafPtr, aRectWin) CGrafPtr *aCGrafPtr; Rect *a
 	return true;
 }
 
+static void DestroyOffscreen(aCGrafPtr) CGrafPtr aCGrafPtr; {
+	DisposPtr((*aCGrafPtr->portPixMap)->baseAddr);
+	DisposHandle((Handle) (*aCGrafPtr->portPixMap)->pmTable);
+	CloseCPort(aCGrafPtr);
+	DisposPtr((Ptr) aCGrafPtr);
+}
+
 static void SetFont() {
 	short lFontID;
 	GetFNum("\pChicago", &lFontID);
@@ -140,35 +151,38 @@ static void WinActivate(aWinPtr) WindowPtr aWinPtr; {
 	SetPort(aWinPtr);
 }
 
-static void WinUpdate(aWinPtr) WindowPtr aWinPtr; {
-	BeginUpdate(gWinPtr);
+static void WinFocus(aMessage) long aMessage; {
+	if (aMessage >> 24)
+		gInBackground = !(aMessage & 0x01);
+}
 
-	if (gWinPtr == FrontWindow())
+static void WinUpdate(aWinPtr) WindowPtr aWinPtr; {
+	BeginUpdate(aWinPtr);
+
+	if (!gInBackground)
 		OffScreenDraw();
 	else
 		InScreenDraw();
 
-	EndUpdate(gWinPtr);
+	EndUpdate(aWinPtr);
 }
 
 static void WinDamage() {
-	// TODO: Off
-	// InvalRect(&gRectWin);
 	OffScreenDraw();
 }
 
 static void WinDrag(aPoint, aWinPtr) Point aPoint; WindowPtr aWinPtr; {
 	if (gWinPtr == aWinPtr)
-		DragWindow(gWinPtr, aPoint, &gRectScr);
+		DragWindow(aWinPtr, aPoint, &gRectScr);
 }
 
 static void WinSelect(aWinPtr) WindowPtr aWinPtr; {
-	if ((gWinPtr == aWinPtr) && ! (gWinPtr != FrontWindow()))
-		SelectWindow(gWinPtr);
+	if ((gWinPtr == aWinPtr) && gInBackground)
+		SelectWindow(aWinPtr);
 }
 
 static void WinClose(aPoint, aWinPtr) Point aPoint; WindowPtr aWinPtr; {
-	if ((gWinPtr == aWinPtr) && TrackGoAway(gWinPtr, aPoint))
+	if ((gWinPtr == aWinPtr) && TrackGoAway(aWinPtr, aPoint))
 		ExitToShell();
 }
 
@@ -202,6 +216,7 @@ static void Run() {
 }
 
 static void AdjustMenus() {
+
 }
 
 static void HandleEvents() {
@@ -221,6 +236,9 @@ static void HandleEvents() {
 				break;
 			case activateEvt:
 				WinActivate(gWinPtr);
+				break;
+			case app4Evt:
+				WinFocus(lEvent.message);
 				break;
 		}
 	}
@@ -254,13 +272,6 @@ static void HandleMenus(aSelect) long aSelect; {
 
 static void HandleKeys(aEvent) EventRecord *aEvent; {
 
-}
-
-static void DestroyOffscreen(aCGrafPtr) CGrafPtr aCGrafPtr; {
-	DisposPtr((*aCGrafPtr->portPixMap)->baseAddr);
-	DisposHandle((Handle) (*aCGrafPtr->portPixMap)->pmTable);
-	CloseCPort(aCGrafPtr);
-	DisposPtr((Ptr) aCGrafPtr);
 }
 
 static void DeInit() {
