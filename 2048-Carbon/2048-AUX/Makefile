@@ -14,18 +14,23 @@ AUX_LDFLAGS_POST = /usr/lib/low.o -lmac_s -lat -lld -lmr -lc_s /lib/crtn.o /usr/
 AUX_RESOURCE     = %2048-AUX
 AUX_TARGET       = 2048-AUX
 
-XLIB_CFLAGS       = -I/usr/include -I/usr/include/X11 -B /usr/lib/big/ -O
-XLIB_LIBS         = -lX11
-XLIB_TARGET       = 2048-Xlib
+XLIB_CFLAGS      = -I/usr/include -I/usr/include/X11 -B /usr/lib/big/ -O
+XLIB_LIBS        = -lX11
+XLIB_TARGET      = 2048-Xlib
 
-all: $(AUX_TARGET) $(XLIB_TARGET)
+XAW_CFLAGS       = -I/usr/include -I/usr/include/X11 -B /usr/lib/big/ -O
+XAW_LIBS         = -lX11 -lXaw
+XAW_TARGET       = 2048-Xaw
+
+all: $(AUX_TARGET) $(XLIB_TARGET) $(XAW_TARGET)
 
 release: all purge
 	$(STRIP) $(AUX_TARGET)
 	$(STRIP) $(XLIB_TARGET)
+	$(STRIP) $(XAW_TARGET)
 
 clean: purge
-	rm -f $(AUX_TARGET) $(XLIB_TARGET) $(AUX_RESOURCE)
+	rm -f $(AUX_TARGET) $(XLIB_TARGET) $(XAW_TARGET) $(AUX_RESOURCE)
 
 purge:
 	rm -f core *.out *.o
@@ -40,6 +45,9 @@ $(AUX_RESOURCE): 2048-AUX.r
 $(XLIB_TARGET): 2048.o 2048-Xlib.o
 	$(CC) 2048.o 2048-Xlib.o -o $(XLIB_TARGET) $(XLIB_LIBS)
 
+$(XAW_TARGET): 2048.o 2048-Xaw.o
+	$(CC) 2048.o 2048-Xaw.o -o $(XAW_TARGET) $(XAW_LIBS)
+
 2048.o: 2048.c 2048.h Makefile
 	$(CC) $(CFLAGS) -c 2048.c -o 2048.o
 
@@ -48,3 +56,6 @@ $(XLIB_TARGET): 2048.o 2048-Xlib.o
 
 2048-Xlib.o: 2048-Xlib.c 2048.h Makefile
 	$(CC) $(XLIB_CFLAGS) -c 2048-Xlib.c -o 2048-Xlib.o
+
+2048-Xaw.o: 2048-Xaw.c 2048.h Makefile
+	$(CC) $(XAW_CFLAGS) -c 2048-Xaw.c -o 2048-Xaw.o

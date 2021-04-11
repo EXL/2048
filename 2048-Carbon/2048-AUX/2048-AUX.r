@@ -22,6 +22,6 @@ resource 'SIZE' (-1) {
 	reserved,
 	reserved,
 	reserved,
-	32 * 1024,                   /* Preferred Memory Size. */
-	32 * 1024                    /* Minimum Memory Size. */
+	1024 * 1024,                   /* Preferred Memory Size. */ // TODO: Check this on 2048-MCW or 2048-Carbon.
+	1024 * 1024                    /* Minimum Memory Size. */
 };
