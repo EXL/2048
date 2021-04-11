@@ -117,7 +117,7 @@ static Boolean CreateOffScreen(aCGrafPtr, aRectWin) CGrafPtr *aCGrafPtr; Rect *a
 	(*lPixMap)->cmpSize = lDepth;
 	(*lPixMap)->pmTable = lCTable;
 
-	lOffBaseAddr = NewPtr((unsigned long) lBytesPerRow * (aRectWin->bottom - aRectWin->top + 1));
+	lOffBaseAddr = (Ptr) NewPtr((unsigned long) lBytesPerRow * (aRectWin->bottom - aRectWin->top + 1)); // TODO: replace with macro?
 	(*lPixMap)->baseAddr = lOffBaseAddr;
 	if (MemError() != noErr) {
 		DisposHandle((Handle) (*lPixMap)->pmTable);
