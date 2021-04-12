@@ -39,7 +39,7 @@ int main() {
 	window = XCreateSimpleWindow(display, RootWindow(display, screen), 50, 50, WIDTH, HEIGHT, 1,
 		BlackPixel(display, screen), WhitePixel(display, screen));
 	XStoreName(display, window, "2048-Xlib");
-	set_window_settings(display, window, "2048-Xlib", WIDTH, HEIGHT);
+	set_window_settings(display, window, "2048-Xlib");
 	XSelectInput(display, window, ExposureMask | KeyPressMask);
 	XMapWindow(display, window);
 
@@ -59,12 +59,13 @@ int main() {
 		if (event.type == KeyPress) {
 			KeySym key = XLookupKeysym(&event.xkey, 0);
 			switch (key) {
-				case XK_q: goto end;        break;
-				case XK_w: e_key(XK_Up);    break;
-				case XK_s: e_key(XK_Down);  break;
-				case XK_a: e_key(XK_Left);  break;
-				case XK_d: e_key(XK_Right); break;
-				default:   e_key(key);      break;
+				case XK_q: goto end;         break;
+				case XK_w: e_key(XK_Up);     break;
+				case XK_s: e_key(XK_Down);   break;
+				case XK_a: e_key(XK_Left);   break;
+				case XK_d: e_key(XK_Right);  break;
+				case XK_r: e_key(XK_Escape); break;
+				default  : e_key(key);       break;
 			}
 			event.type = Expose;
 			XSendEvent(display, window, True, ExposureMask, &event);
@@ -81,34 +82,20 @@ end:
 	return 0;
 }
 
-static void set_window_settings(display, window, name, width, height)
-	Display *display;
-	Window window;
-	char *name;
-	int width;
-	int height;
-{
+static void set_window_settings(display, window, name) Display *display; Window window; char *name; {
 	XClassHint classHint;
 	XSizeHints sizeHints;
 	classHint.res_name = name;
 	/* classHint.res_class = name; */
 	XSetClassHint(display, window, &classHint);
 	sizeHints.flags = PMinSize | PMaxSize;
-	sizeHints.min_width = sizeHints.max_width = width;
-	sizeHints.min_height = sizeHints.max_height = height;
+	sizeHints.min_width = sizeHints.max_width = WIDTH;
+	sizeHints.min_height = sizeHints.max_height = HEIGHT;
 	XSetWMNormalHints(display, window, &sizeHints);
 }
 
-static void draw_tile(display, screen, window, value, x, y, win, lose)
-	Display *display;
-	int screen;
-	Window window;
-	int value;
-	int x;
-	int y;
-	int win;
-	int lose;
-{
+static void draw_tile(display, screen, window, x, y) Display *display; int screen; Window window; int x; int y; {
+	int value = e_board[x + y * LINE_SIZE];
 	int xOffset = OFFSET_COORD(x), yOffset = OFFSET_COORD(y);
 	int w = TILE_SIZE / 2, qw = w / 4, rad = qw * 2, rw = rad * 3, rect = w - rad;
 	XSetForeground(display, DefaultGC(display, screen),
@@ -121,17 +108,18 @@ static void draw_tile(display, screen, window, value, x, y, win, lose)
 	XFillRectangle(display, window, DefaultGC(display, screen), xOffset, yOffset + qw, TILE_SIZE + 1, rw);
 	XFillRectangle(display, window, DefaultGC(display, screen), xOffset + qw, yOffset, rw, TILE_SIZE + 1);
 	if (value) {
-		int w, h;
+		int w, h, size;
 		char str_value[VALUE_MAX_SIZE];
-		int size = (value < 100) ? 24 : (value < 1000) ? 18 : 14;
 		XFontStruct *current_font = NULL;
+		size = (value < 100) ? 24 : (value < 1000) ? 18 : 14;
 		memset(str_value, 0, VALUE_MAX_SIZE);
 		if (font_small && font_middle && font_large)
 			current_font = (value < 100) ? font_large : (value < 1000) ? font_middle : font_small;
 		sprintf(str_value, "%d", value);
 		if (current_font)
 			XSetFont(display, DefaultGC(display, screen), current_font->fid);
-		w = (current_font) ? XTextWidth(current_font, str_value, strlen(str_value)) : 10; h = size + 4;
+		w = (current_font) ? XTextWidth(current_font, str_value, strlen(str_value)) : 10;
+		h = size + 4;
 		XSetForeground(display, DefaultGC(display, screen),
 			(e_win || e_lose) ? BlackPixel(display, screen) : WhitePixel(display, screen));
 		XDrawString(display, window, DefaultGC(display, screen),
@@ -140,19 +128,13 @@ static void draw_tile(display, screen, window, value, x, y, win, lose)
 	}
 }
 
-static void draw_final(display, screen, window, win, lose)
-	Display *display;
-	int screen;
-	Window window;
-	int win;
-	int lose;
-{
-	int w, h;
-	char *center = (win) ? "You won!" : "Game Over!";
-	char *strReset = "ESC to Restart!";
+static void draw_final(display, screen, window) Display *display; int screen; Window window; {
 	char strScore[SCORE_MAX_SIZE];
+	int w, h = 20;
+	char *strReset = "ESC to Restart!";
 	memset(strScore, 0, SCORE_MAX_SIZE);
-	if (win || lose) {
+	if (e_win || e_lose) {
+		char *center = (e_win) ? "You won!" : "Game Over!";
 		XSetForeground(display, DefaultGC(display, screen), WhitePixel(display, screen));
 		if (font_large)
 			XSetFont(display, DefaultGC(display, screen), font_large->fid);
@@ -164,7 +146,6 @@ static void draw_final(display, screen, window, win, lose)
 		(e_win || e_lose) ? WhitePixel(display, screen) : BlackPixel(display, screen));
 	if (font_normal)
 		XSetFont(display, DefaultGC(display, screen), font_normal->fid);
-	h = 20;
 	XDrawString(display, window, DefaultGC(display, screen), TILE_MARGIN, HEIGHT - h,
 		strReset, strlen(strReset));
 	sprintf(strScore, "Score: %d", e_score);
@@ -173,17 +154,13 @@ static void draw_final(display, screen, window, win, lose)
 		strScore, strlen(strScore));
 }
 
-static void draw(display, screen, window)
-	Display *display;
-	int screen;
-	Window window;
-{
+static void draw(display, screen, window) Display *display; int screen; Window window; {
 	int y = 0, x;
 	XSetForeground(display, DefaultGC(display, screen),
 		(e_win || e_lose) ? BlackPixel(display, screen) : WhitePixel(display, screen));
 	XFillRectangle(display, window, DefaultGC(display, screen), 0, 0, WIDTH, HEIGHT);
 	for (; y < LINE_SIZE; ++y)
 		for (x = 0; x < LINE_SIZE; ++x)
-			draw_tile(display, screen, window, e_board[x + y * LINE_SIZE], x, y, e_win, e_lose);
-	draw_final(display, screen, window, e_win, e_lose);
+			draw_tile(display, screen, window, x, y);
+	draw_final(display, screen, window);
 }
