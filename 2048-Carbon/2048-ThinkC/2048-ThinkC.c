@@ -436,7 +436,7 @@ void Application::HandleKeys(EventRecord *aEvent) {
 			case 'a': e_key(kLeftCursor);        break;
 			case 's': e_key(kDownCursor);        break;
 			case 'd': e_key(kRightCursor);       break;
-			default : e_key((unsigned int) key); break;
+			default : e_key((int) key);          break;
 		}
 	pWindow->Damage();
 }

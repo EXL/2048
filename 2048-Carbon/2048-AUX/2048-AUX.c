@@ -7,6 +7,12 @@
 
 #include <stdio.h>
 
+#define K_ESCAPE             0x1B
+#define K_LEFT               0x1C
+#define K_RIGHT              0x1D
+#define K_UP                 0x1E
+#define K_DOWN               0x1F
+
 #define RSRC_ID              128
 #define TILE_SIZE            64
 #define TILE_MARGIN          16
@@ -50,11 +56,11 @@ static Rect gRectWin;
 static Boolean gInBackground = false;
 static Boolean gColorTiles = true;
 static Boolean gRoundRect = true;
+static Boolean gOffscreen = false;
+static Boolean gRunning = true;
 
 main() {
-	e_init(27, 28, 29, 30, 31);
-	//e_init(ESC, CLE, CRI, CUP, CDN);
-	//e_init(kEscapeCharCode, kLeftArrowCharCode, kRightArrowCharCode, kUpArrowCharCode, kDownArrowCharCode);
+	e_init(K_ESCAPE, K_LEFT, K_RIGHT, K_UP, K_DOWN);
 	InitMac();
 	CreateWindow();
 	SetFont();
@@ -89,64 +95,61 @@ static void CreateWindow() {
 	WinActivate(gWinPtr);
 }
 
-// Offscreen initialization and deinitialization functions were copied from Ravel FTN 2.0:
-// https://github.com/mcyril/ravel-ftn/blob/master/Ravel%202.0%20%C6%92/RavelQUILL%202.0%20%C6%92/Source%20%C6%92/DialogLib.c
+// Offscreen initialization function was copied from GlyphaIVOld project:
+// https://github.com/fruitsamples/GlyphaIVOld/blob/master/G4Utilities.c
 static Boolean CreateOffScreen(aCGrafPtr, aRectWin) CGrafPtr *aCGrafPtr; Rect *aRectWin; {
-	GrafPtr lSavePort;
-	CGrafPtr lNewPort;
-	PixMapHandle lPixMap;
-	Ptr lOffBaseAddr;
-	unsigned short lBytesPerRow, lTemp;
-	GDHandle lMainDevice;
-	CTabHandle lCTable;
+	CTabHandle lColorTable;
+	GDHandle lOldGDevice, lGDevice;
+	Ptr lBits;
+	long lSizeOfOff, lOffRowBytes;
+	OSErr lErr;
 	short lDepth;
+	CGrafPtr lNewCGrafPtr = 0L;
+	Rect lRectWin;
 
-	GetPort(&lSavePort);
-	lNewPort = (CGrafPtr) NewPtr(sizeof(CGrafPort));
-	if (MemError() != noErr)
-		return false;
-	OpenCPort(lNewPort);
-	lNewPort->portRect = *aRectWin;
-	lPixMap = lNewPort->portPixMap;
-	lMainDevice = GetMainDevice();
-	lDepth = (**(**lMainDevice).gdPMap).pixelSize;
-	lCTable = (**(**lMainDevice).gdPMap).pmTable;
-	HandToHand((Handle *) &lCTable);
-	lTemp = ((unsigned short) lDepth) * (aRectWin->right - aRectWin->left); // TODO: replace with macro?
-	lTemp = (lTemp + 31) / 32;
-	lBytesPerRow = lTemp * 4;
-	(*lPixMap)->rowBytes = lBytesPerRow | 0x8000;
-	(*lPixMap)->bounds = *aRectWin;
-	(*lPixMap)->pmVersion = 0;
-	(*lPixMap)->packType = 0;
-	(*lPixMap)->packSize = 0;
-	(*lPixMap)->hRes = 0x00480000;
-	(*lPixMap)->vRes = 0x00480000;
-	(*lPixMap)->pixelSize = lDepth;
-	(*lPixMap)->planeBytes = 0;
-	(*lPixMap)->pmReserved = 0;
-	(*lPixMap)->pixelType = 0;
-	(*lPixMap)->cmpCount = 1;
-	(*lPixMap)->cmpSize = lDepth;
-	(*lPixMap)->pmTable = lCTable;
-
-	lOffBaseAddr = (Ptr) NewPtr((unsigned long) lBytesPerRow * (aRectWin->bottom - aRectWin->top + 1)); // TODO: replace with macro?
-	(*lPixMap)->baseAddr = lOffBaseAddr;
-	if (MemError() != noErr) {
-		DisposHandle((Handle) (*lPixMap)->pmTable);
-		SetPort(lSavePort);
-		CloseCPort(lNewPort);
-		DisposPtr((Ptr) lNewPort);
-		return false;
+	lRectWin = *aRectWin;
+	lOldGDevice = GetGDevice();
+	lGDevice = (GDHandle) GetMainDevice();
+	SetGDevice(lGDevice);
+	lNewCGrafPtr = (CGrafPtr) NewPtr(sizeof(CGrafPort));
+	if (lNewCGrafPtr != 0L) {
+		OpenCPort(lNewCGrafPtr);
+		lDepth = (**(*lNewCGrafPtr).portPixMap).pixelSize;
+		lOffRowBytes = ((((long) lDepth * (long) WW(lRectWin)) + 15L) >> 4L) << 1L;
+		lSizeOfOff = (long) HH(lRectWin) * lOffRowBytes;
+		OffsetRect(&lRectWin, -(lRectWin.left), -(lRectWin.top));
+		lBits = (Ptr) NewPtr(lSizeOfOff);
+		if (lBits != 0L) {
+			(**(*lNewCGrafPtr).portPixMap).baseAddr = lBits;
+			(**(*lNewCGrafPtr).portPixMap).rowBytes = (short) lOffRowBytes + 0x8000;
+			(**(*lNewCGrafPtr).portPixMap).bounds = lRectWin;
+			lColorTable = (**(**lGDevice).gdPMap).pmTable;
+			lErr = HandToHand((Handle *) &lColorTable);
+			(**(*lNewCGrafPtr).portPixMap).pmTable = lColorTable;
+			ClipRect(&lRectWin);
+			RectRgn(lNewCGrafPtr->visRgn, &lRectWin);
+			ForeColor(blackColor);
+			BackColor(whiteColor);
+			EraseRect(lRectWin);
+		} else {
+			CloseCPort(lNewCGrafPtr);
+			DisposPtr(lNewCGrafPtr);
+			lNewCGrafPtr = 0L;
+			return false;
+		}
 	}
-	RectRgn(lNewPort->clipRgn, aRectWin);
-	RectRgn(lNewPort->visRgn, aRectWin);
-	EraseRect(aRectWin);
-	*aCGrafPtr = lNewPort;
-	SetPort(lSavePort);
+	else
+		return false;
+
+	*aCGrafPtr = lNewCGrafPtr;
+	SetGDevice(lOldGDevice);
+	if (!gOffscreen)
+		WinActivate(gWinPtr);
 	return true;
 }
 
+// Offscreen deinitialization function was copied from Ravel FTN 2.0:
+// https://github.com/mcyril/ravel-ftn/blob/master/Ravel%202.0%20%C6%92/RavelQUILL%202.0%20%C6%92/Source%20%C6%92/DialogLib.c
 static void DestroyOffscreen(aCGrafPtr) CGrafPtr aCGrafPtr; {
 	DisposPtr((*aCGrafPtr->portPixMap)->baseAddr);
 	DisposHandle((Handle) (*aCGrafPtr->portPixMap)->pmTable);
@@ -181,8 +184,10 @@ static void WinUpdate(aWinPtr) WindowPtr aWinPtr; {
 }
 
 static void WinDamage() {
-	// OffScreenDraw();
-	InvalRect(&gRectWin);
+	if (gOffscreen)
+		OffScreenDraw();
+	else
+		InvalRect(&gRectWin);
 }
 
 static void WinDrag(aPoint, aWinPtr) Point aPoint; WindowPtr aWinPtr; {
@@ -197,20 +202,23 @@ static void WinSelect(aWinPtr) WindowPtr aWinPtr; {
 
 static void WinClose(aPoint, aWinPtr) Point aPoint; WindowPtr aWinPtr; {
 	if ((gWinPtr == aWinPtr) && TrackGoAway(aWinPtr, aPoint))
-		ExitToShell();
+		gRunning = false;
 }
 
 static void OffScreenDraw() {
-	SetPort((GrafPtr) gCGrafPtr);
+	if (gOffscreen) {
+		SetPort((GrafPtr) gCGrafPtr);
 
-	InScreenDraw();
-	CopyBits(
-		&((GrafPtr) gCGrafPtr)->portBits, &gWinPtr->portBits,
-		&gRectWin, &gRectWin,
-		srcCopy, nil
-	);
+		InScreenDraw();
+		CopyBits(
+			&((GrafPtr) gCGrafPtr)->portBits, &gWinPtr->portBits,
+			&gRectWin, &gRectWin,
+			srcCopy, nil
+		);
 
-	SetPort(gWinPtr);
+		SetPort(gWinPtr);
+	} else
+		InScreenDraw();
 }
 
 static void InScreenDraw() {
@@ -246,7 +254,6 @@ static void DrawTile(aVal, aX, aY) int aVal; int aX; int aY; {
 		short lSize = (aVal < 10) ? 34 : (aVal < 100) ? 28 : (aVal < 1000) ? 26 : 22;
 		TextFace(bold);
 		TextSize(lSize);
-		RGBBackColor(&lColorTile);
 		RGBForeColor(&lColorText);
 		NumToString(aVal, lStrValue);
 		llX = StringWidth(lStrValue);
@@ -316,7 +323,7 @@ static void GetRgbColor(aRgb, aColor) unsigned BIG aRgb; RGBColor *aColor; {
 }
 
 static void Run() {
-	for (;;) {
+	for (;gRunning;) {
 		AdjustMenus();
 		HandleEvents();
 	}
@@ -382,7 +389,15 @@ static void HandleKeys(aEvent) EventRecord *aEvent; {
 	if ((aEvent->modifiers & cmdKey) != 0)
 		HandleMenus(MenuKey(lKey));
 	else
-		e_key((int) lKey);
+		switch (lKey) {
+			case 'r': e_key(K_ESCAPE);          break;
+			case 'w': e_key(K_UP);              break;
+			case 'a': e_key(K_LEFT);            break;
+			case 's': e_key(K_DOWN);            break;
+			case 'd': e_key(K_RIGHT);           break;
+			case 'f': gOffscreen = !gOffscreen; break;
+			default : e_key((int) lKey);        break;
+		}
 }
 
 static void DeInit() {

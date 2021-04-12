@@ -351,7 +351,7 @@ private:
 				case 'a': e_key(kLeftArrowCharCode);  break;
 				case 's': e_key(kDownArrowCharCode);  break;
 				case 'd': e_key(kRightArrowCharCode); break;
-				default : e_key((unsigned int) lKey); break;
+				default : e_key((int) lKey);          break;
 			}
 	}
 	void HandleMenus(long aSelect) {
