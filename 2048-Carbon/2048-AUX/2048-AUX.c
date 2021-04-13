@@ -2,6 +2,7 @@
 
 #include <events.h>
 #include <quickdraw.h>
+#include <menus.h>
 #include <types.h>
 #include <windows.h>
 
@@ -14,6 +15,20 @@
 #define K_DOWN               0x1F
 
 #define RSRC_ID              128
+#define MENU_APPLE           128
+#define MENU_GAME            129
+#define MENU_TILES           130
+#define MENU_COLOR           131
+#define MENU_ITEM_ABOUT      1
+#define MENU_ITEM_RESET      1
+#define MENU_ITEM_TILES      2
+#define MENU_ITEM_ROUND      1
+#define MENU_ITEM_RECT       2
+#define MENU_ITEM_COLOR      3
+#define MENU_ITEM_BW         1
+#define MENU_ITEM_COLORS     2
+#define MENU_ITEM_OFFSCREEN  4
+#define MENU_ITEM_QUIT       6
 #define TILE_SIZE            64
 #define TILE_MARGIN          16
 #define ROUND_RECT_RAD       20
@@ -23,6 +38,7 @@
 #define HH(rect)             (rect.bottom - rect.top)
 
 static void InitMac();
+static void SetUpMenus();
 static void CreateWindow();
 static void SetFont();
 static Boolean CreateOffScreen();
@@ -45,6 +61,7 @@ static void AdjustMenus();
 static void HandleEvents();
 static void HandleMouse();
 static void HandleMenus();
+static void HandleAppleMenu();
 static void HandleKeys();
 static void DeInit();
 
@@ -59,9 +76,15 @@ static Boolean gRoundRect = true;
 static Boolean gOffscreen = false;
 static Boolean gRunning = true;
 
+static MenuHandle gMenuApple;
+static MenuHandle gMenuGame;
+static MenuHandle gMenuTiles;
+static MenuHandle gMenuColor;
+
 main() {
 	e_init(K_ESCAPE, K_LEFT, K_RIGHT, K_UP, K_DOWN);
 	InitMac();
+	SetUpMenus();
 	CreateWindow();
 	SetFont();
 	if (!CreateOffScreen(&gCGrafPtr, &gRectWin)) {
@@ -86,6 +109,14 @@ static void InitMac() {
 
 	FlushEvents(everyEvent, 0);
 	SetEventMask(everyEvent);
+}
+
+static void SetUpMenus() {
+	InsertMenu(gMenuApple = GetMenu(MENU_APPLE), 0);
+	AddResMenu(gMenuApple, 'DRVR');
+	InsertMenu(gMenuGame = GetMenu(MENU_GAME), 0);
+	InsertMenu(gMenuTiles = GetMenu(MENU_TILES), hierMenu);
+	InsertMenu(gMenuColor = GetMenu(MENU_COLOR), hierMenu);
 }
 
 static void CreateWindow() {
@@ -330,7 +361,12 @@ static void Run() {
 }
 
 static void AdjustMenus() {
-
+	HiliteMenu(0);
+	CheckItem(gMenuTiles, MENU_ITEM_ROUND, gRoundRect);
+	CheckItem(gMenuTiles, MENU_ITEM_RECT, !gRoundRect);
+	CheckItem(gMenuColor, MENU_ITEM_BW, !gColorTiles);
+	CheckItem(gMenuColor, MENU_ITEM_COLORS, gColorTiles);
+	CheckItem(gMenuGame, MENU_ITEM_OFFSCREEN, gOffscreen);
 }
 
 static void HandleEvents() {
@@ -381,7 +417,56 @@ static void HandleMouse(aEvent) EventRecord *aEvent; {
 }
 
 static void HandleMenus(aSelect) long aSelect; {
+	short lMenu = HiWord(aSelect);
+	short lItem = LoWord(aSelect);
+	switch (lMenu) {
+		case MENU_APPLE:
+			if (lItem == MENU_ITEM_ABOUT)
+				;
+			else
+				HandleAppleMenu(lItem);
+			break;
+		case MENU_GAME:
+			switch (lItem) {
+				case MENU_ITEM_RESET:
+					e_key(K_ESCAPE);
+					break;
+				case MENU_ITEM_OFFSCREEN:
+					gOffscreen = !gOffscreen;
+					break;
+				case MENU_ITEM_QUIT:
+					gRunning = false;
+					break;
+			}
+			break;
+		case MENU_TILES:
+			switch (lItem) {
+				case MENU_ITEM_ROUND:
+					gRoundRect = true;
+					break;
+				case MENU_ITEM_RECT:
+					gRoundRect = false;
+					break;
+			}
+			break;
+		case MENU_COLOR:
+			switch (lItem) {
+				case MENU_ITEM_BW:
+					gColorTiles = false;
+					break;
+				case MENU_ITEM_COLORS:
+					gColorTiles = true;
+					break;
+			}
+			break;
+	}
+	WinDamage(gWinPtr);
+}
 
+static void HandleAppleMenu(aItem) long aItem; {
+	Str255 lMenuItemName;
+	GetItem(gMenuApple, aItem, lMenuItemName);
+	OpenDeskAcc(lMenuItemName);
 }
 
 static void HandleKeys(aEvent) EventRecord *aEvent; {

@@ -30,8 +30,8 @@
 #define TILE_SIZE            48
 #define TILE_MARGIN          12
 #define ROUND_RECT_RAD       20
-#define OFFSET_SHADOW        2
 #define STRING_SCORE_LENGTH  16
+#define OFFSET_SHADOW        2
 #define OFFSET_COORD(coord)  (coord * (TILE_MARGIN + TILE_SIZE) + TILE_MARGIN)
 
 class Window : indirect {

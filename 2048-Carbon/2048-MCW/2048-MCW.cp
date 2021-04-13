@@ -43,11 +43,11 @@
 #define MENU_ITEM_QUIT       6
 #define MENU_ITEM_ROUND      1
 #define MENU_ITEM_RECT       2
+#define PATTERN_BACKGROUND   1
 #define TILE_SIZE            64
 #define TILE_MARGIN          16
 #define ROUND_RECT_RAD       20
 #define STRING_SCORE_LENGTH  16
-#define PATTERN_BACKGROUND   1
 #define OFFSET_COORD(coord)  (coord * (TILE_MARGIN + TILE_SIZE) + TILE_MARGIN)
 #define WW(rect)             (rect.right - rect.left)
 #define HH(rect)             (rect.bottom - rect.top)
