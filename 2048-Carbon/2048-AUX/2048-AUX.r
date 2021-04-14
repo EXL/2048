@@ -1,3 +1,9 @@
+/*
+ * Decompile resource file commands for Bourne Shell:
+ *  $ /mac/bin/derez 2048-AUX.rsrc > Out.r
+ *  $ /mac/bin/derez -i /mac/lib/rincludes 2048-AUX.rsrc /mac/lib/rincludes/types.r
+ */
+
 #include "types.r"
 
 resource 'WIND' (128, "2048-AUX Window") {
@@ -6,19 +12,19 @@ resource 'WIND' (128, "2048-AUX Window") {
 };
 
 resource 'MENU' (128, "Apple Menu", preload) {
-	128, textMenuProc, allEnabled, enabled, apple,
+	128, textMenuProc, 0x7FFFFFFD, enabled, apple,          /* '0b1111111111111111111111111111101' */
 	{
-		"About 2048-AUX\311", noIcon, noKey, noMark, plain;
+		"About 2048-AUX\311", noIcon, noKey, noMark, plain; /* ... */
 		"-", noIcon, noKey, noMark, plain;
 	}
 };
 
 resource 'MENU' (129, "Game Menu", preload) {
-	129, textMenuProc, allEnabled, enabled, "Game",
+	129, textMenuProc, 0x7FFFFFF7, enabled, "Game",         /* '0b1111111111111111111111111110111' */
 	{
 		"Reset", noIcon, "R", noMark, plain;
-		"Tiles", noIcon, hierarchicalMenu, "\0x82", plain; /* 130 */
-		"Color", noIcon, hierarchicalMenu, "\0x83", plain; /* 131 */
+		"Tiles", noIcon, hierarchicalMenu, "\0x82", plain;  /* 130 */
+		"Color", noIcon, hierarchicalMenu, "\0x83", plain;  /* 131 */
 		"-", noIcon, noKey, noMark, plain;
 		"Quit", noIcon, "Q", noMark, plain;
 	}
@@ -44,218 +50,225 @@ resource 'ALRT' (128, "About 2048-AUX Dialog", purgeable) {
 	{ 70, 40, 170 + 70, 360 + 40 },
 	128,
 	{
-		OK, visible, silent,
-		OK, visible, silent,
-		OK, visible, silent,
-		OK, visible, silent
+		OK, visible, sound1,
+		OK, visible, sound1,
+		OK, visible, sound1,
+		OK, visible, sound1
 	}
 };
 
 resource 'DITL' (128) {
 	 {
 /* 1 */ { 135, 290, 135 + 20, 290 + 55 },
-		button {
+		Button {
 			enabled,
 			"OK"
 		};
 /* 2 */ { 7, 60, 7 + 20, 60 + 200 },
-		staticText {
+		StaticText {
 			disabled,
 			"2048-AUX"
 		};
 /* 3 */ { 30, 60, 30 + 40, 60 + 280 },
-		statictext {
+		StaticText {
 			disabled,
 			"Simple implementation of \"2048\" logic game for Apple A/UX operation system."
 		};
 /* 4 */ { 80, 60, 80 + 20, 60 + 280 },
-		statictext {
+		StaticText {
 			disabled,
 			"Version: 1.0, 14-Apr-2021"
 		};
 /* 5 */ { 98, 60, 98 + 20, 60 + 280 },
-		statictext {
+		StaticText {
 			disabled,
 			"Sources: https://github.com/EXL/2048"
 		};
 /* 6 */ { 116, 60, 116 + 20, 60 + 200 },
-		statictext {
+		StaticText {
 			disabled,
-			"Copyright \251 EXL, 2021"
+			"Copyright \251 EXL, 2021"                      /* (c) */
 		};
 	}
 };
 
-data 'ICN#' (128) {
-	$"1FFF FFF8 7FFF FFFE 7000 000E E000 0007"            /* .ÿÿø.ÿÿþp...à... */
-	$"C000 0003 C000 0003 C000 0003 C000 0003"            /* À...À...À...À... */
-	$"C000 0003 C000 0003 C000 0003 C000 0003"            /* À...À...À...À... */
-	$"CE3C 18F3 D366 399B C366 399B C366 58F3"            /* Î<.óÓf9›Ãf9›ÃfXó */
-	$"C666 D8B3 CC66 FD9B CC66 199B DF3C 18F3"            /* ÆfØ³Ìfý›Ìf.›ß<.ó */
-	$"C000 0003 C000 0003 C000 0003 C000 0003"            /* À...À...À...À... */
-	$"C000 0003 C000 0003 C000 0003 C000 0003"            /* À...À...À...À... */
-	$"E000 0007 7000 000E 7FFF FFFE 1FFF FFF8"            /* à...p....ÿÿþ.ÿÿø */
-	$"1FFF FFF8 7FFF FFFE 7FFF FFFE FFFF FFFF"            /* .ÿÿø.ÿÿþ.ÿÿþÿÿÿÿ */
-	$"FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF"            /* ÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿ */
-	$"FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF"            /* ÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿ */
-	$"FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF"            /* ÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿ */
-	$"FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF"            /* ÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿ */
-	$"FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF"            /* ÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿ */
-	$"FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF"            /* ÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿ */
-	$"FFFF FFFF 7FFF FFFE 7FFF FFFE 1FFF FFF8"            /* ÿÿÿÿ.ÿÿþ.ÿÿþ.ÿÿø */
+resource 'ICN#' (128) {
+	{
+		$"1FFF FFF8 7FFF FFFE 7000 000E E000 0007"          /* ........p....... */
+		$"C000 0003 C000 0003 C000 0003 C000 0003"          /* À...À...À...À... */
+		$"C000 0003 C000 0003 C000 0003 C000 0003"          /* À...À...À...À... */
+		$"CE3C 18F3 D366 399B C366 399B C366 58F3"          /* Î<..Óf9›Ãf9›ÃfX. */
+		$"C666 D8B3 CC66 FD9B CC66 199B DF3C 18F3"          /* ÆfØ³Ìf.›Ìf.›.<.. */
+		$"C000 0003 C000 0003 C000 0003 C000 0003"          /* À...À...À...À... */
+		$"C000 0003 C000 0003 C000 0003 C000 0003"          /* À...À...À...À... */
+		$"E000 0007 7000 000E 7FFF FFFE 1FFF FFF8",         /* ....p........... */
+		$"1FFF FFF8 7FFF FFFE 7FFF FFFE FFFF FFFF"          /* ................ */
+		$"FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF"          /* ................ */
+		$"FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF"          /* ................ */
+		$"FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF"          /* ................ */
+		$"FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF"          /* ................ */
+		$"FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF"          /* ................ */
+		$"FFFF FFFF FFFF FFFF FFFF FFFF FFFF FFFF"          /* ................ */
+		$"FFFF FFFF 7FFF FFFE 7FFF FFFE 1FFF FFF8"          /* ................ */
+	}
 };
 
-data 'icl8' (128) {
-	$"0000 00FF FFFF FFFF FFFF FFFF FFFF FFFF"            /* ...ÿÿÿÿÿÿÿÿÿÿÿÿÿ */
-	$"FFFF FFFF FFFF FFFF FFFF FFFF FF00 0000"            /* ÿÿÿÿÿÿÿÿÿÿÿÿÿ... */
-	$"00FF FFFF FFFF FFFF FFFF FFFF FFFF FFFF"            /* .ÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿ */
-	$"FFFF FFFF FFFF FFFF FFFF FFFF FFFF FF00"            /* ÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿ. */
-	$"00FF FFFF 4D4D 4D4D 4D4D 4D4D 4D4D 4D4D"            /* .ÿÿÿMMMMMMMMMMMM */
-	$"4D4D 4D4D 4D4D 4D4D 4D4D 4D4D FFFF FF00"            /* MMMMMMMMMMMMÿÿÿ. */
-	$"FFFF FF4D 4D4D 4D4D 4D4D 4D4D 4D4D 4D4D"            /* ÿÿÿMMMMMMMMMMMMM */
-	$"4D4D 4D4D 4D4D 4D4D 4D4D 4D4D 4DFF FFFF"            /* MMMMMMMMMMMMMÿÿÿ */
-	$"FFFF 4D4D 4D4D 4D4D 4D4D 4D4D 4D4D 4D4D"            /* ÿÿMMMMMMMMMMMMMM */
-	$"4D4D 4D4D 4D4D 4D4D 4D4D 4D4D 4D4D FFFF"            /* MMMMMMMMMMMMMMÿÿ */
-	$"FFFF 4D4D 4D4D 4D4D 4D4D 4D4D 4D4D 4D4D"            /* ÿÿMMMMMMMMMMMMMM */
-	$"4D4D 4D4D 4D4D 4D4D 4D4D 4D4D 4D4D FFFF"            /* MMMMMMMMMMMMMMÿÿ */
-	$"FFFF 4D4D 4D4D 4D4D 4D4D 4D4D 4D4D 4D4D"            /* ÿÿMMMMMMMMMMMMMM */
-	$"4D4D 4D4D 4D4D 4D4D 4D4D 4D4D 4D4D FFFF"            /* MMMMMMMMMMMMMMÿÿ */
-	$"FFFF 4D4D 4D4D 4D4D 4D4D 4D4D 4D4D 4D4D"            /* ÿÿMMMMMMMMMMMMMM */
-	$"4D4D 4D4D 4D4D 4D4D 4D4D 4D4D 4D4D FFFF"            /* MMMMMMMMMMMMMMÿÿ */
-	$"FFFF 4D4D 4D4D 4D4D 4D4D 4D4D 4D4D 4D4D"            /* ÿÿMMMMMMMMMMMMMM */
-	$"4D4D 4D4D 4D4D 4D4D 4D4D 4D4D 4D4D FFFF"            /* MMMMMMMMMMMMMMÿÿ */
-	$"FFFF 4D4D 4D4D 4D4D 4D4D 4D4D 4D4D 4D4D"            /* ÿÿMMMMMMMMMMMMMM */
-	$"4D4D 4D4D 4D4D 4D4D 4D4D 4D4D 4D4D FFFF"            /* MMMMMMMMMMMMMMÿÿ */
-	$"FFFF 4D4D 4D4D 4D4D 4D4D 4D4D 4D4D 4D4D"            /* ÿÿMMMMMMMMMMMMMM */
-	$"4D4D 4D4D 4D4D 4D4D 4D4D 4D4D 4D4D FFFF"            /* MMMMMMMMMMMMMMÿÿ */
-	$"FFFF 4D4D 4D4D 4D4D 4D4D 4D4D 4D4D 4D4D"            /* ÿÿMMMMMMMMMMMMMM */
-	$"4D4D 4D4D 4D4D 4D4D 4D4D 4D4D 4D4D FFFF"            /* MMMMMMMMMMMMMMÿÿ */
-	$"FFFF 4D4D DEDE DE4D 4D4D DEDE DEDE 4D4D"            /* ÿÿMMÞÞÞMMMÞÞÞÞMM */
-	$"4D4D 4DDE DE4D 4D4D DEDE DEDE 4D4D FFFF"            /* MMMÞÞMMMÞÞÞÞMMÿÿ */
-	$"FFFF 4DDE 4D4D DEDE 4DDE DE4D 4DDE DE4D"            /* ÿÿMÞMMÞÞMÞÞMMÞÞM */
-	$"4D4D DEDE DE4D 4DDE DE4D 4DDE DE4D FFFF"            /* MMÞÞÞMMÞÞMMÞÞMÿÿ */
-	$"FFFF 4D4D 4D4D DEDE 4DDE DE4D 4DDE DE4D"            /* ÿÿMMMMÞÞMÞÞMMÞÞM */
-	$"4D4D DEDE DE4D 4DDE DE4D 4DDE DE4D FFFF"            /* MMÞÞÞMMÞÞMMÞÞMÿÿ */
-	$"FFFF 4D4D 4D4D DEDE 4DDE DE4D 4DDE DE4D"            /* ÿÿMMMMÞÞMÞÞMMÞÞM */
-	$"4DDE 4DDE DE4D 4D4D DEDE DEDE 4D4D FFFF"            /* MÞMÞÞMMMÞÞÞÞMMÿÿ */
-	$"FFFF 4D4D 4DDE DE4D 4DDE DE4D 4DDE DE4D"            /* ÿÿMMMÞÞMMÞÞMMÞÞM */
-	$"DEDE 4DDE DE4D 4D4D DE4D DEDE 4D4D FFFF"            /* ÞÞMÞÞMMMÞMÞÞMMÿÿ */
-	$"FFFF 4D4D DEDE 4D4D 4DDE DE4D 4DDE DE4D"            /* ÿÿMMÞÞMMMÞÞMMÞÞM */
-	$"DEDE DEDE DEDE 4DDE DE4D 4DDE DE4D FFFF"            /* ÞÞÞÞÞÞMÞÞMMÞÞMÿÿ */
-	$"FFFF 4D4D DEDE 4D4D 4DDE DE4D 4DDE DE4D"            /* ÿÿMMÞÞMMMÞÞMMÞÞM */
-	$"4D4D 4DDE DE4D 4DDE DE4D 4DDE DE4D FFFF"            /* MMMÞÞMMÞÞMMÞÞMÿÿ */
-	$"FFFF 4DDE DEDE DEDE 4D4D DEDE DEDE 4D4D"            /* ÿÿMÞÞÞÞÞMMÞÞÞÞMM */
-	$"4D4D 4DDE DE4D 4D4D DEDE DEDE 4D4D FFFF"            /* MMMÞÞMMMÞÞÞÞMMÿÿ */
-	$"FFFF 4D4D 4D4D 4D4D 4D4D 4D4D 4D4D 4D4D"            /* ÿÿMMMMMMMMMMMMMM */
-	$"4D4D 4D4D 4D4D 4D4D 4D4D 4D4D 4D4D FFFF"            /* MMMMMMMMMMMMMMÿÿ */
-	$"FFFF 4D4D 4D4D 4D4D 4D4D 4D4D 4D4D 4D4D"            /* ÿÿMMMMMMMMMMMMMM */
-	$"4D4D 4D4D 4D4D 4D4D 4D4D 4D4D 4D4D FFFF"            /* MMMMMMMMMMMMMMÿÿ */
-	$"FFFF 4D4D 4D4D 4D4D 4D4D 4D4D 4D4D 4D4D"            /* ÿÿMMMMMMMMMMMMMM */
-	$"4D4D 4D4D 4D4D 4D4D 4D4D 4D4D 4D4D FFFF"            /* MMMMMMMMMMMMMMÿÿ */
-	$"FFFF 4D4D 4D4D 4D4D 4D4D 4D4D 4D4D 4D4D"            /* ÿÿMMMMMMMMMMMMMM */
-	$"4D4D 4D4D 4D4D 4D4D 4D4D 4D4D 4D4D FFFF"            /* MMMMMMMMMMMMMMÿÿ */
-	$"FFFF 4D4D 4D4D 4D4D 4D4D 4D4D 4D4D 4D4D"            /* ÿÿMMMMMMMMMMMMMM */
-	$"4D4D 4D4D 4D4D 4D4D 4D4D 4D4D 4D4D FFFF"            /* MMMMMMMMMMMMMMÿÿ */
-	$"FFFF 4D4D 4D4D 4D4D 4D4D 4D4D 4D4D 4D4D"            /* ÿÿMMMMMMMMMMMMMM */
-	$"4D4D 4D4D 4D4D 4D4D 4D4D 4D4D 4D4D FFFF"            /* MMMMMMMMMMMMMMÿÿ */
-	$"FFFF 4D4D 4D4D 4D4D 4D4D 4D4D 4D4D 4D4D"            /* ÿÿMMMMMMMMMMMMMM */
-	$"4D4D 4D4D 4D4D 4D4D 4D4D 4D4D 4D4D FFFF"            /* MMMMMMMMMMMMMMÿÿ */
-	$"FFFF 4D4D 4D4D 4D4D 4D4D 4D4D 4D4D 4D4D"            /* ÿÿMMMMMMMMMMMMMM */
-	$"4D4D 4D4D 4D4D 4D4D 4D4D 4D4D 4D4D FFFF"            /* MMMMMMMMMMMMMMÿÿ */
-	$"FFFF FF4D 4D4D 4D4D 4D4D 4D4D 4D4D 4D4D"            /* ÿÿÿMMMMMMMMMMMMM */
-	$"4D4D 4D4D 4D4D 4D4D 4D4D 4D4D 4DFF FFFF"            /* MMMMMMMMMMMMMÿÿÿ */
-	$"00FF FFFF 4D4D 4D4D 4D4D 4D4D 4D4D 4D4D"            /* .ÿÿÿMMMMMMMMMMMM */
-	$"4D4D 4D4D 4D4D 4D4D 4D4D 4D4D FFFF FF00"            /* MMMMMMMMMMMMÿÿÿ. */
-	$"00FF FFFF FFFF FFFF FFFF FFFF FFFF FFFF"            /* .ÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿ */
-	$"FFFF FFFF FFFF FFFF FFFF FFFF FFFF FF00"            /* ÿÿÿÿÿÿÿÿÿÿÿÿÿÿÿ. */
-	$"0000 00FF FFFF FFFF FFFF FFFF FFFF FFFF"            /* ...ÿÿÿÿÿÿÿÿÿÿÿÿÿ */
-	$"FFFF FFFF FFFF FFFF FFFF FFFF FF00 0000"            /* ÿÿÿÿÿÿÿÿÿÿÿÿÿ... */
+resource 'icl8' (128) {
+	$"0000 00FF FFFF FFFF FFFF FFFF FFFF FFFF"              /* ................ */
+	$"FFFF FFFF FFFF FFFF FFFF FFFF FF00 0000"              /* ................ */
+	$"00FF FFFF FFFF FFFF FFFF FFFF FFFF FFFF"              /* ................ */
+	$"FFFF FFFF FFFF FFFF FFFF FFFF FFFF FF00"              /* ................ */
+	$"00FF FFFF 9595 9595 9595 9595 9595 9595"              /* ....•••••••••••• */
+	$"9595 9595 9595 9595 9595 9595 FFFF FF00"              /* ••••••••••••.... */
+	$"FFFF FF95 9595 9595 9595 9595 9595 9595"              /* ...••••••••••••• */
+	$"9595 9595 9595 9595 9595 9595 95FF FFFF"              /* •••••••••••••... */
+	$"FFFF 9595 9595 9595 9595 9595 9595 9595"              /* ..•••••••••••••• */
+	$"9595 9595 9595 9595 9595 9595 9595 FFFF"              /* ••••••••••••••.. */
+	$"FFFF 9595 9595 9595 9595 9595 9595 9595"              /* ..•••••••••••••• */
+	$"9595 9595 9595 9595 9595 9595 9595 FFFF"              /* ••••••••••••••.. */
+	$"FFFF 9595 9595 9595 9595 9595 9595 9595"              /* ..•••••••••••••• */
+	$"9595 9595 9595 9595 9595 9595 9595 FFFF"              /* ••••••••••••••.. */
+	$"FFFF 9595 9595 9595 9595 9595 9595 9595"              /* ..•••••••••••••• */
+	$"9595 9595 9595 9595 9595 9595 9595 FFFF"              /* ••••••••••••••.. */
+	$"FFFF 9595 9595 9595 9595 9595 9595 9595"              /* ..•••••••••••••• */
+	$"9595 9595 9595 9595 9595 9595 9595 FFFF"              /* ••••••••••••••.. */
+	$"FFFF 9595 9595 9595 9595 9595 9595 9595"              /* ..•••••••••••••• */
+	$"9595 9595 9595 9595 9595 9595 9595 FFFF"              /* ••••••••••••••.. */
+	$"FFFF 9595 9595 9595 9595 9595 9595 9595"              /* ..•••••••••••••• */
+	$"9595 9595 9595 9595 9595 9595 9595 FFFF"              /* ••••••••••••••.. */
+	$"FFFF 9595 9595 9595 9595 9595 9595 9595"              /* ..•••••••••••••• */
+	$"9595 9595 9595 9595 9595 9595 9595 FFFF"              /* ••••••••••••••.. */
+	$"FFFF 9595 DDDD DD95 9595 DDDD DDDD 9595"              /* ..••...•••....•• */
+	$"9595 95DD DD95 9595 DDDD DDDD 9595 FFFF"              /* •••..•••....••.. */
+	$"FFFF 95DD 9595 DDDD 95DD DD95 95DD DD95"              /* ..•.••..•..••..• */
+	$"9595 DDDD DD95 95DD DD95 95DD DD95 FFFF"              /* ••...••..••..•.. */
+	$"FFFF 9595 9595 DDDD 95DD DD95 95DD DD95"              /* ..••••..•..••..• */
+	$"9595 DDDD DD95 95DD DD95 95DD DD95 FFFF"              /* ••...••..••..•.. */
+	$"FFFF 9595 9595 DDDD 95DD DD95 95DD DD95"              /* ..••••..•..••..• */
+	$"95DD 95DD DD95 9595 DDDD DDDD 9595 FFFF"              /* •.•..•••....••.. */
+	$"FFFF 9595 95DD DD95 95DD DD95 95DD DD95"              /* ..•••..••..••..• */
+	$"DDDD 95DD DD95 9595 DD95 DDDD 9595 FFFF"              /* ..•..•••.•..••.. */
+	$"FFFF 9595 DDDD 9595 95DD DD95 95DD DD95"              /* ..••..•••..••..• */
+	$"DDDD DDDD DDDD 95DD DD95 95DD DD95 FFFF"              /* ......•..••..•.. */
+	$"FFFF 9595 DDDD 9595 95DD DD95 95DD DD95"              /* ..••..•••..••..• */
+	$"9595 95DD DD95 95DD DD95 95DD DD95 FFFF"              /* •••..••..••..•.. */
+	$"FFFF 95DD DDDD DDDD 9595 DDDD DDDD 9595"              /* ..•.....••....•• */
+	$"9595 95DD DD95 9595 DDDD DDDD 9595 FFFF"              /* •••..•••....••.. */
+	$"FFFF 9595 9595 9595 9595 9595 9595 9595"              /* ..•••••••••••••• */
+	$"9595 9595 9595 9595 9595 9595 9595 FFFF"              /* ••••••••••••••.. */
+	$"FFFF 9595 9595 9595 9595 9595 9595 9595"              /* ..•••••••••••••• */
+	$"9595 9595 9595 9595 9595 9595 9595 FFFF"              /* ••••••••••••••.. */
+	$"FFFF 9595 9595 9595 9595 9595 9595 9595"              /* ..•••••••••••••• */
+	$"9595 9595 9595 9595 9595 9595 9595 FFFF"              /* ••••••••••••••.. */
+	$"FFFF 9595 9595 9595 9595 9595 9595 9595"              /* ..•••••••••••••• */
+	$"9595 9595 9595 9595 9595 9595 9595 FFFF"              /* ••••••••••••••.. */
+	$"FFFF 9595 9595 9595 9595 9595 9595 9595"              /* ..•••••••••••••• */
+	$"9595 9595 9595 9595 9595 9595 9595 FFFF"              /* ••••••••••••••.. */
+	$"FFFF 9595 9595 9595 9595 9595 9595 9595"              /* ..•••••••••••••• */
+	$"9595 9595 9595 9595 9595 9595 9595 FFFF"              /* ••••••••••••••.. */
+	$"FFFF 9595 9595 9595 9595 9595 9595 9595"              /* ..•••••••••••••• */
+	$"9595 9595 9595 9595 9595 9595 9595 FFFF"              /* ••••••••••••••.. */
+	$"FFFF 9595 9595 9595 9595 9595 9595 9595"              /* ..•••••••••••••• */
+	$"9595 9595 9595 9595 9595 9595 9595 FFFF"              /* ••••••••••••••.. */
+	$"FFFF FF95 9595 9595 9595 9595 9595 9595"              /* ...••••••••••••• */
+	$"9595 9595 9595 9595 9595 9595 95FF FFFF"              /* •••••••••••••... */
+	$"00FF FFFF 9595 9595 9595 9595 9595 9595"              /* ....•••••••••••• */
+	$"9595 9595 9595 9595 9595 9595 FFFF FF00"              /* ••••••••••••.... */
+	$"00FF FFFF FFFF FFFF FFFF FFFF FFFF FFFF"              /* ................ */
+	$"FFFF FFFF FFFF FFFF FFFF FFFF FFFF FF00"              /* ................ */
+	$"0000 00FF FFFF FFFF FFFF FFFF FFFF FFFF"              /* ................ */
+	$"FFFF FFFF FFFF FFFF FFFF FFFF FF00 0000"              /* ................ */
 };
 
-data 'icl4' (128) {
-	$"000F FFFF FFFF FFFF FFFF FFFF FFFF F000"            /* ..ÿÿÿÿÿÿÿÿÿÿÿÿð. */
-	$"0FFF FFFF FFFF FFFF FFFF FFFF FFFF FFF0"            /* .ÿÿÿÿÿÿÿÿÿÿÿÿÿÿð */
-	$"0FFF 8888 8888 8888 8888 8888 8888 FFF0"            /* .ÿˆˆˆˆˆˆˆˆˆˆˆˆÿð */
-	$"FFF8 8888 8888 8888 8888 8888 8888 8FFF"            /* ÿøˆˆˆˆˆˆˆˆˆˆˆˆÿ */
-	$"FF88 8888 8888 8888 8888 8888 8888 88FF"            /* ÿˆˆˆˆˆˆˆˆˆˆˆˆˆˆÿ */
-	$"FF88 8888 8888 8888 8888 8888 8888 88FF"            /* ÿˆˆˆˆˆˆˆˆˆˆˆˆˆˆÿ */
-	$"FF88 8888 8888 8888 8888 8888 8888 88FF"            /* ÿˆˆˆˆˆˆˆˆˆˆˆˆˆˆÿ */
-	$"FF88 8888 8888 8888 8888 8888 8888 88FF"            /* ÿˆˆˆˆˆˆˆˆˆˆˆˆˆˆÿ */
-	$"FF88 8888 8888 8888 8888 8888 8888 88FF"            /* ÿˆˆˆˆˆˆˆˆˆˆˆˆˆˆÿ */
-	$"FF88 8888 8888 8888 8888 8888 8888 88FF"            /* ÿˆˆˆˆˆˆˆˆˆˆˆˆˆˆÿ */
-	$"FF88 8888 8888 8888 8888 8888 8888 88FF"            /* ÿˆˆˆˆˆˆˆˆˆˆˆˆˆˆÿ */
-	$"FF88 8888 8888 8888 8888 8888 8888 88FF"            /* ÿˆˆˆˆˆˆˆˆˆˆˆˆˆˆÿ */
-	$"FF88 0008 8800 0088 8880 0888 0000 88FF"            /* ÿˆ..ˆ..ˆˆ€.ˆ..ˆÿ */
-	$"FF80 8800 8008 8008 8800 0880 0880 08FF"            /* ÿ€ˆ.€.€.ˆ..€.€.ÿ */
-	$"FF88 8800 8008 8008 8800 0880 0880 08FF"            /* ÿˆˆ.€.€.ˆ..€.€.ÿ */
-	$"FF88 8800 8008 8008 8080 0888 0000 88FF"            /* ÿˆˆ.€.€.€€.ˆ..ˆÿ */
-	$"FF88 8008 8008 8008 0080 0888 0800 88FF"            /* ÿˆ€.€.€..€.ˆ..ˆÿ */
-	$"FF88 0088 8008 8008 0000 0080 0880 08FF"            /* ÿˆ.ˆ€.€....€.€.ÿ */
-	$"FF88 0088 8008 8008 8880 0880 0880 08FF"            /* ÿˆ.ˆ€.€.ˆ€.€.€.ÿ */
-	$"FF80 0000 8800 0088 8880 0888 0000 88FF"            /* ÿ€..ˆ..ˆˆ€.ˆ..ˆÿ */
-	$"FF88 8888 8888 8888 8888 8888 8888 88FF"            /* ÿˆˆˆˆˆˆˆˆˆˆˆˆˆˆÿ */
-	$"FF88 8888 8888 8888 8888 8888 8888 88FF"            /* ÿˆˆˆˆˆˆˆˆˆˆˆˆˆˆÿ */
-	$"FF88 8888 8888 8888 8888 8888 8888 88FF"            /* ÿˆˆˆˆˆˆˆˆˆˆˆˆˆˆÿ */
-	$"FF88 8888 8888 8888 8888 8888 8888 88FF"            /* ÿˆˆˆˆˆˆˆˆˆˆˆˆˆˆÿ */
-	$"FF88 8888 8888 8888 8888 8888 8888 88FF"            /* ÿˆˆˆˆˆˆˆˆˆˆˆˆˆˆÿ */
-	$"FF88 8888 8888 8888 8888 8888 8888 88FF"            /* ÿˆˆˆˆˆˆˆˆˆˆˆˆˆˆÿ */
-	$"FF88 8888 8888 8888 8888 8888 8888 88FF"            /* ÿˆˆˆˆˆˆˆˆˆˆˆˆˆˆÿ */
-	$"FF88 8888 8888 8888 8888 8888 8888 88FF"            /* ÿˆˆˆˆˆˆˆˆˆˆˆˆˆˆÿ */
-	$"FFF8 8888 8888 8888 8888 8888 8888 8FFF"            /* ÿøˆˆˆˆˆˆˆˆˆˆˆˆÿ */
-	$"0FFF 8888 8888 8888 8888 8888 8888 FFF0"            /* .ÿˆˆˆˆˆˆˆˆˆˆˆˆÿð */
-	$"0FFF FFFF FFFF FFFF FFFF FFFF FFFF FFF0"            /* .ÿÿÿÿÿÿÿÿÿÿÿÿÿÿð */
-	$"000F FFFF FFFF FFFF FFFF FFFF FFFF F000"            /* ..ÿÿÿÿÿÿÿÿÿÿÿÿð. */
+resource 'icl4' (128) {
+	$"000F FFFF FFFF FFFF FFFF FFFF FFFF F000"              /* ................ */
+	$"0FFF FFFF FFFF FFFF FFFF FFFF FFFF FFF0"              /* ................ */
+	$"0FFF 8888 8888 8888 8888 8888 8888 FFF0"              /* ..ˆˆˆˆˆˆˆˆˆˆˆˆ.. */
+	$"FFF8 8888 8888 8888 8888 8888 8888 8FFF"              /* ..ˆˆˆˆˆˆˆˆˆˆˆˆ. */
+	$"FF88 8888 8888 8888 8888 8888 8888 88FF"              /* .ˆˆˆˆˆˆˆˆˆˆˆˆˆˆ. */
+	$"FF88 8888 8888 8888 8888 8888 8888 88FF"              /* .ˆˆˆˆˆˆˆˆˆˆˆˆˆˆ. */
+	$"FF88 8888 8888 8888 8888 8888 8888 88FF"              /* .ˆˆˆˆˆˆˆˆˆˆˆˆˆˆ. */
+	$"FF88 8888 8888 8888 8888 8888 8888 88FF"              /* .ˆˆˆˆˆˆˆˆˆˆˆˆˆˆ. */
+	$"FF88 8888 8888 8888 8888 8888 8888 88FF"              /* .ˆˆˆˆˆˆˆˆˆˆˆˆˆˆ. */
+	$"FF88 8888 8888 8888 8888 8888 8888 88FF"              /* .ˆˆˆˆˆˆˆˆˆˆˆˆˆˆ. */
+	$"FF88 8888 8888 8888 8888 8888 8888 88FF"              /* .ˆˆˆˆˆˆˆˆˆˆˆˆˆˆ. */
+	$"FF88 8888 8888 8888 8888 8888 8888 88FF"              /* .ˆˆˆˆˆˆˆˆˆˆˆˆˆˆ. */
+	$"FF88 AAA8 88AA AA88 888A A888 AAAA 88FF"              /* .ˆª¨ˆªªˆˆŠ¨ˆªªˆ. */
+	$"FF8E 88AA 8AA8 8AA8 88AA A88A A88A A8FF"              /* .ŽˆªŠ¨Š¨ˆª¨Š¨Š¨. */
+	$"FF88 88AA 8AA8 8AA8 88AA A88A A88A A8FF"              /* .ˆˆªŠ¨Š¨ˆª¨Š¨Š¨. */
+	$"FF88 88AA 8AA8 8AA8 8A8A A888 AAAA 88FF"              /* .ˆˆªŠ¨Š¨ŠŠ¨ˆªªˆ. */
+	$"FF88 8AA8 8AA8 8AA8 AA8A A888 A8AA 88FF"              /* .ˆŠ¨Š¨Š¨ªŠ¨ˆ¨ªˆ. */
+	$"FF88 AA88 8AA8 8AA8 AAAA AA8A A88A A8FF"              /* .ˆªˆŠ¨Š¨ªªªŠ¨Š¨. */
+	$"FF88 AA88 8AA8 8AA8 888A A88A A88A A8FF"              /* .ˆªˆŠ¨Š¨ˆŠ¨Š¨Š¨. */
+	$"FF8A AAAA 88AA AA88 888A A888 AAAA 88FF"              /* .ŠªªˆªªˆˆŠ¨ˆªªˆ. */
+	$"FF88 8888 8888 8888 8888 8888 8888 88FF"              /* .ˆˆˆˆˆˆˆˆˆˆˆˆˆˆ. */
+	$"FF88 8888 8888 8888 8888 8888 8888 88FF"              /* .ˆˆˆˆˆˆˆˆˆˆˆˆˆˆ. */
+	$"FF88 8888 8888 8888 8888 8888 8888 88FF"              /* .ˆˆˆˆˆˆˆˆˆˆˆˆˆˆ. */
+	$"FF88 8888 8888 8888 8888 8888 8888 88FF"              /* .ˆˆˆˆˆˆˆˆˆˆˆˆˆˆ. */
+	$"FF88 8888 8888 8888 8888 8888 8888 88FF"              /* .ˆˆˆˆˆˆˆˆˆˆˆˆˆˆ. */
+	$"FF88 8888 8888 8888 8888 8888 8888 88FF"              /* .ˆˆˆˆˆˆˆˆˆˆˆˆˆˆ. */
+	$"FF88 8888 8888 8888 8888 8888 8888 88FF"              /* .ˆˆˆˆˆˆˆˆˆˆˆˆˆˆ. */
+	$"FF88 8888 8888 8888 8888 8888 8888 88FF"              /* .ˆˆˆˆˆˆˆˆˆˆˆˆˆˆ. */
+	$"FFF8 8888 8888 8888 8888 8888 8888 8FFF"              /* ..ˆˆˆˆˆˆˆˆˆˆˆˆ. */
+	$"0FFF 8888 8888 8888 8888 8888 8888 FFF0"              /* ..ˆˆˆˆˆˆˆˆˆˆˆˆ.. */
+	$"0FFF FFFF FFFF FFFF FFFF FFFF FFFF FFF0"              /* ................ */
+	$"000F FFFF FFFF FFFF FFFF FFFF FFFF F000"              /* ................ */
 };
 
-data 'ics#' (128) {
-	$"3FFC 6006 C003 8001 8C19 9839 B079 BC59"            /* ?ü`.À.€.Œ.˜9°y¼Y */
-	$"B6FD B619 9C19 8001 8001 C003 6006 3FFC"            /* ¶ý¶.œ.€.€.À.`.?ü */
-	$"3FFC 7FFE FFFF FFFF FFFF FFFF FFFF FFFF"            /* ?ü.þÿÿÿÿÿÿÿÿÿÿÿÿ */
-	$"FFFF FFFF FFFF FFFF FFFF FFFF 7FFE 3FFC"            /* ÿÿÿÿÿÿÿÿÿÿÿÿ.þ?ü */
+resource 'ics#' (128) {
+	{
+		$"3FFC 6006 C003 8001 8C19 9839 B079 BC59"          /* ?.`.À.€.Œ.˜9°y¼Y */
+		$"B6FD B619 9C19 8001 8001 C003 6006 3FFC",         /* ¶.¶.œ.€.€.À.`.?. */
+		$"3FFC 7FFE FFFF FFFF FFFF FFFF FFFF FFFF"          /* ?............... */
+		$"FFFF FFFF FFFF FFFF FFFF FFFF 7FFE 3FFC"          /* ..............?. */
+	}
 };
 
-data 'ics4' (128) {
-	$"00FF FFFF FFFF FF00 0FF8 8888 8888 8FF0"            /* .ÿÿÿÿÿÿ..øˆˆˆˆð */
-	$"FF88 8888 8888 88FF F888 8888 8888 888F"            /* ÿˆˆˆˆˆˆÿøˆˆˆˆˆˆ */
-	$"F888 0088 8880 088F F880 0888 8800 088F"            /* øˆ.ˆˆ€.ø€.ˆˆ.. */
-	$"F800 8888 8000 088F F800 0088 8080 088F"            /* ø.ˆˆ€..ø..ˆ€€. */
-	$"F800 8008 0000 008F F800 8008 8880 088F"            /* ø.€....ø.€.ˆ€. */
-	$"F880 0088 8880 088F F888 8888 8888 888F"            /* ø€.ˆˆ€.øˆˆˆˆˆˆ */
-	$"F888 8888 8888 888F FF88 8888 8888 88FF"            /* øˆˆˆˆˆˆÿˆˆˆˆˆˆÿ */
-	$"0FF8 8888 8888 8FF0 00FF FFFF FFFF FF00"            /* .øˆˆˆˆð.ÿÿÿÿÿÿ. */
+resource 'ics4' (128) {
+	$"00FF FFFF FFFF FF00 0FF8 8888 8888 8FF0"              /* ..........ˆˆˆˆ. */
+	$"FF88 8888 8888 88FF F888 8888 8888 888F"              /* .ˆˆˆˆˆˆ..ˆˆˆˆˆˆ */
+	$"F888 AA88 888A A88F F88A A888 88AA A88F"              /* .ˆªˆˆŠ¨.Š¨ˆˆª¨ */
+	$"F8AA 8888 8AAA A88F F8AA AA88 8A8A A88F"              /* .ªˆˆŠª¨.ªªˆŠŠ¨ */
+	$"F8AA 8AA8 AAAA AA8F F8AA 8AA8 888A A88F"              /* .ªŠ¨ªªª.ªŠ¨ˆŠ¨ */
+	$"F88A AA88 888A A88F F888 8888 8888 888F"              /* .ŠªˆˆŠ¨.ˆˆˆˆˆˆ */
+	$"F888 8888 8888 888F FF88 8888 8888 88FF"              /* .ˆˆˆˆˆˆ.ˆˆˆˆˆˆ. */
+	$"0FF8 8888 8888 8FF0 00FF FFFF FFFF FF00"              /* ..ˆˆˆˆ......... */
 };
 
-data 'ics8' (128) {
-	$"0000 FFFF FFFF FFFF FFFF FFFF FFFF 0000"            /* ..ÿÿÿÿÿÿÿÿÿÿÿÿ.. */
-	$"00FF FF4D 4D4D 4D4D 4D4D 4D4D 4DFF FF00"            /* .ÿÿMMMMMMMMMMÿÿ. */
-	$"FFFF 4D4D 4D4D 4D4D 4D4D 4D4D 4D4D FFFF"            /* ÿÿMMMMMMMMMMMMÿÿ */
-	$"FF4D 4D4D 4D4D 4D4D 4D4D 4D4D 4D4D 4DFF"            /* ÿMMMMMMMMMMMMMMÿ */
-	$"FF4D 4D4D DEDE 4D4D 4D4D 4DDE DE4D 4DFF"            /* ÿMMMÞÞMMMMMÞÞMMÿ */
-	$"FF4D 4DDE DE4D 4D4D 4D4D DEDE DE4D 4DFF"            /* ÿMMÞÞMMMMMÞÞÞMMÿ */
-	$"FF4D DEDE 4D4D 4D4D 4DDE DEDE DE4D 4DFF"            /* ÿMÞÞMMMMMÞÞÞÞMMÿ */
-	$"FF4D DEDE DEDE 4D4D 4DDE 4DDE DE4D 4DFF"            /* ÿMÞÞÞÞMMMÞMÞÞMMÿ */
-	$"FF4D DEDE 4DDE DE4D DEDE DEDE DEDE 4DFF"            /* ÿMÞÞMÞÞMÞÞÞÞÞÞMÿ */
-	$"FF4D DEDE 4DDE DE4D 4D4D 4DDE DE4D 4DFF"            /* ÿMÞÞMÞÞMMMMÞÞMMÿ */
-	$"FF4D 4DDE DEDE 4D4D 4D4D 4DDE DE4D 4DFF"            /* ÿMMÞÞÞMMMMMÞÞMMÿ */
-	$"FF4D 4D4D 4D4D 4D4D 4D4D 4D4D 4D4D 4DFF"            /* ÿMMMMMMMMMMMMMMÿ */
-	$"FF4D 4D4D 4D4D 4D4D 4D4D 4D4D 4D4D 4DFF"            /* ÿMMMMMMMMMMMMMMÿ */
-	$"FFFF 4D4D 4D4D 4D4D 4D4D 4D4D 4D4D FFFF"            /* ÿÿMMMMMMMMMMMMÿÿ */
-	$"00FF FF4D 4D4D 4D4D 4D4D 4D4D 4DFF FF00"            /* .ÿÿMMMMMMMMMMÿÿ. */
-	$"0000 FFFF FFFF FFFF FFFF FFFF FFFF 0000"            /* ..ÿÿÿÿÿÿÿÿÿÿÿÿ.. */
+resource 'ics8' (128) {
+	$"0000 FFFF FFFF FFFF FFFF FFFF FFFF 0000"              /* ................ */
+	$"00FF FF95 9595 9595 9595 9595 95FF FF00"              /* ...••••••••••... */
+	$"FFFF 9595 9595 9595 9595 9595 9595 FFFF"              /* ..••••••••••••.. */
+	$"FF95 9595 9595 9595 9595 9595 9595 95FF"              /* .••••••••••••••. */
+	$"FF95 9595 DDDD 9595 9595 95DD DD95 95FF"              /* .•••..•••••..••. */
+	$"FF95 95DD DD95 9595 9595 DDDD DD95 95FF"              /* .••..•••••...••. */
+	$"FF95 DDDD 9595 9595 95DD DDDD DD95 95FF"              /* .•..•••••....••. */
+	$"FF95 DDDD DDDD 9595 95DD 95DD DD95 95FF"              /* .•....•••.•..••. */
+	$"FF95 DDDD 95DD DD95 DDDD DDDD DDDD 95FF"              /* .•..•..•......•. */
+	$"FF95 DDDD 95DD DD95 9595 95DD DD95 95FF"              /* .•..•..••••..••. */
+	$"FF95 95DD DDDD 9595 9595 95DD DD95 95FF"              /* .••...•••••..••. */
+	$"FF95 9595 9595 9595 9595 9595 9595 95FF"              /* .••••••••••••••. */
+	$"FF95 9595 9595 9595 9595 9595 9595 95FF"              /* .••••••••••••••. */
+	$"FFFF 9595 9595 9595 9595 9595 9595 FFFF"              /* ..••••••••••••.. */
+	$"00FF FF95 9595 9595 9595 9595 95FF FF00"              /* ...••••••••••... */
+	$"0000 FFFF FFFF FFFF FFFF FFFF FFFF 0000"              /* ................ */
 };
 
-data 'FREF' (128) {
-	$"4150 504C 0000 00"                                  /* APPL... */
+resource 'FREF' (128) {
+	'APPL', 0, ""
 };
 
-data 'MCW ' (0, "Owner resource") {
-	$"0032 3034 382D 4155 5820 5369 676E 6174"            /* .2048-AUX Signat */
-	$"7572 65"                                            /* ure */
+resource 'BNDL' (128) {
+	'AUX ', 0,
+	{
+		'FREF', { 0, 128 },
+		'ICN#', { 0, 128 }
+	}
 };
 
-data 'BNDL' (128) {
-	$"4155 5820 0000 0001 4652 4546 0000 0000"            /* AUX ....FREF.... */
-	$"0080 4943 4E23 0000 0000 0080"                      /* .€ICN#.....€ */
+data 'AUX ' (0, "Owner resource") {
+	$"1300 3230 3438 2D41 5558 2053 6967 6E61"              /* ..2048-AUX Signa */
+	$"7475 7265"                                            /* ture */
 };
 
 resource 'SIZE' (-1) {
@@ -275,6 +288,6 @@ resource 'SIZE' (-1) {
 	reserved,
 	reserved,
 	reserved,
-	1024 * 1024,                   /* Preferred Memory Size. */
-	1024 * 1024                    /* Minimum Memory Size. */
+	1024 * 1024,                                            /* Preferred Memory Size. */
+	1024 * 1024                                             /* Minimum Memory Size. */
 };

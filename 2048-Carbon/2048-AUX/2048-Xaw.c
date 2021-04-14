@@ -1,5 +1,5 @@
-// https://ergodic.ugr.es/cphys_pedro/unix/athena8.html
-// https://ergodic.ugr.es/cphys_pedro/unix/athena9.html
+/* https://ergodic.ugr.es/cphys_pedro/unix/athena8.html */
+/* https://ergodic.ugr.es/cphys_pedro/unix/athena9.html */
 
 #include "2048.h"
 
@@ -32,7 +32,7 @@ static void expose_event();
 static void key_press_event();
 static void client_message_event();
 
-int main(argc, argv) int argc; char *argv[]; {
+main(argc, argv) int argc; char *argv[]; {
 	int n, m;
 	Display *display;
 	Arg box_args[2];
@@ -77,7 +77,6 @@ int main(argc, argv) int argc; char *argv[]; {
 	gc = XCreateGC(display, XtWindow(drawing), 0, NULL);
 
 	XtAppMainLoop(context);
-	return 0;
 }
 
 static void quit() {
@@ -98,7 +97,7 @@ static void draw_tile(display, window, x, y) Display *display; Window window; in
 	int xOffset = OFFSET_COORD(x), yOffset = OFFSET_COORD(y);
 	int w = TILE_SIZE / 2, qw = w / 4, rad = qw * 2, rw = rad * 3, rect = w - rad;
 	XSetForeground(display, gc, (e_win || e_lose) ? screen->white_pixel : screen->black_pixel);
-	// HACK: Emulating XFillRoundedRectangle() method in 6 calls, similar to Xlib version.
+	/* HACK: Emulating XFillRoundedRectangle() method in 6 calls, similar to Xlib version. */
 	XFillArc(display, window, gc, xOffset, yOffset, rect, rect, -64*180, -64*90);
 	XFillArc(display, window, gc, xOffset + w + rad, yOffset, rect, rect, 64*90, -64*90);
 	XFillArc(display, window, gc, xOffset, yOffset + w + rad, rect, rect, -64*90, -64*90);

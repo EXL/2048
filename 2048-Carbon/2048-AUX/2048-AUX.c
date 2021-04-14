@@ -14,17 +14,15 @@
 #define K_UP                 0x1E
 #define K_DOWN               0x1F
 
-#define RSRC_ID              128
+#define MAIN_WINDOW          128
 #define MENU_APPLE           128
 #define MENU_GAME            129
 #define MENU_TILES           130
 #define MENU_COLOR           131
 #define MENU_ITEM_ABOUT      1
 #define MENU_ITEM_RESET      1
-#define MENU_ITEM_TILES      2
 #define MENU_ITEM_ROUND      1
 #define MENU_ITEM_RECT       2
-#define MENU_ITEM_COLOR      3
 #define MENU_ITEM_BW         1
 #define MENU_ITEM_COLORS     2
 #define MENU_ITEM_QUIT       5
@@ -120,13 +118,13 @@ static void SetUpMenus() {
 }
 
 static void CreateWindow() {
-	gWinPtr = GetNewCWindow(RSRC_ID, nil, (WindowPtr) -1L);
+	gWinPtr = GetNewCWindow(MAIN_WINDOW, nil, (WindowPtr) -1L);
 	gRectScr = qd.screenBits.bounds;
 	gRectWin = gWinPtr->portRect;
 }
 
-// Offscreen initialization function was copied from GlyphaIVOld project:
-// https://github.com/fruitsamples/GlyphaIVOld/blob/master/G4Utilities.c
+/* Offscreen initialization function was copied from GlyphaIVOld project: */
+/* https://github.com/fruitsamples/GlyphaIVOld/blob/master/G4Utilities.c  */
 static Boolean CreateOffScreen(aCGrafPtr, aRectWin) CGrafPtr *aCGrafPtr; Rect *aRectWin; {
 	CTabHandle lColorTable;
 	GDHandle lOldGDevice, lGDevice;
@@ -160,10 +158,10 @@ static Boolean CreateOffScreen(aCGrafPtr, aRectWin) CGrafPtr *aCGrafPtr; Rect *a
 			RectRgn(lNewCGrafPtr->visRgn, &lRectWin);
 			ForeColor(blackColor);
 			BackColor(whiteColor);
-			EraseRect(lRectWin);
+			EraseRect(&lRectWin);
 		} else {
 			CloseCPort(lNewCGrafPtr);
-			DisposPtr(lNewCGrafPtr);
+			DisposPtr((Ptr) lNewCGrafPtr);
 			lNewCGrafPtr = 0L;
 			return false;
 		}
@@ -171,13 +169,16 @@ static Boolean CreateOffScreen(aCGrafPtr, aRectWin) CGrafPtr *aCGrafPtr; Rect *a
 	else
 		return false;
 
+	if (lDepth < 8)
+		gColorTiles = false;
+
 	*aCGrafPtr = lNewCGrafPtr;
 	SetGDevice(lOldGDevice);
 	return true;
 }
 
-// Offscreen deinitialization function was copied from Ravel FTN 2.0:
-// https://github.com/mcyril/ravel-ftn/blob/master/Ravel%202.0%20%C6%92/RavelQUILL%202.0%20%C6%92/Source%20%C6%92/DialogLib.c
+/* Offscreen deinitialization function was copied from Ravel FTN 2.0: */
+/* https://github.com/mcyril/ravel-ftn/blob/master/Ravel%202.0%20%C6%92/RavelQUILL%202.0%20%C6%92/Source%20%C6%92/DialogLib.c */
 static void DestroyOffscreen(aCGrafPtr) CGrafPtr aCGrafPtr; {
 	DisposPtr((*aCGrafPtr->portPixMap)->baseAddr);
 	DisposHandle((Handle) (*aCGrafPtr->portPixMap)->pmTable);
@@ -203,10 +204,7 @@ static void WinFocus(aMessage) long aMessage; {
 static void WinUpdate(aWinPtr) WindowPtr aWinPtr; {
 	BeginUpdate(aWinPtr);
 
-	if (!gInBackground)
-		OffScreenDraw();
-	else
-		InScreenDraw();
+	OffScreenDraw();
 
 	EndUpdate(aWinPtr);
 }
@@ -234,13 +232,14 @@ static void OffScreenDraw() {
 	SetPort((GrafPtr) gCGrafPtr);
 
 	InScreenDraw();
+
+	SetPort(gWinPtr);
+
 	CopyBits(
 		&((GrafPtr) gCGrafPtr)->portBits, &gWinPtr->portBits,
 		&gRectWin, &gRectWin,
 		srcCopy, nil
 	);
-
-	SetPort(gWinPtr);
 }
 
 static void InScreenDraw() {
@@ -349,9 +348,9 @@ static void DrawEnd() {
 }
 
 static void GetRgbColor(aRgb, aColor) unsigned BIG aRgb; RGBColor *aColor; {
-	// Not sure about the endianness (byte order). M68K and PPC are big-endian (BE).
-	// Why colors use `short` in range 0x0000-0xFFFF? Is the last byte in 0xFF00 in use?
-	// More information: https://stackoverflow.com/a/12043639
+	/* Not sure about the endianness (byte order). M68K and PPC are big-endian (BE).     */
+	/* Why colors use `short` in range 0x0000-0xFFFF? Is the last byte in 0xFF00 in use? */
+	/* More information: https://stackoverflow.com/a/12043639                            */
 	RGBColor lColor;
 	unsigned char red8   = (unsigned char) ((aRgb & 0xFF0000) >> 16);
 	unsigned char green8 = (unsigned char) ((aRgb & 0x00FF00) >> 8);

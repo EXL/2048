@@ -21,7 +21,7 @@ static XFontStruct *font_small = NULL, *font_middle = NULL, *font_normal = NULL,
 static void set_window_settings();
 static void draw();
 
-int main() {
+main() {
 	Display *display;
 	int screen;
 	Window window;
@@ -79,7 +79,6 @@ int main() {
 
 end:
 	XCloseDisplay(display);
-	return 0;
 }
 
 static void set_window_settings(display, window, name) Display *display; Window window; char *name; {

@@ -77,21 +77,24 @@ TODO: Use BasiliskII for move files (README)
 
 ### Task List
 
-1. [x] Port and run X11 version, 2048-Xlib.
-2. [ ] Port and run Toolbox version.
+1. [x] Port and run X11 version, 2048-Xlib application.
+2. [x] Port and run Toolbox version, 2048-AUX application.
 3. [ ] Add compiler info and version to document.
 4. [ ] Create "old" directory for ported engine, patch file?
 5. [ ] Note about 256 MB RAM on Shoebill command.
 6. [x] Compile and test Macintosh Toolbox for A/UX code sample.
 7. [ ] Add links to ReadMe.md files.
-8. [ ] #ifdef AUX #endif AUX.
-9. [ ] Check code style on K&R function declarations.
-10. [ ] Add some information about `DeRez` utility.
+8. [x] #ifdef AUX #endif AUX (don't need that).
+9. [x] Check code style on K&R function declarations.
+10. [x] Add some information about `DeRez` utility.
 11. [ ] Add some information about `fcnvt` utility.
-12. [ ] Test 2048-Xaw build.
-13. [ ] Add short offscreen drawing function.
+12. [x] Port and run X11 version, 2048-Xaw application.
+13. [x] Add short offscreen drawing function.
 14. [x] Implement general drawing.
-15. [ ] Disable offscreen drawing by default (buggy).
+15. [x] Enable offscreen drawing by default and fix bugs.
+16. [x] Fix bug with colors in offscreen.
+17. [ ] Drop background/foreground routines in other versions.
+18. [ ] Fix UNIX file rights.
 
 ## Mac OS System 6 Notes
 

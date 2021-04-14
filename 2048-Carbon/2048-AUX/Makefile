@@ -1,5 +1,26 @@
-# TODO: Comment for Makefile
-# TODO: Comment about both application file
+#  Apple A/UX Makefile for building M68K executables of 2048 game in three variants:
+#    1. 2048-AUX: Macintosh Toolbox version.
+#    2. 2048-Xlib: X11 version using Xlib library.
+#    3. 2048-Xaw: X11 version usign Xaw library.
+#
+#  General Commands:
+#    1. make: Build all executables.
+#    2. make release: Build release executables and remove generated files.
+#    3. make 2048-AUX: Build 2048-AUX executable (unavailable on X11 session).
+#    4. make 2048-Xlib: Build 2048-Xlib executable.
+#    5. make 2048-Xaw: Build 2048-Xaw executable.
+#    6. make clean: Delete all executables and generated files.
+#    7. make purge: Delete all generated files.
+#
+#  Notes:
+#    This Makefile uses the "rez" resource compiler to build "%2048-AUX" resource file.
+#    This Makefile also uses the program "fcnvt" to convert the AppleSingle file created by "rez" to AppleDouble format.
+#    Eventually 2048-AUX application consists of two files, "2048-AUX" executable and "%2048-AUX" resource file.
+#    Both of these files must reside in the same directory when 2048-AUX is run.
+#
+#  See "ReadMe.md" file for detailed configuring and building instructions.
+#
+#  Written by: EXL, 14-Apr-2021
 
 CC               = cc
 LD               = ld
@@ -39,11 +60,11 @@ purge:
 
 $(AUX_TARGET): 2048.o 2048-AUX.o $(AUX_RESOURCE)
 	$(LD) $(AUX_LDFLAGS_PRE) 2048.o 2048-AUX.o -o $(AUX_TARGET) $(AUX_LDFLAGS_POST)
-	$(SETFILE) -c $(AUX_SIGNATURE) $(AUX_TARGET)
 
 $(AUX_RESOURCE): 2048-AUX.r
 	$(REZ) 2048-AUX.r
 	$(FCNVT) Rez.out $(AUX_TARGET)
+	$(SETFILE) -c $(AUX_SIGNATURE) $(AUX_TARGET)
 
 $(XLIB_TARGET): 2048.o 2048-Xlib.o
 	$(CC) 2048.o 2048-Xlib.o -o $(XLIB_TARGET) $(XLIB_LIBS)

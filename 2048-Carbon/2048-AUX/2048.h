@@ -49,4 +49,4 @@ extern unsigned BIG e_background();
 }
 #endif
 
-#endif // H_2048
+#endif /* H_2048 */
