@@ -6,11 +6,13 @@ LD               = ld
 STRIP            = strip
 FCNVT            = /mac/bin/fcnvt -f -d
 REZ              = /mac/bin/rez -i /:mac:lib:rincludes
+SETFILE          = /mac/bin/setfile -t APPL -a B
 CFLAGS           = -I/usr/include -B /usr/lib/big/ -O
 
 AUX_CFLAGS       = -I/usr/include -I/usr/include/mac -B /usr/lib/big/ -O
 AUX_LDFLAGS_PRE  = /usr/lib/maccrt0.o /lib/crt2.o
 AUX_LDFLAGS_POST = /usr/lib/low.o -lmac_s -lat -lld -lmr -lc_s /lib/crtn.o /usr/lib/low.ld
+AUX_SIGNATURE    = "AUX "
 AUX_RESOURCE     = %2048-AUX
 AUX_TARGET       = 2048-AUX
 
@@ -37,6 +39,7 @@ purge:
 
 $(AUX_TARGET): 2048.o 2048-AUX.o $(AUX_RESOURCE)
 	$(LD) $(AUX_LDFLAGS_PRE) 2048.o 2048-AUX.o -o $(AUX_TARGET) $(AUX_LDFLAGS_POST)
+	$(SETFILE) -c $(AUX_SIGNATURE) $(AUX_TARGET)
 
 $(AUX_RESOURCE): 2048-AUX.r
 	$(REZ) 2048-AUX.r
