@@ -27,8 +27,7 @@
 #define MENU_ITEM_COLOR      3
 #define MENU_ITEM_BW         1
 #define MENU_ITEM_COLORS     2
-#define MENU_ITEM_OFFSCREEN  4
-#define MENU_ITEM_QUIT       6
+#define MENU_ITEM_QUIT       5
 #define TILE_SIZE            64
 #define TILE_MARGIN          16
 #define ROUND_RECT_RAD       20
@@ -73,7 +72,6 @@ static Rect gRectWin;
 static Boolean gInBackground = false;
 static Boolean gColorTiles = true;
 static Boolean gRoundRect = true;
-static Boolean gOffscreen = false;
 static Boolean gRunning = true;
 
 static MenuHandle gMenuApple;
@@ -86,13 +84,13 @@ main() {
 	InitMac();
 	SetUpMenus();
 	CreateWindow();
-	SetFont();
 	if (!CreateOffScreen(&gCGrafPtr, &gRectWin)) {
 		fprintf(stderr, "ERROR: Cannot create offscreen pixmap!\n");
 		fprintf(stderr, "ERROR: Check memory limits in settings.\n");
 		SysBeep(30);
 		ExitToShell();
 	}
+	WinActivate(gWinPtr);
 	SetFont();
 	Run();
 	DeInit();
@@ -117,13 +115,14 @@ static void SetUpMenus() {
 	InsertMenu(gMenuGame = GetMenu(MENU_GAME), 0);
 	InsertMenu(gMenuTiles = GetMenu(MENU_TILES), hierMenu);
 	InsertMenu(gMenuColor = GetMenu(MENU_COLOR), hierMenu);
+
+	DrawMenuBar();
 }
 
 static void CreateWindow() {
 	gWinPtr = GetNewCWindow(RSRC_ID, nil, (WindowPtr) -1L);
 	gRectScr = qd.screenBits.bounds;
 	gRectWin = gWinPtr->portRect;
-	WinActivate(gWinPtr);
 }
 
 // Offscreen initialization function was copied from GlyphaIVOld project:
@@ -174,8 +173,6 @@ static Boolean CreateOffScreen(aCGrafPtr, aRectWin) CGrafPtr *aCGrafPtr; Rect *a
 
 	*aCGrafPtr = lNewCGrafPtr;
 	SetGDevice(lOldGDevice);
-	if (!gOffscreen)
-		WinActivate(gWinPtr);
 	return true;
 }
 
@@ -215,10 +212,7 @@ static void WinUpdate(aWinPtr) WindowPtr aWinPtr; {
 }
 
 static void WinDamage() {
-	if (gOffscreen)
-		OffScreenDraw();
-	else
-		InvalRect(&gRectWin);
+	OffScreenDraw();
 }
 
 static void WinDrag(aPoint, aWinPtr) Point aPoint; WindowPtr aWinPtr; {
@@ -237,19 +231,16 @@ static void WinClose(aPoint, aWinPtr) Point aPoint; WindowPtr aWinPtr; {
 }
 
 static void OffScreenDraw() {
-	if (gOffscreen) {
-		SetPort((GrafPtr) gCGrafPtr);
+	SetPort((GrafPtr) gCGrafPtr);
 
-		InScreenDraw();
-		CopyBits(
-			&((GrafPtr) gCGrafPtr)->portBits, &gWinPtr->portBits,
-			&gRectWin, &gRectWin,
-			srcCopy, nil
-		);
+	InScreenDraw();
+	CopyBits(
+		&((GrafPtr) gCGrafPtr)->portBits, &gWinPtr->portBits,
+		&gRectWin, &gRectWin,
+		srcCopy, nil
+	);
 
-		SetPort(gWinPtr);
-	} else
-		InScreenDraw();
+	SetPort(gWinPtr);
 }
 
 static void InScreenDraw() {
@@ -385,9 +376,6 @@ static void AdjustMenus() {
 	CheckItem(gMenuTiles, MENU_ITEM_RECT, !gRoundRect);
 	CheckItem(gMenuColor, MENU_ITEM_BW, !gColorTiles);
 	CheckItem(gMenuColor, MENU_ITEM_COLORS, gColorTiles);
-	CheckItem(gMenuGame, MENU_ITEM_OFFSCREEN, gOffscreen);
-
-	DrawMenuBar();
 }
 
 static void HandleEvents() {
@@ -452,9 +440,6 @@ static void HandleMenus(aSelect) long aSelect; {
 				case MENU_ITEM_RESET:
 					e_key(K_ESCAPE);
 					break;
-				case MENU_ITEM_OFFSCREEN:
-					gOffscreen = !gOffscreen;
-					break;
 				case MENU_ITEM_QUIT:
 					gRunning = false;
 					break;
@@ -501,7 +486,6 @@ static void HandleKeys(aEvent) EventRecord *aEvent; {
 			case 'a': e_key(K_LEFT);            break;
 			case 's': e_key(K_DOWN);            break;
 			case 'd': e_key(K_RIGHT);           break;
-			case 'f': gOffscreen = !gOffscreen; break;
 			default : e_key((int) lKey);        break;
 		}
 }

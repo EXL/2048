@@ -19,7 +19,6 @@ resource 'MENU' (129, "Game Menu", preload) {
 		"Reset", noIcon, "R", noMark, plain;
 		"Tiles", noIcon, hierarchicalMenu, "\0x82", plain; /* 130 */
 		"Color", noIcon, hierarchicalMenu, "\0x83", plain; /* 131 */
-		"Offscreen Mode", noIcon, "F", check, plain;
 		"-", noIcon, noKey, noMark, plain;
 		"Quit", noIcon, "Q", noMark, plain;
 	}
@@ -37,7 +36,7 @@ resource 'MENU' (131, "Color Menu", preload) {
 	131, textMenuProc, allEnabled, enabled, "Color",
 	{
 		"Black & White", noIcon, noKey, noMark, plain;
-		"Some Colors", noIcon, noKey, check, plain;
+		"Color Device", noIcon, noKey, check, plain;
 	}
 };
 
