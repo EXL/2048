@@ -362,11 +362,14 @@ static void Run() {
 
 static void AdjustMenus() {
 	HiliteMenu(0);
+
 	CheckItem(gMenuTiles, MENU_ITEM_ROUND, gRoundRect);
 	CheckItem(gMenuTiles, MENU_ITEM_RECT, !gRoundRect);
 	CheckItem(gMenuColor, MENU_ITEM_BW, !gColorTiles);
 	CheckItem(gMenuColor, MENU_ITEM_COLORS, gColorTiles);
 	CheckItem(gMenuGame, MENU_ITEM_OFFSCREEN, gOffscreen);
+
+	DrawMenuBar();
 }
 
 static void HandleEvents() {
@@ -422,7 +425,7 @@ static void HandleMenus(aSelect) long aSelect; {
 	switch (lMenu) {
 		case MENU_APPLE:
 			if (lItem == MENU_ITEM_ABOUT)
-				;
+				NoteAlert(128, nil);
 			else
 				HandleAppleMenu(lItem);
 			break;
