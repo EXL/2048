@@ -256,7 +256,10 @@ static void InScreenDraw() {
 	int y, x;
 	RGBColor lColorBoard;
 	GetRgbColor(COLOR_BOARD, &lColorBoard);
-	RGBBackColor(&lColorBoard);
+	if (gColorTiles)
+		RGBBackColor(&lColorBoard);
+	else
+		BackColor((e_win || e_lose) ? blackColor : whiteColor);
 	EraseRect(&gRectWin);
 	for (y = 0; y < LINE_SIZE; ++y)
 		for (x = 0; x < LINE_SIZE; ++x)
@@ -271,7 +274,10 @@ static void DrawTile(aVal, aX, aY) int aVal; int aX; int aY; {
 	int lY = OFFSET_COORD(aY);
 	GetRgbColor(e_background(aVal), &lColorTile);
 	GetRgbColor(e_foreground(aVal), &lColorText);
-	RGBForeColor(&lColorTile);
+	if (gColorTiles)
+		RGBForeColor(&lColorTile);
+	else
+		ForeColor((e_win || e_lose) ? whiteColor : blackColor);
 	SetRect(&lRectTile, lX, lY, lX + TILE_SIZE, lY + TILE_SIZE);
 
 	if (gRoundRect)
@@ -285,7 +291,10 @@ static void DrawTile(aVal, aX, aY) int aVal; int aX; int aY; {
 		short lSize = (aVal < 10) ? 34 : (aVal < 100) ? 28 : (aVal < 1000) ? 26 : 22;
 		TextFace(bold);
 		TextSize(lSize);
-		RGBForeColor(&lColorText);
+		if (gColorTiles)
+			RGBForeColor(&lColorText);
+		else
+			ForeColor((e_win || e_lose) ? blackColor : whiteColor);
 		NumToString(aVal, lStrValue);
 		llX = StringWidth(lStrValue);
 		llY = lSize - 4;
@@ -304,7 +313,10 @@ static void DrawFinal() {
 	if (e_win || e_lose)
 		DrawEnd();
 	else
-		RGBForeColor(&lColorText);
+		if (gColorTiles)
+			RGBForeColor(&lColorText);
+		else
+			ForeColor((e_win || e_lose) ? whiteColor : blackColor);
 
 	TextFace(normal);
 	TextSize(18);
@@ -325,8 +337,14 @@ static void DrawEnd() {
 	GetRgbColor(COLOR_OVERLAY, &lColorOverlay);
 	GetRgbColor(COLOR_FINAL, &lColorFinal);
 
-	RGBBackColor(&lColorOverlay);
-	RGBForeColor(&lColorFinal);
+	if (gColorTiles) {
+		RGBBackColor(&lColorOverlay);
+		RGBForeColor(&lColorFinal);
+	} else {
+		BackColor(blackColor);
+		ForeColor(whiteColor);
+	}
+
 	GetPenState(&lPenState);
 	PenPat(qd.gray);
 	PenMode(patBic);
