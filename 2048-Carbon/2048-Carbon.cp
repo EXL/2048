@@ -16,9 +16,9 @@
 #define MENU_GAME_OS_X       131
 #define MENU_ITEM_ABOUT      1
 #define MENU_ITEM_RESET      1
-#define MENU_ITEM_QUIT       4
 #define MENU_ITEM_ROUND      1
 #define MENU_ITEM_RECT       2
+#define MENU_ITEM_QUIT       4
 #define TILE_SIZE            64
 #define TILE_MARGIN          16
 #define ROUND_RECT_RAD       20

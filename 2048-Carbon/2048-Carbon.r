@@ -16,8 +16,8 @@
 
 resource 'dlgx' (128) {
 	versionZero {
-//		kDialogFlagsHandleMovableModal +
-//		kDialogFlagsUseControlHierarchy
+		// kDialogFlagsHandleMovableModal +
+		// kDialogFlagsUseControlHierarchy
 		kDialogFlagsUseThemeControls +
 		kDialogFlagsUseThemeBackground
 	}
