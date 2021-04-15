@@ -41,6 +41,8 @@ void HandleMouseMove(Point *click) {
 		MoveTo(click->h, click->v);
 		LineTo(120, 120);
 
+		SetPort(windowPtr);
+
 		CopyBits(
 			&offPort.portBits,
 			&windowPtr->portBits,
@@ -50,7 +52,6 @@ void HandleMouseMove(Point *click) {
 			0L
 		);
 
-		SetPort(windowPtr);
 		GetMouse(click);
 	}
 }

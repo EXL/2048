@@ -174,7 +174,7 @@ void Window::Activate(void) {
 void Window::Update(void) {
 	BeginUpdate(pWinPtr);
 
-	if (qOffScreenDrawing && pWinPtr == FrontWindow())
+	if (qOffScreenDrawing)
 		OffScreenDraw();
 	else
 		InScreenDraw();
@@ -209,13 +209,14 @@ void Window::OffScreenDraw(void) {
 	SetPort(&pOffScr);
 
 	InScreenDraw();
+
+	SetPort(pWinPtr);
+
 	CopyBits(
 		&pOffScr.portBits, &pWinPtr->portBits,
 		&pOffScr.portRect, &pWinPtr->portRect,
 		srcCopy, NULL
 	);
-
-	SetPort(pWinPtr);
 }
 
 void Window::InScreenDraw(void) {
