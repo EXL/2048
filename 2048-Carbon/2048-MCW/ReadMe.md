@@ -71,6 +71,13 @@ Please use Metrowerks CodeWarrior MPW instead of vanilla [Macintosh Programmer's
 
 The old Apple Developer site had some interesting publications in the [develop Articles on QuickDraw GX](http://web.archive.org/web/20041012004904/http://developer.apple.com/dev/techsupport/develop/bysubject/quickdrawgx.html) section about QuickDraw GX rendering, e.g. useful [Flicker-Free Drawing With QuickDraw GX](http://web.archive.org/web/20041029052644/http://developer.apple.com/dev/techsupport/develop/issue25/ayala.html) article.
 
+The `DeRez` utility from MPW Shell can decomile the resource *.rsrc files to both raw data and typed descriptions.
+
+```
+DeRez 2048-MCW.rsrc > Out.r
+DeRez -i "{RIncludes}" 2048-MCW.rsrc Types.r > OutTypes.r
+```
+
 This repository contains the source files with the Unix **LR** [line breaks](https://en.wikipedia.org/wiki/Newline) for convenience. Don't forget to change line breaks to **CR**, which are used in classic macOS. This can be easily done using the `unix2mac` utility which is included in the "dos2unix" package.
 
 ```sh

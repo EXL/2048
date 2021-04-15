@@ -95,6 +95,7 @@ TODO: Use BasiliskII for move files (README)
 16. [x] Fix bug with colors in offscreen.
 17. [ ] Drop background/foreground routines in other versions.
 18. [ ] Fix UNIX file rights.
+19. [ ] Add some note about setting file association by ResEdit program.
 
 ## Mac OS System 6 Notes
 
