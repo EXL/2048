@@ -46,10 +46,10 @@ main() {
 	wm_delete_window = XInternAtom(display, "WM_DELETE_WINDOW", False);
 	XSetWMProtocols(display, window, &wm_delete_window, 1);
 
-	font_small = XLoadQueryFont(display, "-adobe-helvetica-bold-r-normal--20-140-100-100-p-105-iso8859-1");
-	font_middle = XLoadQueryFont(display, "-adobe-helvetica-bold-r-normal--25-180-100-100-p-138-iso8859-1");
-	font_normal = XLoadQueryFont(display, "-adobe-helvetica-medium-r-normal--20-140-100-100-p-100-iso8859-1");
-	font_large = XLoadQueryFont(display, "-adobe-helvetica-bold-r-normal--34-240-100-100-p-182-iso8859-1");
+	font_small = XLoadQueryFont(display, "-Adobe-Helvetica-Bold-R-Normal--14-140-75-75-P-82-ISO8859-1");
+	font_middle = XLoadQueryFont(display, "-Adobe-Helvetica-Bold-R-Normal--18-180-75-75-P-103-ISO8859-1");
+	font_normal = XLoadQueryFont(display, "-Adobe-Helvetica-Medium-R-Normal--14-140-75-75-P-77-ISO8859-1");
+	font_large = XLoadQueryFont(display, "-Adobe-Helvetica-Bold-R-Normal--24-240-75-75-P-138-ISO8859-1");
 
 	while (1) {
 		XNextEvent(display, &event);
@@ -107,10 +107,9 @@ static void draw_tile(display, screen, window, x, y) Display *display; int scree
 	XFillRectangle(display, window, DefaultGC(display, screen), xOffset, yOffset + qw, TILE_SIZE + 1, rw);
 	XFillRectangle(display, window, DefaultGC(display, screen), xOffset + qw, yOffset, rw, TILE_SIZE + 1);
 	if (value) {
-		int w, h, size;
 		char str_value[VALUE_MAX_SIZE];
+		int w, h = (value < 100) ? 24 : (value < 1000) ? 18 : 14;
 		XFontStruct *current_font = NULL;
-		size = (value < 100) ? 24 : (value < 1000) ? 18 : 14;
 		memset(str_value, 0, VALUE_MAX_SIZE);
 		if (font_small && font_middle && font_large)
 			current_font = (value < 100) ? font_large : (value < 1000) ? font_middle : font_small;
@@ -118,7 +117,6 @@ static void draw_tile(display, screen, window, x, y) Display *display; int scree
 		if (current_font)
 			XSetFont(display, DefaultGC(display, screen), current_font->fid);
 		w = (current_font) ? XTextWidth(current_font, str_value, strlen(str_value)) : 10;
-		h = size + 4;
 		XSetForeground(display, DefaultGC(display, screen),
 			(e_win || e_lose) ? BlackPixel(display, screen) : WhitePixel(display, screen));
 		XDrawString(display, window, DefaultGC(display, screen),
