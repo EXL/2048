@@ -3,7 +3,8 @@ Classic Mac OS Notes
 
 ## Mac OS 9 Notes
 
-// TODO: CodeWarrior Pro 8.
+// TODO: CodeWarrior Pro 8 on Mac OS 9
+// TODO: ProjectBuilder on OS X 10.0
 
 ### Task List
 
@@ -13,10 +14,10 @@ Classic Mac OS Notes
 4. [x] Find ResEdit or its analog and create all resources.
 5. [x] Implement basic game drawing.
 6. [ ] Add Classic Mac OS binaries size information.
-7. [ ] Clear "2048-Carbon.rsrc" resource file.
+7. [x] Polish "2048-Carbon.rsrc" resource file.
 8. [x] Implement Offscreen drawing with Carbon.
 9. [x] Check executable file on Mac OS X.
-10. [ ] Create "Project Builder" project for Mac OS X Carbon version.
+10. [x] Create "Project Builder" project for Mac OS X Carbon version.
 11. [x] Fix crash on Mac OS X.
 12. [x] Get and read two Carbon API examples on Mac OS X: simple and NIB-based.
 13. [x] Fix menus on Mac OS X.
@@ -25,6 +26,7 @@ Classic Mac OS Notes
 16. [x] Drop sudo Sheep Shaver.
 17. [x] Add information about [MoreIsBetter](http://mirror.informatimago.com/next/developer.apple.com/samplecode/MoreIsBetter/index.html) example.
 18. [ ] Check on Intel-based Mac OS.
+19. [ ] Add ReadMe.md files to the "Supporting Files" group in projects.
 
 ## Mac OS 8 Notes
 

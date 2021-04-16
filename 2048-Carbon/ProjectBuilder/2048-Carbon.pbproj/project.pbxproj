@@ -1,0 +1,334 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 32;
+	objects = {
+		00D8AD6F2629173E7F000001 = {
+			isa = PBXFileReference;
+			path = "2048-Carbon.cp";
+			refType = 4;
+		};
+		00D8AD702629173E7F000001 = {
+			isa = PBXFileReference;
+			path = 2048.c;
+			refType = 4;
+		};
+		00D8AD712629173E7F000001 = {
+			isa = PBXFileReference;
+			path = 2048.h;
+			refType = 4;
+		};
+		00D8AD732629173E7F000001 = {
+			fileRef = 00D8AD712629173E7F000001;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		00D8AD742629173E7F000001 = {
+			fileRef = 00D8AD6F2629173E7F000001;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		00D8AD752629173E7F000001 = {
+			fileRef = 00D8AD702629173E7F000001;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		00D8AD77262919647F000001 = {
+			isa = PBXFileReference;
+			path = "2048-Carbon.icns";
+			refType = 4;
+		};
+		00D8AD78262919647F000001 = {
+			children = (
+				01BD7F8C2629289B7F000001,
+			);
+			isa = PBXGroup;
+			name = "Supporting Files";
+			refType = 4;
+		};
+		00D8AD79262919647F000001 = {
+			fileRef = 00D8AD77262919647F000001;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		00DB8282262922757F000001 = {
+			isa = PBXFileReference;
+			path = "2048-Carbon.r";
+			refType = 4;
+		};
+		00DB8283262922757F000001 = {
+			fileRef = 00DB8282262922757F000001;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		01BD7F8C2629289B7F000001 = {
+			isa = PBXFileReference;
+			path = ReadMe.md;
+			refType = 4;
+		};
+		01BD7F8D2629289B7F000001 = {
+			fileRef = 01BD7F8C2629289B7F000001;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		0249A665FF388DC511CA2CEA = {
+			isa = PBXApplicationReference;
+			path = "2048-Carbon.app";
+			refType = 3;
+		};
+		0249A669FF388E3911CA2CEA = {
+			isa = PBXFileReference;
+			name = "libstdc++.a";
+			path = "/usr/lib/libstdc++.a";
+			refType = 0;
+		};
+		0249A66AFF388E3911CA2CEA = {
+			fileRef = 0249A669FF388E3911CA2CEA;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		04313892FE3035C9C02AAC07 = {
+			buildActionMask = 2147483647;
+			files = (
+				00DB8283262922757F000001,
+			);
+			isa = PBXRezBuildPhase;
+			name = "ResourceManager Resources";
+		};
+		05952DFCFFF02D1B11CA0E50 = {
+			buildRules = (
+			);
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+			};
+			isa = PBXBuildStyle;
+			name = Development;
+		};
+		05952DFDFFF02D1B11CA0E50 = {
+			buildRules = (
+			);
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+			};
+			isa = PBXBuildStyle;
+			name = Deployment;
+		};
+		0640BAA4FFF0323A11CA0E50 = {
+			isa = PBXFrameworkReference;
+			name = ApplicationServices.framework;
+			path = /System/Library/Frameworks/ApplicationServices.framework;
+			refType = 0;
+		};
+		0640BAA5FFF0323A11CA0E50 = {
+			isa = PBXFrameworkReference;
+			name = CoreServices.framework;
+			path = /System/Library/Frameworks/CoreServices.framework;
+			refType = 0;
+		};
+		0867D6AAFE840B52C02AAC07 = {
+			children = (
+				0867D6ABFE840B52C02AAC07,
+			);
+			isa = PBXVariantGroup;
+			name = InfoPlist.strings;
+			refType = 4;
+		};
+		0867D6ABFE840B52C02AAC07 = {
+			fileEncoding = 10;
+			isa = PBXFileReference;
+			name = English;
+			path = English.lproj/InfoPlist.strings;
+			refType = 4;
+		};
+		0867D6ACFE840B52C02AAC07 = {
+			fileRef = 0867D6AAFE840B52C02AAC07;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+		195DF8C9FE9D4F0611CA2CBB = {
+			children = (
+				0249A665FF388DC511CA2CEA,
+			);
+			isa = PBXGroup;
+			name = Products;
+			refType = 4;
+		};
+		20286C28FDCF999611CA2CEA = {
+			buildStyles = (
+				05952DFCFFF02D1B11CA0E50,
+				05952DFDFFF02D1B11CA0E50,
+			);
+			isa = PBXProject;
+			mainGroup = 20286C29FDCF999611CA2CEA;
+			targets = (
+				20286C34FDCF999611CA2CEA,
+			);
+		};
+		20286C29FDCF999611CA2CEA = {
+			children = (
+				20286C2AFDCF999611CA2CEA,
+				20286C2CFDCF999611CA2CEA,
+				00D8AD78262919647F000001,
+				20286C32FDCF999611CA2CEA,
+				195DF8C9FE9D4F0611CA2CBB,
+			);
+			isa = PBXGroup;
+			name = "2048-Carbon";
+			path = "";
+			refType = 4;
+		};
+		20286C2AFDCF999611CA2CEA = {
+			children = (
+				00D8AD6F2629173E7F000001,
+				00D8AD702629173E7F000001,
+				00D8AD712629173E7F000001,
+			);
+			isa = PBXGroup;
+			name = Sources;
+			path = "";
+			refType = 4;
+		};
+		20286C2CFDCF999611CA2CEA = {
+			children = (
+				00DB8282262922757F000001,
+				00D8AD77262919647F000001,
+				0867D6AAFE840B52C02AAC07,
+			);
+			isa = PBXGroup;
+			name = Resources;
+			path = "";
+			refType = 4;
+		};
+		20286C32FDCF999611CA2CEA = {
+			children = (
+				20286C33FDCF999611CA2CEA,
+				0249A669FF388E3911CA2CEA,
+				0640BAA4FFF0323A11CA0E50,
+				0640BAA5FFF0323A11CA0E50,
+			);
+			isa = PBXGroup;
+			name = "External Frameworks and Libraries";
+			path = "";
+			refType = 4;
+		};
+		20286C33FDCF999611CA2CEA = {
+			isa = PBXFrameworkReference;
+			name = Carbon.framework;
+			path = /System/Library/Frameworks/Carbon.framework;
+			refType = 0;
+		};
+		20286C34FDCF999611CA2CEA = {
+			buildPhases = (
+				20286C35FDCF999611CA2CEA,
+				20286C36FDCF999611CA2CEA,
+				20286C38FDCF999611CA2CEA,
+				20286C3BFDCF999611CA2CEA,
+				04313892FE3035C9C02AAC07,
+			);
+			buildSettings = {
+				DEBUGGING_SYMBOLS = NO;
+				DEPLOYMENT_OPTIMIZATION_CFLAGS = "-O3";
+				FRAMEWORK_SEARCH_PATHS = "";
+				HEADER_SEARCH_PATHS = "";
+				INSTALL_PATH = "$(HOME)/Applications";
+				LIBRARY_SEARCH_PATHS = "";
+				OPTIMIZATION_CFLAGS = "-O3";
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = "2048-Carbon";
+				SECTORDER_FLAGS = "";
+				WARNING_CFLAGS = "-Wmost -Wno-four-char-constants -Wno-unknown-pragmas";
+				WRAPPER_EXTENSION = app;
+			};
+			conditionalBuildSettings = {
+			};
+			dependencies = (
+			);
+			isa = PBXApplicationTarget;
+			name = "2048-Carbon";
+			productInstallPath = "$(HOME)/Applications";
+			productName = "2048-Carbon";
+			productReference = 0249A665FF388DC511CA2CEA;
+			productSettingsXML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
+<!DOCTYPE plist SYSTEM \"file://localhost/System/Library/DTDs/PropertyList.dtd\">
+<plist version=\"0.9\">
+<dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>English</string>
+	<key>CFBundleExecutable</key>
+	<string>2048-Carbon</string>
+	<key>CFBundleIconFile</key>
+	<string>2048-Carbon.icns</string>
+	<key>CFBundleIdentifier</key>
+	<string>ru.exlmoto.Carbon2048</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleSignature</key>
+	<string>????</string>
+	<key>CFBundleVersion</key>
+	<string>1.0</string>
+	<key>CSResourcesFileMapped</key>
+	<true/>
+</dict>
+</plist>
+";
+			shouldUseHeadermap = 1;
+		};
+		20286C35FDCF999611CA2CEA = {
+			buildActionMask = 2147483647;
+			files = (
+				00D8AD732629173E7F000001,
+			);
+			isa = PBXHeadersBuildPhase;
+			name = Headers;
+		};
+		20286C36FDCF999611CA2CEA = {
+			buildActionMask = 2147483647;
+			files = (
+				0867D6ACFE840B52C02AAC07,
+				00D8AD79262919647F000001,
+				01BD7F8D2629289B7F000001,
+			);
+			isa = PBXResourcesBuildPhase;
+			name = "Bundle Resources";
+		};
+		20286C38FDCF999611CA2CEA = {
+			buildActionMask = 2147483647;
+			files = (
+				00D8AD742629173E7F000001,
+				00D8AD752629173E7F000001,
+			);
+			isa = PBXSourcesBuildPhase;
+			name = Sources;
+		};
+		20286C3BFDCF999611CA2CEA = {
+			buildActionMask = 2147483647;
+			files = (
+				20286C3CFDCF999611CA2CEA,
+				0249A66AFF388E3911CA2CEA,
+			);
+			isa = PBXFrameworksBuildPhase;
+			name = "Frameworks & Libraries";
+		};
+		20286C3CFDCF999611CA2CEA = {
+			fileRef = 20286C33FDCF999611CA2CEA;
+			isa = PBXBuildFile;
+			settings = {
+			};
+		};
+	};
+	rootObject = 20286C28FDCF999611CA2CEA;
+}

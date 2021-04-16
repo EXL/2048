@@ -7,7 +7,7 @@
  */
 
 // Change this to your bundle identifier string
-#define kBundleIdentifier "ru.exlmoto.carbon2048"
+#define kBundleIdentifier "ru.exlmoto.Carbon2048"
 
 // Change this to your short version string
 #define kBundleShortVersion __OUTPUT_FILENAME__ " version 1.0, 24-Mar-2021"
