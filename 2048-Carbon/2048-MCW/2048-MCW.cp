@@ -373,7 +373,7 @@ private:
 		PaintRect(&mRectWin);
 		SetPenState(&lPenState);
 
-		const unsigned char *lStrFinal = (e_win) ? "\pYou Won!" : "\pGame Over";
+		const unsigned char *lStrFinal = (e_win) ? "\pYou Won!" : "\pGame Over!";
 		TextSize(34);
 		const int lX = StringWidth(lStrFinal);
 		MoveTo(WW(mRectWin) / 2 - lX / 2, HH(mRectWin) / 2);
