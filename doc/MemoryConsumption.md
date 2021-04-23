@@ -534,6 +534,18 @@ Mac OS 9.0:            1.2 MB
 
 ### 2048-Carbon
 
+Mac OS X 10.0 (Mach-O):
+
+```
+ps aux | head -1 && ps aux | grep 2048
+USER       PID %CPU %MEM      VSZ    RSS  TT  STAT      TIME COMMAND
+happymac   551  13.7  0.3    52068   2968  ??  R      0:43.72 /Users/happymac/Projects/2048-Carbon.app/Contents/MacOS/2048-Carbon -psn_0_2097153
+
+top
+PID COMMAND      %CPU   TIME   #TH #PRTS #MREGS RPRVT  RSHRD  RSIZE  VSIZE
+551 2048-Carbo  26.0%  1:03.15   1    57    44  1.52M  4.21M  2.90M  50.8M
+```
+
 Mac OS X 10.4.11:
 
 ```
