@@ -22,7 +22,7 @@ xcodebuild -scheme 2048-Cocoa clean install DSTROOT=`pwd`
 
 Get **2048-Cocoa.app** package from `2048-Cocoa/Xcode4/Applications` directory.
 
-## OS X Development Environment
+## Mac OS X Development Environment
 
 Xcode 4:
 
