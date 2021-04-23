@@ -452,6 +452,18 @@ PID COMMAND      %CPU   TIME   #TH #PRTS #MREGS RPRVT  RSHRD  RSIZE  VSIZE
 421 2048-Cocoa   0.0%  0:02.95   1    64    43   872K  4.01M  3.04M  53.7M
 ```
 
+Mac OS X 10.5.8:
+
+```
+ps aux | head -1 && ps aux | grep 2048
+USER       PID %CPU %MEM      VSZ    RSS   TT  STAT STARTED      TIME COMMAND
+exl        764   0.0  0.4  2913736   8604   ??  S    10:26AM   0:02.37 /Users/exl/Projects/APPS/2048-Cocoa.app/Contents/MacOS/2048-Cocoa -psn_0_176171
+
+top
+PID COMMAND      %CPU   TIME   #TH #PRTS #MREGS RPRVT  RSHRD  RSIZE  VSIZE
+764 2048-Cocoa   0.0%  0:02.37   1    70     98 2256K    12M  8604K   231M
+```
+
 Mac OS X 10.6.8:
 
 ```
@@ -518,4 +530,19 @@ Mac OS System 6.0.8.1: 1024 KB
 Mac OS System 7.5.3:   1024 KB
 Mac OS 8.1:            1 MB
 Mac OS 9.0:            1.2 MB
+```
+
+### 2048-Carbon
+
+Mac OS 10.5.8:
+
+```
+ps aux | head -1 && ps aux | grep 2048
+USER       PID %CPU %MEM      VSZ    RSS   TT  STAT STARTED      TIME COMMAND
+exl        753   0.0  0.0   599780    456 s000  R+   10:24AM   0:00.00 grep 2048
+exl        727   0.0  0.2   292168   5172   ??  S    10:22AM   0:02.41 /Users/exl/Projects/APPS/2048-Carbon.app/Contents/MacOS/2048-Carbon -psn_0_172074
+
+top
+PID COMMAND      %CPU   TIME   #TH #PRTS #MREGS RPRVT  RSHRD  RSIZE  VSIZE
+727 2048-Carbo   0.0%  0:02.41   1    67     89 1180K    13M  5172K   229M
 ```
