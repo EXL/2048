@@ -39,8 +39,21 @@ tree -phD --timefmt "%d-%b-%Y %H:%M:%S" 2048-Release/
 ├── [-rwxrwxr-x   14K 30-Jun-2020 07:20:20]  2048-Xaw
 ├── [-rwxrwxr-x   14K 30-Jun-2020 07:20:27]  2048-Xcb
 ├── [-rwxrwxr-x   14K 30-Jun-2020 07:20:36]  2048-Xlib
-├── [drwxr-xr-x  4.0K 25-Oct-2020 06:53:23]  MacOS
-│   ├── [drwxr-xr-x  4.0K 25-Oct-2020 05:04:30]  10.0
+├── [drwxr-xr-x  4.0K 24-Apr-2021 04:26:43]  MacOS
+│   ├── [drwxr-xr-x  4.0K 24-Apr-2021 04:22:55]  10.0
+│   │   ├── [drwxr-xr-x  4.0K 24-Apr-2021 04:06:02]  2048-Carbon.app
+│   │   │   └── [drwxr-xr-x  4.0K 24-Apr-2021 04:05:53]  Contents
+│   │   │       ├── [-rw-r--r--   690 24-Apr-2021 04:04:55]  Info.plist
+│   │   │       ├── [drwxr-xr-x  4.0K 24-Apr-2021 04:05:59]  MacOS
+│   │   │       │   └── [-rwxr-xr-x   64K 24-Apr-2021 04:06:02]  2048-Carbon
+│   │   │       ├── [-rw-r--r--   292 24-Apr-2021 04:04:55]  pbdevelopment.plist
+│   │   │       ├── [-rw-r--r--     8 24-Apr-2021 04:04:55]  PkgInfo
+│   │   │       └── [drwxr-xr-x  4.0K 24-Apr-2021 04:06:00]  Resources
+│   │   │           ├── [-rw-r--r--   31K 24-Apr-2021 04:04:48]  2048-Carbon.icns
+│   │   │           ├── [-rw-r--r--  4.1K 24-Apr-2021 04:06:01]  2048-Carbon.rsrc
+│   │   │           ├── [drwxr-xr-x  4.0K 24-Apr-2021 04:04:52]  English.lproj
+│   │   │           │   └── [-rw-r--r--   462 24-Apr-2021 04:04:52]  InfoPlist.strings
+│   │   │           └── [-rw-r--r--  1.7K 24-Apr-2021 04:04:45]  ReadMe.md
 │   │   └── [drwxr-xr-x  4.0K 25-Oct-2020 04:14:56]  2048-Cocoa.app
 │   │       └── [drwxr-xr-x  4.0K 25-Oct-2020 04:14:47]  Contents
 │   │           ├── [-rw-r--r--   760 25-Oct-2020 04:13:58]  Info.plist
@@ -107,6 +120,47 @@ tree -phD --timefmt "%d-%b-%Y %H:%M:%S" 2048-Release/
 │   │               ├── [drwxr-xr-x  4.0K 13-Nov-2020 16:59:15]  English.lproj
 │   │               │   └── [-rw-r--r--   828 13-Nov-2020 16:59:15]  Localizable.strings
 │   │               └── [-rw-r--r--  1.8K 13-Nov-2020 16:59:15]  ReadMe.md
+│   ├── [drwxr-xr-x  4.0K 24-Apr-2021 04:25:27]  10.4
+│   │   └── [dr-xr-xr-x  4.0K 24-Apr-2021 01:28:06]  2048-Carbon.app
+│   │       └── [dr-xr-xr-x  4.0K 24-Apr-2021 01:28:06]  Contents
+│   │           ├── [-r--r--r--   854 24-Apr-2021 01:28:00]  Info.plist
+│   │           ├── [dr-xr-xr-x  4.0K 24-Apr-2021 04:25:27]  MacOS
+│   │           │   └── [-r-xr-xr-x   42K 24-Apr-2021 01:28:06]  2048-Carbon
+│   │           ├── [-r--r--r--     8 24-Apr-2021 01:28:01]  PkgInfo
+│   │           └── [dr-xr-xr-x  4.0K 24-Apr-2021 01:28:01]  Resources
+│   │               ├── [-r--r--r--   31K 24-Apr-2021 01:28:01]  2048-Carbon.icns
+│   │               ├── [dr-xr-xr-x  4.0K 24-Apr-2021 04:25:27]  English.lproj
+│   │               │   ├── [dr-xr-xr-x  4.0K 24-Apr-2021 04:25:27]  2048-Carbon.nib
+│   │               │   │   ├── [-r--r--r--    35 24-Apr-2021 01:28:01]  classes.nib
+│   │               │   │   ├── [-r--r--r--   770 24-Apr-2021 01:28:01]  info.nib
+│   │               │   │   └── [-r--r--r--  7.4K 24-Apr-2021 01:28:01]  objects.xib
+│   │               │   └── [-r--r--r--   176 24-Apr-2021 01:28:01]  InfoPlist.strings
+│   │               └── [-r--r--r--  2.3K 24-Apr-2021 01:28:01]  ReadMe.md
+│   ├── [drwxr-xr-x  4.0K 24-Apr-2021 01:50:07]  10.5
+│   │   ├── [drwxr-xr-x  4.0K 24-Apr-2021 04:25:27]  2048-Carbon.app
+│   │   │   └── [drwxr-xr-x  4.0K 24-Apr-2021 00:09:33]  Contents
+│   │   │       ├── [-rw-r--r--   784 24-Apr-2021 00:09:30]  Info.plist
+│   │   │       ├── [drwxr-xr-x  4.0K 24-Apr-2021 04:25:27]  MacOS
+│   │   │       │   └── [-rwxr-xr-x   42K 24-Apr-2021 00:09:34]  2048-Carbon
+│   │   │       ├── [-rw-r--r--     8 24-Apr-2021 00:09:30]  PkgInfo
+│   │   │       └── [drwxr-xr-x  4.0K 24-Apr-2021 00:09:30]  Resources
+│   │   │           ├── [-rw-r--r--   31K 24-Apr-2021 00:09:30]  2048-Carbon.icns
+│   │   │           ├── [drwxr-xr-x  4.0K 24-Apr-2021 04:25:27]  English.lproj
+│   │   │           │   └── [drwxr-xr-x  4.0K 24-Apr-2021 00:09:31]  2048-Carbon.nib
+│   │   │           │       └── [-rw-r--r--  6.6K 24-Apr-2021 00:09:31]  objects.xib
+│   │   │           └── [-rw-r--r--  2.2K 24-Apr-2021 00:09:30]  ReadMe.md
+│   │   └── [drwxr-xr-x  4.0K 24-Apr-2021 00:10:07]  2048-Cocoa.app
+│   │       └── [drwxr-xr-x  4.0K 24-Apr-2021 00:10:06]  Contents
+│   │           ├── [-rw-r--r--   852 24-Apr-2021 00:09:58]  Info.plist
+│   │           ├── [drwxr-xr-x  4.0K 24-Apr-2021 04:25:27]  MacOS
+│   │           │   └── [-rwxr-xr-x  114K 24-Apr-2021 00:10:07]  2048-Cocoa
+│   │           ├── [-rw-r--r--     8 24-Apr-2021 00:09:58]  PkgInfo
+│   │           └── [drwxr-xr-x  4.0K 24-Apr-2021 00:09:58]  Resources
+│   │               ├── [-rw-r--r--  139K 24-Apr-2021 00:09:58]  2048-Cocoa-modern.icns
+│   │               ├── [drwxr-xr-x  4.0K 24-Apr-2021 04:25:27]  English.lproj
+│   │               │   ├── [-rw-r--r--  8.6K 24-Apr-2021 00:09:58]  2048-Cocoa.nib
+│   │               │   └── [-rw-r--r--   828 24-Apr-2021 00:09:58]  Localizable.strings
+│   │               └── [-rw-r--r--  1.9K 24-Apr-2021 00:09:58]  ReadMe.md
 │   ├── [drwxr-xr-x  4.0K 25-Oct-2020 06:53:54]  10.6
 │   │   └── [drwxr-xr-x  4.0K 25-Oct-2020 05:26:56]  2048-Cocoa.app
 │   │       └── [drwxr-xr-x  4.0K 25-Oct-2020 05:26:53]  Contents
@@ -163,7 +217,7 @@ tree -phD --timefmt "%d-%b-%Y %H:%M:%S" 2048-Release/
     ├── [-rw-rw-r--  2.9M 27-Jun-2020 05:01:59]  2048-MotoMAGX_ZN5.webm
     └── [-rw-r--r--   69M 26-Feb-2021 04:51:36]  2048-SMD.mp4
 
-45 directories, 105 files
+69 directories, 135 files
 ```
 
 ### File Types
@@ -268,6 +322,15 @@ MacOS/10.8/2048-Cocoa.app/Contents/Resources/ReadMe.md: ASCII text
 MacOS/10.8/2048-Cocoa.app/Contents/PkgInfo: ASCII text, with no line terminators
 MacOS/10.8/2048-Cocoa.app/Contents/_CodeSignature/CodeResources: XML 1.0 document, ASCII text
 MacOS/10.8/2048-Cocoa.app/Contents/MacOS/2048-Cocoa: Mach-O 64-bit x86_64 executable, flags:<NOUNDEFS|DYLDLINK|TWOLEVEL>
+MacOS/10.4/2048-Carbon.app/Contents/Info.plist: XML 1.0 document, ASCII text
+MacOS/10.4/2048-Carbon.app/Contents/Resources/ReadMe.md: ASCII text, with very long lines
+MacOS/10.4/2048-Carbon.app/Contents/Resources/English.lproj/InfoPlist.strings: Little-endian UTF-16 Unicode text
+MacOS/10.4/2048-Carbon.app/Contents/Resources/English.lproj/2048-Carbon.nib/info.nib: XML 1.0 document, ASCII text
+MacOS/10.4/2048-Carbon.app/Contents/Resources/English.lproj/2048-Carbon.nib/classes.nib: ASCII text
+MacOS/10.4/2048-Carbon.app/Contents/Resources/English.lproj/2048-Carbon.nib/objects.xib: XML 1.0 document, ASCII text
+MacOS/10.4/2048-Carbon.app/Contents/Resources/2048-Carbon.icns: Mac OS X icon, 31376 bytes, "ics#" type
+MacOS/10.4/2048-Carbon.app/Contents/PkgInfo: ASCII text, with no line terminators
+MacOS/10.4/2048-Carbon.app/Contents/MacOS/2048-Carbon: Mach-O universal binary with 2 architectures: [ppc:Mach-O ppc executable, flags:<NOUNDEFS|DYLDLINK|TWOLEVEL>] [i386:Mach-O i386 executable, flags:<NOUNDEFS|DYLDLINK|TWOLEVEL|SUBSECTIONS_VIA_SYMBOLS>]
 MacOS/10.0/2048-Cocoa.app/Contents/pbdevelopment.plist: XML 1.0 document, ASCII text
 MacOS/10.0/2048-Cocoa.app/Contents/Info.plist: XML 1.0 document, ASCII text
 MacOS/10.0/2048-Cocoa.app/Contents/Resources/ReadMe.md: ASCII text
@@ -279,6 +342,27 @@ MacOS/10.0/2048-Cocoa.app/Contents/Resources/English.lproj/Localizable.strings: 
 MacOS/10.0/2048-Cocoa.app/Contents/Resources/2048-Cocoa.icns: Mac OS X icon, 49253 bytes, "ics#" type
 MacOS/10.0/2048-Cocoa.app/Contents/PkgInfo: ASCII text, with no line terminators
 MacOS/10.0/2048-Cocoa.app/Contents/MacOS/2048-Cocoa: Mach-O ppc executable, flags:<NOUNDEFS|DYLDLINK|PREBOUND>
+MacOS/10.0/2048-Carbon.app/Contents/pbdevelopment.plist: XML 1.0 document, ASCII text
+MacOS/10.0/2048-Carbon.app/Contents/Info.plist: XML 1.0 document, ASCII text
+MacOS/10.0/2048-Carbon.app/Contents/Resources/2048-Carbon.rsrc: Apple HFS/HFS+ resource fork
+MacOS/10.0/2048-Carbon.app/Contents/Resources/ReadMe.md: ASCII text
+MacOS/10.0/2048-Carbon.app/Contents/Resources/English.lproj/InfoPlist.strings: Big-endian UTF-16 Unicode text
+MacOS/10.0/2048-Carbon.app/Contents/Resources/2048-Carbon.icns: Mac OS X icon, 31376 bytes, "ics#" type
+MacOS/10.0/2048-Carbon.app/Contents/PkgInfo: ASCII text, with no line terminators
+MacOS/10.0/2048-Carbon.app/Contents/MacOS/2048-Carbon: Mach-O ppc executable, flags:<NOUNDEFS|DYLDLINK|PREBOUND>
+MacOS/10.5/2048-Cocoa.app/Contents/Info.plist: XML 1.0 document, ASCII text
+MacOS/10.5/2048-Cocoa.app/Contents/Resources/ReadMe.md: ASCII text, with very long lines
+MacOS/10.5/2048-Cocoa.app/Contents/Resources/English.lproj/2048-Cocoa.nib: Apple binary property list
+MacOS/10.5/2048-Cocoa.app/Contents/Resources/English.lproj/Localizable.strings: Big-endian UTF-16 Unicode text
+MacOS/10.5/2048-Cocoa.app/Contents/Resources/2048-Cocoa-modern.icns: Mac OS X icon, 142338 bytes, "is32" type
+MacOS/10.5/2048-Cocoa.app/Contents/PkgInfo: ASCII text, with no line terminators
+MacOS/10.5/2048-Cocoa.app/Contents/MacOS/2048-Cocoa: Mach-O universal binary with 4 architectures: [i386:Mach-O i386 executable, flags:<NOUNDEFS|DYLDLINK|TWOLEVEL>] [x86_64:Mach-O 64-bit x86_64 executable, flags:<NOUNDEFS|DYLDLINK|TWOLEVEL>] [ppc_7400:Mach-O ppc_7400 executable, flags:<NOUNDEFS|DYLDLINK|TWOLEVEL>] [ppc64:Mach-O ppc64 executable, flags:<NOUNDEFS|DYLDLINK|TWOLEVEL>]
+MacOS/10.5/2048-Carbon.app/Contents/Info.plist: XML 1.0 document, ASCII text
+MacOS/10.5/2048-Carbon.app/Contents/Resources/ReadMe.md: ASCII text, with very long lines
+MacOS/10.5/2048-Carbon.app/Contents/Resources/English.lproj/2048-Carbon.nib/objects.xib: XML 1.0 document, ASCII text
+MacOS/10.5/2048-Carbon.app/Contents/Resources/2048-Carbon.icns: Mac OS X icon, 31376 bytes, "ics#" type
+MacOS/10.5/2048-Carbon.app/Contents/PkgInfo: ASCII text, with no line terminators
+MacOS/10.5/2048-Carbon.app/Contents/MacOS/2048-Carbon: Mach-O universal binary with 2 architectures: [i386:Mach-O i386 executable, flags:<NOUNDEFS|DYLDLINK|TWOLEVEL>] [ppc_7400:Mach-O ppc_7400 executable, flags:<NOUNDEFS|DYLDLINK|TWOLEVEL>]
 
 file Videos/*
 Videos/2048-MotoMAGX_ZN5.webm: WebM
@@ -1129,4 +1213,15 @@ otool -L 2048-Swift
 	@rpath/libswiftObjectiveC.dylib (compatibility version 1.0.0, current version 1000.11.42)
 	@rpath/libswiftQuartzCore.dylib (compatibility version 1.0.0, current version 1000.11.42)
 	@rpath/libswiftXPC.dylib (compatibility version 1.0.0, current version 1000.11.42)
+```
+
+### 2048-Carbon
+
+Mac OS X 10.0:
+
+```
+otool -L 2048-Carbon
+2048-Carbon:
+	/System/Library/Frameworks/Carbon.framework/Versions/A/Carbon (compatibility version 2.0.0, current version 113.0.0)
+	/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 50.0.0)
 ```
