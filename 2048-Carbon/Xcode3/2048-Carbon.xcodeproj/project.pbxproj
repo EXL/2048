@@ -12,6 +12,7 @@
 		CA88709B2631B546006A36FF /* 2048-Carbon.c in Sources */ = {isa = PBXBuildFile; fileRef = CA8870982631B546006A36FF /* 2048-Carbon.c */; };
 		CA88709C2631B546006A36FF /* 2048.c in Sources */ = {isa = PBXBuildFile; fileRef = CA8870992631B546006A36FF /* 2048.c */; };
 		CA88709E2631B56C006A36FF /* 2048-Carbon.icns in Resources */ = {isa = PBXBuildFile; fileRef = CA88709D2631B56C006A36FF /* 2048-Carbon.icns */; };
+		CA8DCE0726332348003ED7B8 /* ReadMe.md in Resources */ = {isa = PBXBuildFile; fileRef = CA8870A02631B595006A36FF /* ReadMe.md */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -139,6 +140,7 @@
 			files = (
 				1DDD57D60DA1CFB400B32029 /* 2048-Carbon.xib in Resources */,
 				CA88709E2631B56C006A36FF /* 2048-Carbon.icns in Resources */,
+				CA8DCE0726332348003ED7B8 /* ReadMe.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
