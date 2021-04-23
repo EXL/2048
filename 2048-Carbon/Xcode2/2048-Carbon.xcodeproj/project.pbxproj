@@ -13,6 +13,7 @@
 		8D0C4E920486CD37000505A6 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20286C33FDCF999611CA2CEA /* Carbon.framework */; };
 		CA108D95262FF69E0047290B /* 2048-Carbon.icns in Resources */ = {isa = PBXBuildFile; fileRef = CA108D94262FF69E0047290B /* 2048-Carbon.icns */; };
 		CA108FFF2630692C0047290B /* 2048.c in Sources */ = {isa = PBXBuildFile; fileRef = CA108FFD2630692C0047290B /* 2048.c */; };
+		CA96FA9226333DB3005DABA7 /* ReadMe.md in Resources */ = {isa = PBXBuildFile; fileRef = CA43A07626319C3A00BE2524 /* ReadMe.md */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -141,6 +142,7 @@
 				8D0C4E8D0486CD37000505A6 /* InfoPlist.strings in Resources */,
 				8D0C4E8E0486CD37000505A6 /* 2048-Carbon.nib in Resources */,
 				CA108D95262FF69E0047290B /* 2048-Carbon.icns in Resources */,
+				CA96FA9226333DB3005DABA7 /* ReadMe.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
