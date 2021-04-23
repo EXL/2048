@@ -34,11 +34,13 @@ rm 2048-Cocoa.app.tar
 
 Get **2048-Cocoa.app** package from `~/Projects/` directory.
 
-## OS X Development Environment
+## Mac OS X Development Environment
 
 Xcode 3:
 
 ![Xcode 3 Mac OS X 10.5 Screenshot](../../image/Xcode-MacOSX-10_5-Screenshot.png)
+
+Interface Builder 3:
 
 ![Interface Builder 3 Mac OS X 10.5 Screenshot](../../image/InterfaceBuilder-MacOSX-10_5-Screenshot.png)
 
