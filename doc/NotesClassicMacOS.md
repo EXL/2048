@@ -150,6 +150,9 @@ The THINK C offered the programmer a powerful object-oriented Think Class Librar
 9. [QuickDraw GX Graphics, 1994](https://vintageapple.org/inside_r/pdf/QD_GX_Graphics_1994.pdf)
 10. [Building and Managing Programs in MPW, 1996](https://sites.google.com/site/macintoshprogrammersworkshop/files)
 11. [Carbon Porting Guide, 2002](http://mirror.informatimago.com/next/developer.apple.com/documentation/Carbon/Conceptual/carbon_porting_guide/carbonporting.pdf) | [Web version](https://developer.apple.com/library/archive/documentation/Carbon/Conceptual/carbon_porting_guide/cpg_intro_struct/cpg_intro_struct.html#//apple_ref/doc/uid/TP30000991)
+12. [Handling Carbon Events, 2003](http://mirror.informatimago.com/next/developer.apple.com/documentation/Carbon/Conceptual/Carbon_Event_Manager/CarbonEvents.pdf)
+13. [Handling Carbon Windows and Controls, 2002](http://mirror.informatimago.com/next/developer.apple.com/documentation/Carbon/Conceptual/HandlingWindowsControls/windowscontrols.pdf)
+14. [Quartz 2D Programming Guide](http://mirror.informatimago.com/next/developer.apple.com/documentation/GraphicsImaging/Conceptual/drawingwithquartz2d/drawingwithquartz2d.pdf)
 
 You can find literature, documentation, and source code on the following sites:
 
