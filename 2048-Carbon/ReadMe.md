@@ -1,30 +1,34 @@
-https://en.wikipedia.org/wiki/Fork_(file_system)
-https://en.wikipedia.org/wiki/Resource_fork
-
-(limitations about forks)
-
-Examples:
-
-https://github.com/steventroughtonsmith/BitPaint/
-http://mirror.informatimago.com/next/developer.apple.com/samplecode/MoreIsBetter/index.html
-
 2048-Carbon
 ===========
 
-The "2048" game for the [classic Mac OS](https://en.wikipedia.org/wiki/Classic_Mac_OS) (System 7-9) and early [Mac OS X](https://en.wikipedia.org/wiki/MacOS) (10.0-10.6.8) platforms based on [PowerPC](https://en.wikipedia.org/wiki/PowerPC) architecture with using [Carbon API](https://en.wikipedia.org/wiki/Carbon_(API)) which using under the hood [Macintosh Toolbox](https://en.wikipedia.org/wiki/Macintosh_Toolbox) and [QuickDraw](https://en.wikipedia.org/wiki/QuickDraw) technologies.
+| Mac OS 8.6 | Mac OS 9.0.4 | Mac OS X 10.0 |
+|------------|--------------|---------------|
+| ![2048-Carbon Classic Mac OS 8.6 Screenshot](../image/2048-Carbon-Screenshot-CFM-8_6.png) | ![2048-Carbon Classic Mac OS 9.0.4 Screenshot](../image/2048-Carbon-Screenshot-CFM-9_0_4.png) | ![2048-Carbon Mac OS X 10.0 Screenshot](../image/2048-Carbon-Screenshot-CFM-10_0.png) |
+
+[https://github.com/EXL/2048/tree/master/2048-Carbon](https://github.com/EXL/2048/tree/master/2048-Carbon)
+
+The "2048" game for the [classic Mac OS](https://en.wikipedia.org/wiki/Classic_Mac_OS) (System 8.6-9) and early [Mac OS X](https://en.wikipedia.org/wiki/MacOS) (10.0-10.6.8) platforms based on [PowerPC](https://en.wikipedia.org/wiki/PowerPC) architecture with using [Carbon API](https://en.wikipedia.org/wiki/Carbon_(API)) which using under the hood [Macintosh Toolbox](https://en.wikipedia.org/wiki/Macintosh_Toolbox) and [QuickDraw](https://en.wikipedia.org/wiki/QuickDraw) technologies.
 
 *Note.* The [QuickDraw GX](https://en.wikipedia.org/wiki/QuickDraw_GX) 2D graphics engine [isn't supported](http://mirror.informatimago.com/next/developer.apple.com/documentation/Carbon/Reference/Carbon_Spec_Porting/QuickDraw_GX.html) in Carbon API.
 
 ## Setup Sheep Shaver Development Environment
 
-1. Install [Mac OS 9.0](https://winworldpc.com/product/mac-os-9/90) into [Sheep Shaver](https://en.wikipedia.org/wiki/SheepShaver) emulator through [Sheep Shaver Setup](https://www.emaculation.com/doku.php/sheepshaver_setup) installation guide.
+1. Install [Mac OS 9.0.4](https://winworldpc.com/product/mac-os-9/90) into [Sheep Shaver](https://en.wikipedia.org/wiki/SheepShaver) emulator through [Sheep Shaver Setup](https://www.emaculation.com/doku.php/sheepshaver_setup) installation guide.
 
-    *Note.* If you are using Linux, please disable SELinux for the current session and disable `mmap_min_addr` to rid off "Cannot map Low Memory Globals: Operation not permitted." error.
+    *Note №1.* If you are using Linux, please disable SELinux for the current session and disable `mmap_min_addr` to rid off "Cannot map Low Memory Globals: Operation not permitted." error.
 
     ```bash
     sudo setenforce 0
     echo 0 | sudo tee /proc/sys/vm/mmap_min_addr
     ```
+
+    *Note №2.* The classic Mac OS installation disks checks the writeability of itself. Disable the ability to write to the image by this command:
+
+    ```bash
+    chmod 0444 "Apple MacOS 9.0.4.iso"
+    ```
+
+    To rid off "The system software on the startup disk only functions on the original media, not if copied to another drive." error.
 
 2. Install [CodeWarrior Pro 8](https://macintoshgarden.org/apps/codewarrior-pro-8x) Tools and IDE which requires at least 1 GB for installation.
 
@@ -48,100 +52,58 @@ The "2048" game for the [classic Mac OS](https://en.wikipedia.org/wiki/Classic_M
 
     *Note.* The "Mac OS 9" is name of storage drive with installed Mac OS 9.
 
-3. Install [ResEdit 2.1.3](https://macintoshgarden.org/apps/resedit) by Apple.
+3. Install [ResEdit 2.1.3](https://macintoshgarden.org/apps/resedit) by Apple. [ResEdit](https://en.wikipedia.org/wiki/ResEdit) is a developer tool application for the Apple Macintosh, used to create and edit resources directly in the Mac's [resource fork](https://en.wikipedia.org/wiki/Resource_fork) architecture.
+
+4. *Optional.* Update [CarbonLib extension](https://macintoshgarden.org/apps/carbonlib) to 1.6.1 version.
+
+5. *Optional.* Install [Iconographer 2.4](https://macintoshgarden.org/apps/iconographer-24) to for [\*.icns](https://en.wikipedia.org/wiki/Apple_Icon_Image_format) icons editing capability.
 
 ## Building CFM/PEF executable using Metrowerks CodeWarrior IDE in Mac OS 9
 
-1. Attach "TODO" floppy disk image on "Volumes" tab in the Sheep Shaver emulator and start Mac OS 9 with it.
+1. Attach "[2048-MAC.dsk](./DiskImages/)" floppy disk image on "Volumes" tab in the Sheep Shaver emulator and start Mac OS 9 with it.
 2. Copy "2048-Carbon" folder from floppy disk to the storage drive.
 3. Open "2048-Carbon:2048-Carbon.mcp" project file with Metrowerks CodeWarrior IDE.
 4. Set "Carbon Toolbox Final" instead of "Carbon Toolbox Debug" target.
 5. In the main menu choose "Project" => "Make", wait for the compilation process to complete.
 6. Get resulted 2048-Carbon executable file for [PowerPC](https://en.wikipedia.org/wiki/PowerPC) architecture in the "2048-Carbon" directory.
 
-// TODO: Building MachO
-## Building using Metrowerks CodeWarrior MPW
+## Building Mach-O executable using Project Builder IDE in Mac OS X
 
-*Note.* This instructions aren't recommended, use CodeWarrior IDE instead.
-
-Please use Metrowerks CodeWarrior MPW instead of vanilla [Macintosh Programmer's Workshop](https://en.wikipedia.org/wiki/Macintosh_Programmer%27s_Workshop) by Apple.
-
-### Configure CodeWarrior MPW
-
-1. Go to the "CodeWarrior Pro 4:CodeWarrior MPW:MPW:" directory, open "MW Read Me" file and read it.
-2. Go to the "CodeWarrior Pro 4:CodeWarrior MPW:MPW:Scripts" directory, open "CW_Max_Dup_Update" script in the MPW Shell.
-3. Select all text by `Command + A` then push `Command + Enter` to execute selected script lines.
-4. In the file dialog that opens, select "CodeWarrior Pro 4:Metrowerks CodeWarrior" directory but not open it, then click "Directory" button.
-5. The script will generate many `Duplicate` commands, click "OK" button, then select all these commands by using `Shift + Arrows` keys.
-6. Push `Command + Enter` to execute all `Dublicate` commands, press "No" button when dialog appears.
-7. When copying is completed the mouse cursor becomes normal. Now exit "MPW Shell" using `Command + Q` or select "File" => "Quit" in the main menu, then click "Don't Save" button.
-
-### Build and Run
-
-#### 1st way
-
-1. Go to the "2048-MCW" directory, open "Makefile" using MPW Shell by double click on it.
-2. Push `Command + B` or select "Build" => "Build..." in the main menu.
-3. Type "2048-MCW" without double quotes in the "Program Name?" window and click "OK" button.
-4. Wait for the compilation process and push `Command + Enter` to run application.
-
-#### 2nd way
-
-1. Go to the "CodeWarrior Pro 4:CodeWarrior MPW:MPW" directory and run "MPW Shell" program.
-2. Type and execute by `Command + Enter` following commands for building application:
-
-    ```
-    Directory "Mac OS 8.1:2048-MCW"
-    Files
-    BuildProgram "2048-MCW"
-    ```
-    *Note.* "Mac OS 8.1" is name of storage drive.
-
-3. Push `Command + Enter` to run application.
+See [ProjectBuilder](./ProjectBuilder/) directory.
 
 ## Additional Information
-
-The old Apple Developer site had some interesting publications in the [develop Articles on QuickDraw GX](http://web.archive.org/web/20041012004904/http://developer.apple.com/dev/techsupport/develop/bysubject/quickdrawgx.html) section about QuickDraw GX rendering, e.g. useful [Flicker-Free Drawing With QuickDraw GX](http://web.archive.org/web/20041029052644/http://developer.apple.com/dev/techsupport/develop/issue25/ayala.html) article.
 
 This repository contains the source files with the Unix **LR** [line breaks](https://en.wikipedia.org/wiki/Newline) for convenience. Don't forget to change line breaks to **CR**, which are used in classic macOS. This can be easily done using the `unix2mac` utility which is included in the "dos2unix" package.
 
 ```sh
 unix2mac 2048.c
 unix2mac 2048.h
-unix2mac 2048-MCW.cp
-unix2mac 2048-MCW.r
-unix2mac Makefile
+unix2mac 2048-Carbon.cp
+unix2mac 2048-Carbon.r
+unix2mac 2048-Carbon.plc
 unix2mac ReadMe.md
 ```
 
 The reverse process can be done with `mac2unix` utility.
 
+Useful Carbon API code examples:
+
+1. [BitPaint](https://github.com/steventroughtonsmith/BitPaint/) -- Trivial Carbonized Toolbox sample project that runs on Mac OS System 1.0 right up to Mac OS X 10.10 and higher.
+2. [MoreIsBetter](http://mirror.informatimago.com/next/developer.apple.com/samplecode/MoreIsBetter/index.html) -- A code sample and library which provides indispensable work-arounds and illustrations for Mac OS programming. This library was helpful for implementation of movable modal dialogs.
+
 See [NotesClassicMacOS.md](../../doc/NotesClassicMacOS.md) document for some additional information.
 
 ## Classic Mac OS Development Environment
 
-Metrowerks CodeWarrior IDE 3.2 (part of Metrowerks CodeWarrior Pro 4 distribution):
+Metrowerks CodeWarrior IDE 5.0 (part of Metrowerks CodeWarrior Pro 8 distribution):
 
-![Metrowerks CodeWarrior IDE application, classic Mac OS 8.1 Screenshot 1](../../image/MCW-MacOS-8_1-Screenshot_1.png)
-
-![Metrowerks CodeWarrior IDE application, classic Mac OS 8.1 Screenshot 2](../../image/MCW-MacOS-8_1-Screenshot_2.png)
-
-Apple MPW 3.4.2:
-
-![Apple MPW, Metrowerks CodeWarrior MPW programming shell, classic Mac OS 8.1 Screenshot](../../image/MPW-MacOS-8_1-Screenshot.png)
+![Metrowerks CodeWarrior IDE application, classic Mac OS 9.0 Screenshot](../../image/MCW-MacOS-9_0-Screenshot.png)
 
 ## Versions
 
-1. [Basilisk II 1.0](https://github.com/cebix/macemu)
-2. [Apple Mac OS 8.1](https://winworldpc.com/download/7724c394-e280-9362-c382-11c3a6e28094)
-3. [Metrowerks CodeWarrior Pro 4](https://macintoshgarden.org/sites/macintoshgarden.org/files/apps/CWPro4Tools.cdr_.zip) (with Metrowerks CodeWarrior IDE version 3.2 build 0158)
-4. [Apple ResEdit 2.1.3](https://en.wikipedia.org/wiki/ResEdit)
-5. [Apple MPW 3.4.2](https://en.wikipedia.org/wiki/Macintosh_Programmer%27s_Workshop) (with Metrowerks CodeWarrior MPW extensions and tools)
-
-## Additional Screenshots
-
-The 2048-MCW application running on Mac OS System 6.0.8.1 with a different number of colors:
-
-| "256" Colors | "Thousands" Colors | "Millions" Colors |
-|--------------|--------------------|-------------------|
-| ![2048-MCW Classic Mac OS System 6.0.8.1 + 32-bit QuickDraw + "256" Colors Screenshot](../../image/2048-MCW-MacOS-6-QD-256-Screenshot-7.png) | ![2048-MCW Classic Mac OS System 6.0.8.1 + 32-bit QuickDraw + "Thousands" Colors Screenshot](../../image/2048-MCW-MacOS-6-QD-Thousands-Screenshot-8.png) | ![2048-MCW Classic Mac OS System 6.0.8.1 + 32-bit QuickDraw + "Millions" Colors Screenshot](../../image/2048-MCW-MacOS-6-QD-Millions-Screenshot-9.png) |
+1. [Sheep Shaver 2.4](https://github.com/cebix/macemu) | [Sheep Shaver 2.5](https://github.com/kanjitalk755/macemu)
+2. [Apple Mac OS 9.0.4](https://winworldpc.com/download/3e3dc387-c38b-18c3-9a11-c3a4e284a2ef)
+3. [Metrowerks CodeWarrior Pro 8](https://macintoshgarden.org/sites/macintoshgarden.org/files/apps/CodeWarrior_8_Pro.toast_.sit) (with Metrowerks CodeWarrior IDE version 5.0 build 951)
+4. [Apple ResEdit 2.1.3](https://macintoshgarden.org/sites/macintoshgarden.org/files/apps/ResEdit.sit)
+5. [CarbonLib 1.6.1](https://macintoshgarden.org/sites/macintoshgarden.org/files/apps/CarbonLib_161.sit)
+6. [Iconographer 2.4](https://macintoshgarden.org/sites/macintoshgarden.org/files/apps/iconographer24.sit)

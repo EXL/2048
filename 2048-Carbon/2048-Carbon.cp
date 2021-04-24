@@ -106,7 +106,7 @@ public:
 			srcCopy, nil
 		);
 
-		QDFlushPortBuffer(GetQDGlobalsThePort(), nil); // TODO: check this.
+		QDFlushPortBuffer(GetQDGlobalsThePort(), nil);
 
 		EndUpdate(mWinPtr);
 	}
