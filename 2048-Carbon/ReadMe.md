@@ -56,7 +56,7 @@ The "2048" game for the [classic Mac OS](https://en.wikipedia.org/wiki/Classic_M
 
 4. *Optional.* Update [CarbonLib extension](https://macintoshgarden.org/apps/carbonlib) to 1.6.1 version.
 
-5. *Optional.* Install [Iconographer 2.4](https://macintoshgarden.org/apps/iconographer-24) to for [\*.icns](https://en.wikipedia.org/wiki/Apple_Icon_Image_format) icons editing capability.
+5. *Optional.* Install [Iconographer 2.4](https://macintoshgarden.org/apps/iconographer-24) for [\*.icns](https://en.wikipedia.org/wiki/Apple_Icon_Image_format) Apple icons editing capability.
 
 ## Building CFM/PEF executable using Metrowerks CodeWarrior IDE in Mac OS 9
 
@@ -69,7 +69,7 @@ The "2048" game for the [classic Mac OS](https://en.wikipedia.org/wiki/Classic_M
 
 ## Building Mach-O executable using Project Builder IDE in Mac OS X
 
-See [ProjectBuilder](./ProjectBuilder/) directory.
+See [ProjectBuilder](./ProjectBuilder/) directory (common codebase).
 
 ## Additional Information
 
@@ -91,13 +91,13 @@ Useful Carbon API code examples:
 1. [BitPaint](https://github.com/steventroughtonsmith/BitPaint/) -- Trivial Carbonized Toolbox sample project that runs on Mac OS System 1.0 right up to Mac OS X 10.10 and higher.
 2. [MoreIsBetter](http://mirror.informatimago.com/next/developer.apple.com/samplecode/MoreIsBetter/index.html) -- A code sample and library which provides indispensable work-arounds and illustrations for Mac OS programming. This library was helpful for implementation of movable modal dialogs.
 
-See [NotesClassicMacOS.md](../../doc/NotesClassicMacOS.md) document for some additional information.
+See [NotesClassicMacOS.md](../doc/NotesClassicMacOS.md) document for some additional information.
 
 ## Classic Mac OS Development Environment
 
 Metrowerks CodeWarrior IDE 5.0 (part of Metrowerks CodeWarrior Pro 8 distribution):
 
-![Metrowerks CodeWarrior IDE application, classic Mac OS 9.0 Screenshot](../../image/MCW-MacOS-9_0-Screenshot.png)
+![Metrowerks CodeWarrior IDE application, classic Mac OS 9.0 Screenshot](../image/MCW-MacOS-9_0-Screenshot.png)
 
 ## Versions
 
