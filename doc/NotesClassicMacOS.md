@@ -3,8 +3,9 @@ Classic Mac OS Notes
 
 ## Mac OS 9 Notes
 
-// TODO: CodeWarrior Pro 8 on Mac OS 9
-// TODO: ProjectBuilder on OS X 10.0
+I choose for Mac OS 9.0.4 development [Metrowerks CodeWarrior IDE 5.0](https://en.wikipedia.org/wiki/CodeWarrior) and [Metrowerks PowerPlant Constructor 2.5.5](https://en.wikipedia.org/wiki/PowerPlant) programs which are included to the [CodeWarrior Pro 8](https://macintoshgarden.org/apps/codewarrior-pro-8x) distribution CD. I used the [Apple ResEdit 2.1.3](https://en.wikipedia.org/wiki/ResEdit) program to create various application resources like forms, dialogs, and icons. The compilers provided with Metrowerks CodeWarrior package can compile [С](https://en.wikipedia.org/wiki/C_(programming_language)) and [C++](https://en.wikipedia.org/wiki/C%2B%2B) code for [PowerPC](https://en.wikipedia.org/wiki/PowerPC) architecture. Standard Apple technologies such as [Macintosh Toolbox](https://en.wikipedia.org/wiki/Macintosh_Toolbox), [QuickDraw](https://en.wikipedia.org/wiki/QuickDraw) can be used with Metrowerks CodeWarrior IDE alongside with C and C++ standard libraries and [Carbon API](https://en.wikipedia.org/wiki/Carbon_(API)).
+
+The CodeWarrior Pro 8 can compile both executable files for classic Mac OS ([CFM/PEF](https://en.wikipedia.org/wiki/Preferred_Executable_Format)) and for Mac OS X ([Mach-O](https://en.wikipedia.org/wiki/Mach-O)), but I preferred to use the native development tools ([Project Builder](https://en.wikipedia.org/wiki/Project_Builder) and [Interface Builder](https://en.wikipedia.org/wiki/Interface_Builder)) to build a Carbon application for Mac OS X.
 
 ### Task List
 
@@ -25,12 +26,12 @@ Classic Mac OS Notes
 15. [x] Work on about dialog: moveable, background, etc.
 16. [x] Drop sudo Sheep Shaver.
 17. [x] Add information about [MoreIsBetter](http://mirror.informatimago.com/next/developer.apple.com/samplecode/MoreIsBetter/index.html) example.
-18. [ ] Check on Intel-based Mac OS.
-19. [ ] Add ReadMe.md files to the "Supporting Files" group in projects.
+18. [x] Check on Intel-based Mac OS.
+19. [x] Add ReadMe.md files to the "Supporting Files" group in projects.
 
 ## Mac OS 8 Notes
 
-I choose for Mac OS 8.1 development [Metrowerks CodeWarrior IDE 3.2](https://en.wikipedia.org/wiki/CodeWarrior), [Metrowerks Constructor 2.4.5](https://en.wikipedia.org/wiki/PowerPlant), and [Apple ResEdit 2.1.3](https://en.wikipedia.org/wiki/ResEdit) programs which are included to the [CodeWarrior Pro 4](https://macintoshgarden.org/apps/codewarrior-pro-4) distribution CD. The compilers provided with this package can compile [С](https://en.wikipedia.org/wiki/C_(programming_language)) and [C++](https://en.wikipedia.org/wiki/C%2B%2B) code for [Motorola 68000](https://en.wikipedia.org/wiki/Motorola_68000) and [PowerPC](https://en.wikipedia.org/wiki/PowerPC) architectures. Standard Apple technologies such as [Macintosh Toolbox](https://en.wikipedia.org/wiki/Macintosh_Toolbox), [QuickDraw](https://en.wikipedia.org/wiki/QuickDraw), and [QuickDraw GX](https://en.wikipedia.org/wiki/QuickDraw_GX) can be used with Metrowerks CodeWarrior IDE alongside with C and C++ standard libraries.
+I choose for Mac OS 8.1 development [Metrowerks CodeWarrior IDE 3.2](https://en.wikipedia.org/wiki/CodeWarrior), [Metrowerks PowerPlant Constructor 2.4.5](https://en.wikipedia.org/wiki/PowerPlant), and [Apple ResEdit 2.1.3](https://en.wikipedia.org/wiki/ResEdit) programs which are included to the [CodeWarrior Pro 4](https://macintoshgarden.org/apps/codewarrior-pro-4) distribution CD. The compilers provided with this package can compile [С](https://en.wikipedia.org/wiki/C_(programming_language)) and [C++](https://en.wikipedia.org/wiki/C%2B%2B) code for [Motorola 68000](https://en.wikipedia.org/wiki/Motorola_68000) and [PowerPC](https://en.wikipedia.org/wiki/PowerPC) architectures. Standard Apple technologies such as [Macintosh Toolbox](https://en.wikipedia.org/wiki/Macintosh_Toolbox), [QuickDraw](https://en.wikipedia.org/wiki/QuickDraw), and [QuickDraw GX](https://en.wikipedia.org/wiki/QuickDraw_GX) can be used with Metrowerks CodeWarrior IDE alongside with C and C++ standard libraries.
 
 The CodeWarrior Pro 4 package includes object-oriented [Metrowerks PowerPlant](https://en.wikipedia.org/wiki/PowerPlant) application framework, which is similar to the Think Class Library (TCL) from the Symantec THINK C integrated development environment. I think a lot of good things in the Metrowerks CodeWarrior IDE come from the Symantec THINK C world.
 
@@ -66,10 +67,10 @@ The [Macintosh Programmer's Workshop](https://en.wikipedia.org/wiki/Macintosh_Pr
 26. [x] Add CodeWarrior MPW instructions and screenshots.
 27. [x] Add `LF` => `CR` conversion list of files.
 28. [x] Check various memory consumption.
-29. [ ] Include ReadMe.md files to the source directories.
+29. [x] Include ReadMe.md files to the source directories.
 30. [x] Transfer problems of Motorola 68000 executable files. Use archives or floppy disk images.
 31. [x] Check game on the Mac OS System 6 with color display. It's works! There is crash on the "About 2048-MCW..." dialog though.
-32. [ ] Connection with Carbon.
+32. [x] Connection with Carbon.
 
 ## A/UX Notes
 
