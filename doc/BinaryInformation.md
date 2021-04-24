@@ -1146,6 +1146,20 @@ otool -L 2048-Cocoa
 	/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 50.0.0)
 ```
 
+Mac OS X 10.5.8:
+
+```
+otool -L 2048-Cocoa
+2048-Cocoa:
+	/System/Library/Frameworks/Cocoa.framework/Versions/A/Cocoa (compatibility version 1.0.0, current version 12.0.0)
+	/usr/lib/libgcc_s.1.dylib (compatibility version 1.0.0, current version 1.0.0)
+	/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 111.0.0)
+	/usr/lib/libobjc.A.dylib (compatibility version 1.0.0, current version 227.0.0)
+	/System/Library/Frameworks/CoreFoundation.framework/Versions/A/CoreFoundation (compatibility version 150.0.0, current version 476.0.0)
+	/System/Library/Frameworks/AppKit.framework/Versions/C/AppKit (compatibility version 45.0.0, current version 949.0.0)
+	/System/Library/Frameworks/Foundation.framework/Versions/C/Foundation (compatibility version 300.0.0, current version 677.12.0)
+```
+
 Mac OS X 10.6.8:
 
 ```
@@ -1224,4 +1238,26 @@ otool -L 2048-Carbon
 2048-Carbon:
 	/System/Library/Frameworks/Carbon.framework/Versions/A/Carbon (compatibility version 2.0.0, current version 113.0.0)
 	/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 50.0.0)
+```
+
+Mac OS X 10.4.11:
+
+```
+otool -L 2048-Carbon
+2048-Carbon:
+	/System/Library/Frameworks/Carbon.framework/Versions/A/Carbon (compatibility version 2.0.0, current version 128.0.0)
+	/usr/lib/libgcc_s.1.dylib (compatibility version 1.0.0, current version 1.0.0)
+	/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 88.3.9)
+```
+
+Mac OS X 10.5.8:
+
+```
+otool -L 2048-Carbon
+2048-Carbon:
+	/System/Library/Frameworks/Carbon.framework/Versions/A/Carbon (compatibility version 2.0.0, current version 136.0.0)
+	/usr/lib/libgcc_s.1.dylib (compatibility version 1.0.0, current version 1.0.0)
+	/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 111.0.0)
+	/System/Library/Frameworks/CoreFoundation.framework/Versions/A/CoreFoundation (compatibility version 150.0.0, current version 476.0.0)
+	/System/Library/Frameworks/ApplicationServices.framework/Versions/A/ApplicationServices (compatibility version 1.0.0, current version 34.0.0)
 ```
