@@ -520,7 +520,7 @@ PID   COMMAND      %CPU TIME     #TH   #WQ  #PORT MEM    PURG   CMPRS  PGRP PPID
 Mac OS System 6.0.8.1: 384 KB
 Mac OS System 7.5.3:   384 KB
 Mac OS 8.1:            400 KB
-Mac OS 9.0:            452 KB
+Mac OS 9.0.4:          452 KB
 ```
 
 ### 2048-MCW
@@ -529,10 +529,27 @@ Mac OS 9.0:            452 KB
 Mac OS System 6.0.8.1: 1024 KB
 Mac OS System 7.5.3:   1024 KB
 Mac OS 8.1:            1 MB
-Mac OS 9.0:            1.2 MB
+Mac OS 9.0.4:          1.2 MB
 ```
 
 ### 2048-Carbon
+
+```
+Mac OS 8.6:           1.6 MB
+Mac OS 9.0.4:         1.6 MB
+```
+
+Mac OS X 10.0 (CFM/PEF):
+
+```
+ps aux | head -1 && ps aux | grep 2048
+USER       PID %CPU %MEM      VSZ    RSS  TT  STAT      TIME COMMAND
+happymac   309  14.6  0.3    52596   3508  ??  R      1:01.75 /Users/happymac/Projects/2048-Carbon/2048-Carbon /Users/happymac/Projects/2048-Carbon/
+
+top
+PID COMMAND      %CPU   TIME   #TH #PRTS #MREGS RPRVT  RSHRD  RSIZE  VSIZE
+309 2048-Carbo  29.3%  1:28.26   1    56    73  1.67M  3.78M  3.43M  51.4M
+```
 
 Mac OS X 10.0 (Mach-O):
 

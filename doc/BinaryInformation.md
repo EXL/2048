@@ -6,6 +6,7 @@ Dependencies were obtained:
 1. By using `ldd` command on Fedora and QNX.
 2. By `arm-linux-gnueabi-objdump` for MotoMAGX platform.
 3. By `otool -L` command on NeXTSTEP and Mac OS X.
+4. By CodeWarrior and ThinkC settings on classic Mac OS.
 
 ### Sizes and Rights
 
@@ -1229,7 +1230,62 @@ otool -L 2048-Swift
 	@rpath/libswiftXPC.dylib (compatibility version 1.0.0, current version 1000.11.42)
 ```
 
+### 2048-ThinkC
+
+Mac OS System 6.0.8.1 [International]:
+
+```
+2048-ThinkC: 14 K on disk (13,663 bytes):
+	ANSI-Small (Static)
+	MacTraps (Static)
+	oops (Static)
+```
+
+### 2048-MCW
+
+Mac OS 8.1:
+
+```
+2048-MCW 68K: 65 K on disk (47,926 bytes):
+	MSL Runtime68K.Lib (Static)
+	MacOS.lib (Static)
+	MathLib68K (2i).Lib (Static)
+	MSL C.68K (2i).Lib (Static)
+	MSL C++.68K (2i).Lib (Static)
+	MSL SIOUX.68K.Lib (Static)
+2048-MCW PPC: 163 K on disk (115,610 bytes):
+	MSL RuntimePPC.Lib (Static)
+	InterfaceLib (Shared)
+	MathLib (Shared)
+	QuickDrawGXLib (Shared, Weak)
+	MSL C.PPC.Lib (Static)
+	MSL C++.PPC.Lib (Static)
+	MSL SIOUX.PPC.Lib (Static)
+2048-MCW: 195 K on disk (158,977 bytes), FAT executable:
+	MSL Runtime68K.Lib (Static)
+	MacOS.lib (Static)
+	MathLib68K (2i).Lib (Static)
+	MSL C.68K (2i).Lib (Static)
+	MSL C++.68K (2i).Lib (Static)
+	MSL SIOUX.68K.Lib (Static)
+	MSL RuntimePPC.Lib (Static)
+	InterfaceLib (Shared)
+	MathLib (Shared)
+	QuickDrawGXLib (Shared, Weak)
+	MSL C.PPC.Lib (Static)
+	MSL C++.PPC.Lib (Static)
+	MSL SIOUX.PPC.Lib (Static)
+```
+
 ### 2048-Carbon
+
+Mac OS 9.0.4:
+
+```
+2048-Carbon: 130 K on disk (80,526 bytes):
+	MSL_All_Carbon.Lib (Static)
+	CarbonLib (Shared)
+```
 
 Mac OS X 10.0:
 
