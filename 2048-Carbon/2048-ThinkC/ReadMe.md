@@ -3,6 +3,8 @@
 
 ![2048-ThinkC Classic Mac OS System 6 Screenshot](../../image/2048-ThinkC-Screenshot-MacOS-6.png)
 
+[https://github.com/EXL/2048/tree/master/2048-Carbon/2048-ThinkC](https://github.com/EXL/2048/tree/master/2048-Carbon/2048-ThinkC)
+
 The "2048" game for the [classic Mac OS](https://en.wikipedia.org/wiki/Classic_Mac_OS) platform (System 1-6) with using [Macintosh Toolbox](https://en.wikipedia.org/wiki/Macintosh_Toolbox) and [QuickDraw](https://en.wikipedia.org/wiki/QuickDraw) technologies.
 
 ## Setup Mini vMac Development Environment
@@ -21,7 +23,7 @@ The "2048" game for the [classic Mac OS](https://en.wikipedia.org/wiki/Classic_M
 
 ## Build
 
-1. Drag-and-drop "TODO" floppy disk image to the Mini vMac emulator window, then copy "2048-ThinkC" folder on the storage drive.
+1. Drag-and-drop "[2048-MAC.dsk](../DiskImages/)" floppy disk image to the Mini vMac emulator window, then copy "2048-ThinkC" folder on the storage drive.
 2. Open "2048-ThinkC:2048-ThinkC.π" project file with Symantec THINK C IDE.
 3. In the main menu choose "Project" => "Build Application...", then click "Yes" button.
 4. Save application as 2048-ThinkC with "Smart Link" option, replace existing file.
