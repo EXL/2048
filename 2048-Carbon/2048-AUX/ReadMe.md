@@ -55,7 +55,6 @@ The "2048" game for the [Apple A/UX](https://en.wikipedia.org/wiki/A/UX) operati
 2. Login in as:
 
     ```
-    Registered User
     Name: root
     Password: [empty]
     ```
