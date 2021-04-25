@@ -80,6 +80,8 @@ DeRez 2048-MCW.rsrc > Out.r
 DeRez -i "{RIncludes}" 2048-MCW.rsrc Types.r > OutTypes.r
 ```
 
+You can set an arbitrary type and information about the creator to any file in attributes with ResEdit program. Just run ResEdit, choose "File" => "Get File/Folder info...", then select the file you want and in the window that opens, change the "Type:" and "Creator:" fields, then close window and save changes. This method often helps restore a file type after transferring it from the host system. To update the application icon, you can uncheck the "Inited" checkbox. If this method does not help, rebuild the desktop file by pressing "Option" (Meta/Windows key) and "Cmd" (Alt) keys through the booting process.
+
 This repository contains the source files with the Unix **LR** [line breaks](https://en.wikipedia.org/wiki/Newline) for convenience. Don't forget to change line breaks to **CR**, which are used in classic macOS. This can be easily done using the `unix2mac` utility which is included in the "dos2unix" package.
 
 ```sh
