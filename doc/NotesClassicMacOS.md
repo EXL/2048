@@ -14,7 +14,7 @@ The CodeWarrior Pro 8 can compile both executable files for classic Mac OS ([CFM
 3. [x] Add Carbon skeleton project for MCW IDE on Mac OS 9.
 4. [x] Find ResEdit or its analog and create all resources.
 5. [x] Implement basic game drawing.
-6. [ ] Add Classic Mac OS binaries size information.
+6. [x] Add Classic Mac OS binaries size information.
 7. [x] Polish "2048-Carbon.rsrc" resource file.
 8. [x] Implement Offscreen drawing with Carbon.
 9. [x] Check executable file on Mac OS X.
@@ -74,31 +74,48 @@ The [Macintosh Programmer's Workshop](https://en.wikipedia.org/wiki/Macintosh_Pr
 
 ## A/UX Notes
 
-TODO: Desc AUX
-TODO: Desc AUX Dev Tools inbox
-TODO: Use BasiliskII for move files (README)
+I choose for Apple A/UX 3.0 & System Software 7.0.1 development just [vi](https://en.wikipedia.org/wiki/Vi) (v3.9 2/9/83) text editor by Bill Joy and built-in `cc` C language compiler by Apple which is based on Motorola SGS (Software Generation System) suite. Then I wrote a simple Makefile for building applications by looking at the source code of the examples that are located in "/mac/src/" directory. Unfortunately the C compiler supplied with A/UX is too old and doesn't even support C89 standard, only K&R C. So I had to change the code for old style and K&R C prestandard. Standard Apple technologies such as [Macintosh Toolbox](https://en.wikipedia.org/wiki/Macintosh_Toolbox) and [QuickDraw](https://en.wikipedia.org/wiki/QuickDraw) can be used in A/UX system.
+
+A/UX comes with four types of sessions:
+
+* X11 (pure X11 session with `xterm` terminal emulator and `twm` window manager)
+* A/UX Finder (32-bit) (native environment, just classic Mac OS System Software 7.0.1 with UNIX integration)
+* A/UX Finder (24-bit) (left for compatibility and allows you to run non 32-bit applications)
+* Console Emulator (like framebuffer console in Linux)
+
+You can switch between them on the login window: "Special" => "Logout", then "Options" => "Change Session Type..." menu. The default password of `root` superuser is empty string.
+
+To run X11 applications in the A/UX Finder (32-bit) environment A/UX proposed to use the MacX application which is located in "/mac/MacX/" directory. This application works in a similar way to modern technologies such as [XWayland](https://en.wikipedia.org/wiki/X.Org_Server#XWayland) and [XQuartz](https://en.wikipedia.org/wiki/XQuartz) programs.
+
+There are some auxiliary utilities to facilitate interaction between A/UX UNIX environment and classic Mac OS environment:
+
+* `fcnvt -f -d mac_file unix_file` and `fcnvt -f -s unix_file mac_file` command converts the AppleSingle file (classic Mac OS) to AppleDouble format (A/UX UNIX-like) and split file attributes from data into a separate files started with "%" sign.
+* `rez` and `derez` resource compiler and decompiler.
+* `setfile` utility allows you to set the type and creator sign attributes to files.
+
+For more details see [2048-AUX/Makefile](../2048-Carbon/2048-AUX/Makefile) build file.
 
 ### Task List
 
 1. [x] Port and run X11 version, 2048-Xlib application.
 2. [x] Port and run Toolbox version, 2048-AUX application.
-3. [ ] Add compiler info and version to document.
-4. [ ] Create "old" directory for ported engine, patch file?
-5. [ ] Note about 256 MB RAM on Shoebill command.
+3. [x] Add compiler info and version to document.
+4. [x] Create "old" directory for ported engine to K&R prestandard C language.
+5. [x] Note about 256 MB RAM on Shoebill command.
 6. [x] Compile and test Macintosh Toolbox for A/UX code sample.
-7. [ ] Add links to ReadMe.md files.
+7. [x] Add links to ReadMe.md files.
 8. [x] #ifdef AUX #endif AUX (don't need that).
 9. [x] Check code style on K&R function declarations.
 10. [x] Add some information about `DeRez` utility.
-11. [ ] Add some information about `fcnvt` utility.
+11. [x] Add some information about `fcnvt` utility.
 12. [x] Port and run X11 version, 2048-Xaw application.
 13. [x] Add short offscreen drawing function.
 14. [x] Implement general drawing.
 15. [x] Enable offscreen drawing by default and fix bugs.
 16. [x] Fix bug with colors in offscreen.
 17. [x] Drop background/foreground routines in other versions.
-18. [ ] Fix UNIX file rights.
-19. [ ] Add some note about setting file associations by ResEdit program.
+18. [x] Fix UNIX file rights.
+19. [x] Add some note about setting file associations by ResEdit program.
 
 ## Mac OS System 6 Notes
 
@@ -153,7 +170,10 @@ The THINK C offered the programmer a powerful object-oriented Think Class Librar
 11. [Carbon Porting Guide, 2002](http://mirror.informatimago.com/next/developer.apple.com/documentation/Carbon/Conceptual/carbon_porting_guide/carbonporting.pdf) | [Web version](https://developer.apple.com/library/archive/documentation/Carbon/Conceptual/carbon_porting_guide/cpg_intro_struct/cpg_intro_struct.html#//apple_ref/doc/uid/TP30000991)
 12. [Handling Carbon Events, 2003](http://mirror.informatimago.com/next/developer.apple.com/documentation/Carbon/Conceptual/Carbon_Event_Manager/CarbonEvents.pdf)
 13. [Handling Carbon Windows and Controls, 2002](http://mirror.informatimago.com/next/developer.apple.com/documentation/Carbon/Conceptual/HandlingWindowsControls/windowscontrols.pdf)
-14. [Quartz 2D Programming Guide](http://mirror.informatimago.com/next/developer.apple.com/documentation/GraphicsImaging/Conceptual/drawingwithquartz2d/drawingwithquartz2d.pdf)
+14. [Quartz 2D Programming Guide, 2006](http://mirror.informatimago.com/next/developer.apple.com/documentation/GraphicsImaging/Conceptual/drawingwithquartz2d/drawingwithquartz2d.pdf)
+15. [A/UX Toolbox: Macintosh ROM Interface, 1992](https://macintoshgarden.org/sites/macintoshgarden.org/files/manuals/Apple_A-UX_30_Toolbox_Mac_ROM_Interface.pdf)
+16. [X11 User's Guide for A/UX, 1991](https://macintoshgarden.org/sites/macintoshgarden.org/files/manuals/Apple_A-UX_30_X11_Users_Guide_for_A-UX.pdf)
+17. A/UX Command Reference, 1992: [1](http://bitsavers.retropc.se/pdf/apple/mac/a_ux/aux_3.0/AUX_3.0_Command_Reference_Section_1_A-F_1992.pdf), [2](http://bitsavers.retropc.se/pdf/apple/mac/a_ux/aux_3.0/AUX_3.0_Command_Reference_Section_1_G-P_1992.pdf), [3](http://bitsavers.retropc.se/pdf/apple/mac/a_ux/aux_3.0/AUX_3.0_Command_Reference_Sections_1_Q-Z_and_6_1992.pdf) | [1](http://bitsavers.trailing-edge.com/pdf/apple/mac/a_ux/aux_3.0/AUX_3.0_Command_Reference_Section_1_A-F_1992.pdf), [2](http://bitsavers.trailing-edge.com/pdf/apple/mac/a_ux/aux_3.0/AUX_3.0_Command_Reference_Section_1_G-P_1992.pdf), [3](http://bitsavers.trailing-edge.com/pdf/apple/mac/a_ux/aux_3.0/AUX_3.0_Command_Reference_Sections_1_Q-Z_and_6_1992.pdf)
 
 You can find literature, documentation, and source code on the following sites:
 
@@ -162,4 +182,6 @@ You can find literature, documentation, and source code on the following sites:
 3. [Macintosh Archive](http://mirror.macintosharchive.org/max1zzz.co.uk/+Mac%20OS%20Classic/)
 4. [Infomac Mirror](http://ftp.knoppix.nl/infomac/)
 5. [Apple Documentation Archive](https://developer.apple.com/library/archive/navigation/)
-6. [Apple FTP Archive](https://macintoshgarden.org/apps/ftpapplecom-archive)
+6. [Macintosh Garden](https://macintoshgarden.org/)
+7. [Apple FTP Archive](https://macintoshgarden.org/apps/ftpapplecom-archive)
+8. [Macintosh Repository](https://www.macintoshrepository.org/)

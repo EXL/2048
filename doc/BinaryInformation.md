@@ -7,6 +7,7 @@ Dependencies were obtained:
 2. By `arm-linux-gnueabi-objdump` for MotoMAGX platform.
 3. By `otool -L` command on NeXTSTEP and Mac OS X.
 4. By CodeWarrior and ThinkC settings on classic Mac OS.
+5. By Makefile on A/UX.
 
 ### Sizes and Rights
 
@@ -1275,6 +1276,17 @@ Mac OS 8.1:
 	MSL C.PPC.Lib (Static)
 	MSL C++.PPC.Lib (Static)
 	MSL SIOUX.PPC.Lib (Static)
+```
+
+### 2048-AUX
+
+```
+2048-AUX:
+	-lmac_s -lat -lld -lmr -lc_s
+2048-Xaw:
+	-lXaw -lXmu -lXt -lX11
+2048-Xlib
+	-lX11
 ```
 
 ### 2048-Carbon

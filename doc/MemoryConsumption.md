@@ -8,7 +8,7 @@ Information were obtained:
 3. By using `showmem -P $PID` command on QNX.
 4. By using `ps aux` command on NeXTSTEP.
 5. By using `ps aux` and `top` commands on Mac OS X.
-6. In the "Apple Menu" => "About This Computer..." monitor on classic Mac OS.
+6. In the "Apple Menu" => "About This Computer..." monitor on classic Mac OS and A/UX.
 
 *Note: `$PID` is Process Identifier of the executable file.*
 
@@ -530,6 +530,12 @@ Mac OS System 6.0.8.1: 1024 KB
 Mac OS System 7.5.3:   1024 KB
 Mac OS 8.1:            1 MB
 Mac OS 9.0.4:          1.2 MB
+```
+
+### 2048-AUX
+
+```
+A/UX 3.0 & System Software 7.0.1: 1024 KB
 ```
 
 ### 2048-Carbon
