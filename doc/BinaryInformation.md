@@ -14,10 +14,16 @@ Dependencies were obtained:
 ```
 tree -phD --timefmt "%d-%b-%Y %H:%M:%S" 2048-Release/
 2048-Release/
+├── [drwxrwxr-x  4.0K 26-Apr-2021 06:18:53]  2048-AUX
+│   ├── [-rw-r--r--  4.0K 26-Apr-2021 12:34:20]  %2048-AUX
+│   ├── [-rwxr-xr-x   58K 26-Apr-2021 12:34:28]  2048-AUX
+│   ├── [-rwxr-xr-x  345K 26-Apr-2021 12:34:28]  2048-Xaw
+│   └── [-rwxr-xr-x   96K 26-Apr-2021 12:34:28]  2048-Xlib
 ├── [-rwxrwxr-x   14K 30-Jun-2020 07:18:44]  2048-Gtk1
 ├── [-rwxrwxr-x   14K 30-Jun-2020 07:18:51]  2048-Gtk2
 ├── [-rwxrwxr-x   14K 30-Jun-2020 07:18:58]  2048-Gtk3
 ├── [-rwxrwxr-x  3.6M 05-Oct-2020 18:42:18]  2048-JUCE
+├── [-rw-rw-r--  2.0M 26-Apr-2021 06:16:50]  2048-MAC.dsk
 ├── [-rwxrwxr-x   14K 30-Jun-2020 07:20:56]  2048-Motif
 ├── [-rwxrwxr-x   39K 26-Feb-2021 00:24:45]  2048-MotoMAGX_E8
 ├── [-rwxrwxr-x   39K 26-Feb-2021 00:24:43]  2048-MotoMAGX_EM30
@@ -41,8 +47,8 @@ tree -phD --timefmt "%d-%b-%Y %H:%M:%S" 2048-Release/
 ├── [-rwxrwxr-x   14K 30-Jun-2020 07:20:20]  2048-Xaw
 ├── [-rwxrwxr-x   14K 30-Jun-2020 07:20:27]  2048-Xcb
 ├── [-rwxrwxr-x   14K 30-Jun-2020 07:20:36]  2048-Xlib
-├── [drwxr-xr-x  4.0K 24-Apr-2021 04:26:43]  MacOS
-│   ├── [drwxr-xr-x  4.0K 24-Apr-2021 04:22:55]  10.0
+├── [drwxr-xr-x  4.0K 26-Apr-2021 06:19:17]  MacOS
+│   ├── [drwxr-xr-x  4.0K 24-Apr-2021 04:36:06]  10.0
 │   │   ├── [drwxr-xr-x  4.0K 24-Apr-2021 04:06:02]  2048-Carbon.app
 │   │   │   └── [drwxr-xr-x  4.0K 24-Apr-2021 04:05:53]  Contents
 │   │   │       ├── [-rw-r--r--   690 24-Apr-2021 04:04:55]  Info.plist
@@ -219,7 +225,7 @@ tree -phD --timefmt "%d-%b-%Y %H:%M:%S" 2048-Release/
     ├── [-rw-rw-r--  2.9M 27-Jun-2020 05:01:59]  2048-MotoMAGX_ZN5.webm
     └── [-rw-r--r--   69M 26-Feb-2021 04:51:36]  2048-SMD.mp4
 
-69 directories, 135 files
+70 directories, 140 files
 ```
 
 ### File Types
@@ -230,6 +236,7 @@ file 2048-*
 2048-Gtk2:          ELF 64-bit LSB executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, for GNU/Linux 2.6.32, BuildID[sha1]=8664c4f62a320b321831474b86d84743d58a1378, stripped
 2048-Gtk3:          ELF 64-bit LSB executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, for GNU/Linux 2.6.32, BuildID[sha1]=465a678a0e5a28faf80a3a9149acc3d3408f29da, stripped
 2048-JUCE:          ELF 64-bit LSB executable, x86-64, version 1 (GNU/Linux), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, BuildID[sha1]=4d1fa100e2f9bd25732ec8f17f4533fe35417614, for GNU/Linux 3.2.0, stripped
+2048-MAC.dsk:       Macintosh HFS data block size: 512, number of blocks: 4090, volume name: 2048-MAC
 2048-Motif:         ELF 64-bit LSB executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, for GNU/Linux 2.6.32, BuildID[sha1]=ee11f72f2c732b4f2b348bf4d772ac20647d3dd3, stripped
 2048-MotoMAGX_E8:   ELF 32-bit LSB executable, ARM, EABI4 version 1 (SYSV), dynamically linked, interpreter /lib/ld-linux.so.3, for GNU/Linux 2.4.17, stripped
 2048-MotoMAGX_EM30: ELF 32-bit LSB executable, ARM, EABI4 version 1 (SYSV), dynamically linked, interpreter /lib/ld-linux.so.3, for GNU/Linux 2.4.17, stripped
