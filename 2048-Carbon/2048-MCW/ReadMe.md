@@ -109,7 +109,7 @@ Apple MPW 3.4.2:
 
 ## Versions
 
-1. [Basilisk II 1.0](https://github.com/cebix/macemu) || [Basilisk II 1.1](https://github.com/kanjitalk755/macemu)
+1. [Basilisk II 1.0](https://github.com/cebix/macemu) | [Basilisk II 1.1](https://github.com/kanjitalk755/macemu)
 2. [Apple Mac OS 8.1](https://winworldpc.com/download/7724c394-e280-9362-c382-11c3a6e28094)
 3. [Metrowerks CodeWarrior Pro 4](https://macintoshgarden.org/sites/macintoshgarden.org/files/apps/CWPro4Tools.cdr_.zip) (with Metrowerks CodeWarrior IDE version 3.2 build 0158)
 4. [Apple ResEdit 2.1.3](https://en.wikipedia.org/wiki/ResEdit)
