@@ -35,7 +35,7 @@ The "2048" game for the [Apple A/UX](https://en.wikipedia.org/wiki/A/UX) operati
 
     ```bash
     git clone https://github.com/EXL/2048
-    tar -cvf 2048.tar 2048/2048-Carbon/2048-AUX/ 2048/src/
+    tar -cvf 2048.tar 2048/2048-Carbon/2048-AUX/ 2048/src/old/
     ```
 
 2. Run Basilisk II emulator and mount "Apple_UNIX.iso" image on "Volumes" tab then click "Start" button to launch classic Mac OS.
