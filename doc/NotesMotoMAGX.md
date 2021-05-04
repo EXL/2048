@@ -1,4 +1,4 @@
-Porting 2048 Game on MotoMAGX Platform
+Porting 2048 Game to MotoMAGX Platform
 ======================================
 
 See [2048-MotoMAGX/ReadMe.md](../2048-MotoMAGX/ReadMe.md) document for building information.
