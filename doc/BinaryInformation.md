@@ -15,7 +15,7 @@ Dependencies were obtained:
 ```
 tree -phD --timefmt "%d-%b-%Y %H:%M:%S" 2048-Release/
 2048-Release/
-├── [-rwxrwxr-x   39K 05-May-2021 15:38:29]  2048-EZX
+├── [-rwxrwxr-x   39K 05-May-2021 17:37:55]  2048-EZX
 ├── [-rwxrwxr-x   14K 30-Jun-2020 07:18:44]  2048-Gtk1
 ├── [-rwxrwxr-x   14K 30-Jun-2020 07:18:51]  2048-Gtk2
 ├── [-rwxrwxr-x   14K 30-Jun-2020 07:18:58]  2048-Gtk3
@@ -49,8 +49,8 @@ tree -phD --timefmt "%d-%b-%Y %H:%M:%S" 2048-Release/
 │   ├── [-rwxr-xr-x   58K 26-Apr-2021 12:34:28]  2048-AUX
 │   ├── [-rwxr-xr-x  345K 26-Apr-2021 12:34:28]  2048-Xaw
 │   └── [-rwxr-xr-x   96K 26-Apr-2021 12:34:28]  2048-Xlib
-├── [drwxr-xr-x  4.0K 05-May-2021 15:40:14]  EZX
-│   └── [-rw-rw-r--   23K 05-May-2021 15:39:37]  2048_MotoEZX_A1200_E6_v1.0_05-May-2021.pkg
+├── [drwxr-xr-x  4.0K 05-May-2021 17:42:28]  EZX
+│   └── [-rw-rw-r--   23K 05-May-2021 17:41:11]  2048_MotoEZX_A1200_E6_v1.0_05-May-2021.pkg
 ├── [drwxr-xr-x  4.0K 26-Apr-2021 06:19:17]  MacOS
 │   ├── [drwxr-xr-x  4.0K 24-Apr-2021 04:36:06]  10.0
 │   │   ├── [drwxr-xr-x  4.0K 24-Apr-2021 04:06:02]  2048-Carbon.app
@@ -271,7 +271,7 @@ MotoMAGX/2048_MotoMAGX_ZN5_v1.0_26-Feb-2021.mgx: 7-zip archive data, version 0.4
 MotoMAGX/2048_MotoMAGX_ZN5_v1.0_28-Jul-2020.mgx: 7-zip archive data, version 0.4
 
 file EZX/*
-EZX/2048_MotoEZX_A1200_E6_v1.0_05-May-2021.pkg: gzip compressed data, was "2048_EZX.uncompressed", last modified: Wed May  5 08:39:37 2021, max compression, from Unix, original size modulo 2^32 61440
+EZX/2048_MotoEZX_A1200_E6_v1.0_05-May-2021.pkg: gzip compressed data, was "2048_EZX.uncompressed", last modified: Wed May  5 10:41:11 2021, max compression, from Unix, original size modulo 2^32 61440
 
 find NeXTSTEP/ -type f -exec file {} \;
 NeXTSTEP/2048-NeXTSTEP.app/icon150.tiff: TIFF image data, little-endian, direntries=19, height=150, bps=15744, compression=LZW, PhotometricIntepretation=RGB, name=/home/exl/Projects/2048/image/icon/avatar.tiff, orientation=upper-left, width=150
@@ -1074,6 +1074,8 @@ ldd 2048-Xcb | wc -l
   NEEDED      libgcc_s.so.1
   NEEDED      libc.so.6
 ```
+
+### 2048-EZX
 
 ```
 /opt/toolchains/motoezx/crosstool/bin/arm-linux-gnu-objdump -x 2048-EZX | grep NEEDED
