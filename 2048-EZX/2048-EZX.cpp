@@ -237,27 +237,6 @@ public slots:
 	}
 public:
 	MainWidget() : ZMainWidget(false, NULL, NULL, 0), sound(true) {
-/*	TODO: Improve this shit.
-		QWidget *titleBar = new QWidget(this, NULL, 0);
-		setTitleBarWidget(titleBar);
-		QHBoxLayout *layout = new QHBoxLayout(titleBar);
-//		titleBar->setLayout();
-		QLabel *title = new QLabel(" 2048-EZX", titleBar, NULL, WStyle_Customize);
-		//title->setBackgroundMode(titleBar->backgroundMode());
-		//title->setBackgroundOrigin(ParentOrigin);
-		QLabel *score = new QLabel("Score: 888888 ", titleBar, NULL, WStyle_Customize);
-		//score->setBackgroundMode(backgroundMode());
-		//score->setBackgroundOrigin(WidgetOrigin);
-//		score->setBackgroundMode(titleBar->backgroundMode());
-		score->setBackgroundMode(PaletteBase);
-		//score->setBackgroundPixmap(titleBar->backgroundPixmap());
-		layout->addWidget(title);
-		layout->addStretch();
-		layout->addWidget(score);
-		//titleBar->setLayout(layout);
-		// QLabel *titleBar = new QLabel(" 2048-EZX", this);
-		//titleBar->setScaledContents(true); // TODO: ??
-*/
 		titleBar = new QLabel(this, NULL);
 		titleBar->setText(" 2048-EZX | Score: 0 ");
 		setTitleBarWidget(titleBar);
