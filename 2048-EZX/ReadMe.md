@@ -8,6 +8,7 @@ The "2048" game for the EZX OS by Motorola.
 ## Toolchain & SDK
 
 // TODO: Add normal link mirrored to forum.motofan.ru
+
 Download EZX Toolchain & SDK from [this link](http://www.mediafire.com/?meqnmgujgjq).
 
 ## Install Tools & Build
@@ -73,7 +74,7 @@ cd ~/Projects/2048/
 
 ## Additional Screenshots
 
-![EZX Motorola E6 Screenshot 1 Main Desktop Screen](../image/EZX-Screenshot1.png) ![EZX Motorola E6 Screenshot 2 Main Menu](../image/EZX-Screenshot2.png) ![EZX Motorola E6 Screenshot 3 SysInfo Ultimate Application](../image/EZX-Screenshot2.png) ![EZX Motorola E6 Screenshot 4 EKonsole Application](../image/EZX-Screenshot4.png)
+![EZX Motorola E6 Screenshot 1 Main Desktop Screen](../image/EZX-Screenshot1.png) ![EZX Motorola E6 Screenshot 2 Main Menu](../image/EZX-Screenshot2.png) ![EZX Motorola E6 Screenshot 3 SysInfo Ultimate Application](../image/EZX-Screenshot3.png) ![EZX Motorola E6 Screenshot 4 EKonsole Application](../image/EZX-Screenshot4.png)
 
 ## Versions
 
@@ -87,7 +88,7 @@ arm-linux-gnu-g++ --version | head -1
 arm-linux-gnu-g++ (GCC) 3.3.6
 ```
 
-Qt Embedded version 2.3.8
+Qt Embedded version 2.3.6/2.3.8
 
 ## Information
 
