@@ -72,9 +72,11 @@ cd ~/Projects/2048/
 ./util/build_pkg_a1200_e6_package.sh
 ```
 
-## Additional Screenshots
+## Additional Stuff
 
 ![EZX Motorola E6 Screenshot 1 Main Desktop Screen](../image/EZX-Screenshot1.png) ![EZX Motorola E6 Screenshot 2 Main Menu](../image/EZX-Screenshot2.png) ![EZX Motorola E6 Screenshot 3 SysInfo Ultimate Application](../image/EZX-Screenshot3.png) ![EZX Motorola E6 Screenshot 4 EKonsole Application](../image/EZX-Screenshot4.png)
+
+![2048-EZX application running on Motorola E6 Photo](../image/2048-EZX-E6-Photo.jpg)
 
 ## Versions
 
