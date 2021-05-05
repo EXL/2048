@@ -3,7 +3,7 @@ Memory Consumption on Various Platform
 
 Information were obtained:
 
-1. By using `cat /proc/$PID/status` command on Fedora and MotoMAGX platform.
+1. By using `cat /proc/$PID/status` command on Fedora, MotoMAGX, and EZX platform.
 2. By using `top` command and "System Monitor" application on Serenity OS.
 3. By using `showmem -P $PID` command on QNX.
 4. By using `ps aux` command on NeXTSTEP.
@@ -375,6 +375,20 @@ VmStk:        84 kB
 VmExe:        36 kB
 VmLib:      9508 kB
 VmPTE:        26 kB
+```
+
+### 2048-MotoEZX
+
+```
+cat /proc/`pidof 2048-EZX`/status
+...
+VmSize:    25552 kB
+VmLck:         0 kB
+VmRSS:      4996 kB
+VmData:      736 kB
+VmStk:        12 kB
+VmExe:        40 kB
+VmLib:      8220 kB
 ```
 
 ### 2048-Serenity
