@@ -5,20 +5,17 @@ Dependencies were obtained:
 
 1. By using `ldd` command on Fedora and QNX.
 2. By `arm-linux-gnueabi-objdump` for MotoMAGX platform.
-3. By `otool -L` command on NeXTSTEP and Mac OS X.
-4. By CodeWarrior and ThinkC settings on classic Mac OS.
-5. By Makefile on A/UX.
+3. By `arm-linux-gnu-objdump` for EZX platform.
+4. By `otool -L` command on NeXTSTEP and Mac OS X.
+5. By CodeWarrior and ThinkC settings on classic Mac OS.
+6. By Makefile on A/UX.
 
 ### Sizes and Rights
 
 ```
 tree -phD --timefmt "%d-%b-%Y %H:%M:%S" 2048-Release/
 2048-Release/
-├── [drwxrwxr-x  4.0K 26-Apr-2021 06:18:53]  2048-AUX
-│   ├── [-rw-r--r--  4.0K 26-Apr-2021 12:34:20]  %2048-AUX
-│   ├── [-rwxr-xr-x   58K 26-Apr-2021 12:34:28]  2048-AUX
-│   ├── [-rwxr-xr-x  345K 26-Apr-2021 12:34:28]  2048-Xaw
-│   └── [-rwxr-xr-x   96K 26-Apr-2021 12:34:28]  2048-Xlib
+├── [-rwxrwxr-x   39K 05-May-2021 15:38:29]  2048-EZX
 ├── [-rwxrwxr-x   14K 30-Jun-2020 07:18:44]  2048-Gtk1
 ├── [-rwxrwxr-x   14K 30-Jun-2020 07:18:51]  2048-Gtk2
 ├── [-rwxrwxr-x   14K 30-Jun-2020 07:18:58]  2048-Gtk3
@@ -47,6 +44,13 @@ tree -phD --timefmt "%d-%b-%Y %H:%M:%S" 2048-Release/
 ├── [-rwxrwxr-x   14K 30-Jun-2020 07:20:20]  2048-Xaw
 ├── [-rwxrwxr-x   14K 30-Jun-2020 07:20:27]  2048-Xcb
 ├── [-rwxrwxr-x   14K 30-Jun-2020 07:20:36]  2048-Xlib
+├── [drwxrwxr-x  4.0K 26-Apr-2021 06:18:53]  AUX
+│   ├── [-rw-r--r--  4.0K 26-Apr-2021 12:34:20]  %2048-AUX
+│   ├── [-rwxr-xr-x   58K 26-Apr-2021 12:34:28]  2048-AUX
+│   ├── [-rwxr-xr-x  345K 26-Apr-2021 12:34:28]  2048-Xaw
+│   └── [-rwxr-xr-x   96K 26-Apr-2021 12:34:28]  2048-Xlib
+├── [drwxr-xr-x  4.0K 05-May-2021 15:40:14]  EZX
+│   └── [-rw-rw-r--   23K 05-May-2021 15:39:37]  2048_MotoEZX_A1200_E6_v1.0_05-May-2021.pkg
 ├── [drwxr-xr-x  4.0K 26-Apr-2021 06:19:17]  MacOS
 │   ├── [drwxr-xr-x  4.0K 24-Apr-2021 04:36:06]  10.0
 │   │   ├── [drwxr-xr-x  4.0K 24-Apr-2021 04:06:02]  2048-Carbon.app
@@ -225,13 +229,14 @@ tree -phD --timefmt "%d-%b-%Y %H:%M:%S" 2048-Release/
     ├── [-rw-rw-r--  2.9M 27-Jun-2020 05:01:59]  2048-MotoMAGX_ZN5.webm
     └── [-rw-r--r--   69M 26-Feb-2021 04:51:36]  2048-SMD.mp4
 
-70 directories, 140 files
+71 directories, 142 files
 ```
 
 ### File Types
 
 ```
 file 2048-*
+2048-EZX:           ELF 32-bit LSB executable, ARM, version 1 (ARM), dynamically linked, interpreter /lib/ld-linux.so.2, for GNU/Linux 2.4.3, stripped
 2048-Gtk1:          ELF 64-bit LSB executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, for GNU/Linux 2.6.32, BuildID[sha1]=7184adff443baf648bb1a08061fc2003b8f8265a, stripped
 2048-Gtk2:          ELF 64-bit LSB executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, for GNU/Linux 2.6.32, BuildID[sha1]=8664c4f62a320b321831474b86d84743d58a1378, stripped
 2048-Gtk3:          ELF 64-bit LSB executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, for GNU/Linux 2.6.32, BuildID[sha1]=465a678a0e5a28faf80a3a9149acc3d3408f29da, stripped
@@ -264,6 +269,9 @@ file 2048-*
 file MotoMAGX/*
 MotoMAGX/2048_MotoMAGX_ZN5_v1.0_26-Feb-2021.mgx: 7-zip archive data, version 0.4
 MotoMAGX/2048_MotoMAGX_ZN5_v1.0_28-Jul-2020.mgx: 7-zip archive data, version 0.4
+
+file EZX/*
+EZX/2048_MotoEZX_A1200_E6_v1.0_05-May-2021.pkg: gzip compressed data, was "2048_EZX.uncompressed", last modified: Wed May  5 08:39:37 2021, max compression, from Unix, original size modulo 2^32 61440
 
 find NeXTSTEP/ -type f -exec file {} \;
 NeXTSTEP/2048-NeXTSTEP.app/icon150.tiff: TIFF image data, little-endian, direntries=19, height=150, bps=15744, compression=LZW, PhotometricIntepretation=RGB, name=/home/exl/Projects/2048/image/icon/avatar.tiff, orientation=upper-left, width=150
@@ -372,6 +380,12 @@ MacOS/10.5/2048-Carbon.app/Contents/Resources/English.lproj/2048-Carbon.nib/obje
 MacOS/10.5/2048-Carbon.app/Contents/Resources/2048-Carbon.icns: Mac OS X icon, 31376 bytes, "ics#" type
 MacOS/10.5/2048-Carbon.app/Contents/PkgInfo: ASCII text, with no line terminators
 MacOS/10.5/2048-Carbon.app/Contents/MacOS/2048-Carbon: Mach-O universal binary with 2 architectures: [i386:Mach-O i386 executable, flags:<NOUNDEFS|DYLDLINK|TWOLEVEL>] [ppc_7400:Mach-O ppc_7400 executable, flags:<NOUNDEFS|DYLDLINK|TWOLEVEL>]
+
+file AUX/*
+AUX/%2048-AUX: AppleDouble encoded Macintosh file
+AUX/2048-AUX:  mc68k COFF object (demand paged)
+AUX/2048-Xaw:  mc68k COFF object (demand paged)
+AUX/2048-Xlib: mc68k COFF object (demand paged)
 
 file Videos/*
 Videos/2048-MotoMAGX_ZN5.webm: WebM
@@ -1056,6 +1070,16 @@ ldd 2048-Xcb | wc -l
   NEEDED      libqte-mt.so.2
   NEEDED      libezxappbase.so.1
   NEEDED      libstdc++.so.6
+  NEEDED      libm.so.6
+  NEEDED      libgcc_s.so.1
+  NEEDED      libc.so.6
+```
+
+```
+/opt/toolchains/motoezx/crosstool/bin/arm-linux-gnu-objdump -x 2048-EZX | grep NEEDED
+  NEEDED      libqte-mt.so.2
+  NEEDED      libezxappbase.so.1
+  NEEDED      libstdc++.so.5
   NEEDED      libm.so.6
   NEEDED      libgcc_s.so.1
   NEEDED      libc.so.6

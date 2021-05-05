@@ -377,7 +377,7 @@ VmLib:      9508 kB
 VmPTE:        26 kB
 ```
 
-### 2048-MotoEZX
+### 2048-EZX
 
 ```
 cat /proc/`pidof 2048-EZX`/status
