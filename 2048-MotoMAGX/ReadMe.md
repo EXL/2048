@@ -52,10 +52,7 @@ MOTODEV Studio for Linux:
 
 ## Versions
 
-### Qt
-
-* Qt Embedded version 2.3.6
-* Qt Embedded version 2.3.8
+Qt Embedded version 2.3.6/2.3.8
 
 ### Linux host:
 
