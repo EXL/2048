@@ -209,9 +209,9 @@ public slots:
 			"2048 Game implementation especially for Motorola EZX platform.<br><br>Version: 1.0, %1<br>"
 			"© EXL (exl@bk.ru)<br>"
 			"<u>https://github.com/EXL/2048</u></font>").arg(__DATE__));
-		const QString iconPath = QString("%1/icon_usr.png").arg(QFileInfo(qApp->argv()[0]).dirPath(true));
+		const QString iconPath = QString("%1/ezx_dia_50x50.png").arg(QFileInfo(qApp->argv()[0]).dirPath(true));
 		if (QFile::exists(iconPath)) {
-			QPixmap icon(48, 48); // TODO: Proper icon size for EZX platform?
+			QPixmap icon(50, 50);
 			icon.load(iconPath);
 			msgDlg->setIconPixmap(icon);
 		} else
@@ -257,7 +257,7 @@ public:
 		menu->insertItem("Load Game", widget, SLOT(load()), 0, M_LOAD);
 		menu->insertItem("Reset Game", widget, SLOT(reset()), 0, M_RESET);
 		menu->insertSeparator();
-		menu->insertItem("Sound", this, SLOT(soundOnOff()), 0, M_SOUND);
+		menu->insertItem("Touch Sounds", this, SLOT(soundOnOff()), 0, M_SOUND);
 		menu->setItemChecked(M_SOUND, true);
 		tileMenu = new QPopupMenu(this);
 		tileMenu->insertItem("Rounded", this, SLOT(roundedOn()), 0, M_ROUNDED);

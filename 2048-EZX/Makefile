@@ -19,7 +19,7 @@ LFLAGS   = -Wl,-rpath-link,$(QTDIR)/lib,-rpath-link,$(EZXDIR)/lib
 LIBS     = $(SUBLIBS) -L$(QTDIR)/lib -lqte-mt -L$(EZXDIR)/lib -L$(EZXDIR)/lib/ezx/lib -lezxappbase
 MOC      = $(QTDIR)/bin/moc
 UIC      = $(QTDIR)/bin/uic
-TAR      = tar -cf
+TAR      = tar --numeric-owner --owner=2000 --group=233 -cvf
 GZIP     = gzip -9f
 
 ####### Files
@@ -29,7 +29,8 @@ SOURCES = ../src/2048.c 2048-EZX.cpp
 OBJECTS = 2048.o 2048-EZX.o
 SRCMOC  = 2048-EZX.moc
 OBJMOC  =
-DIST    =
+DIST    = 2048-EZX.pkg
+APPDIR  = 2048_EZX
 TARGET  = 2048-EZX
 
 ####### Build rules
@@ -41,15 +42,21 @@ $(TARGET): $(OBJECTS) $(OBJMOC)
 	$(STRIP) -s $(TARGET)
 
 pkg: $(TARGET)
-	-mkdir 2048_EZX
-	-cp 2048-EZX 2048_EZX/
-	-cp pkg/2048_EZX.desktop 2048_EZX/
-	-cp ../images/icon/
+	-mkdir $(APPDIR)
+	-cp 2048-EZX $(APPDIR)
+	-cp pkg/2048_EZX.desktop $(APPDIR)
+	-cp ../image/icon/ezx_sml_32x24.png $(APPDIR)
+	-cp ../image/icon/ezx_big_68x43.png $(APPDIR)
+	-cp ../image/icon/ezx_dia_50x50.png $(APPDIR)
+	$(TAR) $(APPDIR).uncompressed $(APPDIR)
+	$(GZIP) $(APPDIR).uncompressed
+	-mv $(APPDIR).uncompressed.gz $(DIST)
 
 moc: $(SRCMOC)
 
 clean:
 	-rm -f $(OBJECTS) $(OBJMOC) $(SRCMOC) $(UICIMPLS) $(UICDECLS) $(TARGET)
+	-rm -r -f $(APPDIR)
 	-rm -f *~ *.pkg core
 
 ####### Compile
