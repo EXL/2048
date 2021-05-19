@@ -37,7 +37,7 @@ The CodeWarrior Pro 4 package includes object-oriented [Metrowerks PowerPlant](h
 
 The [Macintosh Programmer's Workshop](https://en.wikipedia.org/wiki/Macintosh_Programmer%27s_Workshop) (MPW) is a software development environment for the Classic Mac OS operating system, written by Apple, which was later superseded by the Metrowerks CodeWarrior IDE. MPW provided a collection of compilers and tools inside command line "MPW Shell" environment which was similar to UNIX-shells in desing but with a "worksheet" interface, allowing the user to select and run arbitrary sections of a shell script or to redo commands with no retyping. Metrowerks added to the Apple MPW own compilers, various auxiliary scripts, and some utilities. A set of "CodeWarrior MPW" tools is included in the **CodeWarrior Pro 4** distribution and requires preliminary manual configuration describes in [2048-Carbon/2048-MCW/ReadMe.md](../2048-Carbon/2048-MCW/ReadMe.md) document.
 
-### Tasks List
+### Task List
 
 1. [x] Find option to enable `bool` keyword for C++.
 2. [x] Create project skeleton.
@@ -123,7 +123,7 @@ I took for development under classic [Mac OS System 6](https://en.wikipedia.org/
 
 The THINK C offered the programmer a powerful object-oriented Think Class Library (TCL) framework, which was used extensively for Macintosh application development.
 
-### Tasks List
+### Task List
 
 1. [x] Check `NumberToStr()` function and `Str15` type for small Pascal strings.
 2. [x] Check `THINK_C` compiler macro define on Symantec THINK C 5.0.2 IDE.
