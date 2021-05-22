@@ -1,0 +1,14 @@
+; 2048-UIQ2.pkg
+;
+; Copyright (C) 2021 EXL. All rights reserved.
+;
+
+&EN
+#{"2048-UIQ2"},(0x10009BBB),1,0,0
+
+"..\..\..\epoc32\release\armi\urel\2048-UIQ2.app"-"!:\system\apps\2048-UIQ2\2048-UIQ2.app"
+"..\..\..\epoc32\data\z\system\apps\2048-UIQ2\2048-UIQ2.rsc"-"!:\system\apps\2048-UIQ2\2048-UIQ2.rsc"
+"..\..\..\epoc32\data\z\system\apps\2048-UIQ2\2048-UIQ2.aif"-"!:\system\apps\2048-UIQ2\2048-UIQ2.aif"
+; "\epoc32\data\z\system\apps\2048-UIQ2\2048-UIQ2.mbm"-"!:\system\apps\2048-UIQ2\2048-UIQ2.mbm"
+
+(0x101F617B), 2, 0, 0, {"UIQ20ProductID"}

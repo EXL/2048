@@ -1,0 +1,17 @@
+// 2048-UIQ2_AIF.rss
+//
+// Copyright (C) 2021 EXL. All rights reserved.
+//
+
+#include <aiftool.rh>
+
+RESOURCE AIF_DATA {
+	caption_list = {
+		CAPTION {
+			code = ELangEnglish;
+			caption = "2048-UIQ2";
+		}
+	};
+	app_uid=0x10009BBB;
+	num_icons=2;
+}
