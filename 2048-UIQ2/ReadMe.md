@@ -3,6 +3,8 @@
 
 // TODO:
 
+## Build
+
 ```bat
 devices -setdefault @UIQ_21:com.symbian.UIQ
 bldmake bldfiles

@@ -7,7 +7,7 @@ Porting 2048 Game to UIQ2 Platform
 
 1. [ ] Create installable SIS-package for Motorola M1000.
 2. [ ] Create application skeleton.
-3. [ ] Create correct application icons.
+3. [x] Create correct application icons.
 4. [ ] Create documentation files.
 5. [ ] Set correct time & date.
 6. [ ] Create a Symbian server to prevent WSD (Writeable Static Data) errors?
