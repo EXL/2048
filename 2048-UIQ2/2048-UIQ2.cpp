@@ -49,7 +49,7 @@ class CGameAppView : public CCoeControl {
 					gc.SetPenColor(KRgbRed);
 
 				TBuf<5> strValue;
-				strValue.Num(t);
+				strValue.Num(value);
 
 				int xO = OFFSET_COORD(x) + 208 / 64;
 				int yO = OFFSET_COORD(y) - TILE_MARGIN - 1;
