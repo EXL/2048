@@ -1,0 +1,90 @@
+// 2048-UIQ2.rss
+//
+// Copyright (C) 2021 EXL. All rights reserved.
+//
+
+NAME PUZZ
+
+#include <eikon.rh>
+#include <eikon.rsg>
+
+#include "2048-UIQ2.hrh"
+
+RESOURCE RSS_SIGNATURE { }
+
+RESOURCE TBUF { buf=""; }
+
+RESOURCE EIK_APP_INFO {
+	menubar = r_app_menubar;
+	hotkeys = r_app_hotkeys;
+}
+
+RESOURCE HOTKEYS r_app_hotkeys {
+	control= {
+		HOTKEY {
+			command = EEikCmdExit;
+			key = 'e';
+		},
+		HOTKEY {
+			command = EMenuItemReset;
+			key = 'r';
+		}
+	};
+}
+
+RESOURCE MENU_BAR r_app_menubar {
+	titles = {
+		MENU_TITLE {
+			menu_pane = r_app_game_menu;
+			txt = "Game";
+		},
+		MENU_TITLE {
+			menu_pane = r_app_help_menu;
+			txt = "Help";
+		}
+	};
+}
+
+RESOURCE MENU_PANE r_app_game_menu {
+	items = {
+		MENU_ITEM {
+			txt = "Reset";
+			command = EMenuItemReset;
+			flags = EEikMenuItemSeparatorAfter;
+		},
+		MENU_ITEM {
+			txt = "Tiles";
+			command = EMenuItemTiles;
+			cascade = r_app_tiles_menu;
+			flags = EEikMenuItemSeparatorAfter;
+		},
+		MENU_ITEM {
+			txt = "Quit";
+			command = EEikCmdExit;
+		}
+	};
+}
+
+RESOURCE MENU_PANE r_app_tiles_menu {
+	items = {
+		MENU_ITEM {
+			txt = "Rounded";
+			command = EMenuItemRounded;
+			flags = EEikMenuItemRadioStart | EEikMenuItemSymbolOn;
+		},
+		MENU_ITEM {
+			txt = "Rectangle";
+			command = EMenuItemRectangle;
+			flags = EEikMenuItemRadioEnd;
+		}
+	};
+}
+
+RESOURCE MENU_PANE r_app_help_menu {
+	items = {
+		MENU_ITEM {
+			txt = "About...";
+			command = EMenuItemAbout;
+		}
+	};
+}

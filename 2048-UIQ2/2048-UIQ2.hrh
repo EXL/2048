@@ -1,0 +1,13 @@
+// 2048-UIQ2.hrh
+//
+// Copyright (c) 2021 EXL. All rights reserved.
+//
+
+enum TMenuBuilderCommands {
+	EMenuItemReset = 0x06000,
+	EMenuItemTiles,
+	EMenuItemRounded,
+	EMenuItemRectangle,
+	EMenuItemQuit,
+	EMenuItemAbout
+};
