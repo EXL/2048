@@ -4,7 +4,7 @@
 ;
 
 &EN
-#{"2048-UIQ2"},(0x10009BBB),1,0,0
+#{"2048"},(0x10009BBB),1,0,0
 
 "..\..\..\epoc32\release\armi\urel\2048-UIQ2.app"-"!:\system\apps\2048-UIQ2\2048-UIQ2.app"
 "..\..\..\epoc32\data\z\system\apps\2048-UIQ2\2048-UIQ2.rsc"-"!:\system\apps\2048-UIQ2\2048-UIQ2.rsc"

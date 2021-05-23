@@ -9,7 +9,7 @@ RESOURCE AIF_DATA {
 	caption_list = {
 		CAPTION {
 			code = ELangEnglish;
-			caption = "2048-UIQ2";
+			caption = "2048";
 		}
 	};
 	app_uid=0x10009BBB;
