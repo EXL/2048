@@ -8,13 +8,17 @@ TARGETTYPE     app
 TARGETPATH     \system\apps\2048-UIQ2
 UID            0x100039CE 0x10009BBB
 
-AIF            2048-UIQ2.aif . 2048-UIQ2_AIF.rss c24 ..\image\icon\uiq_20x16i.bmp ..\image\icon\uiq_20x16m.bmp ..\image\icon\uiq_32x32i.bmp ..\image\icon\uiq_32x32m.bmp
+AIF            2048-UIQ2.aif . 2048-UIQ2_AIF.rss c24 \
+               ..\image\icon\uiq_20x16i.bmp \
+               ..\image\icon\uiq_20x16m.bmp \
+               ..\image\icon\uiq_32x32i.bmp \
+               ..\image\icon\uiq_32x32m.bmp
 
 SOURCEPATH     .
 SOURCE         2048-UIQ2.cpp ..\src\2048.cpp
 RESOURCE       2048-UIQ2.rss
 USERINCLUDE    . ..\src
 SYSTEMINCLUDE  \epoc32\include \epoc32\include\libc
-LIBRARY        euser.lib apparc.lib cone.lib eikcore.lib gdi.lib egul.lib estlib.lib
+LIBRARY        euser.lib apparc.lib cone.lib estlib.lib eikcore.lib eikcoctl.lib eikctl.lib qikctl.lib
 
 // EPOCALLOWDLLDATA

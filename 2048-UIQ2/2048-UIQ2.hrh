@@ -3,11 +3,20 @@
 // Copyright (c) 2021 EXL. All rights reserved.
 //
 
-enum TMenuBuilderCommands {
+enum TMenuBarCommands {
 	EMenuItemReset = 0x06000,
 	EMenuItemTiles,
 	EMenuItemRounded,
 	EMenuItemRectangle,
+	EMenuItemSave,
+	EMenuItemLoad,
 	EMenuItemQuit,
-	EMenuItemAbout
+	EMenuItemAbout,
+	EMenuItemStub
+};
+
+enum TToolBarCommands {
+	EToolBarButtonReset = 0x07000,
+	EToolBarCtrlLabel,
+	EToolBarCtrlChoice
 };

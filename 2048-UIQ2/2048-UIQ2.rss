@@ -6,17 +6,19 @@
 NAME PUZZ
 
 #include <eikon.rh>
-#include <eikon.rsg>
+
+#include <qikon.rh>
 
 #include "2048-UIQ2.hrh"
 
 RESOURCE RSS_SIGNATURE { }
 
-RESOURCE TBUF { buf=""; }
+RESOURCE TBUF { buf=""; } // TODO: Delete this?
 
 RESOURCE EIK_APP_INFO {
 	menubar = r_app_menubar;
 	hotkeys = r_app_hotkeys;
+	toolbar = r_app_toolbar;
 }
 
 RESOURCE HOTKEYS r_app_hotkeys {
@@ -41,6 +43,12 @@ RESOURCE MENU_BAR r_app_menubar {
 		MENU_TITLE {
 			menu_pane = r_app_help_menu;
 			txt = "Help";
+		},
+		MENU_TITLE {
+			menu_pane = r_app_score_menu;
+			txt = "Score: 0";
+			flags = EEikMenuItemDimmed | EEikMenuTitleRightAlign | EEikMenuTitleIsChangeable;
+			// DECLARE_CATEGORY_MENU_TITLE;
 		}
 	};
 }
@@ -59,6 +67,15 @@ RESOURCE MENU_PANE r_app_game_menu {
 			flags = EEikMenuItemSeparatorAfter;
 		},
 		MENU_ITEM {
+			txt = "Save...";
+			command = EMenuItemSave;
+		},
+		MENU_ITEM {
+			txt = "Load...";
+			command = EMenuItemLoad;
+			flags = EEikMenuItemSeparatorAfter;
+		},
+		MENU_ITEM {
 			txt = "Quit";
 			command = EEikCmdExit;
 		}
@@ -70,7 +87,7 @@ RESOURCE MENU_PANE r_app_tiles_menu {
 		MENU_ITEM {
 			txt = "Rounded";
 			command = EMenuItemRounded;
-			flags = EEikMenuItemRadioStart | EEikMenuItemSymbolOn;
+			flags = EEikMenuItemRadioStart;
 		},
 		MENU_ITEM {
 			txt = "Rectangle";
@@ -85,6 +102,62 @@ RESOURCE MENU_PANE r_app_help_menu {
 		MENU_ITEM {
 			txt = "About...";
 			command = EMenuItemAbout;
+		}
+	};
+}
+
+RESOURCE MENU_PANE r_app_score_menu {
+	items = {
+		MENU_ITEM {
+			txt = "Stub";
+			command = EMenuItemStub;
+		}
+	};
+}
+
+RESOURCE ARRAY r_app_tiles_choice {
+	items = {
+		LBUF {
+			txt="Rounded";
+		},
+		LBUF {
+			txt="Rectangle";
+		}
+	};
+}
+
+RESOURCE QIK_TOOLBAR r_app_toolbar {
+	controls = {
+		QIK_TBAR_BUTTON {
+			txt = "Reset!";
+			id = EToolBarButtonReset;
+			ypos = -2;
+			flags = EEikToolBarCtrlHasSetMinLength;
+			alignment = EQikToolbarLeft;
+		},
+		QIK_TBAR_CTRL {
+			type = EEikCtChoiceList;
+			id = EToolBarCtrlChoice;
+			alignment = EQikToolbarRight;
+			flags = EEikToolBarCtrlIsStretchable;
+			ypos = -2;
+			// length = 100;
+			control = CHOICELIST {
+				array_id = r_app_tiles_choice;
+			};
+		},
+		QIK_TBAR_CTRL {
+			type = EEikCtLabel;
+			id = EToolBarCtrlLabel;
+			flags = EEikToolBarCtrlIsStretchable;
+			alignment = EQikToolbarRight;
+			ypos = 2;
+			control = LABEL {
+				txt = "Tiles: ";
+				standard_font = EEikLabelFontLegend;
+				horiz_align = EEikLabelAlignHCenter;
+				vert_align = EEikLabelAlignVCenter;
+			};
 		}
 	};
 }
