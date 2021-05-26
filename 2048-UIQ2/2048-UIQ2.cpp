@@ -18,7 +18,7 @@
 
 #include <2048-UIQ2.rsg>    // Generated from RSS-resource.
 #include "2048-UIQ2.hrh"
-#include "2048.hpp"
+#include "2048.h"
 
 #define TILE_SIZE           42
 #define TILE_MARGIN         5
@@ -28,7 +28,7 @@ const TUid KUidExample = { 0x10009BBB };
 
 // app view
 class CGameAppView : public CCoeControl {
-	CGameEngine *iGameEngine;
+	Engine engine;
 	TBool iRoundedTiles;
 
 	CEikMenuBar *iMenuBar;
@@ -43,7 +43,7 @@ class CGameAppView : public CCoeControl {
 		const TRect lRectTile(lX, lY, lX + TILE_SIZE, lY + TILE_SIZE);
 		aGc.SetPenStyle(CGraphicsContext::ENullPen);
 		aGc.SetBrushStyle(CGraphicsContext::ESolidBrush);
-		aGc.SetBrushColor(TRgb::Color16M(iGameEngine->Background(aValue)));
+		aGc.SetBrushColor(TRgb::Color16M(e_background(aValue)));
 		if (iRoundedTiles)
 			aGc.DrawRoundRect(lRectTile, TSize(5, 5));
 		else
@@ -55,7 +55,7 @@ class CGameAppView : public CCoeControl {
 			const TInt lBaseLine = lRectTile.Height() / 2 + iFont->AscentInPixels() / 2;
 			aGc.SetBrushStyle(CGraphicsContext::ENullBrush);
 			aGc.SetPenStyle(CGraphicsContext::ESolidPen);
-			aGc.SetPenColor(TRgb::Color16M(iGameEngine->Foreground(aValue)));
+			aGc.SetPenColor(TRgb::Color16M(e_foreground(aValue)));
 			aGc.DrawText(lStrValue, lRectTile, lBaseLine, CGraphicsContext::ECenter);
 			aGc.DiscardFont();
 		}
@@ -68,7 +68,7 @@ class CGameAppView : public CCoeControl {
 		lGc.DrawRect(lRectView);
 		for (TInt y = 0; y < LINE_SIZE; ++y)
 			for (TInt x = 0; x < LINE_SIZE; ++x)
-				DrawTile(lGc, lRectView, iGameEngine->Board()[x + y * LINE_SIZE], x, y);
+				DrawTile(lGc, lRectView, engine.e_board[x + y * LINE_SIZE], x, y);
 		// TODO: DrawFinal.
 	}
 	void HandlePointerEventL(const TPointerEvent& aPointerEvent) {
@@ -81,13 +81,13 @@ class CGameAppView : public CCoeControl {
 			const TRect left(0, h4, 0 + w4, h4 + h4 * 2);
 			const TRect right(w4 * 3, h4, w4 * 3 + w4, h4 + h4 * 2);
 			if (up.Contains(click))
-				iGameEngine->Key(EQuartzKeyFourWayUp);
+				e_key(&engine, EQuartzKeyFourWayUp);
 			else if (down.Contains(click))
-				iGameEngine->Key(EQuartzKeyFourWayDown);
+				e_key(&engine, EQuartzKeyFourWayDown);
 			else if (left.Contains(click))
-				iGameEngine->Key(EQuartzKeyFourWayLeft);
+				e_key(&engine, EQuartzKeyFourWayLeft);
 			else if (right.Contains(click))
-				iGameEngine->Key(EQuartzKeyFourWayRight);
+				e_key(&engine, EQuartzKeyFourWayRight);
 			UpdateAll();
 		}
 	}
@@ -96,18 +96,18 @@ class CGameAppView : public CCoeControl {
 			return EKeyWasNotConsumed;
 		switch (aKeyEvent.iCode) {
 			case EKeyLeftArrow:
-				iGameEngine->Key(EQuartzKeyFourWayLeft);
+				e_key(&engine, EQuartzKeyFourWayLeft);
 				break;
 			case EKeyRightArrow:
-				iGameEngine->Key(EQuartzKeyFourWayRight);
+				e_key(&engine, EQuartzKeyFourWayRight);
 				break;
 			case EKeyUpArrow:
 			case EQuartzKeyTwoWayUp:
-				iGameEngine->Key(EQuartzKeyFourWayUp);
+				e_key(&engine, EQuartzKeyFourWayUp);
 				break;
 			case EKeyDownArrow:
 			case EQuartzKeyTwoWayDown:
-				iGameEngine->Key(EQuartzKeyFourWayDown);
+				e_key(&engine, EQuartzKeyFourWayDown);
 				break;
 			case EKeyEscape:
 			case EKeyBackspace:
@@ -116,7 +116,7 @@ class CGameAppView : public CCoeControl {
 				HandleReset();
 				return EKeyWasConsumed;
 			default:
-				iGameEngine->Key(aKeyEvent.iCode);
+				e_key(&engine, aKeyEvent.iCode);
 				break;
 		}
 		UpdateAll();
@@ -127,13 +127,12 @@ public:
 	void ConstructL(const TRect& aRect) {
 		iRoundedTiles = ETrue;
 
-		iGameEngine = new(ELeave) CGameEngine(
-			EKeyApplicationA,
-			EQuartzKeyFourWayLeft,
-			EQuartzKeyFourWayRight,
-			EQuartzKeyFourWayUp,
-			EQuartzKeyFourWayDown
-		);
+		engine.K_ESCAPE = EKeyApplicationA;
+		engine.K_LEFT = EQuartzKeyFourWayLeft;
+		engine.K_RIGHT = EQuartzKeyFourWayRight;
+		engine.K_UP = EQuartzKeyFourWayUp;
+		engine.K_DOWN = EQuartzKeyFourWayDown;
+		e_init(&engine);
 
 		CreateWindowL();
 		SetRect(aRect);
@@ -145,7 +144,6 @@ public:
 		iFont = iEikonEnv->TitleFont();
 	}
 	~CGameAppView() {
-		delete iGameEngine;
 		CloseSTDLIB();
 	}
 
@@ -160,7 +158,7 @@ public:
 	}
 	void UpdateAll() {
 		TBuf<16> lStrValue;
-		lStrValue.Format(_L("Score: %d"), *iGameEngine->Score());
+		lStrValue.Format(_L("Score: %d"), engine.e_score);
 
 		// Update MenuBar title.
 		iMenuBar->SetTitleL(lStrValue, R_APP_SCORE_MENU);
@@ -171,7 +169,7 @@ public:
 	}
 	void HandleReset() {
 		iEikonEnv->InfoMsg(_L("Reset"));
-		iGameEngine->Key(EKeyApplicationA);
+		e_key(&engine, EKeyApplicationA);
 		UpdateAll();
 	}
 	void HandleToolBarCommand() {

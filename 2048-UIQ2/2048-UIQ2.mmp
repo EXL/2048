@@ -15,9 +15,9 @@ AIF            2048-UIQ2.aif . 2048-UIQ2_AIF.rss c24 \
                ..\image\icon\uiq_32x32m.bmp
 
 SOURCEPATH     .
-SOURCE         2048-UIQ2.cpp ..\src\cpp\2048.cpp
+SOURCE         2048-UIQ2.cpp ..\src\wsd\2048.c
 RESOURCE       2048-UIQ2.rss
-USERINCLUDE    . ..\src\cpp
+USERINCLUDE    . ..\src\wsd
 SYSTEMINCLUDE  \epoc32\include \epoc32\include\libc
 LIBRARY        euser.lib apparc.lib cone.lib gdi.lib estlib.lib eikcore.lib eikcoctl.lib eikctl.lib qikctl.lib
 
