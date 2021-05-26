@@ -29,6 +29,7 @@ LIBRARY        estlib.lib
 LIBRARY        eikcore.lib
 LIBRARY        eikcoctl.lib
 LIBRARY        eikctl.lib
+LIBRARY        eikdlg.lib
 LIBRARY        qikctl.lib
 
 // EPOCALLOWDLLDATA

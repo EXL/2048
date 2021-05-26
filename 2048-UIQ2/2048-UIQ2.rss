@@ -6,6 +6,7 @@
 NAME PUZZ
 
 #include <eikon.rh>
+#include <eikon.rsg>
 
 #include <qikon.rh>
 
@@ -13,7 +14,7 @@ NAME PUZZ
 
 RESOURCE RSS_SIGNATURE { }
 
-RESOURCE TBUF { buf=""; } // TODO: Delete this?
+RESOURCE TBUF { buf=""; }
 
 RESOURCE EIK_APP_INFO {
 	menubar = r_app_menubar;
@@ -157,6 +158,26 @@ RESOURCE QIK_TOOLBAR r_app_toolbar {
 				standard_font = EEikLabelFontLegend;
 				horiz_align = EEikLabelAlignHCenter;
 				vert_align = EEikLabelAlignVCenter;
+			};
+		}
+	};
+}
+
+RESOURCE DIALOG r_app_about_dialog {
+	title = "About 2048-UIQ2";
+	flags = EEikDialogFlagWait;
+	buttons = R_EIK_BUTTONS_CONTINUE;
+	items = {
+		DLG_LINE {
+			type = EEikCtLabel;
+			control = LABEL {
+				txt = "First Line";
+			};
+		},
+		DLG_LINE {
+			type = EEikCtLabel;
+			control = LABEL {
+				txt = "Second Line";
 			};
 		}
 	};

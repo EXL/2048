@@ -4,6 +4,7 @@
 //
 
 #include <eikchlst.h>
+#include <eikdialg.h>
 #include <eikenv.h>
 #include <eikmenub.h>
 #include <eiktbar.h>
@@ -24,7 +25,7 @@
 #define TILE_MARGIN         5
 #define OFFSET_COORD(coord) (coord * (TILE_MARGIN + TILE_SIZE))
 
-const TUid KUidExample = { 0x10009BBB };
+const TUid KUidGameApplication = { 0x10009BBB };
 
 // app view
 class CGameAppView : public CCoeControl {
@@ -46,7 +47,6 @@ class CGameAppView : public CCoeControl {
 	// from CCoeControl
 	void DrawFinal() const {
 		if (iEngine.e_win || iEngine.e_lose) {
-			const TPtrC lStrFinal = (iEngine.e_win) ? _L("You Won!") : _L("Game Over!");
 			iBmpGc->SetBrushStyle(CGraphicsContext::ESquareCrossHatchBrush);
 			iBmpGc->SetDrawMode(CGraphicsContext::EDrawModeNOTSCREEN);
 			iBmpGc->DrawRect(iRectView);
@@ -55,9 +55,9 @@ class CGameAppView : public CCoeControl {
 			const TInt lBaseLine = iRectView.Height() / 2 + iFontLarge->AscentInPixels() / 2;
 			iBmpGc->SetBrushStyle(CGraphicsContext::ENullBrush);
 			iBmpGc->SetPenColor(TRgb::Color16M(COLOR_FINAL));
-			iBmpGc->DrawText(lStrFinal, iRectView, lBaseLine, CGraphicsContext::ECenter);
+			iBmpGc->DrawText((iEngine.e_win) ? _L("You Won!") : _L("Game Over!"),
+				iRectView, lBaseLine, CGraphicsContext::ECenter);
 			iBmpGc->DiscardFont();
-			iEikonEnv->InfoMsg(lStrFinal);
 		}
 	}
 	void DrawTile(TInt aValue, TInt aX, TInt aY) const {
@@ -215,6 +215,9 @@ public:
 
 		// Update AppView screen.
 		DrawNow();
+
+		if (iEngine.e_win || iEngine.e_lose)
+			iEikonEnv->InfoMsg((iEngine.e_win) ? _L("You Won!") : _L("Game Over!"));
 	}
 	void HandleReset() {
 		iEikonEnv->InfoMsg(_L("Reset Game"));
@@ -256,11 +259,24 @@ class CGameAppUi : public CQikAppUi {
 			case EMenuItemRectangle:
 				iAppView->SetRoundedTiles(EFalse);
 				break;
-			case EToolBarCtrlChoice:
-				iAppView->HandleToolBarCommand();
+			case EMenuItemSave:
+				iEikonEnv->InfoWinL(_L("Save"), _L("Save Dialog"));
+				break;
+			case EMenuItemLoad:
+				iEikonEnv->InfoWinL(_L("Load"), _L("Load Dialog"));
 				break;
 			case EEikCmdExit:
 				Exit();
+				break;
+			case EMenuItemAbout: {
+				// iEikonEnv->InfoWinL(_L("About"), _L("About Dialog"));
+				CEikDialog *lAboutDialog = new(ELeave) CEikDialog();
+				lAboutDialog->SetHelpContext(TCoeHelpContext(KUidGameApplication, _L("This is about dialog.")));
+				lAboutDialog->ExecuteLD(R_APP_ABOUT_DIALOG);
+				}
+				break;
+			case EToolBarCtrlChoice:
+				iAppView->HandleToolBarCommand();
 				break;
 		}
 	}
@@ -292,7 +308,7 @@ public:
 class CGameApplication : public CQikApplication {
 	// from CApaApplication
 	CApaDocument* CreateDocumentL() { return new(ELeave) CGameDocument(*this); }
-	TUid AppDllUid() const { return KUidExample; }
+	TUid AppDllUid() const { return KUidGameApplication; }
 };
 
 // DLL interface stuff
