@@ -19,6 +19,16 @@ SOURCE         2048-UIQ2.cpp ..\src\wsd\2048.c
 RESOURCE       2048-UIQ2.rss
 USERINCLUDE    . ..\src\wsd
 SYSTEMINCLUDE  \epoc32\include \epoc32\include\libc
-LIBRARY        euser.lib apparc.lib cone.lib gdi.lib estlib.lib eikcore.lib eikcoctl.lib eikctl.lib qikctl.lib
+LIBRARY        euser.lib
+LIBRARY        apparc.lib
+LIBRARY        cone.lib
+LIBRARY        gdi.lib
+LIBRARY        bitgdi.lib
+LIBRARY        fbscli.lib
+LIBRARY        estlib.lib
+LIBRARY        eikcore.lib
+LIBRARY        eikcoctl.lib
+LIBRARY        eikctl.lib
+LIBRARY        qikctl.lib
 
 // EPOCALLOWDLLDATA

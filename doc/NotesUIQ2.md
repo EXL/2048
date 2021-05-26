@@ -12,9 +12,9 @@ Porting 2048 Game to UIQ2 Platform
 5. [ ] Insert SIM-card and set correct time & date when need to take screenshots.
 6. [x] Add non-WSD (Writeable Static Data) version of engine.
 7. [x] Create menus and implement them.
-8. [ ] Implement basic drawing.
+8. [x] Implement basic drawing.
 9. [ ] Test Simbian Services (epocexe or exe).
-10. [ ] Double Buffering?
+10. [x] Use Double Buffering for drawing game context.
 11. [ ] Animation?
 
 https://www.akawolf.org/wiki/index.php/Apps:Symbian_Platform_Support_for_Writeable_Static_Data_in_DLLs
