@@ -10,9 +10,12 @@ Porting 2048 Game to UIQ2 Platform
 3. [x] Create proper application icons.
 4. [ ] Create all documentation files and notes.
 5. [ ] Insert SIM-card and set correct time & date when need to take screenshots.
-6. [ ] Create a Symbian server to prevent WSD (Writeable Static Data) errors?
+6. [x] Add non-WSD (Writeable Static Data) version of engine.
 7. [x] Create menus and implement them.
 8. [ ] Implement basic drawing.
+9. [ ] Test Simbian Services (epocexe or exe).
+10. [ ] Double Buffering?
+11. [ ] Animation?
 
 https://www.akawolf.org/wiki/index.php/Apps:Symbian_Platform_Support_for_Writeable_Static_Data_in_DLLs
 https://docs.huihoo.com/symbian/s60-3rd-edition-cpp-developers-library-v1.1/GUID-35228542-8C95-4849-A73F-2B4F082F0C44/html/SDL_93/doc_source/guide/EssentialIdioms/StaticData.html
