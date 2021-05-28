@@ -174,9 +174,9 @@ public:
 		iMenuBar = iEikonEnv->AppUiFactory()->MenuBar();
 		iChoiceList = STATIC_CAST(CEikChoiceList *,
 			iEikonEnv->AppUiFactory()->ToolBar()->ControlOrNull(EToolBarCtrlChoice));
-		iScreenDevice->GetNearestFontInTwips(iFontLarge, GetFontSpec(_L("Arial"), 20));
-		iScreenDevice->GetNearestFontInTwips(iFontNormal, GetFontSpec(_L("Arial"), 14));
-		iScreenDevice->GetNearestFontInTwips(iFontSmall, GetFontSpec(_L("Arial"), 12));
+		iScreenDevice->GetNearestFontInTwips(iFontLarge, GetFontSpec(_L("Dialer"), 20));
+		iScreenDevice->GetNearestFontInTwips(iFontNormal, GetFontSpec(_L("HGGothicB"), 16));
+		iScreenDevice->GetNearestFontInTwips(iFontSmall, GetFontSpec(_L("HGGothicB"), 14));
 	}
 	~CGameAppView() {
 		iScreenDevice->ReleaseFont(iFontSmall);

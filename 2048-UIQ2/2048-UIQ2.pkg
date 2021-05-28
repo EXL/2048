@@ -4,13 +4,13 @@
 ;
 
 &EN
-#{"2048"},(0x10009BBB),1,0,0
+#{"2048"},(0x10009BBB),1,0,0,TYPE=SA
 
-"..\..\..\epoc32\release\armi\urel\2048-UIQ2.app"-"!:\system\apps\2048-UIQ2\2048-UIQ2.app"
-; "..\..\..\epoc32\release\arm4\urel\2048-UIQ2.app"-"!:\system\apps\2048-UIQ2\2048-UIQ2.app"
-; "..\..\..\epoc32\release\thumb\urel\2048-UIQ2.app"-"!:\system\apps\2048-UIQ2\2048-UIQ2.app"
-"..\..\..\epoc32\data\z\system\apps\2048-UIQ2\2048-UIQ2.rsc"-"!:\system\apps\2048-UIQ2\2048-UIQ2.rsc"
-"..\..\..\epoc32\data\z\system\apps\2048-UIQ2\2048-UIQ2.aif"-"!:\system\apps\2048-UIQ2\2048-UIQ2.aif"
-; "..\..\..\epoc32\data\z\system\apps\2048-UIQ2\2048-UIQ2.mbm"-"!:\system\apps\2048-UIQ2\2048-UIQ2.mbm"
+"\Symbian\UIQ_21\epoc32\release\armi\urel\2048-UIQ2.app"-"!:\system\apps\2048-UIQ2\2048-UIQ2.app"
+; "\Symbian\UIQ_21\epoc32\release\arm4\urel\2048-UIQ2.app"-"!:\system\apps\2048-UIQ2\2048-UIQ2.app"
+; "\Symbian\UIQ_21\epoc32\release\thumb\urel\2048-UIQ2.app"-"!:\system\apps\2048-UIQ2\2048-UIQ2.app"
+"\Symbian\UIQ_21\epoc32\data\z\system\apps\2048-UIQ2\2048-UIQ2.rsc"-"!:\system\apps\2048-UIQ2\2048-UIQ2.rsc"
+"\Symbian\UIQ_21\epoc32\data\z\system\apps\2048-UIQ2\2048-UIQ2.aif"-"!:\system\apps\2048-UIQ2\2048-UIQ2.aif"
+; "Symbian\UIQ_21\epoc32\data\z\system\apps\2048-UIQ2\2048-UIQ2.mbm"-"!:\system\apps\2048-UIQ2\2048-UIQ2.mbm"
 
 (0x101F617B), 2, 0, 0, {"UIQ20ProductID"}

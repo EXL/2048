@@ -16,6 +16,7 @@ Porting 2048 Game to UIQ2 Platform
 9. [ ] Test Simbian Services (epocexe or exe).
 10. [x] Use Double Buffering for drawing game context.
 11. [ ] Animation?
+12. [x] Set proper font drawing.
 
 https://www.akawolf.org/wiki/index.php/Apps:Symbian_Platform_Support_for_Writeable_Static_Data_in_DLLs
 https://docs.huihoo.com/symbian/s60-3rd-edition-cpp-developers-library-v1.1/GUID-35228542-8C95-4849-A73F-2B4F082F0C44/html/SDL_93/doc_source/guide/EssentialIdioms/StaticData.html
@@ -32,3 +33,11 @@ https://docs.huihoo.com/symbian/s60-3rd-edition-cpp-developers-library-v1.1/GUID
 | Game B     | 0xF85D |
 
 // TODO: Add some info about documentation things
+
+## Dead Links
+
+http://www.motocoder.com/motorola/download.jsp?FILENAME=downloads/files/SDK_A1000_beta.zip
+http://www.motocoder.com/motorola/download.jsp?FILENAME=downloads/pdf/A1000_SDK_Users_Guide.pdf
+http://www.motocoder.com/motorola/download.jsp?FILENAME=downloads/files/M1000SDK_v1_0.zip
+http://www.motocoder.com/motorola/download.jsp?FILENAME=downloads/pdf/M1000_SDK_Users_Guide.pdf
+http://www.motocoder.com/motorola/download.jsp?FILENAME=downloads/files/A925SDK.zip
