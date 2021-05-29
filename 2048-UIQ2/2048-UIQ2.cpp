@@ -15,6 +15,8 @@
 
 #include <quartzkeys.h>
 
+#include <s32file.h>
+
 #include <sys/reent.h>
 
 #include <2048-UIQ2.rsg>    // Generated from RSS-resource.
@@ -230,6 +232,58 @@ public:
 		iEikonEnv->InfoMsg((iRoundedTiles) ? _L("Rounded Tiles") : _L("Rectangle Tiles"));
 		DrawNow();
 	}
+	void SaveGameL() {
+		TRAPD(lErr, WriteFileL());
+		if (lErr) {
+			TBuf<64> lStr;
+			lStr.Format(_L("Cannot save \"2048-UIQ2.sav\" file, error code: 0x%X"), lErr);
+			iEikonEnv->InfoWinL(_L("Error!"), lStr);
+			User::Leave(lErr);
+		}
+	}
+	void WriteFileL() {
+		RFileWriteStream lWriter;
+		lWriter.PushL();
+		User::LeaveIfError(lWriter.Replace(iEikonEnv->FsSession(), _L("2048-UIQ2.sav"), EFileWrite));
+		lWriter.WriteL((const TUint8 *) &iEngine, sizeof(Engine));
+		TTime lTime;
+		lTime.HomeTime();
+		lWriter.WriteL((const TUint8 *) &lTime.Int64(), sizeof(TInt64));
+		TBuf<64> lStr;
+		TBuf<32> lStrDateTime;
+		lTime.FormatL(lStrDateTime, _L("%D%*N%Y%1-%2-%3%, %H:%T:%S")); // 30-May-2021, 03:19:54
+		lStr.Append(_L("Save file is \"2048-UIQ2.sav\", date:\n"));
+		lStr.Append(lStrDateTime);
+		iEikonEnv->InfoWinL(_L("Game Saved!"), lStr);
+		lWriter.CommitL();
+		CleanupStack::PopAndDestroy();
+	}
+	void LoadGameL() {
+		TRAPD(lErr, ReadFileL());
+		if (lErr) {
+			TBuf<64> lStr;
+			lStr.Format(_L("Cannot load \"2048-UIQ2.sav\" file, error code: 0x%X"), lErr);
+			iEikonEnv->InfoWinL(_L("Error!"), lStr);
+			User::Leave(lErr);
+		}
+	}
+	void ReadFileL() {
+		RFileReadStream lReader;
+		lReader.PushL();
+		User::LeaveIfError(lReader.Open(iEikonEnv->FsSession(), _L("2048-UIQ2.sav"), EFileRead));
+		lReader.ReadL((TUint8 *) &iEngine, sizeof(Engine));
+		TInt64 lTimeStamp;
+		lReader.ReadL((TUint8 *) &lTimeStamp, sizeof(TInt64));
+		TBuf<64> lStr;
+		TBuf<32> lStrDateTime;
+		TTime lTime(lTimeStamp);
+		lTime.FormatL(lStrDateTime, _L("%D%*N%Y%1-%2-%3%, %H:%T:%S")); // 30-May-2021, 03:19:54
+		lStr.Append(_L("Save file is \"2048-UIQ2.sav\", date:\n"));
+		lStr.Append(lStrDateTime);
+		UpdateAll();
+		iEikonEnv->InfoWinL(_L("Game Loaded!"), lStr);
+		CleanupStack::PopAndDestroy();
+	}
 };
 
 // app UI
@@ -260,10 +314,10 @@ class CGameAppUi : public CQikAppUi {
 				iAppView->SetRoundedTiles(EFalse);
 				break;
 			case EMenuItemSave:
-				iEikonEnv->InfoWinL(_L("Save"), _L("Save Dialog"));
+				iAppView->SaveGameL();
 				break;
 			case EMenuItemLoad:
-				iEikonEnv->InfoWinL(_L("Load"), _L("Load Dialog"));
+				iAppView->LoadGameL();
 				break;
 			case EEikCmdExit:
 				Exit();
