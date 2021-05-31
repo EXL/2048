@@ -5,6 +5,8 @@
 
 #include <aiftool.rh>
 
+#include "2048-UIQ2.hrh"
+
 RESOURCE AIF_DATA {
 	caption_list = {
 		CAPTION {
@@ -12,8 +14,10 @@ RESOURCE AIF_DATA {
 			caption = "2048";
 		}
 	};
-	app_uid=0x10009BBB;
-	num_icons=2;
+	app_uid = E_APP_UID;
+	num_icons = 2;
+
+	hidden = KAppNotHidden;
 	embeddability = KAppNotEmbeddable;
 	newfile = KAppDoesNotSupportNewFile;
 }

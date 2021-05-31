@@ -19,15 +19,15 @@
 
 #include <sys/reent.h>
 
-#include <2048-UIQ2.rsg>    // Generated from RSS-resource.
+#include <2048-UIQ2.rsg>         // Generated from RSS-resource.
 #include "2048-UIQ2.hrh"
 #include "2048.h"
 
-#define TILE_SIZE           42
-#define TILE_MARGIN         5
-#define OFFSET_COORD(coord) (coord * (TILE_MARGIN + TILE_SIZE))
+#define TILE_SIZE                42
+#define TILE_MARGIN              5
+#define OFFSET_COORD(coord)      (coord * (TILE_MARGIN + TILE_SIZE))
 
-const TUid KUidGameApplication = { 0x10009BBB };
+const TUid KUidGameApplication = { E_APP_UID };
 
 // app view
 class CGameAppView : public CCoeControl {
@@ -168,7 +168,7 @@ public:
 
 		iScreenDevice = iEikonEnv->ScreenDevice();
 		iRectView = Rect();
-		iBmp = new(ELeave) CFbsBitmap();
+		iBmp = new(ELeave) CFbsBitmap;
 		iBmp->Create(iRectView.Size(), iScreenDevice->DisplayMode());
 		iBmpDevice = CFbsBitmapDevice::NewL(iBmp);
 		iBmpDevice->CreateContext(iBmpGc);
@@ -252,7 +252,7 @@ public:
 		TBuf<64> lStr;
 		TBuf<32> lStrDateTime;
 		lTime.FormatL(lStrDateTime, _L("%D%*N%Y%1-%2-%3%, %H:%T:%S")); // 30-May-2021, 03:19:54
-		lStr.Append(_L("Save file is \"2048-UIQ2.sav\", date:\n"));
+		lStr.Append(_L("Save file is \"2048-UIQ2.sav\".\nTimestamp: "));
 		lStr.Append(lStrDateTime);
 		iEikonEnv->InfoWinL(_L("Game Saved!"), lStr);
 		lWriter.CommitL();
@@ -278,7 +278,7 @@ public:
 		TBuf<32> lStrDateTime;
 		TTime lTime(lTimeStamp);
 		lTime.FormatL(lStrDateTime, _L("%D%*N%Y%1-%2-%3%, %H:%T:%S")); // 30-May-2021, 03:19:54
-		lStr.Append(_L("Save file is \"2048-UIQ2.sav\", date:\n"));
+		lStr.Append(_L("Save file is \"2048-UIQ2.sav\".\nTimestamp: "));
 		lStr.Append(lStrDateTime);
 		UpdateAll();
 		iEikonEnv->InfoWinL(_L("Game Loaded!"), lStr);
@@ -322,17 +322,19 @@ class CGameAppUi : public CQikAppUi {
 			case EEikCmdExit:
 				Exit();
 				break;
-			case EMenuItemAbout: {
-				// iEikonEnv->InfoWinL(_L("About"), _L("About Dialog"));
-				CEikDialog *lAboutDialog = new(ELeave) CEikDialog();
-				lAboutDialog->SetHelpContext(TCoeHelpContext(KUidGameApplication, _L("This is about dialog.")));
-				lAboutDialog->ExecuteLD(R_APP_ABOUT_DIALOG);
-				}
+			case EMenuItemAbout:
+				ShowAboutDialog();
 				break;
 			case EToolBarCtrlChoice:
 				iAppView->HandleToolBarCommand();
 				break;
 		}
+	}
+
+	void ShowAboutDialog() {
+		CEikDialog *lAboutDialog = new(ELeave) CEikDialog;
+		lAboutDialog->SetHelpContext(TCoeHelpContext(KUidGameApplication, KNullDesC));
+		lAboutDialog->ExecuteLD(R_APP_ABOUT_DIALOG);
 	}
 
 public:

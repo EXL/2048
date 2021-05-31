@@ -166,18 +166,32 @@ RESOURCE QIK_TOOLBAR r_app_toolbar {
 RESOURCE DIALOG r_app_about_dialog {
 	title = "About 2048-UIQ2";
 	flags = EEikDialogFlagWait;
-	buttons = R_EIK_BUTTONS_CONTINUE;
+	buttons = R_EIK_BUTTONS_OK;
 	items = {
 		DLG_LINE {
-			type = EEikCtLabel;
-			control = LABEL {
-				txt = "First Line";
+			type = EEikCtImage;
+			control = IMAGE {
+				bmpfile = "\\system\\apps\\2048-UIQ2\\2048-UIQ2.mbm";
+				bmpid = 0;
+				bmpmask = 1;
 			};
 		},
 		DLG_LINE {
 			type = EEikCtLabel;
 			control = LABEL {
-				txt = "Second Line";
+				txt = "The 2048 puzzle game implementation especially for Symbian UIQ 2.x platform.";
+			};
+		},
+		DLG_LINE {
+			type = EEikCtLabel;
+			control = LABEL {
+				txt = "© EXL (exl@bk.ru)\nhttps://github.com/EXL/2048/";
+			};
+		},
+		DLG_LINE {
+			type = EEikCtLabel;
+			control = LABEL {
+				txt = "Version 1.0, 31-May-2021";
 			};
 		}
 	};

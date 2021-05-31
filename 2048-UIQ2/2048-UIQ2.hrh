@@ -3,6 +3,8 @@
 // Copyright (c) 2021 EXL. All rights reserved.
 //
 
+#define E_APP_UID 0x10009BBB
+
 enum TMenuBarCommands {
 	EMenuItemReset = 0x06000,
 	EMenuItemTiles,

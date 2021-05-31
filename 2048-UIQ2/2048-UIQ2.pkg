@@ -11,6 +11,6 @@
 ; "\Symbian\UIQ_21\epoc32\release\thumb\urel\2048-UIQ2.app"-"!:\system\apps\2048-UIQ2\2048-UIQ2.app"
 "\Symbian\UIQ_21\epoc32\data\z\system\apps\2048-UIQ2\2048-UIQ2.rsc"-"!:\system\apps\2048-UIQ2\2048-UIQ2.rsc"
 "\Symbian\UIQ_21\epoc32\data\z\system\apps\2048-UIQ2\2048-UIQ2.aif"-"!:\system\apps\2048-UIQ2\2048-UIQ2.aif"
-; "Symbian\UIQ_21\epoc32\data\z\system\apps\2048-UIQ2\2048-UIQ2.mbm"-"!:\system\apps\2048-UIQ2\2048-UIQ2.mbm"
+"\Symbian\UIQ_21\epoc32\data\z\system\apps\2048-UIQ2\2048-UIQ2.mbm"-"!:\system\apps\2048-UIQ2\2048-UIQ2.mbm"
 
 (0x101F617B), 2, 0, 0, {"UIQ20ProductID"}

@@ -14,6 +14,12 @@ AIF            2048-UIQ2.aif . 2048-UIQ2_AIF.rss c24 \
                ..\image\icon\uiq_32x32i.bmp \
                ..\image\icon\uiq_32x32m.bmp
 
+START          BITMAP 2048-UIQ2.mbm
+HEADER
+SOURCEPATH     .
+SOURCE         c24 ..\image\icon\uiq_32x32i.bmp ..\image\icon\uiq_32x32m.bmp
+END
+
 SOURCEPATH     .
 SOURCE         2048-UIQ2.cpp ..\src\wsd\2048.c
 RESOURCE       2048-UIQ2.rss
