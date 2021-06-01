@@ -9,6 +9,7 @@ Information were obtained:
 4. By using `ps aux` command on NeXTSTEP.
 5. By using `ps aux` and `top` commands on Mac OS X.
 6. In the "Apple Menu" => "About This Computer..." monitor on classic Mac OS and A/UX.
+7. By using "TaskMan" (UID: 0x101F9D66) program from SymbianWare on Symbian UIQ2 platform.
 
 *Note: `$PID` is Process Identifier of the executable file.*
 
@@ -605,4 +606,12 @@ exl        727   0.0  0.2   292168   5172   ??  S    10:22AM   0:02.41 /Users/ex
 top
 PID COMMAND      %CPU   TIME   #TH #PRTS #MREGS RPRVT  RSHRD  RSIZE  VSIZE
 727 2048-Carbo   0.0%  0:02.41   1    67     89 1180K    13M  5172K   229M
+```
+
+### 2048-UIQ2
+
+```
+2048:      64K
+HeapSize:  44K
+StackSize: 20K
 ```

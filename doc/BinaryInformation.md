@@ -9,6 +9,7 @@ Dependencies were obtained:
 4. By `otool -L` command on NeXTSTEP and Mac OS X.
 5. By CodeWarrior and ThinkC settings on classic Mac OS.
 6. By Makefile on A/UX.
+7. By MMP-project file on Symbian UIQ2.
 
 ### Sizes and Rights
 
@@ -225,11 +226,16 @@ tree -phD --timefmt "%d-%b-%Y %H:%M:%S" 2048-Release/
 │       ├── [-rw-r--r--    49 15-Nov-1994 09:09:59]  2048-NeXTSTEP.sizes
 │       ├── [-r--r--r--  169K 15-Nov-1994 09:09:58]  2048-NeXTSTEP.tar.Z
 │       └── [-r--r--r--  3.2K 15-Nov-1994 09:09:58]  2048-NeXTSTEP.tiff
+├── [drwxr-xr-x  4.0K 31-May-2021 18:52:48]  Symbian
+│   └── [drwxr-xr-x  4.0K 01-Jun-2021 03:55:22]  UIQ2
+│       ├── [-rw-rw-rw-   12K 31-May-2021 19:20:43]  2048-UIQ2_arm4_v1.0_31-May-2021.sis
+│       ├── [-rw-rw-rw-   12K 31-May-2021 19:20:43]  2048-UIQ2_armi_v1.0_31-May-2021.sis
+│       └── [-rw-rw-rw-   12K 31-May-2021 19:20:43]  2048-UIQ2_thumb_v1.0_31-May-2021.sis
 └── [drwxr-xr-x  4.0K 26-Feb-2021 05:12:07]  Videos
     ├── [-rw-rw-r--  2.9M 27-Jun-2020 05:01:59]  2048-MotoMAGX_ZN5.webm
     └── [-rw-r--r--   69M 26-Feb-2021 04:51:36]  2048-SMD.mp4
 
-71 directories, 142 files
+73 directories, 145 files
 ```
 
 ### File Types
@@ -386,6 +392,11 @@ AUX/%2048-AUX: AppleDouble encoded Macintosh file
 AUX/2048-AUX:  mc68k COFF object (demand paged)
 AUX/2048-Xaw:  mc68k COFF object (demand paged)
 AUX/2048-Xlib: mc68k COFF object (demand paged)
+
+file Symbian/UIQ2/*
+Symbian/UIQ2/2048-UIQ2_arm4_v1.0_31-May-2021.sis:  Symbian installation file (EPOC release 6)
+Symbian/UIQ2/2048-UIQ2_armi_v1.0_31-May-2021.sis:  Symbian installation file (EPOC release 6)
+Symbian/UIQ2/2048-UIQ2_thumb_v1.0_31-May-2021.sis: Symbian installation file (EPOC release 6)
 
 file Videos/*
 Videos/2048-MotoMAGX_ZN5.webm: WebM
@@ -1361,4 +1372,22 @@ otool -L 2048-Carbon
 	/usr/lib/libSystem.B.dylib (compatibility version 1.0.0, current version 111.0.0)
 	/System/Library/Frameworks/CoreFoundation.framework/Versions/A/CoreFoundation (compatibility version 150.0.0, current version 476.0.0)
 	/System/Library/Frameworks/ApplicationServices.framework/Versions/A/ApplicationServices (compatibility version 1.0.0, current version 34.0.0)
+```
+
+### 2048-UIQ2
+
+```
+euser.lib
+estor.lib
+apparc.lib
+cone.lib
+gdi.lib
+bitgdi.lib
+fbscli.lib
+estlib.lib
+eikcore.lib
+eikcoctl.lib
+eikctl.lib
+eikdlg.lib
+qikctl.lib
 ```
