@@ -35,8 +35,8 @@ The documentation files that come with the Symbian UIQ2 SDK along with code exam
 1. [x] Create installable SIS-packages (armi, arm4, thumb) for Symbian UIQ 2.0 (2.1) and test them on Motorola FOMA M1000.
 2. [x] Create UIQ2-application skeleton.
 3. [x] Create proper application icons.
-4. [ ] Create all documentation files and notes.
-5. [ ] Insert SIM-card and set correct time & date when need to take screenshots and photos.
+4. [x] Create all documentation files and notes.
+5. [x] Insert SIM-card and set correct time & date when need to take screenshots and photos.
 6. [x] Add non-WSD (Writeable Static Data) version of engine.
 7. [x] Create menus and implement them.
 8. [x] Implement basic drawing.
