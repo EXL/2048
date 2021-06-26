@@ -155,6 +155,21 @@ The THINK C offered the programmer a powerful object-oriented Think Class Librar
 28. [x] Update engine sources.
 29. [x] Check game on the Mac OS System 6 with color display.
 
+## Apple IIGS GS/OS Notes
+
+// TODO: Summary.
+// TODO: About general code base of Apple IIGS emulators and choosing GSplus.
+
+### Task List
+
+1. [x] Add notes about GSplus emulator and CiderPress program.
+2. [x] Add manual about installing latest GS/OS System Software operation system.
+3. [ ] Add information about APW and APW C compiler.
+4. [ ] Add information about ORCA and ORCA/C compiler.
+5. [x] Make simple hello world for GS/OS operation system.
+6. [ ] Connect game engine to the GUI code.
+7. [ ] How to set application icon for showing in Finder?
+
 ## References and Books List
 
 1. [Macintosh C Programming By Example, 1991](https://vintageapple.org/macprogramming/pdf/Macintosh_C_Programming_By_Example_1991.pdf)
@@ -185,3 +200,7 @@ You can find literature, documentation, and source code on the following sites:
 6. [Macintosh Garden](https://macintoshgarden.org/)
 7. [Apple FTP Archive](https://macintoshgarden.org/apps/ftpapplecom-archive)
 8. [Macintosh Repository](https://www.macintoshrepository.org/)
+9. [Mac GUI](https://macgui.com/)
+10. [Internet Archive](https://archive.org/)
+11. [Old-DOS.ru](http://old-dos.ru/)
+12. [Apple Asimov FTP Archive](https://www.apple.asimov.net/)
