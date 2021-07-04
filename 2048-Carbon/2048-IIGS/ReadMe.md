@@ -90,17 +90,27 @@ prefix PROJ/
 
 cc
 
-filetype INITQUIT.C SRC
-filetype WINDOW.C SRC
-change INITQUIT.C CC
-change WINDOW.C CC
+host: unix2mac App.2048.cc
+host: unix2mac Src.2048.c
+host: unix2mac Src.2048.h
 
-compile WINDOW.C keep=WINDOW
-link 2/start WINDOW keep=WINDOW
+filetype App.2048.cc SRC
+filetype Src.2048.c SRC
+filetype Src.2048.h SRC
+filetype Icons/IIGS.2048.Icons $CA
 
-cmpl WINDOW.C keep=WINDOW
+change App.2048.cc CC
+change Src.2048.c CC
+change Src.2048.h CC
 
-filetype WINDOW S16
+compile App.2048.cc keep=App.2048 cc=(-DAPW=1)
+line 2/start App.2048 keep=App.2048
+
+cmpl App.2048.cc keep=App.2048 cc=(-DAPW=1)
+
+compact App.2048
+filetype App.2048 S16
+rename App.2048 IIGS.2048.S16
 ```
 
 

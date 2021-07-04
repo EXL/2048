@@ -165,10 +165,15 @@ The THINK C offered the programmer a powerful object-oriented Think Class Librar
 1. [x] Add notes about GSplus emulator and CiderPress program.
 2. [x] Add manual about installing latest GS/OS System Software operation system.
 3. [ ] Add information about APW and APW C compiler.
-4. [ ] Add information about ORCA and ORCA/C compiler.
-5. [x] Make simple hello world for GS/OS operation system.
-6. [ ] Connect game engine to the GUI code.
-7. [ ] How to set application icon for showing in Finder?
+4. [ ] Add information about MPW and MPW C compiler.
+5. [ ] Add information about ORCA and ORCA/C compiler.
+6. [ ] Add information about Aztec C (?) compiler.
+7. [x] Make simple hello world for GS/OS operation system.
+8. [ ] Connect game engine to the GUI code.
+9. [x] Find how to set application icon.
+10. [ ] Add information about Icon Editor, icons and resource forks.
+11. [x] Use `compact` command like `strip` analog.
+12. [x] Is there some platform macro exist? It looks like there is no macro in the early version of APW C.
 
 ## References and Books List
 
