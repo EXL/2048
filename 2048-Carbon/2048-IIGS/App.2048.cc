@@ -9,6 +9,7 @@
 #include <Menu.h>
 #include <Lineedit.h>
 #include <Dialog.h>
+#include <Desk.h>
 
 #include "Src.2048.h"
 #include "Src.2048.c"
@@ -24,9 +25,9 @@
 #define MaxX 640
 #define dpAttr attrLocked+attrFixed+attrBank
 
-char *menu1 = "\>L@\\XN1\r\L  A Window Program  \\N257\r\.";
-char *menu2 = "\>L  File    \\N2\r\L  New \\N258V\r\L  Quit  \\N259*Qq\r\.";
-char *menu3 = "\>L Windows  \\N3\r\L  Untitled  \\N260\r\.";
+char *menu1 = ">>@\\XN1\r--About 2048-IIGS...\\N257\r---\\N512D\r.";
+char *menu2 = ">>  Game  \\N2\r--Reset\\N258*Rr\r---\\N513D\r--Quit\\N259*Qq\r\.";
+char *menu3 = ">>  Tiles  \\N3\r--Rectangle\\N260\r\--Rounded\\N261\r\.";
 
 int myID;
 Handle zp;
@@ -81,8 +82,10 @@ BuildMenu() {
 	InsertMenu(NewMenu(menu3), 0);
 	InsertMenu(NewMenu(menu2), 0);
 	InsertMenu(NewMenu(menu1), 0);
+	FixAppleMenu(1);
 	FixMenuBar();
 	DrawMenuBar();
+	CheckMItem(true, UNTIT_ITEM);
 }
 
 LocInfo picOLocInfo = {
