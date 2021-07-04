@@ -1,17 +1,15 @@
+#ifndef APW /* Apple IIGS platform. */
 #include "2048.h"
-
-#if defined(mc68000) && !defined(NeXT) /* GCC on Sega Mega Drive and Sega Genesis platform. */
-#include <genesis.h>
-#define rand random
 #else
-#include <time.h>
-#include <stdlib.h>
-#endif
-#include <string.h>
-
-#if defined(THINK_C) /* Symantec THINK C IDE on Classic Mac OS platform. */
+#include "Src.2048.h"
 #define rand Random
 #endif
+
+#ifndef APW /* Apple IIGS platform. */
+#include <time.h>
+#endif
+#include <stdlib.h>
+#include <string.h>
 
 #define E_RANDOM         ((unsigned int) rand() % 100 + 1)
 #define E_TILE_AT(x, y)  (e_board[(x) + ((y) * LINE_SIZE)])
@@ -204,10 +202,8 @@ extern void e_key(keycode) int keycode; {
 
 extern void e_init(esc_keycode, left_keycode, right_keycode, up_keycode, down_keycode)
 	int esc_keycode; int left_keycode; int right_keycode; int up_keycode; int down_keycode; {
-#if !defined(mc68000) || defined(NeXT) /* GCC on Sega Mega Drive and Sega Genesis platform. */
-#if !defined(THINK_C) /* Symantec THINK C IDE on Classic Mac OS platform. */
+#ifndef APW /* Apple IIGS platform. */
 	srand((unsigned int) time(NULL));
-#endif
 #endif
 	K_ESCAPE = esc_keycode;
 	K_LEFT = left_keycode;

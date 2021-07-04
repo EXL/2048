@@ -5,7 +5,7 @@
 extern "C" {
 #endif
 
-#if defined(macintosh) /* Classic Mac OS platform. */
+#ifdef macintosh /* Classic Mac OS platform. */
 #define BIG long
 #else
 #define BIG
