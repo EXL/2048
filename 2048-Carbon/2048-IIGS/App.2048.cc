@@ -145,21 +145,21 @@ MakeWindow() {
 	ShowWindow(winOPtr);
 }
 
-ItemTemplate item1 = { 1, { 8, 129, 22, 179 }, buttonItem, "\pStart\r", 0, 0, NULL };
-ItemTemplate item2 = { 2, { 8, 8, 22, 58 }, buttonItem, "\pQuit\r", 0, 0, NULL };
-ItemTemplate item3 = { 3, { 8, 67, 22, 117 }, buttonItem, "\pHelp\r", 0, 0, NULL };
-
-DialogTemplate dtemp = { { 84, 63, 114, 252 }, 1, 0L, &item1, &item2, &item3, NULL };
-
 Boolean done = false;
 
-DoDialog() {
-	GrafPortPtr dlgPtr;
-	Word hit;
-	dlgPtr = GetNewModalDialog(&dtemp);
-	while ((hit = ModalDialog(NULL)) == 3);
-	done = (hit == 2);
-	CloseDialog(dlgPtr);
+void DoAboutAlert() {
+	static ItemTemplate lAlertButton = { 1, 52, 18, 0, 0, buttonItem, "\pOK", 0, 0, NULL };
+	static ItemTemplate lAlertMessage = { 2, 4, 90, 90, 350, itemDisable + statText, NULL, 0, 0, NULL };
+	static AlertTemplate lAlertRec = { 60, 150, 133, 485, 3, 0x80, 0x80, 0x80, 0x80, NULL, NULL, NULL };
+
+	SetForeColor(0);
+	SetBackColor(15);
+
+	lAlertMessage.itemDescr = "\p            About 2048-IIGS\r\r   Port of \"2048\" puzzle game\r      for Apple IIGS platform\r\rVersion 1.0, 06-Jul-2021, (C) EXL\r   https://github.com/EXL/2048";
+	lAlertRec.atItemList[0] = (ItemTempPtr) &lAlertButton;
+	lAlertRec.atItemList[1] = (ItemTempPtr) &lAlertMessage;
+
+	NoteAlert(&lAlertRec, NULL);
 }
 
 main() {
@@ -194,8 +194,7 @@ DoMenus() {
 	Word *data = (Word *) &myEvent.wmTaskData;
 	switch (*data) {
 		case MENU_APPLE_ABOUT:
-			DoDialog();
-			e_key(0);
+			DoAboutAlert();
 			break;
 		case MENU_GAME_RESET:
 			e_key(0);
