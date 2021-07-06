@@ -14,20 +14,38 @@
 #include "Src.2048.h"
 #include "Src.2048.c"
 
-#include <stdio.h> /* TODO: Delete this!!! */
+#define WINDOW_HEIGHT     160
+#define WINDOW_WIDTH      280
 
-#define ABOUT_ITEM 257
-#define NEW_ITEM 258
-#define QUIT_ITEM 259
-#define UNTIT_ITEM 260
+#define MENU_APPLE_ABOUT  257
+#define MENU_GAME_RESET   258
+#define MENU_GAME_QUIT    259
+#define MENU_TILES_RECT   260
+#define MENU_TILES_ROUND  261
 
 #define MODE mode640
 #define MaxX 640
 #define dpAttr attrLocked+attrFixed+attrBank
 
-char *menu1 = ">>@\\XN1\r--About 2048-IIGS...\\N257\r---\\N512D\r.";
-char *menu2 = ">>  Game  \\N2\r--Reset\\N258*Rr\r---\\N513D\r--Quit\\N259*Qq\r\.";
-char *menu3 = ">>  Tiles  \\N3\r--Rectangle\\N260\r\--Rounded\\N261\r\.";
+static char *gAppleMenu = ">>@\\XN1\r--About 2048-IIGS...\\N257\r---\\N512D\r.";
+static char *gGameMenu  = ">>  Game  \\N2\r--Reset\\N258*Rr\r---\\N513D\r--Quit\\N259*Qq\r.";
+static char *gTilesMenu = ">>  Tiles  \\N3\r--Rectangle\\N260\r--Rounded\\N261\r.";
+
+static ParamList gWindowParams = {
+	sizeof(ParamList),
+	fQContent + fMove + fClose + fTitle, /* 0xC0C0 */
+	"\p2048-IIGS",
+	0L,
+	0, 0, 0, 0,
+	NULL,
+	0, 0, WINDOW_HEIGHT, WINDOW_WIDTH,
+	WINDOW_HEIGHT, WINDOW_WIDTH,
+	0, 0, 0, 0, 0L, 0,
+	NULL, NULL, NULL,
+	32, 32, 32 + WINDOW_HEIGHT, 32 + WINDOW_WIDTH,
+	(GrafPortPtr) topMost, /* -1L */
+	NULL
+};
 
 int myID;
 Handle zp;
@@ -79,13 +97,13 @@ ShutDown() {
 }
 
 BuildMenu() {
-	InsertMenu(NewMenu(menu3), 0);
-	InsertMenu(NewMenu(menu2), 0);
-	InsertMenu(NewMenu(menu1), 0);
+	InsertMenu(NewMenu(gTilesMenu), 0);
+	InsertMenu(NewMenu(gGameMenu), 0);
+	InsertMenu(NewMenu(gAppleMenu), 0);
 	FixAppleMenu(1);
 	FixMenuBar();
 	DrawMenuBar();
-	CheckMItem(true, UNTIT_ITEM);
+	CheckMItem(true, MENU_TILES_RECT);
 }
 
 LocInfo picOLocInfo = {
@@ -112,30 +130,6 @@ PicOSetup() {
 	SetPort(thePortPtr);
 }
 
-#define FRAME fQContent + fMove + fZoom + fGrow + fBScroll + fRScroll + fClose + fTitle
-
-ParamList template = {
-	sizeof(ParamList),
-	FRAME,
-	"\p2048",
-	0L,
-	26, 0, 188, 616,
-	NULL,
-	0, 0,
-	200, 640,
-	200, 640,
-	2, 2,
-	20, 32,
-	0,
-	0,
-	NULL,
-	NULL,
-	NULL,
-	26, 0, 188, 616,
-	(GrafPortPtr) -1L,
-	NULL
-};
-
 pascal void DrawContent() {
 	PPToPort(&picOLocInfo, &(picOLocInfo.boundsRect), 0, 0, modeCopy);
 }
@@ -143,9 +137,12 @@ pascal void DrawContent() {
 GrafPortPtr winOPtr;
 
 MakeWindow() {
-	template.wContDefProc = DrawContent;
-	winOPtr = NewWindow(&template);
+	gWindowParams.wContDefProc = (ProcPtr) DrawContent;
+	winOPtr = NewWindow(&gWindowParams);
 	PicOSetup();
+	ErasePicO();
+	SelectWindow(winOPtr);
+	ShowWindow(winOPtr);
 }
 
 ItemTemplate item1 = { 1, { 8, 129, 22, 179 }, buttonItem, "\pStart\r", 0, 0, NULL };
@@ -196,19 +193,25 @@ EventLoop() {
 DoMenus() {
 	Word *data = (Word *) &myEvent.wmTaskData;
 	switch (*data) {
-		case ABOUT_ITEM:
+		case MENU_APPLE_ABOUT:
 			DoDialog();
 			e_key(0);
 			break;
-		case QUIT_ITEM:
-			done = true;
-			break;
-		case NEW_ITEM:
+		case MENU_GAME_RESET:
+			e_key(0);
 			ErasePicO();
 			HideWindow(winOPtr);
 			CloseWindow(winOPtr);
-			winOPtr = NewWindow(&template);
-		case UNTIT_ITEM:
+			winOPtr = NewWindow(&gWindowParams);
+			SelectWindow(winOPtr);
+			ShowWindow(winOPtr);
+			break;
+		case MENU_GAME_QUIT:
+			done = true;
+			break;
+		case MENU_TILES_RECT:
+			break;
+		case MENU_TILES_ROUND:
 			SelectWindow(winOPtr);
 			ShowWindow(winOPtr);
 			break;
