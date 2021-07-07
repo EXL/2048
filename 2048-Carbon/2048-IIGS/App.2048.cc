@@ -15,13 +15,29 @@
 #include "Src.2048.c"
 
 #define WINDOW_HEIGHT     160
-#define WINDOW_WIDTH      280
+#define WINDOW_WIDTH      276
 
 #define MENU_APPLE_ABOUT  257
 #define MENU_GAME_RESET   258
 #define MENU_GAME_QUIT    259
 #define MENU_TILES_RECT   260
 #define MENU_TILES_ROUND  261
+
+#define TILE_SIZE            54
+#define TILE_MARGIN          12
+#define OFFSET_COORD(coord)  (coord * (TILE_MARGIN + TILE_SIZE) + TILE_MARGIN)
+
+#define KEY_ESCAPE 0x1B
+#define KEY_UP 0x0B
+#define KEY_DOWN 0x0A
+#define KEY_LEFT 0x08
+#define KEY_RIGHT 0x15
+#define KEY_W 0x70
+#define KEY_S 0x73
+#define KEY_A 0x61
+#define KEY_D 0x64
+#define KEY_Q 0x71
+#define KEY_R 0x72
 
 #define MODE mode640
 #define MaxX 640
@@ -152,8 +168,8 @@ void DoAboutAlert() {
 	static ItemTemplate lAlertMessage = { 2, 4, 90, 90, 350, itemDisable + statText, NULL, 0, 0, NULL };
 	static AlertTemplate lAlertRec = { 60, 150, 133, 485, 3, 0x80, 0x80, 0x80, 0x80, NULL, NULL, NULL };
 
-	SetForeColor(0);
-	SetBackColor(15);
+	/*SetForeColor(0);*/
+	/*SetBackColor(15);*/
 
 	lAlertMessage.itemDescr = "\p            About 2048-IIGS\r\r   Port of \"2048\" puzzle game\r      for Apple IIGS platform\r\rVersion 1.0, 06-Jul-2021, (C) EXL\r   https://github.com/EXL/2048";
 	lAlertRec.atItemList[0] = (ItemTempPtr) &lAlertButton;
@@ -163,7 +179,7 @@ void DoAboutAlert() {
 }
 
 main() {
-	e_init(0, 1, 2, 3, 4);
+	e_init(KEY_ESCAPE, KEY_LEFT, KEY_RIGHT, KEY_UP, KEY_DOWN);
 	StartTools();
 	BuildMenu();
 	MakeWindow();
@@ -172,20 +188,44 @@ main() {
 	ShutDown();
 }
 
+DoKeys(key) DblWord key; {
+	switch (key) {
+		default: e_key(key); break;
+		case KEY_Q: done = 1; break;
+		case KEY_R: e_key(KEY_ESCAPE); break;
+		case KEY_W: e_key(KEY_UP); break;
+		case KEY_S: e_key(KEY_DOWN); break;
+		case KEY_A: e_key(KEY_LEFT); break;
+		case KEY_D: e_key(KEY_RIGHT); break;
+	}
+}
+
 WmTaskRec myEvent;
 
 EventLoop() {
-	myEvent.wmTaskMask = 0x0FFF;
+	myEvent.wmTaskMask = 0xFFFFL;
 	while (!done)
 		switch (TaskMaster(everyEvent, &myEvent)) {
+			default:
+				printf("%d ", myEvent.wmWhat);
+				break;
+			case activateEvt:
+				Sketch();
+				break;
+			case inUpdate:
+				DrawContent();
+				break;
+			case inKey:
+				DoKeys(myEvent.wmMessage);
+				Sketch();
+				break;
 			case wInMenuBar:
 				DoMenus();
 				break;
 			case wInGoAway:
 				HideWindow(winOPtr);
-				break;
-			case wInContent:
-				Sketch();
+				CloseWindow(winOPtr);
+				done = true;
 				break;
 		}
 }
@@ -227,13 +267,40 @@ ErasePicO() {
 	SetPort(oldPortPtr);
 }
 
+void DrawTile(value, x, y) int value; int x; int y; {
+	char st[5];
+	Rect rectTile;
+	int i = OFFSET_COORD(x);
+	int j = OFFSET_COORD(y);
+	SetRect(&rectTile, i, j / 2, i + TILE_SIZE, (j + TILE_SIZE) / 2);
+	SetSolidPenPat(2);
+	PaintRect(&rectTile);
+
+	MoveTo(i + (TILE_SIZE / 2), (j + (TILE_SIZE / 2)) / 2);
+	sprintf(st, "%d", value);
+	DrawCString(st);
+}
+
+void DrawBoard() {
+	int x, y;
+	/* TODO: Is this working?? */
+	SetForeColor(3);
+	SetBackColor(6);
+	PaintRect(0, 0, WINDOW_HEIGHT, WINDOW_WIDTH);
+	for (y = 0; y < LINE_SIZE; ++y)
+		for (x = 0; x < LINE_SIZE; ++x)
+			DrawTile(e_board[x + y * LINE_SIZE], x, y);
+}
+
 Sketch() {
 	int i;
 	Point mouseLoc;
-	GrafPortPtr thePortPtr = (GrafPortPtr) myEvent.wmTaskData;
+	GrafPortPtr thePortPtr;
 	Rect theRect;
 
-        	mouseLoc = myEvent.wmWhere;
+	thePortPtr = winOPtr;
+
+        	/*mouseLoc = myEvent.wmWhere;*/
 
 	StartDrawing(thePortPtr);
 	GetPortRect(&theRect);
@@ -244,18 +311,11 @@ Sketch() {
 	ClipRect(&theRect);
 	MoveTo(mouseLoc);
 	SetPort(thePortPtr);
-
-	for (i = 0; i < BOARD_SIZE; ++i)
-		printf("%d ", e_board[i]);
-	printf("\n");
-
-	while (StillDown(0)) {
-		GetMouse(&mouseLoc);
-
-		LineTo(mouseLoc);
+		DrawBoard();
 		SetPort(&picOPort);
-		LineTo(mouseLoc);
+		DrawBoard();
+
 		SetPort(thePortPtr);
-	}
+
 	SetOrigin(0, 0);
 }
