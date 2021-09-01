@@ -9,7 +9,7 @@
 
 CC	=	arm-linux-gcc
 CXX	=	arm-linux-g++
-STRIP=	arm-linux-strip
+STRIP	=	arm-linux-strip
 CFLAGS	=	-pipe -Wall -W -O2 -D_REENTRANT -DQT_THREAD_SUPPORT -DNO_DEBUG
 CXXFLAGS=	-pipe -DQWS -fno-exceptions -fno-rtti -Wall -W -O2 -D_REENTRANT -DQT_THREAD_SUPPORT -DNO_DEBUG
 INCPATH	=	-I../src -I/usr/local/arm/arm-xscale-linux-vfp/include -I$(QTDIR)/include/ezx -I$(QTDIR)/include/qt

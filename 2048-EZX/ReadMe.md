@@ -35,7 +35,7 @@ cd ~/Projects/
 git clone https://github.com/EXL/2048
 cd 2048/2048-EZX/
 . /opt/toolchains/motoezx/setenv-a1200-devezx.sh # A1200, E6
-. /opt/toolchains/motoezx/setenv-e680.sh # A780, E680
+. /opt/toolchains/motoe680/setenv-e680.sh # A780, E680
 make clean
 make # A1200, E6
 make -f Makefile.e680 # A780, E680
