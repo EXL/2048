@@ -7,9 +7,13 @@ The "2048" game for the EZX OS by Motorola.
 
 ## Toolchain & SDK
 
-// TODO: Add normal link mirrored to forum.motofan.ru
+Motorola A1200, E6: // TODO: Add normal link mirrored to forum.motofan.ru
+
+Motorola A780, E680: // TODO: Add normal link mirrored to forum.motofan.ru
 
 Download MotoEZX Toolchains & SDK from [this link](http://www.mediafire.com/?meqnmgujgjq).
+
+Download E680 Toolchains & SDK from [this link](https://code.google.com/archive/p/moto-e680-develop/downloads).
 
 ## Install Tools & Build
 
@@ -23,14 +27,18 @@ sudo yum -y install glibc.i686 libstdc++.i686
 sudo yum -y install p7zip
 
 sudo mkdir /opt/toolchains/
-sudo tar -C /opt/toolchains/ -xzvf ~/Downloads/motoezx-toolchains*.tar.gz*
+sudo tar -C /opt/toolchains/ -xzvf ~/Downloads/motoezx-toolchains*.tar.gz* # A1200, E6
+sudo tar -C /opt/toolchains/ -xzvf ~/Downloads/motoe680-toolchains*.tar.gz* # A780, E680
+sudo ln -s /opt/toolchains/motoe680 /usr/local/arm # A780, E680
 
 cd ~/Projects/
 git clone https://github.com/EXL/2048
 cd 2048/2048-EZX/
-. /opt/toolchains/motoezx/setenv-a1200-devezx.sh
+. /opt/toolchains/motoezx/setenv-a1200-devezx.sh # A1200, E6
+. /opt/toolchains/motoezx/setenv-e680.sh # A780, E680
 make clean
-make
+make # A1200, E6
+make -f Makefile.e680 # A780, E680
 ```
 
 ## Copy executable file to Motorola E6 and run it
@@ -76,22 +84,31 @@ cd ~/Projects/2048/
 
 *Note.* This step is optional and is presented simply as an example of creating project and building files. This project contains ready-to-build generated Makefile and project files, so this section can be skipped.
 
-First patch `tmake` utility configuration file in MotoEZX Toolchains & SDK:
+First patch `tmake` utility configuration file in MotoEZX Toolchains & SDK and MotoE680 Toolchains & SDK:
 
 ```sh
+# A1200, E6
 cd /opt/toolchains/motoezx/a1200/qt2/tmake/lib/qws/linux-gnu-ezx-g++/
 cp tmake.conf tmake.conf.orig
 sed -i '/TMAKE_INCDIR_QT/ s/$/ \$\(EZXDIR\)\/include/' tmake.conf
 sed -i '/TMAKE_LFLAGS\s/ s/$/,-rpath-link,\$\(EZXDIR\)\/lib/' tmake.conf
 sed -i '/TMAKE_LIBS\s/ s/$/-L\$\(EZXDIR\)\/lib -L\$\(EZXDIR\)\/lib\/ezx\/lib -lezxappbase/' tmake.conf
+
+# A780, E680
+cd /opt/toolchains/motoe680/e680/tmake/lib/qws/linux-e680-g++/
+cp tmake.conf tmake.conf.orig
+sed -i 's/-rpath/-rpath-link,\$\(QTDIR\)\/lib/'
+cd /opt/toolchains/motoe680/e680/include/ezx/
+ln -s zmessagebox.h ZMessageBox.h
 ```
 
 Then create necessary files by `progen` and `tmake` utilities:
 
 ```sh
 cd ~/Projects/2048/2048-EZX/
-. /opt/toolchains/motoezx/setenv-a1200-devezx.sh
 cp ../src/2048.* .
+. /opt/toolchains/motoezx/setenv-a1200-devezx.sh # A1200, E6
+. /opt/toolchains/motoe680/setenv-e680.sh # A780, E680
 progen CONFIG+=thread -o 2048-EZX.pro
 tmake 2048-EZX.pro -o Makefile.ezx
 make -f Makefile.ezx clean
