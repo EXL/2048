@@ -97,7 +97,8 @@ sed -i '/TMAKE_LIBS\s/ s/$/-L\$\(EZXDIR\)\/lib -L\$\(EZXDIR\)\/lib\/ezx\/lib -le
 # A780, E680
 cd /opt/toolchains/motoe680/e680/tmake/lib/qws/linux-e680-g++/
 cp tmake.conf tmake.conf.orig
-sed -i 's/-rpath/-rpath-link,\$\(QTDIR\)\/lib/'
+sed -i 's/-rpath,/-rpath-link,\$\(QTDIR\)\/lib/' tmake.conf
+sed -i '/TMAKE_LFLAGS\s/ s/$/-Wl,-rpath-link,\$\(QTDIR\)\/lib/' tmake.conf
 cd /opt/toolchains/motoe680/e680/include/ezx/
 ln -s zmessagebox.h ZMessageBox.h
 ```
