@@ -9,6 +9,7 @@
 
 #include <qfileinfo.h>
 #include <qlabel.h>
+#include <qpainter.h>        /* TODO: Add some information about E680 to ReadMe: building, etc. */
 #include <qtextcodec.h>
 #include <qtimer.h>
 
@@ -19,6 +20,22 @@ const int TILE_SIZE          = 48;
 const int TILE_MARGIN        = 5;
 
 enum { M_SCREEN, M_SAVE, M_LOAD, M_RESET, M_SOUND, M_ROUNDED, M_RECTANGLE, M_TILES, M_ABOUT, M_EXIT };
+
+static ZMessageBox *CreateMessageBox(QWidget *parent, const QString &buttonCaption) {
+#if   __GNUC_PATCHLEVEL__ == 0 // E680, GCC 3.3.0
+	return new ZMessageBox(parent, NULL, QString::null, buttonCaption, QString::null, QString::null);
+#elif __GNUC_PATCHLEVEL__ == 6 //   E6, GCC 3.3.6
+	return new ZMessageBox(parent, NULL, QString::null, buttonCaption);
+#endif
+}
+
+static QPixmap GetIcon(const char *iconName) {
+#if   __GNUC_PATCHLEVEL__ == 0 // E680, GCC 3.3.0
+	return RES_ICON_Reader().getIcon(iconName);
+#elif __GNUC_PATCHLEVEL__ == 6 //   E6, GCC 3.3.6
+	return RES_ICON_Reader().getIcon(iconName, true);
+#endif
+}
 
 class Widget : public QWidget {
 	Q_OBJECT
@@ -94,21 +111,21 @@ public slots:
 		bitBlt(&pixmap, 0, 0, parent, 0, 0, wp, hp, Qt::CopyROP, true);
 		const QString path = QString("%1/%2.png").arg(QFileInfo(qApp->argv()[0]).dirPath(true)).arg(time(NULL));
 		const QString pathReplaced = QString(path).replace(QString("/"), " / ");
-		ZMessageBox *msgDlg = new ZMessageBox(this, NULL, QString::null, "OK");
+		ZMessageBox *msgDlg = CreateMessageBox(this, "OK");
 		if (pixmap.save(path, "PNG")) {
 			msgDlg->setText(QString("<h3>Saved!</h3><br>"
 				"Screenshot Saved!<br>Path:<br><font size=\"2\">%1</font>").arg(pathReplaced));
-			msgDlg->setIconPixmap(RES_ICON_Reader().getIcon("Dialog_Complete", true));
+			msgDlg->setIconPixmap(GetIcon("Dialog_Complete"));
 		} else {
 			msgDlg->setText(QString("<h3>Error!</h3><br>"
 				"Error: Cannot Save Screenshot!<br>Path:<br><font size=\"2\">%1</font>").arg(pathReplaced));
-			msgDlg->setIconPixmap(RES_ICON_Reader().getIcon("Dialog_Error", true));
+			msgDlg->setIconPixmap(GetIcon("Dialog_Error"));
 		}
 		msgDlg->exec();
 		delete msgDlg;
 	}
 	void save() {
-		ZMessageBox *msgDlg = new ZMessageBox(this, NULL, QString::null, "OK");
+		ZMessageBox *msgDlg = CreateMessageBox(this, "OK");
 		QFile save(QString("%1/save.dat").arg(QFileInfo(qApp->argv()[0]).dirPath(true)));
 		if (save.open(IO_WriteOnly)) {
 			QDateTime saveDateTime = QDateTime::currentDateTime();
@@ -118,16 +135,16 @@ public slots:
 				dataStream << (Q_INT32) e_board[i];
 			dataStream << e_score; dataStream << e_win; dataStream << e_lose;
 			msgDlg->setText(QString("<h3>Game Saved!</h3><br>State on:\n%1").arg(saveDateTime.toString()));
-			msgDlg->setIconPixmap(RES_ICON_Reader().getIcon("Dialog_Complete", true));
+			msgDlg->setIconPixmap(GetIcon("Dialog_Complete"));
 		} else {
 			msgDlg->setText(QString("<h3>Save Error!</h3><br>Cannot create save.dat file."));
-			msgDlg->setIconPixmap(RES_ICON_Reader().getIcon("Dialog_Error", true));
+			msgDlg->setIconPixmap(GetIcon("Dialog_Error"));
 		}
 		msgDlg->exec();
 		delete msgDlg;
 	}
 	void load() {
-		ZMessageBox *msgDlg = new ZMessageBox(this, NULL, QString::null, "OK");
+		ZMessageBox *msgDlg = CreateMessageBox(this, "OK");
 		QFile save(QString("%1/save.dat").arg(QFileInfo(qApp->argv()[0]).dirPath(true)));
 		if (save.open(IO_ReadOnly)) {
 			QDateTime loadDateTime;
@@ -141,11 +158,11 @@ public slots:
 			dataStream >> score; dataStream >> win; dataStream >> lose;
 			e_score = score; e_win = win; e_lose = lose;
 			msgDlg->setText(QString("<h3>Game Loaded!</h3><br>State on:\n%1").arg(loadDateTime.toString()));
-			msgDlg->setIconPixmap(RES_ICON_Reader().getIcon("Dialog_Complete", true));
+			msgDlg->setIconPixmap(GetIcon("Dialog_Complete"));
 			update();
 		} else {
 			msgDlg->setText(QString("<h3>Load Error!</h3><br>Cannot find save.dat file."));
-			msgDlg->setIconPixmap(RES_ICON_Reader().getIcon("Dialog_Error", true));
+			msgDlg->setIconPixmap(GetIcon("Dialog_Error"));
 		}
 		msgDlg->exec();
 		delete msgDlg;
@@ -204,7 +221,7 @@ class MainWidget : public ZMainWidget {
 
 public slots:
 	void about() {
-		ZMessageBox *msgDlg = new ZMessageBox(this, NULL, QString::null, "Close");
+		ZMessageBox *msgDlg = CreateMessageBox(this, "Close");
 		msgDlg->setText(QTextCodec::codecForName("UTF-8")->toUnicode("<h3>About 2048-EZX</h3><br><font size=\"2\">"
 			"2048 Game implementation especially for Motorola EZX platform.<br><br>Version: 1.0, %1<br>"
 			"© EXL (exl@bk.ru)<br>"
@@ -215,7 +232,7 @@ public slots:
 			icon.load(iconPath);
 			msgDlg->setIconPixmap(icon);
 		} else
-			msgDlg->setIconPixmap(RES_ICON_Reader().getIcon("Dialog_Exclamatory_Mark", true));
+			msgDlg->setIconPixmap(GetIcon("Dialog_Exclamatory_Mark"));
 		msgDlg->exec();
 		delete msgDlg;
 	}
@@ -237,9 +254,13 @@ public slots:
 	}
 public:
 	MainWidget() : ZMainWidget(false, NULL, NULL, 0), sound(true) {
+#if   __GNUC_PATCHLEVEL__ == 0 // E680, GCC 3.3.0
+		titleBar = getTitleBarWidget();
+#elif __GNUC_PATCHLEVEL__ == 6 //   E6, GCC 3.3.6
 		titleBar = new QLabel(this, NULL);
-		titleBar->setText(" 2048-EZX | Score: 0 ");
 		setTitleBarWidget(titleBar);
+#endif
+		titleBar->setText(" 2048-EZX | Score: 0 ");
 
 		widget = new Widget(this, NULL);
 		connect(widget, SIGNAL(scoreChanged(int)), this, SLOT(setTitleScore(int)));
