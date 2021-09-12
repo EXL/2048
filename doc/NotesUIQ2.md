@@ -43,6 +43,9 @@ The documentation files that come with the Symbian UIQ2 SDK along with code exam
 9. [x] Use Double Buffering for drawing game context.
 10. [x] Set proper font drawing.
 11. [x] Create about dialog with icon.
+12. [x] Add photo with Motorola A1000.
+13. [x] Add photo with Motorola A925.
+14. [ ] TODO: Try to sign SIS-package and run it on Motorola A920.
 
 ## Motorola FOMA M1000 key codes table
 
