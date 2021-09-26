@@ -111,6 +111,8 @@ CFLAGS       = -pipe -Wall -W -O2 -DNO_DEBUG $(DIRECTIV) $(INCPATH)
 CXXFLAGS     = -pipe -DQWS -fno-exceptions -fno-rtti -Wall -W -O2 -DNO_DEBUG $(DIRECTIV) $(INCPATH)
 LDLAGS       = -Wl,-rpath-link,$(EZXDIR)/lib
 LIBS         = -L$(EZXDIR)/lib -L$(ARMLIB) -L$(QTDIR)/lib $(LINKLIB)
+TAR          = tar --numeric-owner --owner=2000 --group=233 -cvf
+GZIP         = gzip -9f
 
 ####### Files
 SOURCES      = 2048-MotoMAGX.cpp ../src/2048.c
@@ -123,6 +125,15 @@ $(TARGET): $(OBJECTS)
 	$(CXX) $(LDLAGS) -o $(TARGET) $(OBJECTS) $(OBJMOC) $(LIBS)
 	$(STRIP) -s $(TARGET)
 
+mpkg: $(APPNAME)_Z6
+	-mkdir $(APPNAME)
+	-cp $(APPNAME)_Z6 $(APPNAME)
+	-cp mpkg/2048-MotoMAGX.desktop $(APPNAME)
+	-cp ../image/icon/ic_launcher0.png $(APPNAME)/icon_usr.png
+	$(TAR) $(APPNAME).uncompressed $(APPNAME)
+	$(GZIP) $(APPNAME).uncompressed
+	-mv $(APPNAME).uncompressed.gz $(APPNAME)_Z6.mpkg
+
 moc: $(SRCMOC)
 
 rmobj:
@@ -133,6 +144,7 @@ rmobj:
 
 clean: rmobj
 	$(RM) $(TARGET) $(APPNAME)_*
+	-rm -rf $(APPNAME)
 
 #--------- c's -------------------------------
 2048.o: ../src/2048.c
