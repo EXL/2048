@@ -105,7 +105,7 @@ endif
 MOC          = $(QTDIR)/bin/moc
 CC           = $(TOOLPREFIX)/bin/arm-linux-gnueabi-gcc
 CXX          = $(TOOLPREFIX)/bin/arm-linux-gnueabi-g++
-STRIP        = $(TOOLPREFIX)/bin/arm-linux-strip
+STRIP        = $(TOOLPREFIX)/bin/arm-linux-gnueabi-strip
 INCPATH      = -I../src/ -I$(QTDIR)/include -I$(EZXDIR)/include -I $(TOOLPREFIX)/arm-linux-gnueabi/include
 CFLAGS       = -pipe -Wall -W -O2 -DNO_DEBUG $(DIRECTIV) $(INCPATH)
 CXXFLAGS     = -pipe -DQWS -fno-exceptions -fno-rtti -Wall -W -O2 -DNO_DEBUG $(DIRECTIV) $(INCPATH)
