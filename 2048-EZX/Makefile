@@ -57,7 +57,7 @@ pkg: $(TARGET)
 moc: $(SRCMOC)
 
 clean:
-	-rm -f $(OBJECTS) $(OBJMOC) $(SRCMOC) $(UICIMPLS) $(UICDECLS) $(TARGET)
+	-rm -f $(OBJECTS) $(OBJMOC) $(SRCMOC) $(TARGET)
 	-rm -r -f $(APPDIR)
 	-rm -f *~ $(DIST_PKG) $(DIST_MPKG) core
 
@@ -66,7 +66,7 @@ clean:
 2048.o: ../src/2048.c ../src/2048.h
 	$(CC) -c $(CFLAGS) $(INCPATH) -o $@ $<
 
-2048-EZX.o: 2048-EZX.cpp 2048-EZX.moc ../src/2048.h
+2048-EZX.o: 2048-EZX.cpp 2048-EZX.moc ../src/2048.h 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o $@ $<
 
 2048-EZX.moc: 2048-EZX.cpp
