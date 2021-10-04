@@ -5,6 +5,7 @@ Version=1.0, 18-Sep-2021
 Author=EXL
 Comment=Popular and simple puzzle game. Collect the "2048 tile" using arrow keys and touchscreen on game board.
 Vendor=exlmoto.ru
+Directory=2048-MotoMAGX
 Exec=2048-MotoMAGX_Z6
 Icon=icon_usr.png
 BigIcon=icon_usr.png
