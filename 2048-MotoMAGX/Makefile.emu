@@ -1,0 +1,56 @@
+# This Makefile was edited by EXL, 07-Oct-2021
+# Build project for MotoMAGX Emulator
+
+####### Config
+APPNAME     := 2048-MotoMAGX
+APP_DEFINES :=
+
+####### SDK and Toolchains
+TOOLPREFIX  := /opt/toolchains/motomagx/emulator
+
+####### Emulator platform
+LINKLIB     := -lm -lqte-mt -lezxappbase
+DIRECTIV    := -DEZX_EMU $(APP_DEFINES)
+TARGET       = $(APPNAME)_EMU
+
+####### Build Tools and Options
+MOC          = $(TOOLPREFIX)/bin/moc
+CC           = $(TOOLPREFIX)/bin/i686-mot-linux-gnu-gcc
+CXX          = $(TOOLPREFIX)/bin/i686-mot-linux-gnu-g++
+STRIP        = $(TOOLPREFIX)/bin/i686-mot-linux-gnu-strip
+INCPATH      = -I../src/ -I$(TOOLPREFIX)/include
+CFLAGS       = -pipe -Wall -W -O2 -DNO_DEBUG $(DIRECTIV) $(INCPATH)
+CXXFLAGS     = -pipe -DQWS -fno-exceptions -fno-rtti -Wall -W -O2 -DNO_DEBUG $(DIRECTIV) $(INCPATH)
+LDLAGS       = -Wl,-rpath-link,$(TOOLPREFIX)/lib
+LIBS         = -L$(TOOLPREFIX)/lib $(LINKLIB)
+
+####### Files
+SOURCES      = 2048-MotoMAGX.cpp ../src/2048.c
+OBJECTS      = 2048-MotoMAGX.o 2048.o
+SRCMOC       = 2048-MotoMAGX.moc
+
+all: $(SRCMOC) $(TARGET)
+
+$(TARGET): $(OBJECTS)
+	$(CXX) $(LDLAGS) -o $(TARGET) $(OBJECTS) $(OBJMOC) $(LIBS)
+	$(STRIP) -s $(TARGET)
+
+moc: $(SRCMOC)
+
+rmobj:
+	-rm -f $(OBJECTS) $(SRCMOC)
+	-rm -f *~ core
+	$(RM) *.o
+	$(RM) *.moc
+
+clean: rmobj
+	$(RM) $(TARGET) $(APPNAME)_*
+	-rm -rf $(APPNAME)
+
+#--------- c's -------------------------------
+2048.o: ../src/2048.c
+	$(CC) $(CFLAGS) -c -o 2048.o ../src/2048.c
+
+#--------- moc's -----------------------------
+2048-MotoMAGX.moc: 2048-MotoMAGX.cpp
+	$(MOC) 2048-MotoMAGX.cpp -o 2048-MotoMAGX.moc

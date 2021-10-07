@@ -1,4 +1,4 @@
-# This Makefile edited by EXL, 10-Jun-2020
+# This Makefile was edited by EXL, 10-Jun-2020
 #
 # App can compile for platform:
 #    PLATFORM=EZX-Z6
@@ -106,7 +106,7 @@ MOC          = $(QTDIR)/bin/moc
 CC           = $(TOOLPREFIX)/bin/arm-linux-gnueabi-gcc
 CXX          = $(TOOLPREFIX)/bin/arm-linux-gnueabi-g++
 STRIP        = $(TOOLPREFIX)/bin/arm-linux-gnueabi-strip
-INCPATH      = -I../src/ -I$(QTDIR)/include -I$(EZXDIR)/include -I $(TOOLPREFIX)/arm-linux-gnueabi/include
+INCPATH      = -I../src/ -I$(QTDIR)/include -I$(EZXDIR)/include -I$(TOOLPREFIX)/arm-linux-gnueabi/include
 CFLAGS       = -pipe -Wall -W -O2 -DNO_DEBUG $(DIRECTIV) $(INCPATH)
 CXXFLAGS     = -pipe -DQWS -fno-exceptions -fno-rtti -Wall -W -O2 -DNO_DEBUG $(DIRECTIV) $(INCPATH)
 LDLAGS       = -Wl,-rpath-link,$(EZXDIR)/lib
