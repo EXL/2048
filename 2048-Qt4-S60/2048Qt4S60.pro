@@ -22,6 +22,8 @@ symbian:TARGET.UID3 = 0xE2A3969A
 # CONFIG += mobility
 # MOBILITY +=
 
+INCLUDEPATH += ../src/
+
 SOURCES += ../src/2048.c 2048-Qt4-S60.cpp
 HEADERS += ../src/2048.h
 
