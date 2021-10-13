@@ -15,7 +15,7 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
-    this->setOrientation(ScreenOrientationLockPortrait);
+    //this->setOrientation(ScreenOrientationLockPortrait);
 
     e_init(Qt::Key_Escape, Qt::Key_Left, Qt::Key_Right, Qt::Key_Up, Qt::Key_Down);
 }
@@ -92,7 +92,7 @@ void MainWindow::drawTile(QPainter &painter, int value, int x, int y)
     painter.drawRoundedRect(xOffset, yOffset, TILE_SIZE, TILE_SIZE, 6, 6);
     if (value)
     {
-        const int size = (value < 100) ? 15 : (value < 1000) ? 10 : 6;
+        const int size = (value < 100) ? 15 : (value < 1000) ? 11 : 6;
         const QString strValue = QString("%1").arg(value);
         painter.setPen(QColor(e_foreground(value)));
         painter.setFont(QFont("Sans", size, QFont::Bold));
@@ -114,7 +114,7 @@ void MainWindow::drawFinal(QPainter &painter)
     }
 
     painter.setPen(QColor(COLOR_TEXT));
-    painter.setFont(QFont("Sans", 20, QFont::Normal));
+    painter.setFont(QFont("Sans", 8, QFont::Normal));
     const QString strScore = QString("Score: %1").arg(e_score);
     const int w = QFontMetrics(painter.font()).width(strScore);
     //painter.drawText(TILE_MARGIN, height() - 10, "ESC to Restart!");
@@ -156,6 +156,13 @@ void MainWindow::mousePressEvent(QMouseEvent *mouseEvent)
             e_key(Qt::Key_Left);
     else if (right.contains(click))
             e_key(Qt::Key_Right);
+
+    repaint();
+}
+
+void MainWindow::on_actionNew_Game_triggered()
+{
+    e_key(Qt::Key_Escape);
 
     repaint();
 }

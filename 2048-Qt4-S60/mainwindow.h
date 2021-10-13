@@ -30,6 +30,9 @@ protected:
     void paintEvent(QPaintEvent *);
     void mousePressEvent(QMouseEvent *mouseEvent);
 
+private slots:
+    void on_actionNew_Game_triggered();
+
 private:
     void drawFinal(QPainter &painter);
     inline int offsetCoords(int coord);

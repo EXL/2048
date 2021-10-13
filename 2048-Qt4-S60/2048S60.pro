@@ -30,9 +30,9 @@ symbian {
 # MOBILITY +=
 
 SOURCES += main.cpp mainwindow.cpp \
-    ../src/s60/2048.cpp
+    ../src/2048.c
 HEADERS += mainwindow.h \
-    ../src/s60/2048.h
+    ../src/2048.h
 FORMS += mainwindow.ui
 
 # Please do not modify the following two lines. Required for deployment.
