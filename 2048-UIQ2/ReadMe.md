@@ -65,6 +65,14 @@ Symbian UIQ 2.1 screenshots from Motorola FOMA M1000:
 
 ![2048-UIQ2 application running on Motorola M1000 Photo](../image/2048-UIQ2-M1000-Photo.jpg)
 
+2048-UIQ2 running on Motorola A1000 (thanks to javelin67 for the photo):
+
+![2048-UIQ2 application running on Motorola A1000 Photo](../image/2048-UIQ2-A1000-Photo.jpg)
+
+2048-UIQ2 running on Motorola A925 (thanks to Limows for the photo):
+
+![2048-UIQ2 application running on Motorola A925 Photo](../image/2048-UIQ2-A925-Photo.jpg)
+
 ## Symbian UIQ2 Development Environment
 
 Microsoft Visual C++ 6.0, Symbian UIQ2 emulator/simulator, and Command Prompt:

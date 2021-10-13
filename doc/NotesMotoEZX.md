@@ -17,3 +17,4 @@ To create correct Makefiles, the configuration file of the `tmake` utility needs
 10. [x] Create ReadMe.md files, screens, photos, etc.
 11. [x] Create PKG-package building script.
 12. [x] Add executable file/package information.
+13. [ ] TODO: Adapt code for Motorola E680 or Motorola E680i.

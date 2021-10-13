@@ -24,14 +24,15 @@ GZIP     = gzip -9f
 
 ####### Files
 
-HEADERS = ../src/2048.h
-SOURCES = ../src/2048.c 2048-EZX.cpp
-OBJECTS = 2048.o 2048-EZX.o
-SRCMOC  = 2048-EZX.moc
-OBJMOC  =
-DIST    = 2048-EZX.pkg
-APPDIR  = 2048_EZX
-TARGET  = 2048-EZX
+HEADERS   = ../src/2048.h
+SOURCES   = ../src/2048.c 2048-EZX.cpp
+OBJECTS   = 2048.o 2048-EZX.o
+SRCMOC    = 2048-EZX.moc
+OBJMOC    =
+DIST_PKG  = 2048-EZX.pkg
+DIST_MPKG = 2048-EZX.mpkg
+APPDIR    = 2048_EZX
+TARGET    = 2048-EZX
 
 ####### Build rules
 
@@ -50,21 +51,22 @@ pkg: $(TARGET)
 	-cp ../image/icon/ezx_dia_50x50.png $(APPDIR)
 	$(TAR) $(APPDIR).uncompressed $(APPDIR)
 	$(GZIP) $(APPDIR).uncompressed
-	-mv $(APPDIR).uncompressed.gz $(DIST)
+	-mv $(APPDIR).uncompressed.gz $(DIST_PKG)
+	-cp $(DIST_PKG) $(DIST_MPKG)
 
 moc: $(SRCMOC)
 
 clean:
-	-rm -f $(OBJECTS) $(OBJMOC) $(SRCMOC) $(UICIMPLS) $(UICDECLS) $(TARGET)
+	-rm -f $(OBJECTS) $(OBJMOC) $(SRCMOC) $(TARGET)
 	-rm -r -f $(APPDIR)
-	-rm -f *~ *.pkg core
+	-rm -f *~ $(DIST_PKG) $(DIST_MPKG) core
 
 ####### Compile
 
 2048.o: ../src/2048.c ../src/2048.h
 	$(CC) -c $(CFLAGS) $(INCPATH) -o $@ $<
 
-2048-EZX.o: 2048-EZX.cpp 2048-EZX.moc ../src/2048.h
+2048-EZX.o: 2048-EZX.cpp 2048-EZX.moc ../src/2048.h 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o $@ $<
 
 2048-EZX.moc: 2048-EZX.cpp
