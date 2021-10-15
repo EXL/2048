@@ -31,29 +31,3 @@ out/
 # Generated SMD files.
 2048-SMD/res/gfx.h
 2048-SMD/res/sfx.h
-
-# Build results
-[Bb]in/
-[Oo]bj/
-[Ll]og/
-[Tt]mp/
-*.dll
-*.sis
-*.pkg
-*.bak
-
-# Cache
-*.cache
-
-# Autogen files
-[Mm]oc/
-[Uu]i/
-[Rr]cc/
-*.mmp
-*.mk
-Makefile*
-*.loc
-*.rss
-*.BAT
-*.bat
-*.inf

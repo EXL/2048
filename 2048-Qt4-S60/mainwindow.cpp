@@ -1,14 +1,11 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "2048.h"
-
-#include <QtCore/QCoreApplication>
-#include <QWidget>
-#include <QKeyEvent>
-#include <QPainter>
 
 static const int TILE_SIZE = 70;
 static const int TILE_MARGIN = 16;
+
+int startX = 0;
+int startY = 0;
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow)
@@ -16,13 +13,16 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
 
     //this->setOrientation(ScreenOrientationLockPortrait);
-
+    setAttribute(Qt::WA_AcceptTouchEvents);
+    grabGesture(Qt::SwipeGesture);
     e_init(Qt::Key_Escape, Qt::Key_Left, Qt::Key_Right, Qt::Key_Up, Qt::Key_Down);
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+
+    ungrabGesture(Qt::SwipeGesture);
 }
 
 void MainWindow::setOrientation(ScreenOrientation orientation)
@@ -138,6 +138,7 @@ void MainWindow::paintEvent(QPaintEvent *)
     drawFinal(painter);
 }
 
+/*
 void MainWindow::mousePressEvent(QMouseEvent *mouseEvent)
 {
     QWidget::mousePressEvent(mouseEvent);
@@ -159,10 +160,151 @@ void MainWindow::mousePressEvent(QMouseEvent *mouseEvent)
 
     repaint();
 }
+*/
+
+void MainWindow::mousePressEvent(QMouseEvent *mouseEvent)
+{
+    QWidget::mousePressEvent(mouseEvent);
+
+    startX = mouseEvent->pos().x();
+    startY = mouseEvent->pos().y();
+}
+
+void MainWindow::mouseReleaseEvent(QMouseEvent *mouseEvent)
+{
+    QWidget::mousePressEvent(mouseEvent);
+
+    int stopX = mouseEvent->pos().x();
+    int stopY = mouseEvent->pos().y();
+
+    if(abs(startX - stopX) > 50 || abs(startY - stopY) > 50)
+    {
+        if(abs(startX - stopX) < abs(startY - stopY))
+        {
+            if (startY > stopY)
+            {
+                e_key(Qt::Key_Up);
+            }
+            else
+            {
+                e_key(Qt::Key_Down);
+            }
+        }
+        else
+        {
+            if (startX > stopX)
+            {
+                e_key(Qt::Key_Left);
+            }
+            else
+            {
+                e_key(Qt::Key_Right);
+            }
+        }
+    }
+
+    repaint();
+}
 
 void MainWindow::on_actionNew_Game_triggered()
 {
     e_key(Qt::Key_Escape);
 
     repaint();
+}
+
+bool MainWindow::event(QEvent *event)
+{
+    if (event->type() == QEvent::Gesture)
+        return gestureEvent(static_cast<QGestureEvent*>(event));
+    return QWidget::event(event);
+}
+
+bool MainWindow::gestureEvent(QGestureEvent *event)
+{
+    if (QGesture *swipe = event->gesture(Qt::SwipeGesture))
+        swipeTriggered(static_cast<QSwipeGesture *>(swipe));
+
+    return true;
+}
+
+void MainWindow::swipeTriggered(QSwipeGesture *gesture)
+{
+    if (gesture->state() == Qt::GestureFinished)
+    {
+        if (gesture->horizontalDirection())
+        {
+            if (QSwipeGesture::Left)
+                e_key(Qt::Key_Left);
+            else
+                e_key(Qt::Key_Right);
+        }
+        else
+        {
+            if (QSwipeGesture::Up)
+                e_key(Qt::Key_Up);
+            else
+                e_key(Qt::Key_Down);
+        }
+
+        repaint();
+    }
+}
+
+void MainWindow::save()
+{
+    QFile save(QString("%1/save.dat").arg(QFileInfo(qApp->argv()[0]).path()));
+
+    if (save.open(QIODevice::WriteOnly))
+    {
+        QDateTime saveDateTime = QDateTime::currentDateTime();
+        QDataStream dataStream(&save);
+        dataStream << saveDateTime;
+
+        for (int i = 0; i < BOARD_SIZE; ++i)
+            dataStream << (qint32)e_board[i];
+
+        dataStream << e_score; dataStream << e_win; dataStream << e_lose;
+        QMessageBox::information(this, QString("State on:\n%1").arg(saveDateTime.toString()), "Game Saved!", QMessageBox::Ok);
+    }
+    else
+        QMessageBox::information(this, "Cannot create save.dat file.", "Save Error!", QMessageBox::Ok);
+}
+
+void MainWindow::load()
+{
+    QFile save(QString("%1/save.dat").arg(QFileInfo(qApp->argv()[0]).path()));
+
+    if (save.open(QIODevice::ReadOnly))
+    {
+        QDateTime loadDateTime;
+        QDataStream dataStream(&save);
+        dataStream >> loadDateTime;
+        qint32 value, score, win, lose;
+
+        for (int i = 0; i < BOARD_SIZE; ++i)
+        {
+            dataStream >> value;
+            e_board[i] = value;
+        }
+
+        dataStream >> score; dataStream >> win; dataStream >> lose;
+        e_score = score; e_win = win; e_lose = lose;
+
+        QMessageBox::information(this, QString("State on:\n%1").arg(loadDateTime.toString()), "Game Loaded!", QMessageBox::Ok);
+
+        update();
+    }
+    else
+        QMessageBox::information(this, "Cannot find save.dat file.", "Load Error!", QMessageBox::Ok);
+}
+
+void MainWindow::on_actionSave_triggered()
+{
+    save();
+}
+
+void MainWindow::on_actionLoad_triggered()
+{
+    load();
 }

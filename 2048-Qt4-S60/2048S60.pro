@@ -18,7 +18,8 @@ symbian {
     TARGET.CAPABILITY += TrustedUI
 
     QT += core \
-        gui
+        gui    \
+        widgets
 
     vendorinfo = "%{\"LimSoft\"}" ":\"LimSoft\""
 }
