@@ -14,14 +14,9 @@ symbian:TARGET.UID3 = 0xEBC72CBB
 #symbian:DEPLOYMENT.installer_header = 0x2002CCCF
 
 # Allow network access on Symbian
+#symbian:TARGET.CAPABILITY += NetworkServices
 symbian {
-    TARGET.CAPABILITY += TrustedUI
-
-    QT += core \
-        gui    \
-        widgets
-
-    vendorinfo = "%{\"LimSoft\"}" ":\"LimSoft\""
+	vendorinfo = "%{\"LimSoft\"}" ":\"LimSoft\""
 }
 
 # If your application uses the Qt Mobility libraries, uncomment
@@ -30,11 +25,11 @@ symbian {
 # CONFIG += mobility
 # MOBILITY +=
 
-SOURCES += main.cpp mainwindow.cpp \
-    ../src/2048.c
-HEADERS += mainwindow.h \
-    ../src/2048.h
-FORMS += mainwindow.ui
+INCLUDEPATH += ../src/
+
+SOURCES += ../src/2048.c 2048-Qt4-S60.cpp
+HEADERS += ../src/2048.h
+FORMS   += 2048-Qt4-S60.ui
 
 # Please do not modify the following two lines. Required for deployment.
 include(deployment.pri)
