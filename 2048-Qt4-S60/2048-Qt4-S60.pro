@@ -17,6 +17,8 @@ symbian:TARGET.UID3 = 0xEBC72CBB
 #symbian:TARGET.CAPABILITY += NetworkServices
 symbian {
 	vendorinfo = "%{\"LimSoft\"}" ":\"LimSoft\""
+	deployment.pkg_prerules = vendorinfo
+	DEPLOYMENT += deployment
 }
 
 # If your application uses the Qt Mobility libraries, uncomment

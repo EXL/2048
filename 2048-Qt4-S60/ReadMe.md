@@ -14,4 +14,26 @@ You need [Qt SDK for Symbian 1.1.2 & Symbian S60 SDK](https://mrrosset.github.io
 5. Click "Build" => 'Deploy Project "2048-Qt4-S60"' item in the main menu.
 6. Get "2048-Qt4-S60.sis" package.
 
+## Versions
+
+* Qt SDK 1.1.2
+* Qt Creator 2.2.1
+* Qt 4.7.3
+
+```
+arm-none-symbianelf-gcc.exe -v
+Using built-in specs.
+Target: arm-none-symbianelf
+Configured with: /scratch/nathan/symbian-arm/src/gcc-4.4/configure --build=i686-pc-linux-gnu --host=i686-mingw32 --target=arm-none-symbianelf --enable-threads --disable-libmudflap --disable-libssp --disable-libstdcxx-pch --enable-extra-sgxxlite-multilibs --with-gnu-as --with-gnu-ld --with-specs='%{O2:%{!fno-remove-local-statics: -fremove-local-statics}} %{O*:%{O|O0|O1|O2|Os:;:%{!fno-remove-local-statics: -fremove-local-statics}}}' --enable-languages=c,c++ --enable-shared --disable-lto --with-pkgversion='Symbian ADT Sourcery G++ Lite 4.4-172' --with-bugurl=https://support.codesourcery.com/GNUToolchain/ --disable-nls --prefix=/opt/codesourcery --with-libiconv-prefix=/scratch/nathan/symbian-arm/obj/host-libs-4.4-172-arm-none-symbianelf-i686-mingw32/usr --with-gmp=/scratch/nathan/symbian-arm/obj/host-libs-4.4-172-arm-none-symbianelf-i686-mingw32/usr --with-mpfr=/scratch/nathan/symbian-arm/obj/host-libs-4.4-172-arm-none-symbianelf-i686-mingw32/usr --with-ppl=/scratch/nathan/symbian-arm/obj/host-libs-4.4-172-arm-none-symbianelf-i686-mingw32/usr --with-host-libstdcxx='-static-libgcc -Wl,-Bstatic,-lstdc++,-Bdynamic -lm' --with-cloog=/scratch/nathan/symbian-arm/obj/host-libs-4.4-172-arm-none-symbianelf-i686-mingw32/usr --disable-libgomp --enable-poison-system-directories --with-build-time-tools=/scratch/nathan/symbian-arm/obj/tools-i686-pc-linux-gnu-4.4-172-arm-none-symbianelf-i686-mingw32/arm-none-symbianelf/bin --with-build-time-tools=/scratch/nathan/symbian-arm/obj/tools-i686-pc-linux-gnu-4.4-172-arm-none-symbianelf-i686-mingw32/arm-none-symbianelf/bin
+Thread model: single
+gcc version 4.4.1 (Symbian ADT Sourcery G++ Lite 4.4-172)
+
+arm-none-symbianelf-g++.exe -v
+Using built-in specs.
+Target: arm-none-symbianelf
+Configured with: /scratch/nathan/symbian-arm/src/gcc-4.4/configure --build=i686-pc-linux-gnu --host=i686-mingw32 --target=arm-none-symbianelf --enable-threads --disable-libmudflap --disable-libssp --disable-libstdcxx-pch --enable-extra-sgxxlite-multilibs --with-gnu-as --with-gnu-ld --with-specs='%{O2:%{!fno-remove-local-statics: -fremove-local-statics}} %{O*:%{O|O0|O1|O2|Os:;:%{!fno-remove-local-statics: -fremove-local-statics}}}' --enable-languages=c,c++ --enable-shared --disable-lto --with-pkgversion='Symbian ADT Sourcery G++ Lite 4.4-172' --with-bugurl=https://support.codesourcery.com/GNUToolchain/ --disable-nls --prefix=/opt/codesourcery --with-libiconv-prefix=/scratch/nathan/symbian-arm/obj/host-libs-4.4-172-arm-none-symbianelf-i686-mingw32/usr --with-gmp=/scratch/nathan/symbian-arm/obj/host-libs-4.4-172-arm-none-symbianelf-i686-mingw32/usr --with-mpfr=/scratch/nathan/symbian-arm/obj/host-libs-4.4-172-arm-none-symbianelf-i686-mingw32/usr --with-ppl=/scratch/nathan/symbian-arm/obj/host-libs-4.4-172-arm-none-symbianelf-i686-mingw32/usr --with-host-libstdcxx='-static-libgcc -Wl,-Bstatic,-lstdc++,-Bdynamic -lm' --with-cloog=/scratch/nathan/symbian-arm/obj/host-libs-4.4-172-arm-none-symbianelf-i686-mingw32/usr --disable-libgomp --enable-poison-system-directories --with-build-time-tools=/scratch/nathan/symbian-arm/obj/tools-i686-pc-linux-gnu-4.4-172-arm-none-symbianelf-i686-mingw32/arm-none-symbianelf/bin --with-build-time-tools=/scratch/nathan/symbian-arm/obj/tools-i686-pc-linux-gnu-4.4-172-arm-none-symbianelf-i686-mingw32/arm-none-symbianelf/bin
+Thread model: single
+gcc version 4.4.1 (Symbian ADT Sourcery G++ Lite 4.4-172)
+```
+
 *© [Limows](https://github.com/Limows)*
