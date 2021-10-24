@@ -265,7 +265,7 @@ private slots:
 	}
 	void on_actionAbout_triggered() {
 		QMessageBox::about(this, "About 2048-Qt4-S60", "2048 Game implementation for Symbian & Qt platform.\n\n"
-			"Â© Limows, 24-Oct-2021");
+			"© Limows, 24-Oct-2021");
 	}
 };
 

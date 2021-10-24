@@ -27,8 +27,9 @@ symbian {
 
 INCLUDEPATH += ../src/
 
-SOURCES += ../src/2048.c 2048-Qt4-S60.cpp
 HEADERS += ../src/2048.h
+SOURCES += ../src/2048.c
+SOURCES += 2048-Qt4-S60.cpp
 FORMS   += 2048-Qt4-S60.ui
 
 # Please do not modify the following two lines. Required for deployment.
