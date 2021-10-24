@@ -29,6 +29,7 @@ class GameWindow : public QMainWindow {
 
 	Ui::GameMainWindow *ui;
 
+	const int K_OK;
 	int startX;
 	int startY;
 
@@ -92,11 +93,12 @@ public:
 		ScreenOrientationAuto
 	};
 	explicit GameWindow(QWidget *parent = 0) :
-		QMainWindow(parent), ui(new Ui::GameMainWindow), startX(0), startY(0) {
+		QMainWindow(parent), ui(new Ui::GameMainWindow), K_OK(QMessageBox::Ok), startX(0), startY(0) {
 		e_init(Qt::Key_Escape, Qt::Key_Left, Qt::Key_Right, Qt::Key_Up, Qt::Key_Down);
 		ui->setupUi(this);
 		// this->setOrientation(ScreenOrientationLockPortrait);
 		setAttribute(Qt::WA_AcceptTouchEvents);
+		setWindowIcon(QIcon("2048-Qt4-S60.png"));
 		grabGesture(Qt::SwipeGesture);
 	}
 	virtual ~GameWindow() {
@@ -222,6 +224,9 @@ private slots:
 		e_key(Qt::Key_Escape);
 		repaint();
 	}
+	void on_actionSettings_triggered() {
+		QMessageBox::information(this, "Not yet implemented!", "This feature isn\'t implemented.", K_OK);
+	}
 	void on_actionSave_triggered() {
 		QFile save(QString("%1/save.dat").arg(QFileInfo(qApp->argv()[0]).path()));
 		if (save.open(QIODevice::WriteOnly)) {
@@ -231,11 +236,10 @@ private slots:
 			for (int i = 0; i < BOARD_SIZE; ++i)
 				dataStream << (qint32)e_board[i];
 			dataStream << e_score; dataStream << e_win; dataStream << e_lose;
-			QMessageBox::information(this, QString("State on:\n%1").arg(saveDateTime.toString()),
-				"Game Saved!", QMessageBox::Ok);
+			QMessageBox::information(this, "Game Saved!", QString("State on:\n%1").arg(saveDateTime.toString()), K_OK);
 		}
 		else
-			QMessageBox::information(this, "Cannot create \"save.dat\" file.", "Save Error!", QMessageBox::Ok);
+			QMessageBox::information(this, "Save Error!", "Cannot create \"save.dat\" file.", K_OK);
 	}
 	void on_actionLoad_triggered() {
 		QFile save(QString("%1/save.dat").arg(QFileInfo(qApp->argv()[0]).path()));
@@ -250,12 +254,18 @@ private slots:
 			}
 			dataStream >> score; dataStream >> win; dataStream >> lose;
 			e_score = score; e_win = win; e_lose = lose;
-			QMessageBox::information(this, QString("State on:\n%1").arg(loadDateTime.toString()),
-				"Game Loaded!", QMessageBox::Ok);
+			QMessageBox::information(this, "Game Loaded!", QString("State on:\n%1").arg(loadDateTime.toString()), K_OK);
 			repaint();
 		}
 		else
-			QMessageBox::information(this, "Cannot find \"save.dat\" file.", "Load Error!", QMessageBox::Ok);
+			QMessageBox::information(this, "Load Error!", "Cannot find \"save.dat\" file.", K_OK);
+	}
+	void on_actionQuit_triggered() {
+		qApp->quit();
+	}
+	void on_actionAbout_triggered() {
+		QMessageBox::about(this, "About 2048-Qt4-S60", "2048 Game implementation for Symbian & Qt platform.\n\n"
+			"© Limows, 24-Oct-2021");
 	}
 };
 
