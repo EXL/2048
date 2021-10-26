@@ -10,7 +10,6 @@ function clean {
 }
 
 function create_pep {
-	cp pep/description.ini 2048-MotoMAGX/
 	sed -i "s/EXECUTABLE_FILE/2048/g" 2048-MotoMAGX/description.ini
 	cp ../image/icon/ic_launcher0.png 2048-MotoMAGX/app/icon_usr.png
 	cp ../image/icon/ic_launcher0.png 2048-MotoMAGX/icon_usr.png
@@ -24,6 +23,8 @@ function build_pep_Z6 {
 	make PLATFORM=EZX-Z6
 	mkdir -p 2048-MotoMAGX/app
 	cp 2048-MotoMAGX_Z6 2048-MotoMAGX/app/2048
+	cp pep/description.ini 2048-MotoMAGX/
+	sed -i "s/INSTALL_PATH/..\/..\/mmc\/mmca1\/.Games\/2048-MotoMAGX\//g" 2048-MotoMAGX/description.ini
 	create_pep
 	mv 2048-MotoMAGX.tar.gz "../2048_MotoMAGX_Z6_v1.0_$date.pep"
 	cd -
@@ -34,6 +35,8 @@ function build_pep_ZN5 {
 	make PLATFORM=EZX-ZN5
 	mkdir -p 2048-MotoMAGX/app
 	cp 2048-MotoMAGX_ZN5 2048-MotoMAGX/app/2048
+	cp pep/description.ini 2048-MotoMAGX/
+	sed -i "s/INSTALL_PATH/..\/..\/mmc\/mmca1\/.Programs\/2048-MotoMAGX\//g" 2048-MotoMAGX/description.ini
 	create_pep
 	mv 2048-MotoMAGX.tar.gz "../2048_MotoMAGX_ZN5_v1.0_$date.pep"
 	cd -
