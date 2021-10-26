@@ -72,7 +72,10 @@ class Widget : public QWidget {
 			const int size = (value < 100) ? 18 : (value < 1000) ? 14 : 10;
 			const QFont &font = *((value < 100) ? font_large : (value < 1000) ? font_middle : font_small);
 			const QString strValue = QString("%1").arg(value);
-			painter.setPen(QColor(e_foreground(value)));
+			if (value > 64)
+				painter.setPen(QColor(COLOR_TEXT));
+			else
+				painter.setPen(QColor(e_foreground(value)));
 			painter.setFont(font);
 			const int w = QFontMetrics(font).width(strValue), h = (value < 100) ? size - 4 : size - 3;
 			painter.drawText(xOffset + (TILE_SIZE - w) / 2, yOffset + TILE_SIZE - (TILE_SIZE - h) / 2 - 2, strValue);
@@ -98,10 +101,10 @@ public:
 	Widget(QWidget *parent = 0, const char *name = 0) : QWidget(parent, name, WRepaintNoErase | WResizeNoErase) {
 		e_init(KEYCODE_0, KEYCODE_LEFT, KEYCODE_RIGHT, KEYCODE_UP, KEYCODE_DOWN);
 		fb = NULL;
-		font_large = new QFont("Sans", 18, QFont::Bold);
-		font_middle = new QFont("Sans", 14, QFont::Bold);
-		font_normal = new QFont("Sans", 14, QFont::Normal);
-		font_small = new QFont("Sans", 10, QFont::Bold);
+		font_large = new QFont("Sans", 20, QFont::Bold);
+		font_middle = new QFont("Sans", 16, QFont::Bold);
+		font_normal = new QFont("Sans", 16, QFont::Normal);
+		font_small = new QFont("Sans", 14, QFont::Bold);
 		QPixmap::setDefaultOptimization(QPixmap::NormalOptim);
 		setBackgroundMode(NoBackground);
 		setFocusPolicy(QWidget::StrongFocus);
