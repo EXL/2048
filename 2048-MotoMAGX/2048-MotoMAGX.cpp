@@ -96,7 +96,7 @@ class Widget : public QWidget {
 	}
 public:
 	Widget(QWidget *parent = 0, const char *name = 0) : QWidget(parent, name, WRepaintNoErase | WResizeNoErase) {
-		e_init(KEYCODE_CLEAR, KEYCODE_LEFT, KEYCODE_RIGHT, KEYCODE_UP, KEYCODE_DOWN);
+		e_init(KEYCODE_0, KEYCODE_LEFT, KEYCODE_RIGHT, KEYCODE_UP, KEYCODE_DOWN);
 		fb = NULL;
 		font_large = new QFont("Sans", 18, QFont::Bold);
 		font_middle = new QFont("Sans", 14, QFont::Bold);
@@ -110,7 +110,7 @@ public:
 public slots:
 	void screenShotTimer() { QTimer::singleShot(500, this, SLOT(screenShot())); }
 	void reset() {
-		e_key(KEYCODE_CLEAR);
+		e_key(KEYCODE_0);
 		update();
 	}
 	void screenShot() {
@@ -166,9 +166,7 @@ protected:
 	virtual void keyPressEvent(QKeyEvent *keyEvent) {
 		QWidget::keyPressEvent(keyEvent);
 		int key = keyEvent->key();
-		if (key == KEYCODE_0)
-			e_key(KEYCODE_CLEAR);
-		else if (key == KEYCODE_4)
+		if (key == KEYCODE_4)
 			e_key(KEYCODE_LEFT);
 		else if (key == KEYCODE_6)
 			e_key(KEYCODE_RIGHT);
@@ -176,6 +174,10 @@ protected:
 			e_key(KEYCODE_UP);
 		else if (key == KEYCODE_8)
 			e_key(KEYCODE_DOWN);
+#if !defined(EZX_Z6)
+		else if (key == KEYCODE_CLEAR)
+			e_key(KEYCODE_0);
+#endif
 		else
 			e_key(key);
 		repaint();
