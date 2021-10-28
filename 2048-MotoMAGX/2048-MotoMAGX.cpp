@@ -204,25 +204,14 @@ protected:
 class MainWidget : public ZKbMainWidget {
 	Q_OBJECT
 
-	void setIconPath(QString &src, const QString &dest) {
-		if (src == QString::null)
-			src = (QFile::exists(dest)) ? dest : QString::null;
-	}
 public slots:
 	void about() {
 		ZMessageDlg *msgDlg = new ZMessageDlg("About 2048", QTextCodec::codecForName("UTF-8")->toUnicode(
 			"2048 Game implementation especially for MotoMAGX platform.\n\nVersion: 1.0, %1\nThanks to: Boxa, fill.sa, "
 			"VINRARUS\n© EXL (exl@bk.ru), 2020\nSource code: https://github.com/EXL/2048").arg(__DATE__),
 			ZMessageDlg::TypeOK, 60*1000);
-		QString iconPath = QString::null;
-		setIconPath(iconPath, "/mmc/mmca1/mgxbox/2048/icon_usr.png");
-		setIconPath(iconPath, "/mmc/mmca1/mpkgbox/2048/icon_usr.png");
-		setIconPath(iconPath, "/ezxlocal/download/mystuff/mgxbox/icon_usr.png");
-		setIconPath(iconPath, "/ezxlocal/download/mystuff/mpkgbox/icon_usr.png");
-		setIconPath(iconPath, QString("%1/icon_usr.png").arg(QFileInfo(qApp->argv()[0]).dirPath(true)));
-		setIconPath(iconPath, "./icon_usr.png");
-		setIconPath(iconPath, "icon_usr.png");
-		if (iconPath != QString::null) {
+		QString iconPath = QString("%1/icon_usr.png").arg(QFileInfo(qApp->argv()[0]).dirPath(true));
+		if (QFile::exists(iconPath)) {
 			QPixmap icon(48, 48);
 			icon.load(iconPath);
 			msgDlg->setTitleIcon(icon);
