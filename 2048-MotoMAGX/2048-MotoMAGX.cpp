@@ -120,7 +120,7 @@ public slots:
 		QPixmap pixmap(ww, hh);
 		bitBlt(&pixmap, 0, 0, this, 0, 0, ww, hh, Qt::CopyROP, true);
 		const QString path = QString("%1/%2.png").arg(QFileInfo(qApp->argv()[0]).dirPath(true)).arg(time(NULL));
-		ZMessageDlg *msgDlg = new ZMessageDlg("", NULL, ZMessageDlg::TypeOK, 10*60*100);
+		ZMessageDlg *msgDlg = new ZMessageDlg("", NULL, ZMessageDlg::TypeOK, 60*1000);
 		if (pixmap.save(path, "PNG")) {
 			msgDlg->setTitle("Saved!");
 			msgDlg->setInstructText(QString("Screenshot Saved! Path:\n%1").arg(path));
@@ -213,7 +213,7 @@ public slots:
 		ZMessageDlg *msgDlg = new ZMessageDlg("About 2048", QTextCodec::codecForName("UTF-8")->toUnicode(
 			"2048 Game implementation especially for MotoMAGX platform.\n\nVersion: 1.0, %1\nThanks to: Boxa, fill.sa, "
 			"VINRARUS\n© EXL (exl@bk.ru), 2020\nSource code: https://github.com/EXL/2048").arg(__DATE__),
-			ZMessageDlg::TypeOK, 10*60*100);
+			ZMessageDlg::TypeOK, 60*1000);
 		QString iconPath = QString::null;
 		setIconPath(iconPath, "/mmc/mmca1/mgxbox/2048/icon_usr.png");
 		setIconPath(iconPath, "/mmc/mmca1/mpkgbox/2048/icon_usr.png");
