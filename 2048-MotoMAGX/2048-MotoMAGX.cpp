@@ -242,7 +242,7 @@ public:
 		menu->insertItem(tr("TXT_RID_SOFTKEY_EXIT", "Exit"), NULL, qApp, SLOT(quit()), true, false, false, 7, 7);
 		softKeys->setOptMenu(ZSoftKey::LEFT, menu);
 		softKeys->setTextForOptMenuHide(tr("TXT_RID_SOFTKEY_OPTIONS", "Options"));
-#if !defined(EZX_EMU)
+#if !defined(EZX_EMU) && !defined(MOTODEV_STUDIO)
 		softKeys->setTextForOptMenuShow(tr("TXT_RID_SOFTKEY_SELECT", "Select"), tr("TXT_RID_SOFTKEY_CANCEL", "Cancel"));
 #endif
 		softKeys->setText(ZSoftKey::LEFT, tr("TXT_RID_SOFTKEY_OPTIONS", "Options"));
