@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<Descriptor version="1.0">
+    <AppIcon>
+        <small/>
+        <large>icon_usr.png</large>
+        <animated/>
+        <svg/>
+        <simple/>
+    </AppIcon>
+    <AppID>a9b5b6c7-cc34-4253-ad3e-6a13b930a074</AppID>
+    <AppName>
+        <ResourceID/>
+        <default>2048</default>
+    </AppName>
+    <AppExecName>2048-MotoMAGX</AppExecName>
+    <AppExecArgs/>
+    <PkgType>Install</PkgType>
+    <RequiredSpace/>
+    <AppType>Native</AppType>
+    <Description>
+        <ResourceID/>
+        <default>A 2048 puzzle game that has become very popular lately</default>
+    </Description>
+    <MIMEType/>
+    <Version>1.0</Version>
+    <Vendor>EXL</Vendor>
+    <DateIssued>29 Oct 2021</DateIssued>
+    <IsLockable>No</IsLockable>
+    <IsVisible>Yes</IsVisible>
+    <IsAutoRun>No</IsAutoRun>
+    <IsErasable>Yes</IsErasable>
+    <LogicalAppLoc>e8c83dac-db4e-4fb5-98a6-61de1998b277</LogicalAppLoc>
+</Descriptor>
