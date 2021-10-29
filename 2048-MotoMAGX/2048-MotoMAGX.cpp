@@ -10,7 +10,9 @@
 #include <ZGlobal.h>
 #include <ZNoticeDlg.h>
 
+#ifndef MOTODEV_STUDIO
 #include <RES_ICON_Reader.h>
+#endif
 
 #include <qfileinfo.h>
 #include <qtextcodec.h>
@@ -127,7 +129,9 @@ public slots:
 		} else {
 			msgDlg->setTitle("Error!");
 			msgDlg->setInstructText(QString("Error: Cannot Save Screenshot! Path: %1").arg(path));
+#ifndef MOTODEV_STUDIO
 			msgDlg->setTitleIcon(RES_ICON_Reader().getIcon("error_pop", true));
+#endif
 		}
 		msgDlg->exec();
 		delete msgDlg;
