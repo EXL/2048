@@ -11,6 +11,8 @@ func_build() {
 	make PLATFORM=EZX-E8; make rmobj
 	make PLATFORM=EZX-VE66; make rmobj
 	make PLATFORM=EZX-EM35; make rmobj
+	make PLATFORM=EZX-VA76R; make rmobj
+	make PLATFORM=EZX-AURA; make rmobj
 }
 
 func_build;

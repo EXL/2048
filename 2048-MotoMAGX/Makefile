@@ -1,4 +1,4 @@
-# This Makefile was edited by EXL, 10-Jun-2020
+# This Makefile was edited by EXL, 15-Nov-2021
 #
 # App can compile for platform:
 #    PLATFORM=EZX-Z6
@@ -10,6 +10,8 @@
 #    PLATFORM=EZX-E8
 #    PLATFORM=EZX-VE66
 #    PLATFORM=EZX-EM35
+#    PLATFORM=EZX-VA76R
+#    PLATFORM=EZX-AURA
 #
 # For example - compile this source for Motorla ZN5:
 #
@@ -99,6 +101,21 @@ EZXDIR      := $(TOOLPREFIX)/lib/ezx-em35
 LINKLIB     := -lm -lqte-mt -lezxappbase
 DIRECTIV    := -DEZX_EM35 $(APP_DEFINES)
 TARGET       = $(APPNAME)_EM35
+endif
+ifeq ($(PLATFORM),EZX-VA76R)
+ARMLIB      := $(TOOLPREFIX)/arm-linux-gnueabi/lib_E8
+QTDIR       := $(TOOLPREFIX)/lib/qt-e8
+EZXDIR      := $(TOOLPREFIX)/lib/ezx-va76
+LINKLIB     := -lm -lqte-mt -lezxappbase
+DIRECTIV    := -DEZX_VA76R $(APP_DEFINES)
+TARGET       = $(APPNAME)_VA76R
+endif
+ifeq ($(PLATFORM),EZX-AURA)
+QTDIR       := $(TOOLPREFIX)/lib/qt-zn5
+EZXDIR      := $(TOOLPREFIX)/lib/ezx-aura
+LINKLIB     := -lm -lqte-mt -lezxappbase
+DIRECTIV    := -DEZX_AURA $(APP_DEFINES)
+TARGET       = $(APPNAME)_AURA
 endif
 
 ####### Build Tools and Options

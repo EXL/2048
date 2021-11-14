@@ -20,23 +20,6 @@
 
 #include <ctime>
 
-#if defined(EZX_Z6) || defined (EZX_V8)
-	#define KEYCODE_0                              EZX_KEY_0
-	#define KEYCODE_2                              EZX_KEY_2
-	#define KEYCODE_4                              EZX_KEY_4
-	#define KEYCODE_6                              EZX_KEY_6
-	#define KEYCODE_8                              EZX_KEY_8
-	#define KEYCODE_UP                             EZX_KEY_UP
-	#define KEYCODE_DOWN                           EZX_KEY_DOWN
-	#define KEYCODE_LEFT                           EZX_KEY_LEFT
-	#define KEYCODE_RIGHT                          EZX_KEY_RIGHT
-	#define KEYCODE_CLEAR                          EZX_KEY_CLEAR
-	#ifdef EZX_V8
-	#define MAINDISPLAY_HEADER                     TINY_TYPE
-	#define TypeOK                                 just_ok
-	#endif
-#endif
-
 #if defined(EZX_EM30) || defined (EZX_E8)
 const int TILE_SIZE = 40;
 const int FIELD_OFFSET_SCALE = 5;
