@@ -24,12 +24,14 @@ GZIP     = gzip -9f
 
 ####### Files
 
-HEADERS  = ../src/2048.h
-SOURCES  = ../src/2048.c 2048-EZX.cpp
-OBJECTS  = ../src/2048.o 2048-EZX.o
-SRCMOC   = 2048-EZX.moc
-OBJMOC   =
-TARGET   = 2048-EZX_E680
+HEADERS   = ../src/2048.h
+SOURCES   = ../src/2048.c 2048-EZX.cpp
+OBJECTS   = ../src/2048.o 2048-EZX.o
+SRCMOC    = 2048-EZX.moc
+OBJMOC    =
+DIST_MPKG = 2048-EZX_E680.mpkg
+APPDIR    = 2048_EZX_E680
+TARGET    = 2048-EZX_E680
 
 ####### Build rules
 
@@ -39,11 +41,23 @@ $(TARGET): $(OBJECTS) $(OBJMOC)
 	$(LINK) $(LFLAGS) -o $(TARGET) $(OBJECTS) $(OBJMOC) $(LIBS)
 	$(STRIP) -s $(TARGET)
 
+mpkg: $(TARGET)
+	-mkdir $(APPDIR)
+	-cp 2048-EZX_E680 $(APPDIR)
+	-cp pkg/2048_EZX_E680.desktop $(APPDIR)
+	-cp ../image/icon/ezx_sml_32x24.png $(APPDIR)
+	-cp ../image/icon/ezx_big_68x43.png $(APPDIR)
+	-cp ../image/icon/ezx_dia_50x50.png $(APPDIR)
+	$(TAR) $(APPDIR).uncompressed $(APPDIR)
+	$(GZIP) $(APPDIR).uncompressed
+	-mv $(APPDIR).uncompressed.gz $(DIST_MPKG)
+
 moc: $(SRCMOC)
 
 clean:
 	-rm -f $(OBJECTS) $(OBJMOC) $(SRCMOC) $(TARGET)
-	-rm -f *~ core
+	-rm -r -f $(APPDIR)
+	-rm -f *~ $(DIST_MPKG) core
 
 ####### Compile
 
