@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 date=`date "+%d-%b-%Y"`
+unreal_icons=false
 
 function clean {
 	cd 2048-MotoMAGX/
@@ -11,9 +12,15 @@ function clean {
 
 function create_pep {
 	sed -i "s/EXECUTABLE_FILE/2048/g" 2048-MotoMAGX/description.ini
-	cp ../image/icon/ic_launcher0.png 2048-MotoMAGX/app/icon_usr.png
-	cp ../image/icon/ic_launcher0.png 2048-MotoMAGX/icon_usr.png
-	cp ../image/icon/app-2048-Serenity-16.png 2048-MotoMAGX/icon_small_usr.png
+	if [ "$unreal_icons" = true ]; then
+		cp ../image/icon/magx_48x48.png 2048-MotoMAGX/app/icon_usr.png
+		cp ../image/icon/magx_48x48.png 2048-MotoMAGX/icon_usr.png
+		cp ../image/icon/magx_16x16.png 2048-MotoMAGX/icon_small_usr.png
+	else
+		cp ../image/icon/ic_launcher0.png 2048-MotoMAGX/app/icon_usr.png
+		cp ../image/icon/ic_launcher0.png 2048-MotoMAGX/icon_usr.png
+		cp ../image/icon/app-2048-Serenity-16.png 2048-MotoMAGX/icon_small_usr.png
+	fi
 	find 2048-MotoMAGX/ -printf "%P\n" | tar -cvf 2048-MotoMAGX.tar --no-recursion -C 2048-MotoMAGX/ -T -
 	gzip -9 2048-MotoMAGX.tar
 }
