@@ -22,17 +22,17 @@ const int TILE_MARGIN        = 5;
 enum { M_SCREEN, M_SAVE, M_LOAD, M_RESET, M_SOUND, M_ROUNDED, M_RECTANGLE, M_TILES, M_ABOUT, M_EXIT };
 
 static ZMessageBox *CreateMessageBox(QWidget *parent, const QString &buttonCaption) {
-#if   __GNUC_PATCHLEVEL__ == 0 // E680, GCC 3.3.0
+#if defined(EZX_E680)
 	return new ZMessageBox(parent, NULL, QString::null, buttonCaption, QString::null, QString::null);
-#elif __GNUC_PATCHLEVEL__ == 6 //   E6, GCC 3.3.6
+#elif defined(EZX_E6)
 	return new ZMessageBox(parent, NULL, QString::null, buttonCaption);
 #endif
 }
 
 static QPixmap GetIcon(const char *iconName) {
-#if   __GNUC_PATCHLEVEL__ == 0 // E680, GCC 3.3.0
+#if defined(EZX_E680)
 	return RES_ICON_Reader().getIcon(iconName);
-#elif __GNUC_PATCHLEVEL__ == 6 //   E6, GCC 3.3.6
+#elif defined(EZX_E6)
 	return RES_ICON_Reader().getIcon(iconName, true);
 #endif
 }
@@ -253,14 +253,8 @@ public slots:
 		static_cast<ZApplication *>(qApp)->enableTouchSound(sound);
 	}
 public:
-	MainWidget() : ZMainWidget(false, NULL, NULL, 0), sound(true) {
-#if   __GNUC_PATCHLEVEL__ == 0 // E680, GCC 3.3.0
-		titleBar = getTitleBarWidget();
-#elif __GNUC_PATCHLEVEL__ == 6 //   E6, GCC 3.3.6
-		titleBar = new QLabel(this, NULL);
-		setTitleBarWidget(titleBar);
-#endif
-		titleBar->setText(" 2048-EZX | Score: 0 ");
+	MainWidget() : ZMainWidget(" 2048-EZX | Score: 0 ", false, NULL, NULL, 0), sound(true) {
+		titleBar = static_cast<QLabel *>(getTitleBarWidget());
 
 		widget = new Widget(this, NULL);
 		connect(widget, SIGNAL(scoreChanged(int)), this, SLOT(setTitleScore(int)));

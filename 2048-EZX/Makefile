@@ -11,8 +11,8 @@
 CC       = arm-linux-gnu-gcc
 CXX      = arm-linux-gnu-g++
 STRIP    = arm-linux-gnu-strip
-CFLAGS   = -pipe -Wall -W -O2 -mcpu=iwmmxt -mtune=iwmmxt -D_REENTRANT -DQT_THREAD_SUPPORT -DNO_DEBUG
-CXXFLAGS = -pipe -DQWS -fno-exceptions -fno-rtti -Wall -W -O2 -mcpu=iwmmxt -mtune=iwmmxt -D_REENTRANT -DQT_THREAD_SUPPORT -DNO_DEBUG
+CFLAGS   = -pipe -Wall -W -O2 -mcpu=iwmmxt -mtune=iwmmxt -D_REENTRANT -DQT_THREAD_SUPPORT -DNO_DEBUG -DEZX_E6
+CXXFLAGS = -pipe -DQWS -fno-exceptions -fno-rtti -Wall -W -O2 -mcpu=iwmmxt -mtune=iwmmxt -D_REENTRANT -DQT_THREAD_SUPPORT -DNO_DEBUG -DEZX_E6
 INCPATH  = -I$(QTDIR)/include -I$(EZXDIR)/include -I../src
 LINK     = arm-linux-gnu-g++
 LFLAGS   = -Wl,-rpath-link,$(QTDIR)/lib,-rpath-link,$(EZXDIR)/lib

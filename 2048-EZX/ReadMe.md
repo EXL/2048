@@ -90,6 +90,8 @@ First patch `tmake` utility configuration file in MotoEZX Toolchains & SDK and M
 # A1200, E6
 cd /opt/toolchains/motoezx/a1200/qt2/tmake/lib/qws/linux-gnu-ezx-g++/
 cp tmake.conf tmake.conf.orig
+# Add -DEZX_E6 to TMAKE_CFLAGS
+# Fix ZMainWidget.h in ezx2: fix typo `QWidget *getTitleBarWidget(void)`
 sed -i '/TMAKE_INCDIR_QT/ s/$/ \$\(EZXDIR\)\/include/' tmake.conf
 sed -i '/TMAKE_LFLAGS\s/ s/$/,-rpath-link,\$\(EZXDIR\)\/lib/' tmake.conf
 sed -i '/TMAKE_LIBS\s/ s/$/-L\$\(EZXDIR\)\/lib -L\$\(EZXDIR\)\/lib\/ezx\/lib -lezxappbase/' tmake.conf
@@ -97,6 +99,7 @@ sed -i '/TMAKE_LIBS\s/ s/$/-L\$\(EZXDIR\)\/lib -L\$\(EZXDIR\)\/lib\/ezx\/lib -le
 # A780, E680
 cd /opt/toolchains/motoe680/e680/tmake/lib/qws/linux-e680-g++/
 cp tmake.conf tmake.conf.orig
+# Add -DEZX_E680 to TMAKE_CFLAGS
 sed -i 's/-rpath,/-rpath-link,\$\(QTDIR\)\/lib/' tmake.conf
 sed -i '/TMAKE_LFLAGS\s/ s/$/-Wl,-rpath-link,\$\(QTDIR\)\/lib/' tmake.conf
 cd /opt/toolchains/motoe680/e680/include/ezx/
