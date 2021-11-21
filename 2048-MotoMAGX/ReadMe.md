@@ -3,6 +3,8 @@
 
 ![2048-MotoMAGX Motorola ZN5 Screenshot 1](../image/2048-MotoMAGX-ZN5-Screenshot1.png) ![2048-MotoMAGX Motorola ZN5 Screenshot 2](../image/2048-MotoMAGX-ZN5-Screenshot2.png) ![2048-MotoMAGX Motorola ZN5 Screenshot 3](../image/2048-MotoMAGX-ZN5-Screenshot3.png) ![2048-MotoMAGX Motorola ZN5 Screenshot 4](../image/2048-MotoMAGX-ZN5-Screenshot4.png)
 
+![2048-MotoMAGX Motorola ZN5 Screenshot 5](../image/2048-MotoMAGX-ZN5-Screenshot5.png) ![2048-MotoMAGX Motorola ZN5 Screenshot 6](../image/2048-MotoMAGX-ZN5-Screenshot6.png)
+
 The "2048" game for the [MotoMAGX OS](https://en.wikipedia.org/wiki/MotoMagx) by Motorola.
 
 ## Toolchain & SDK
@@ -86,3 +88,5 @@ i686-mot-linux-gnu-g++ (GCC) 3.4.3 (MontaVista 3.4.3-25.0.96.custom 2008-01-17)
 ## Information
 
 Additional information about porting in [NotesMotoMAGX.md](../doc/NotesMotoMAGX.md) document file.
+
+Thanks for screenshots and testing: Boxa, fill.sa, VINRARUS, Unreal_man.
