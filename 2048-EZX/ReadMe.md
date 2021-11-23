@@ -52,7 +52,7 @@ cd ~/Projects/2048/2048-EZX/
 . /opt/toolchains/motoezx/setenv-a1200-devezx.sh
 make clean
 make
-make pkg
+make mpkg
 ```
 
 Build for E2:
@@ -62,7 +62,7 @@ cd ~/Projects/2048/2048-EZX/
 . /opt/toolchains/motoezx/setenv-e2.sh
 make -f Makefile.e2 clean
 make -f Makefile.e2
-make -f Makefile.e2 pkg
+make -f Makefile.e2 mpkg
 ```
 
 Build for A780, E680:
@@ -72,7 +72,7 @@ cd ~/Projects/2048/2048-EZX/
 . /opt/toolchains/motoe680/setenv-e680.sh
 make -f Makefile.e680 clean
 make -f Makefile.e680
-make -f Makefile.e680 pkg
+make -f Makefile.e680 mpkg
 ```
 
 ## Copy executable file to A1200, E6, E2 and run it
@@ -111,8 +111,8 @@ cd 2048-EZX-E6-Project/
 cp ../2048-EZX.cpp .
 cp ../../src/2048.* .
 . /opt/toolchains/motoezx/setenv-a1200-devezx.sh
-progen CONFIG+=thread -o 2048-EZX.pro
-tmake 2048-EZX.pro -o Makefile.e6
+progen CONFIG+=thread -o 2048-EZX_E6.pro
+tmake 2048-EZX_E6.pro -o Makefile.e6
 make -f Makefile.e6 clean
 make -f Makefile.e6
 ```
@@ -126,8 +126,8 @@ cd 2048-EZX-E2-Project/
 cp ../2048-EZX_E2.cpp .
 cp ../../src/2048.* .
 . /opt/toolchains/motoezx/setenv-e2.sh
-progen CONFIG+=thread -o 2048-EZX.pro
-tmake 2048-EZX.pro -o Makefile.e2
+progen CONFIG+=thread -o 2048-EZX_E2.pro
+tmake 2048-EZX_E2.pro -o Makefile.e2
 make -f Makefile.e2 clean
 make -f Makefile.e2
 ```
@@ -137,12 +137,12 @@ Generate project and building files for A780, E680:
 ```sh
 cd ~/Projects/2048/2048-EZX/
 mkdir -p 2048-EZX-E680-Project
-cd 2048-EZX-E68--Project/
+cd 2048-EZX-E680-Project/
 cp ../2048-EZX.cpp .
 cp ../../src/2048.* .
 . /opt/toolchains/motoe680/setenv-e680.sh
-progen CONFIG+=thread -o 2048-EZX.pro
-tmake 2048-EZX.pro -o Makefile.e680
+progen CONFIG+=thread -o 2048-EZX_E680.pro
+tmake 2048-EZX_E680.pro -o Makefile.e680
 make -f Makefile.e680 clean
 make -f Makefile.e680
 ```

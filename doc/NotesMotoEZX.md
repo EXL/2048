@@ -1,7 +1,7 @@
 Porting 2048 Game to EZX Platform
 =================================
 
-To create correct Makefiles, the configuration file of the `tmake` utility needs to be patched. See [2048-EZX/ReadMe.md](../2048-EZX/ReadMe.md) document for patching and general building information. The 2048-EZX project contains a ready-to-build and fixed Makefile already, so the patching step can be skipped.
+To create correct Makefiles, the configuration file of the `tmake` utility needs to be patched. See this document for patching information and [2048-EZX/ReadMe.md](../2048-EZX/ReadMe.md) document for general building information. The 2048-EZX project contains a ready-to-build and fixed Makefiles already, so the patching step can be skipped.
 
 ## Task List
 
