@@ -29,6 +29,14 @@ const int FIELD_OFFSET_SCALE = 32;
 #endif
 const int TILE_MARGIN = 5;
 
+#if !defined(EZX_E2)
+#define ICON_ABOUT_NAME "icon_usr.png"
+#define ICON_ABOUT_SIZE 48
+#else
+#define ICON_ABOUT_NAME "ezx_dia_50x50.png"
+#define ICON_ABOUT_SIZE 50
+#endif
+
 class Widget : public QWidget {
 	Q_OBJECT
 
@@ -197,9 +205,9 @@ public slots:
 			"2048 Game implementation especially for MotoMAGX platform.\n\nVersion: 1.0, %1\nThanks to: Boxa, fill.sa, "
 			"VINRARUS, Unreal_man\n© EXL (exl@bk.ru), 2020\nSource code: https://github.com/EXL/2048").arg(__DATE__),
 			ZMessageDlg::TypeOK, 60*1000);
-		QString iconPath = QString("%1/icon_usr.png").arg(QFileInfo(qApp->argv()[0]).dirPath(true));
+		QString iconPath = QString("%1/%2").arg(QFileInfo(qApp->argv()[0]).dirPath(true)).arg(ICON_ABOUT_NAME);
 		if (QFile::exists(iconPath)) {
-			QPixmap icon(48, 48);
+			QPixmap icon(ICON_ABOUT_SIZE, ICON_ABOUT_SIZE);
 			icon.load(iconPath);
 			msgDlg->setTitleIcon(icon);
 		}
@@ -224,9 +232,11 @@ public:
 		menu->insertItem("About", NULL, this, SLOT(about()), true, false, false, 6, 6);
 		menu->insertItem(tr("TXT_RID_SOFTKEY_EXIT", "Exit"), NULL, qApp, SLOT(quit()), true, false, false, 7, 7);
 		softKeys->setOptMenu(ZSoftKey::LEFT, menu);
+#if !defined(EZX_E2)
 		softKeys->setTextForOptMenuHide(tr("TXT_RID_SOFTKEY_OPTIONS", "Options"));
 #if !defined(EZX_EMU) && !defined(MOTODEV_STUDIO)
 		softKeys->setTextForOptMenuShow(tr("TXT_RID_SOFTKEY_SELECT", "Select"), tr("TXT_RID_SOFTKEY_CANCEL", "Cancel"));
+#endif
 #endif
 		softKeys->setText(ZSoftKey::LEFT, tr("TXT_RID_SOFTKEY_OPTIONS", "Options"));
 		softKeys->setText(ZSoftKey::RIGHT, tr("TXT_RID_SOFTKEY_EXIT", "Exit"));
@@ -243,4 +253,8 @@ int main(int argc, char *argv[]) {
 	return application.exec();
 }
 
+#if !defined(EZX_E2)
 #include "2048-MotoMAGX.moc"
+#else
+#include "2048-EZX_E2.moc"
+#endif
