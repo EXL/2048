@@ -10,7 +10,7 @@ function clean {
 
 function build_pkg {
 	cd 2048-EZX/
-	make pkg
+	make mpkg
 	mv 2048-EZX.pkg "../2048_MotoEZX_A1200_E6_v1.0_$date.pkg"
 	mv 2048-EZX.mpkg "../2048_MotoEZX_A1200_E6_v1.0_$date.mpkg"
 	cd -
