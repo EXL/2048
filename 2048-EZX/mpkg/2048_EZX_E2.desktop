@@ -1,0 +1,14 @@
+[Desktop Entry]
+Name=2048
+Version=1.0, 23-Nov-2021
+Author=EXL
+Comment=Popular and simple puzzle game. Collect the "2048 tile" using arrow keys and touchscreen on game board.
+Description=Popular puzzle game.
+Vendor=exlmoto.ru
+Exec=2048-EZX_E2
+Icon=ezx_sml_32x24.png
+BigIcon=ezx_big_68x43.png
+OsVersion=1
+Type=Application
+Category=Games
+Shared=2
