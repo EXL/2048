@@ -18,3 +18,288 @@ To create correct Makefiles, the configuration file of the `tmake` utility needs
 11. [x] Create PKG-package building script.
 12. [x] Add executable file/package information.
 13. [ ] TODO: Adapt code for Motorola E680 or Motorola E680i.
+14. [ ] TODO: Adapt code for Motorola ROKR E2.
+
+## EZX SDK & Toolchain patches (A1200, E6)
+
+1. Fix typo in `ZMainWidget.h` header file:
+
+```diff
+--- motoezx-old/a1200/ezx2/include/ZMainWidget.h	2008-03-04 10:47:54.000000000 +0600
++++ motoezx/a1200/ezx2/include/ZMainWidget.h	2021-11-23 11:08:01.604360408 +0700
+@@ -138,7 +138,7 @@
+	  */
+	 virtual bool setCSTWidget( QWidget* w = NULL );           //fox v: m8
+	 virtual int setTitleBarWidget(QWidget*); //fox v: m$C add
+-	QWidget* getTitleBarWiget(void); //add by eakrin
++	QWidget* getTitleBarWidget(void); //add by eakrin, fixed typo by EXL
+	virtual int setFullScreenMode(bool, bool);  //fox v: m$10 add
+```
+
+2. Edit `tmake.conf` file:
+
+```diff
+--- motoezx-old/a1200/qt2/tmake/lib/qws/linux-gnu-ezx-g++/tmake.conf	2008-01-12 18:44:10.000000000 +0600
++++ motoezx/a1200/qt2/tmake/lib/qws/linux-gnu-ezx-g++/tmake.conf	2021-11-23 11:15:10.063079065 +0700
+@@ -9,7 +9,7 @@
+ 
+ TMAKE_CC		= arm-linux-gnu-gcc
+ TMAKE_DASHCROSS		= -arm
+-TMAKE_CFLAGS		= -pipe 
++TMAKE_CFLAGS		= -pipe -DEZX_E6
+ TMAKE_CFLAGS_WARN_ON	= -Wall -W
+ TMAKE_CFLAGS_WARN_OFF	=
+ TMAKE_CFLAGS_RELEASE	= -O2 -mcpu=iwmmxt -mtune=iwmmxt
+@@ -32,14 +32,14 @@
+ TMAKE_LIBDIR		=
+ TMAKE_INCDIR_X11	= 
+ TMAKE_LIBDIR_X11	= 
+-TMAKE_INCDIR_QT		= $(QTDIR)/include
++TMAKE_INCDIR_QT		= $(QTDIR)/include $(EZXDIR)/include
+ TMAKE_LIBDIR_QT		= $(QTDIR)/lib
+ TMAKE_INCDIR_OPENGL	= /usr/X11R6/include
+ TMAKE_LIBDIR_OPENGL	= /usr/X11R6/lib
+ 
+ TMAKE_LINK		= arm-linux-gnu-g++
+ TMAKE_LINK_SHLIB	= arm-linux-gnu-g++
+-TMAKE_LFLAGS		= -Wl,-rpath-link,$(QTDIR)/lib
++TMAKE_LFLAGS		= -Wl,-rpath-link,$(QTDIR)/lib,-rpath-link,$(EZXDIR)/lib
+ TMAKE_LFLAGS_RELEASE	=
+ TMAKE_LFLAGS_DEBUG	=
+ TMAKE_LFLAGS_SHLIB	= -shared
+@@ -47,7 +47,7 @@
+ TMAKE_LFLAGS_THREAD	=
+ TMAKE_RPATH		= -Wl,-rpath-link,$(QTDIR)/lib
+ 
+-TMAKE_LIBS		= 
++TMAKE_LIBS		= -L$(EZXDIR)/lib -L$(EZXDIR)/lib/ezx/lib -lezxappbase
+ TMAKE_LIBS_X11		= 
+ TMAKE_LIBS_X11SM	= 
+ TMAKE_LIBS_QT		= -lqte
+```
+
+## EZX SDK & Toolchain patches (E2)
+
+1. Edit `tmake.conf` file:
+
+```sh
+rm /opt/toolchains/motoezx/e2/qt/tmake
+cp -avR /opt/toolchains/motoezx/a1200/qt/tmake /opt/toolchains/motoezx/e2/qt/tmake
+```
+
+```diff
+--- motoezx-old/e2/qt/tmake/lib/qws/linux-gnu-ezx-g++/tmake.conf	2008-01-12 18:44:10.000000000 +0600
++++ motoezx/e2/qt/tmake/lib/qws/linux-gnu-ezx-g++/tmake.conf	2021-11-23 11:23:40.459701145 +0700
+@@ -9,7 +9,7 @@
+ 
+ TMAKE_CC		= arm-linux-gnu-gcc
+ TMAKE_DASHCROSS		= -arm
+-TMAKE_CFLAGS		= -pipe 
++TMAKE_CFLAGS		= -pipe -DEZX_E2
+ TMAKE_CFLAGS_WARN_ON	= -Wall -W
+ TMAKE_CFLAGS_WARN_OFF	=
+ TMAKE_CFLAGS_RELEASE	= -O2 -mcpu=iwmmxt -mtune=iwmmxt
+@@ -32,14 +32,14 @@
+ TMAKE_LIBDIR		=
+ TMAKE_INCDIR_X11	= 
+ TMAKE_LIBDIR_X11	= 
+-TMAKE_INCDIR_QT		= $(QTDIR)/include
++TMAKE_INCDIR_QT		= $(QTDIR)/include $(EZXDIR)/include
+ TMAKE_LIBDIR_QT		= $(QTDIR)/lib
+ TMAKE_INCDIR_OPENGL	= /usr/X11R6/include
+ TMAKE_LIBDIR_OPENGL	= /usr/X11R6/lib
+ 
+ TMAKE_LINK		= arm-linux-gnu-g++
+ TMAKE_LINK_SHLIB	= arm-linux-gnu-g++
+-TMAKE_LFLAGS		= -Wl,-rpath-link,$(QTDIR)/lib
++TMAKE_LFLAGS		= -Wl,-rpath-link,$(QTDIR)/lib,-rpath-link,$(EZXDIR)/lib
+ TMAKE_LFLAGS_RELEASE	=
+ TMAKE_LFLAGS_DEBUG	=
+ TMAKE_LFLAGS_SHLIB	= -shared
+@@ -47,7 +47,7 @@
+ TMAKE_LFLAGS_THREAD	=
+ TMAKE_RPATH		= -Wl,-rpath-link,$(QTDIR)/lib
+ 
+-TMAKE_LIBS		= 
++TMAKE_LIBS		= -L$(EZXDIR)/lib -L$(EZXDIR)/lib/ezx/lib -lezxappbase -lezxrichedit
+ TMAKE_LIBS_X11		= 
+ TMAKE_LIBS_X11SM	= 
+ TMAKE_LIBS_QT		= -lqte
+```
+
+2. Edit `qpainter.h` file:
+
+```sh
+cd /opt/toolchains/motoezx/e2/qt/lib
+readelf -s -W libqte-mt.so.2.3.8 | c++filt | grep drawText
+   308: 41531ae0  1228 FUNC    WEAK   DEFAULT   10 QGfxPTF<18, 0>::drawText(QGlyphString const&, QPoint*)
+  1060: 4153c070  1228 FUNC    WEAK   DEFAULT   10 QGfxPTF<1, 0>::drawText(QGlyphString const&, QPoint*)
+  2551: 41574a14    44 FUNC    GLOBAL DEFAULT   10 QPainter::drawText(int, int, QString const&, int, QPainter::TextDirection)
+  3568: 41535210  1228 FUNC    WEAK   DEFAULT   10 QGfxPTF<8, 0>::drawText(QGlyphString const&, QPoint*)
+  5305: 41519b68   576 FUNC    GLOBAL DEFAULT   10 QGfxRasterBase::drawText(QGlyphString const&, QPoint*)
+  5313: 4157a670   136 FUNC    GLOBAL DEFAULT   10 QWidget::drawText(int, int, QString const&)
+  6840: 41538940  1228 FUNC    WEAK   DEFAULT   10 QGfxPTF<16, 0>::drawText(QGlyphString const&, QPoint*)
+  7523: 4152ad98  1228 FUNC    WEAK   DEFAULT   10 QGfxPTF<32, 0>::drawText(QGlyphString const&, QPoint*)
+  8264: 4152e4c8  1228 FUNC    WEAK   DEFAULT   10 QGfxPTF<24, 0>::drawText(QGlyphString const&, QPoint*)
+  9710: 415d8898   724 FUNC    GLOBAL DEFAULT   10 QPainter::drawText(int, int, int, int, int, QString const&, int, QRect*, char**)
+ 10781: 41574a40  6492 FUNC    GLOBAL DEFAULT   10 QPainter::drawText(int, int, QString const&, int, int, QPainter::TextDirection)
+```
+
+```sh
+rm /opt/toolchains/motoezx/e2/qt/include/qpainter.h
+cp /opt/toolchains/motoezx/a1200/qt/include/qpainter.h /opt/toolchains/motoezx/e2/qt/include/qpainter.h
+```
+
+```diff
+--- motoezx-old/e2/qt/include/qpainter.h	2009-11-10 04:00:21.000000000 +0600
++++ motoezx/e2/qt/include/qpainter.h	2021-11-23 11:33:34.304246325 +0700
+@@ -226,8 +226,9 @@
+ 
+   // Text drawing functions
+ 
+-    void	drawText( int x, int y, const QString &, int len = -1 );
+-    void	drawText( const QPoint &, const QString &, int len = -1 );
++    enum TextDirection { Auto, RTL, LTR };
++    void	drawText( int x, int y, const QString &, int len = -1, TextDirection dir = Auto );
++    void	drawText( const QPoint &, const QString &, int len = -1, TextDirection dir = Auto );
+     void	drawText( int x, int y, int w, int h, int flags,
+ 			  const QString&, int len = -1, QRect *br=0,
+ 			  char **internal=0 );
+@@ -629,7 +630,7 @@
+     fillRect( r.x(), r.y(), r.width(), r.height(), backgroundColor() );
+ }
+ 
+-inline void QPainter::drawText( const QPoint &p, const QString &s, int len )
++inline void QPainter::drawText( const QPoint &p, const QString &s, int len, TextDirection dir )
+ {
+     drawText( p.x(), p.y(), s, len );
+ }
+```
+
+3. Edit `qfont.h` file:
+
+```sh
+cd /opt/toolchains/motoezx/e2/qt/lib
+readelf -s -W libqte-mt.so.2.3.8 | c++filt | grep QFont::QFont
+   568: 415a72c8     4 FUNC    GLOBAL DEFAULT   10 QFont::QFont()
+   829: 415a70f0     4 FUNC    GLOBAL DEFAULT   10 QFont::QFont(QFontData*)
+  1104: 415a735c   140 FUNC    GLOBAL DEFAULT   10 QFont::QFont(QString const&, int, int, bool)
+  2198: 415a7348    20 FUNC    GLOBAL DEFAULT   10 QFont::QFont(QString const&, int, int, bool)
+  2613: 415a72c4     4 FUNC    GLOBAL DEFAULT   10 QFont::QFont()
+  3360: 415a72cc   104 FUNC    GLOBAL DEFAULT   10 QFont::QFont()
+  3380: 415a73e8    28 FUNC    GLOBAL DEFAULT   10 QFont::QFont(QString const&, int, int, bool, QFont::CharSet)
+  3577: 415a74c0    72 FUNC    GLOBAL DEFAULT   10 QFont::QFont(QFont const&)
+  4250: 415a7420   152 FUNC    GLOBAL DEFAULT   10 QFont::QFont(QString const&, int, int, bool, QFont::CharSet)
+  4848: 415a74b8     4 FUNC    GLOBAL DEFAULT   10 QFont::QFont(QFont const&)
+  6747: 415a7334    20 FUNC    GLOBAL DEFAULT   10 QFont::QFont(QString const&, int, int, bool)
+  7647: 415a70f4   392 FUNC    GLOBAL DEFAULT   10 QFont::QFont(QFontData*)
+  9098: 415a74bc     4 FUNC    GLOBAL DEFAULT   10 QFont::QFont(QFont const&)
+  9613: 415a7404    28 FUNC    GLOBAL DEFAULT   10 QFont::QFont(QString const&, int, int, bool, QFont::CharSet)
+ 10922: 415a70ec     4 FUNC    GLOBAL DEFAULT   10 QFont::QFont(QFontData*)
+```
+
+```sh
+rm /opt/toolchains/motoezx/e2/qt/include/qfont.h 
+cp /opt/toolchains/motoezx/a1200/qt/include/qfont.h /opt/toolchains/motoezx/e2/qt/include/qfont.h
+```
+
+```diff
+--- motoezx-old/e2/qt/include/qfont.h	2009-11-10 04:00:21.000000000 +0600
++++ motoezx/e2/qt/include/qfont.h	2021-11-23 11:29:29.231545206 +0700
+@@ -116,10 +116,11 @@
+ 		     Bold  = 75, Black	= 87 };
+     QFont();					// default font
+     
+-    //QFont( const QString &family, int pointSize = 12,
+-	//   int weight = Normal, bool italic = FALSE );
+-    QFont( const QString &family, int pointSize = 12,
+-        int weight = Normal, bool italic = FALSE, bool b = FALSE ); //fox add: bool b = FALSE
++    QFont( const QString &family, int pointSize = 12,
++	   int weight = Normal, bool italic = FALSE );
++    //QFont( const QString &family, int pointSize = 12,
++    //    int weight = Normal, bool italic = FALSE, bool b = FALSE ); //fox add: bool b = FALSE
++    // Fix by EXL: Revert this ^
+ 
+     QFont( const QString &family, int pointSize,
+ 	   int weight, bool italic, CharSet charSet );
+```
+
+4. Copy all modern header files from Z6 directory of MotoMAGX EZX Toolchain to E2 directory:
+// TODO: Link to MotoMAGX EZX Toolchain
+
+```sh
+cp /arm-eabi/lib/ezx-z6/include/ZApplication.h /opt/toolchains/motoezx/e2/ezx/include/
+cp /arm-eabi/lib/ezx-z6/include/ZKbMainWidget.h /opt/toolchains/motoezx/e2/ezx/include/
+cp /arm-eabi/lib/ezx-z6/include/ZHeader.h /opt/toolchains/motoezx/e2/ezx/include/
+cp /arm-eabi/lib/ezx-z6/include/ZKeyDef.h /opt/toolchains/motoezx/e2/ezx/include/
+cp /arm-eabi/lib/ezx-z6/include/ZMessageDlg.h /opt/toolchains/motoezx/e2/ezx/include/
+cp /arm-eabi/lib/ezx-z6/include/ZOptionsMenu.h /opt/toolchains/motoezx/e2/ezx/include/
+cp /arm-eabi/lib/ezx-z6/include/ZGlobal.h /opt/toolchains/motoezx/e2/ezx/include/
+cp /arm-eabi/lib/ezx-z6/include/ZNoticeDlg.h /opt/toolchains/motoezx/e2/ezx/include/
+cp /arm-eabi/lib/ezx-z6/include/RES_ICON_Reader.h /opt/toolchains/motoezx/e2/ezx/include/
+cp /arm-eabi/lib/ezx-z6/include/ZWidget.h /opt/toolchains/motoezx/e2/ezx/include/
+cp /arm-eabi/lib/ezx-z6/include/ZMainWidget.h /opt/toolchains/motoezx/e2/ezx/include/
+cp /arm-eabi/lib/ezx-z6/include/ZSkinBase.h /opt/toolchains/motoezx/e2/ezx/include/
+cp /arm-eabi/lib/ezx-z6/include/ZPopup.h /opt/toolchains/motoezx/e2/ezx/include/
+cp /arm-eabi/lib/ezx-z6/include/ZConfig.h /opt/toolchains/motoezx/e2/ezx/include/
+cp /arm-eabi/lib/ezx-z6/include/ZIMethod.h /opt/toolchains/motoezx/e2/ezx/include/
+cp /arm-eabi/lib/ezx-z6/include/ZFormContainer.h /opt/toolchains/motoezx/e2/ezx/include/
+cp /arm-eabi/lib/ezx-z6/include/ZKbInputField.h /opt/toolchains/motoezx/e2/ezx/include/
+cp /arm-eabi/lib/ezx-z6/include/ZDetailView.h /opt/toolchains/motoezx/e2/ezx/include/
+cp /arm-eabi/lib/ezx-z6/include/ZMultiLineEdit.h /opt/toolchains/motoezx/e2/ezx/include/
+cp /arm-eabi/lib/ezx-z6/include/ZGroupBox.h /opt/toolchains/motoezx/e2/ezx/include/
+cp /arm-eabi/lib/ezx-z6/include/ZCheckBox.h /opt/toolchains/motoezx/e2/ezx/include/
+cp /arm-eabi/lib/ezx-z6/include/ZExhibitButton.h /opt/toolchains/motoezx/e2/ezx/include/
+cp /arm-eabi/lib/ezx-z6/include/ZScrollPanel.h /opt/toolchains/motoezx/e2/ezx/include/
+cp /arm-eabi/lib/ezx-z6/include/ZLineEdit.h /opt/toolchains/motoezx/e2/ezx/include/
+cp /arm-eabi/lib/ezx-z6/include/ZSeparator.h /opt/toolchains/motoezx/e2/ezx/include/
+cp /arm-eabi/lib/ezx-z6/include/ZFormItem.h /opt/toolchains/motoezx/e2/ezx/include/
+cp /arm-eabi/lib/ezx-z6/include/ZLabel.h /opt/toolchains/motoezx/e2/ezx/include/
+cp /arm-eabi/lib/ezx-z6/include/ZFmwItem.h /opt/toolchains/motoezx/e2/ezx/include/
+cp /arm-eabi/lib/ezx-z6/include/ZPressButton.h /opt/toolchains/motoezx/e2/ezx/include/
+cp /arm-eabi/lib/ezx-z6/include/ZScrollBar.h /opt/toolchains/motoezx/e2/ezx/include/
+cp /arm-eabi/lib/ezx-z6/include/ZWrapLine.h /opt/toolchains/motoezx/e2/ezx/include/
+cp /arm-eabi/lib/ezx-z6/include/ZTableView.h /opt/toolchains/motoezx/e2/ezx/include/
+cp /arm-eabi/lib/ezx-z6/include/ZBaseButton.h /opt/toolchains/motoezx/e2/ezx/include/
+```
+
+## EZX SDK & Toolchain patches (A780, E680)
+
+1. Edit `tmake.conf` file:
+
+```diff
+--- motoe680-old/e680/tmake/lib/qws/linux-e680-g++/tmake.conf	2021-09-01 09:42:21.000000000 +0700
++++ motoe680/e680/tmake/lib/qws/linux-e680-g++/tmake.conf	2021-11-21 04:28:26.097524240 +0700
+@@ -9,7 +9,7 @@
+ 
+ TMAKE_CC		= arm-linux-gcc
+ TMAKE_DASHCROSS		= -arm
+-TMAKE_CFLAGS		= -pipe 
++TMAKE_CFLAGS		= -pipe -DEZX_E680
+ TMAKE_CFLAGS_WARN_ON	= -Wall -W
+ TMAKE_CFLAGS_WARN_OFF	=
+ TMAKE_CFLAGS_RELEASE	= -O2
+@@ -39,13 +39,13 @@
+ 
+ TMAKE_LINK		= arm-linux-g++
+ TMAKE_LINK_SHLIB	= arm-linux-g++
+-TMAKE_LFLAGS		=
++TMAKE_LFLAGS		=-Wl,-rpath-link,$(QTDIR)/lib
+ TMAKE_LFLAGS_RELEASE	=
+ TMAKE_LFLAGS_DEBUG	=
+ TMAKE_LFLAGS_SHLIB	= -shared
+ TMAKE_LFLAGS_SONAME	= -Wl,-soname,
+ TMAKE_LFLAGS_THREAD	=
+-TMAKE_RPATH		= -Wl,-rpath,
++TMAKE_RPATH		= -Wl,-rpath-link,$(QTDIR)/lib
+ 
+ TMAKE_LIBS		= 
+ TMAKE_LIBS_X11		= 
+```
+
+2. Create symlink:
+
+```sh
+cd /opt/toolchains/motoe680/e680/include/ezx/
+ln -s zmessagebox.h ZMessageBox.h
+```
