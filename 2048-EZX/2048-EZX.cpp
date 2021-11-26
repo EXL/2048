@@ -42,9 +42,9 @@
 #define STR_LOAD_OK "<font size=\"2\"><b>Game Loaded!</b></font><br><br><font size=\"1\">State on:<br>%1</font>"
 #define STR_LOAD_ERR "<font size=\"2\"><b>Load Error!</b></font><br><br><font size=\"1\">" \
 	"Cannot find save.dat file.</font>"
-#define ICN_DLG_OK "Dialog_Complete"
-#define ICN_DLG_ERR "Dialog_Error"
-#define ICN_DLG_QUE "Dialog_Exclamatory_Mark"
+#define ICN_DLG_OK "Dialog_Complete.g"
+#define ICN_DLG_ERR "Dialog_Error.g"
+#define ICN_DLG_QUE "Dialog_Question_Mark.g"
 #elif defined(EZX_E6)
 #define EZX_MessageBox(p, button) ZMessageBox(p, NULL, QString::null, button)
 #define EZX_ICON_Reader(iconName) RES_ICON_Reader().getIcon(iconName, true)
