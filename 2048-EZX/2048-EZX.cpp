@@ -31,9 +31,35 @@
 #if defined(EZX_E680) || defined(EZX_E680I)
 #define EZX_MessageBox(p, button) ZMessageBox(p, NULL, QString::null, button, QString::null, QString::null)
 #define EZX_ICON_Reader(iconName) RES_ICON_Reader().getIcon(iconName)
+#define STR_ABOUT "<font size=\"2\"><b>About 2048-EZX</b></font><br><br><font size=\"1\">" \
+	"2048 Game implementation especially for Motorola EZX platform.<br><br>Version: 1.0, %1<br>© EXL (exl@bk.ru)<br>" \
+	"<u>https://github.com/EXL/2048</u></font>"
+#define STR_SCR_OK "<h3>Saved!</h3><br><font size=\"1\"><b>Screenshot Saved!<br>Path:<br></b>%1</font>"
+#define STR_SCR_ERR "<h3>Error!</h3><br><font size=\"1\"><b>Error: Cannot Save Screenshot!<br>Path:</b><br>%1</font>"
+#define STR_SAV_OK "<font size=\"2\"><b>Game Saved!</b></font><br><br><font size=\"1\">State on:<br>%1</font>"
+#define STR_SAV_ERR "<font size=\"2\"><b>Save Error!</b></font><br><br><font size=\"1\">" \
+	"Cannot create save.dat file.</font>"
+#define STR_LOAD_OK "<font size=\"2\"><b>Game Loaded!</b></font><br><br><font size=\"1\">State on:<br>%1</font>"
+#define STR_LOAD_ERR "<font size=\"2\"><b>Load Error!</b></font><br><br><font size=\"1\">" \
+	"Cannot find save.dat file.</font>"
+#define ICN_DLG_OK "Dialog_Complete"
+#define ICN_DLG_ERR "Dialog_Error"
+#define ICN_DLG_QUE "Dialog_Exclamatory_Mark"
 #elif defined(EZX_E6)
 #define EZX_MessageBox(p, button) ZMessageBox(p, NULL, QString::null, button)
 #define EZX_ICON_Reader(iconName) RES_ICON_Reader().getIcon(iconName, true)
+#define STR_ABOUT "<h3>About 2048-EZX</h3><br><font size=\"2\">" \
+	"2048 Game implementation especially for Motorola EZX platform.<br><br>Version: 1.0, %1<br>© EXL (exl@bk.ru)<br>" \
+	"<u>https://github.com/EXL/2048</u></font>"
+#define STR_SCR_OK "<h3>Saved!</h3><br>Screenshot Saved!<br>Path:<br><font size=\"2\">%1</font>"
+#define STR_SCR_ERR "<h3>Error!</h3><br>Error: Cannot Save Screenshot!<br>Path:<br><font size=\"2\">%1</font>"
+#define STR_SAV_OK "<h3>Game Saved!</h3><br>State on:\n%1"
+#define STR_SAV_ERR "<h3>Save Error!</h3><br>Cannot create save.dat file."
+#define STR_LOAD_OK "<h3>Game Loaded!</h3><br>State on:\n%1"
+#define STR_LOAD_ERR "<h3>Load Error!</h3><br>Cannot find save.dat file."
+#define ICN_DLG_OK "Dialog_Complete"
+#define ICN_DLG_ERR "Dialog_Error"
+#define ICN_DLG_QUE "Dialog_Exclamatory_Mark"
 #endif
 
 const int FIELD_OFFSET_SCALE  = 32;
@@ -116,13 +142,11 @@ public slots:
 		const QString pathReplaced = QString(path).replace(QString("/"), " / ");
 		ZMessageBox *msgDlg = new EZX_MessageBox(this, "OK");
 		if (pixmap.save(path, "PNG")) {
-			msgDlg->setText(QString("<h3>Saved!</h3><br>"
-				"Screenshot Saved!<br>Path:<br><font size=\"2\">%1</font>").arg(pathReplaced));
-			msgDlg->setIconPixmap(EZX_ICON_Reader("Dialog_Complete"));
+			msgDlg->setText(QString(STR_SCR_OK).arg(pathReplaced));
+			msgDlg->setIconPixmap(EZX_ICON_Reader(ICN_DLG_OK));
 		} else {
-			msgDlg->setText(QString("<h3>Error!</h3><br>"
-				"Error: Cannot Save Screenshot!<br>Path:<br><font size=\"2\">%1</font>").arg(pathReplaced));
-			msgDlg->setIconPixmap(EZX_ICON_Reader("Dialog_Error"));
+			msgDlg->setText(QString(STR_SCR_ERR).arg(pathReplaced));
+			msgDlg->setIconPixmap(EZX_ICON_Reader(ICN_DLG_ERR));
 		}
 		msgDlg->exec();
 		delete msgDlg;
@@ -137,11 +161,11 @@ public slots:
 			for (int i = 0; i < BOARD_SIZE; ++i)
 				dataStream << (Q_INT32) e_board[i];
 			dataStream << e_score; dataStream << e_win; dataStream << e_lose;
-			msgDlg->setText(QString("<h3>Game Saved!</h3><br>State on:\n%1").arg(saveDateTime.toString()));
-			msgDlg->setIconPixmap(EZX_ICON_Reader("Dialog_Complete"));
+			msgDlg->setText(QString(STR_SAV_OK).arg(saveDateTime.toString()));
+			msgDlg->setIconPixmap(EZX_ICON_Reader(ICN_DLG_OK));
 		} else {
-			msgDlg->setText(QString("<h3>Save Error!</h3><br>Cannot create save.dat file."));
-			msgDlg->setIconPixmap(EZX_ICON_Reader("Dialog_Error"));
+			msgDlg->setText(QString(STR_SAV_ERR));
+			msgDlg->setIconPixmap(EZX_ICON_Reader(ICN_DLG_ERR));
 		}
 		msgDlg->exec();
 		delete msgDlg;
@@ -160,12 +184,12 @@ public slots:
 			}
 			dataStream >> score; dataStream >> win; dataStream >> lose;
 			e_score = score; e_win = win; e_lose = lose;
-			msgDlg->setText(QString("<h3>Game Loaded!</h3><br>State on:\n%1").arg(loadDateTime.toString()));
-			msgDlg->setIconPixmap(EZX_ICON_Reader("Dialog_Complete"));
+			msgDlg->setText(QString(STR_LOAD_OK).arg(loadDateTime.toString()));
+			msgDlg->setIconPixmap(EZX_ICON_Reader(ICN_DLG_OK));
 			update();
 		} else {
-			msgDlg->setText(QString("<h3>Load Error!</h3><br>Cannot find save.dat file."));
-			msgDlg->setIconPixmap(EZX_ICON_Reader("Dialog_Error"));
+			msgDlg->setText(QString(STR_LOAD_ERR));
+			msgDlg->setIconPixmap(EZX_ICON_Reader(ICN_DLG_ERR));
 		}
 		msgDlg->exec();
 		delete msgDlg;
@@ -226,17 +250,14 @@ class MainWidget : public ZMainWidget {
 public slots:
 	void about() {
 		ZMessageBox *msgDlg = new EZX_MessageBox(this, "Close");
-		msgDlg->setText(QTextCodec::codecForName("UTF-8")->toUnicode("<h3>About 2048-EZX</h3><br><font size=\"2\">"
-			"2048 Game implementation especially for Motorola EZX platform.<br><br>Version: 1.0, %1<br>"
-			"© EXL (exl@bk.ru)<br>"
-			"<u>https://github.com/EXL/2048</u></font>").arg(__DATE__));
+		msgDlg->setText(QTextCodec::codecForName("UTF-8")->toUnicode(STR_ABOUT).arg(__DATE__));
 		const QString iconPath = QString("%1/ezx_dia_50x50.png").arg(QFileInfo(qApp->argv()[0]).dirPath(true));
 		if (QFile::exists(iconPath)) {
 			QPixmap icon(50, 50);
 			icon.load(iconPath);
 			msgDlg->setIconPixmap(icon);
 		} else
-			msgDlg->setIconPixmap(EZX_ICON_Reader("Dialog_Exclamatory_Mark"));
+			msgDlg->setIconPixmap(EZX_ICON_Reader(ICN_DLG_QUE));
 		msgDlg->exec();
 		delete msgDlg;
 	}
