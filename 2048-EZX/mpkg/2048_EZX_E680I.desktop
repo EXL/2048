@@ -2,7 +2,7 @@
 Name=2048
 Comment=Popular and simple puzzle game. Collect the "2048 tile" using arrow keys and touchscreen on game board.
 Version=1.0, 26-Nov-2021
-Exec=2048-EZX_E680
+Exec=2048-EZX_E680I
 Author=EXL
 Vendor=exlmoto.ru
 OsVersion=0.9

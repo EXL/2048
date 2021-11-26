@@ -9,11 +9,11 @@ The "2048" game for the EZX OS by Motorola.
 
 Motorola A1200, E6, E2: // TODO: Add normal link mirrored to forum.motofan.ru
 
-Motorola A780, E680: // TODO: Add normal link mirrored to forum.motofan.ru
+Motorola A780, E680i: // TODO: Add normal link mirrored to forum.motofan.ru
 
 Download MotoEZX Toolchains & SDK from [this link](http://www.mediafire.com/?meqnmgujgjq).
 
-Download E680 Toolchains & SDK from [this link](https://code.google.com/archive/p/moto-e680-develop/downloads).
+Download E680i Toolchains & SDK from [this link](https://code.google.com/archive/p/moto-e680-develop/downloads).
 
 ## Install Tools & Build
 
@@ -37,7 +37,7 @@ sudo mkdir -p /opt/toolchains/
 sudo tar -C /opt/toolchains/ -xzvf ~/Downloads/motoezx-toolchains*.tar.gz*
 ```
 
-Install MotoEZX Toolchains & SDK for A780, E680:
+Install MotoEZX Toolchains & SDK for A780, E680i:
 
 ```sh
 sudo mkdir -p /opt/toolchains/
@@ -65,9 +65,19 @@ make -f Makefile.e2
 make -f Makefile.e2 mpkg
 ```
 
-Build for A780, E680:
+Build for A780, E680i:
 
 ```sh
+cd ~/Projects/2048/2048-EZX/
+. /opt/toolchains/motoe680/setenv-e680.sh
+make -f Makefile.e680i clean
+make -f Makefile.e680i
+make -f Makefile.e680i mpkg
+```
+
+Build for A760, E680:
+
+```
 cd ~/Projects/2048/2048-EZX/
 . /opt/toolchains/motoe680/setenv-e680.sh
 make -f Makefile.e680 clean
@@ -132,7 +142,22 @@ make -f Makefile.e2 clean
 make -f Makefile.e2
 ```
 
-Generate project and building files for A780, E680:
+Generate project and building files for A780, E680i:
+
+```sh
+cd ~/Projects/2048/2048-EZX/
+mkdir -p 2048-EZX-E680I-Project
+cd 2048-EZX-E680I-Project/
+cp ../2048-EZX.cpp .
+cp ../../src/2048.* .
+. /opt/toolchains/motoe680/setenv-e680.sh
+progen CONFIG+=thread -o 2048-EZX_E680I.pro
+tmake 2048-EZX_E680I.pro -o Makefile.e680i
+make -f Makefile.e680i clean
+make -f Makefile.e680i
+```
+
+Generate project and building files for A760, E680:
 
 ```sh
 cd ~/Projects/2048/2048-EZX/
@@ -159,7 +184,7 @@ EZX OS screenshots from Motorola ROKR E6:
 
 ## Versions
 
-Any Linux distro with support for running 32-bit x86 applications and tools.
+Any Linux distro with support for running 32-bit x86 applications and tools required.
 
 Compiler for A1200, E6, E2:
 
@@ -171,7 +196,7 @@ arm-linux-gnu-g++ --version | head -1
 arm-linux-gnu-g++ (GCC) 3.3.6
 ```
 
-Compiler for A780, E680:
+Compiler for A780, E680i:
 
 ```sh
 arm-linux-gcc --version | head -1

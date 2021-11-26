@@ -17,8 +17,9 @@ To create correct Makefiles, the configuration file of the `tmake` utility needs
 10. [x] Create ReadMe.md files, screens, photos, etc.
 11. [x] Create PKG-package building script.
 12. [x] Add executable file/package information.
-13. [ ] TODO: Adapt code for Motorola E680 or Motorola E680i.
-14. [ ] TODO: Adapt code for Motorola ROKR E2.
+13. [ ] TODO: Adapt code for Motorola E680.
+14. [ ] TODO: Adapt code for Motorola E680i.
+15. [ ] TODO: Adapt code for Motorola ROKR E2.
 
 ## EZX SDK & Toolchain patches (A1200, E6)
 
@@ -263,7 +264,7 @@ cp /arm-eabi/lib/ezx-z6/include/ZTableView.h /opt/toolchains/motoezx/e2/ezx/incl
 cp /arm-eabi/lib/ezx-z6/include/ZBaseButton.h /opt/toolchains/motoezx/e2/ezx/include/
 ```
 
-## EZX SDK & Toolchain patches (A780, E680)
+## EZX SDK & Toolchain patches (A780, E680i)
 
 1. Edit `tmake.conf` file:
 
@@ -275,7 +276,7 @@ cp /arm-eabi/lib/ezx-z6/include/ZBaseButton.h /opt/toolchains/motoezx/e2/ezx/inc
  TMAKE_CC		= arm-linux-gcc
  TMAKE_DASHCROSS		= -arm
 -TMAKE_CFLAGS		= -pipe 
-+TMAKE_CFLAGS		= -pipe -DEZX_E680
++TMAKE_CFLAGS		= -pipe -DEZX_E680I
  TMAKE_CFLAGS_WARN_ON	= -Wall -W
  TMAKE_CFLAGS_WARN_OFF	=
  TMAKE_CFLAGS_RELEASE	= -O2
@@ -302,4 +303,44 @@ cp /arm-eabi/lib/ezx-z6/include/ZBaseButton.h /opt/toolchains/motoezx/e2/ezx/inc
 ```sh
 cd /opt/toolchains/motoe680/e680/include/ezx/
 ln -s zmessagebox.h ZMessageBox.h
+```
+
+## EZX SDK & Toolchain patches (A760, E680)
+
+1. Edit `ezxutilpushbutton.h` file:
+
+```diff
+--- motoe680-old/e680/include/ezx/ezxutilpushbutton.h	2005-11-22 05:37:22.000000000 +0600
++++ motoe680/e680/include/ezx/ezxutilpushbutton.h	2021-11-26 17:00:14.303070430 +0700
+@@ -43,6 +43,7 @@
+ class UTIL_PushButton : public QToolButton {
+ 	Q_OBJECT
+ public:
++	enum Flags { NoFlags = 0, JoinLeft = 1, JoinRight = 2, CSTStyle = 4, DialogCSTStyle = 8 };
+ 	virtual void drawButton(QPainter*);
+ 	virtual void paintEvent(QPaintEvent*);
+ 	virtual void setPalette(QPalette const&);
+```
+
+2. Edit `ezxutilgraph.h` file:
+
+```diff
+diff -ur /home/exl/Downloads/EZX_SDK_0.3/include/ezx/ezxutilgraph.h /opt/toolchains/motoe680/e680/include/ezx/ezxutilgraph.h
+--- motoe680-old/e680/include/ezx/ezxutilgraph.h	2005-11-22 05:36:44.000000000 +0600
++++ motoe680/e680/include/ezx/ezxutilgraph.h	2021-11-26 16:59:43.759738497 +0700
+@@ -33,6 +33,7 @@
+ #include <qpixmap.h>
+
+ class UTIL_Graph {
++public:
+ 	static void drawUnderLine(QPainter*, QColorGroup const&,
+ 				  QPoint const&, QPoint const&);
+ 	static void drawOutlineText(QPainter*, QColor, QColor, int, int,
+```
+
+3. Create symlink:
+
+```sh
+cd /opt/toolchains/motoe680/e680/include/ezx/
+ln -s zglobal.h ZGlobal.h
 ```
