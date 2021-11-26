@@ -294,6 +294,8 @@ public:
 		titleBar->setGeometry(ZGlobal::mapFromGlobalR(titleBar, ZGlobal::getStatusBarR()));
 		titleBar->setFixedSize(ZGlobal::getStatusBarR().size());
 		UTIL_Graph::makeTitle(titleBar, 0);
+		QFont titleFont("Sans", 18, QFont::Normal);
+		titleBar->setFont(titleFont);
 		titleBar->show();
 
 		QWidget *cst = (QWidget *) this->getCSTWidget();
@@ -316,6 +318,10 @@ public:
 		buttonMenu->setGeometry(ZGlobal::mapFromGlobalR(buttonMenu, ZGlobal::getCst3_3R()));
 		buttonMenu->show();
 		buttonMenu->setPopup(menu);
+
+		QRect widgetRect = ZGlobal::getContentR();
+		widgetRect.setY(widgetRect.y() + ZGlobal::getStatusBarR().height());
+		widget->setGeometry(ZGlobal::mapFromGlobalR(widget, widgetRect));
 #endif
 	}
 };
