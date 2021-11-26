@@ -3,13 +3,21 @@
 #include <ZApplication.h>
 #include <ZMainWidget.h>
 #include <ZMessageBox.h>
+#if defined(EZX_E680)
+#include <ZGlobal.h>
+#endif
 
 #include <ezxres.h>
+#if defined(EZX_E680)
+#include <ezxutilgraph.h>
+#include <ezxutilpushbutton.h>
+#elif defined(EZX_E680I) || defined(EZX_E6)
 #include <ezxutilcst.h>
+#endif
 
 #include <qfileinfo.h>
 #include <qlabel.h>
-#include <qpainter.h>        /* TODO: Add some information about E680 to ReadMe: building, etc. */
+#include <qpainter.h>
 #include <qtextcodec.h>
 #include <qtimer.h>
 
@@ -19,10 +27,10 @@ const int FIELD_OFFSET_SCALE = 32;
 const int TILE_SIZE          = 48;
 const int TILE_MARGIN        = 5;
 
-enum { M_SCREEN, M_SAVE, M_LOAD, M_RESET, M_SOUND, M_ROUNDED, M_RECTANGLE, M_TILES, M_ABOUT, M_EXIT };
+enum Menu { M_SCREEN, M_SAVE, M_LOAD, M_RESET, M_SOUND, M_ROUNDED, M_RECTANGLE, M_TILES, M_ABOUT, M_EXIT };
 
 static ZMessageBox *CreateMessageBox(QWidget *parent, const QString &buttonCaption) {
-#if defined(EZX_E680)
+#if defined(EZX_E680) || defined(EZX_E680I)
 	return new ZMessageBox(parent, NULL, QString::null, buttonCaption, QString::null, QString::null);
 #elif defined(EZX_E6)
 	return new ZMessageBox(parent, NULL, QString::null, buttonCaption);
@@ -30,12 +38,18 @@ static ZMessageBox *CreateMessageBox(QWidget *parent, const QString &buttonCapti
 }
 
 static QPixmap GetIcon(const char *iconName) {
-#if defined(EZX_E680)
+#if defined(EZX_E680) || defined(EZX_E680I)
 	return RES_ICON_Reader().getIcon(iconName);
 #elif defined(EZX_E6)
 	return RES_ICON_Reader().getIcon(iconName, true);
 #endif
 }
+
+#if defined(EZX_E680)
+#define EZX_MainWidget(titlebar, editmode, parent, name, flags) ZMainWidget(editmode, parent, name, flags)
+#elif defined(EZX_E680I) || defined(EZX_E6)
+#define EZX_MainWidget(titlebar, editmode, parent, name, flags) ZMainWidget(titlebar, editmode, parent, name, flags)
+#endif
 
 class Widget : public QWidget {
 	Q_OBJECT
@@ -253,17 +267,10 @@ public slots:
 		static_cast<ZApplication *>(qApp)->enableTouchSound(sound);
 	}
 public:
-	MainWidget() : ZMainWidget(" 2048-EZX | Score: 0 ", false, NULL, NULL, 0), sound(true) {
-		titleBar = static_cast<QLabel *>(getTitleBarWidget());
-
+	MainWidget() : EZX_MainWidget(" 2048-EZX | Score: 0 ", false, NULL, NULL, 0), sound(true) {
 		widget = new Widget(this, NULL);
 		connect(widget, SIGNAL(scoreChanged(int)), this, SLOT(setTitleScore(int)));
 		setContentWidget(widget);
-
-		UTIL_CST *cst = new UTIL_CST(this, "Reset");
-		setCSTWidget(cst);
-		connect(cst->getMidBtn(), SIGNAL(clicked()), widget, SLOT(reset()));
-		connect(cst->getRightBtn(), SIGNAL(clicked()), qApp, SLOT(quit()));
 
 		menu = new QPopupMenu(this);
 		menu->insertItem("Take Screenshot", widget, SLOT(screenShotTimer()), 0, M_SCREEN);
@@ -282,7 +289,44 @@ public:
 		menu->insertSeparator();
 		menu->insertItem("About...", this, SLOT(about()), 0, M_ABOUT);
 		menu->insertItem("Exit", qApp, SLOT(quit()), 0, M_EXIT);
+
+#if defined(EZX_E680I) || defined(EZX_E6)
+		titleBar = static_cast<QLabel *>(getTitleBarWidget());
+
+		UTIL_CST *cst = new UTIL_CST(this, "Reset");
+		connect(cst->getMidBtn(), SIGNAL(clicked()), widget, SLOT(reset()));
+		connect(cst->getRightBtn(), SIGNAL(clicked()), qApp, SLOT(quit()));
 		cst->getLeftBtn()->setPopup(menu);
+		setCSTWidget(cst);
+#elif defined(EZX_E680)
+		titleBar = new QLabel(" 2048-EZX | Score: 0 ", this);
+		titleBar->setIndent(5);
+		titleBar->setGeometry(ZGlobal::mapFromGlobalR(titleBar, ZGlobal::getStatusBarR()));
+		titleBar->setFixedSize(ZGlobal::getStatusBarR().size());
+		UTIL_Graph::makeTitle(titleBar, 0);
+		titleBar->show();
+
+		QWidget *cst = (QWidget *) this->getCSTWidget();
+
+		UTIL_PushButton *buttonExit = new UTIL_PushButton("CST_Exit", cst, 0, -1, -1);
+		buttonExit->setFlags(UTIL_PushButton::JoinRight);
+		buttonExit->setGeometry(ZGlobal::mapFromGlobalR(buttonExit, ZGlobal::getCst3_1R()));
+		buttonExit->show();
+		connect(buttonExit, SIGNAL(clicked()), this, SLOT(quit()));
+
+		UTIL_PushButton *buttonReset = new UTIL_PushButton(NULL, cst, 0, -1, -1);
+		buttonReset->setFlags(UTIL_PushButton::JoinRight | UTIL_PushButton::JoinLeft);
+		buttonReset->setGeometry(ZGlobal::mapFromGlobalR(buttonReset, ZGlobal::getCst3_2R()));
+		buttonReset->setText("Reset");
+		buttonReset->show();
+		connect(buttonReset, SIGNAL(clicked()), this, SLOT(reset()));
+
+		UTIL_PushButton *buttonMenu = new UTIL_PushButton("CST_Menu", cst, 0, -1, -1);
+		buttonMenu->setFlags(UTIL_PushButton::JoinLeft);
+		buttonMenu->setGeometry(ZGlobal::mapFromGlobalR(buttonMenu, ZGlobal::getCst3_3R()));
+		buttonMenu->show();
+		buttonMenu->setPopup(menu);
+#endif
 	}
 };
 
