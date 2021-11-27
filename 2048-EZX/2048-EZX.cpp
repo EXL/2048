@@ -325,14 +325,14 @@ public:
 		buttonExit->setFlags(UTIL_PushButton::JoinRight);
 		buttonExit->setGeometry(ZGlobal::mapFromGlobalR(buttonExit, ZGlobal::getCst3_1R()));
 		buttonExit->show();
-		connect(buttonExit, SIGNAL(clicked()), this, SLOT(quit()));
+		connect(buttonExit, SIGNAL(clicked()), qApp, SLOT(quit()));
 
 		UTIL_PushButton *buttonReset = new UTIL_PushButton(NULL, cst, 0, -1, -1);
 		buttonReset->setFlags(UTIL_PushButton::JoinRight | UTIL_PushButton::JoinLeft);
 		buttonReset->setGeometry(ZGlobal::mapFromGlobalR(buttonReset, ZGlobal::getCst3_2R()));
 		buttonReset->setText("Reset");
 		buttonReset->show();
-		connect(buttonReset, SIGNAL(clicked()), this, SLOT(reset()));
+		connect(buttonReset, SIGNAL(clicked()), widget, SLOT(reset()));
 
 		UTIL_PushButton *buttonMenu = new UTIL_PushButton("CST_Menu", cst, 0, -1, -1);
 		buttonMenu->setFlags(UTIL_PushButton::JoinLeft);
