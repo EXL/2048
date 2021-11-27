@@ -45,6 +45,10 @@
 #define ICN_DLG_OK "Dialog_Complete.g"
 #define ICN_DLG_ERR "Dialog_Error.g"
 #define ICN_DLG_QUE "Dialog_Question_Mark.g"
+#define KEY_RESET      Qt::Key_F7
+#define KEY_RESET_ADD  Qt::Key_F8
+#define KEY_LEFT       Qt::Key_Prior
+#define KEY_RIGHT      Qt::Key_Next
 #elif defined(EZX_E6)
 #define EZX_MessageBox(p, button) ZMessageBox(p, NULL, QString::null, button)
 #define EZX_ICON_Reader(iconName) RES_ICON_Reader().getIcon(iconName, true)
@@ -60,7 +64,13 @@
 #define ICN_DLG_OK "Dialog_Complete"
 #define ICN_DLG_ERR "Dialog_Error"
 #define ICN_DLG_QUE "Dialog_Exclamatory_Mark"
+#define KEY_RESET      Qt::Key_PageUp
+#define KEY_RESET_ADD  Qt::Key_PageDown
+#define KEY_LEFT       Qt::Key_Left
+#define KEY_RIGHT      Qt::Key_Right
 #endif
+#define KEY_UP         Qt::Key_Up
+#define KEY_DOWN       Qt::Key_Down
 
 const int FIELD_OFFSET_SCALE  = 32;
 const int TILE_SIZE           = 48;
@@ -113,7 +123,7 @@ signals:
 	void scoreChanged(int);
 public:
 	Widget(QWidget *parent = 0, const char *name = 0) : QWidget(parent, name, WRepaintNoErase | WResizeNoErase) {
-		e_init(Qt::Key_PageUp, Qt::Key_Left, Qt::Key_Right, Qt::Key_Up, Qt::Key_Down);
+		e_init(KEY_RESET, KEY_LEFT, KEY_RIGHT, KEY_UP, KEY_DOWN);
 		fb = NULL; score = 0; rounded = true;
 		font_large = new QFont("Sans", 20, QFont::Bold);
 		font_middle = new QFont("Sans", 18, QFont::Bold);
@@ -130,7 +140,7 @@ public:
 public slots:
 	void screenShotTimer() { QTimer::singleShot(500, this, SLOT(screenShot())); }
 	void reset() {
-		e_key(Qt::Key_PageUp);
+		e_key(KEY_RESET);
 		update();
 	}
 	void screenShot() {
@@ -198,8 +208,8 @@ protected:
 	virtual void keyPressEvent(QKeyEvent *keyEvent) {
 		QWidget::keyPressEvent(keyEvent);
 		int key = keyEvent->key();
-		if (key == Qt::Key_PageDown) // Vol "-" button.
-			e_key(Qt::Key_PageUp);   // Vol "+" button.
+		if (key == KEY_RESET_ADD) // Side button "A" or Vol "-" button and side button "B" or Vol "+" button.
+			e_key(KEY_RESET);
 		else
 			e_key(key);
 		repaint();
@@ -213,13 +223,13 @@ protected:
 		const QRect right(w4 * 3, h4, w4, h4 * 2);
 		const QPoint click(mouseEvent->pos().x(), mouseEvent->pos().y());
 		if (up.contains(click))
-			e_key(Qt::Key_Up);
+			e_key(KEY_UP);
 		else if (down.contains(click))
-			e_key(Qt::Key_Down);
+			e_key(KEY_DOWN);
 		else if (left.contains(click))
-			e_key(Qt::Key_Left);
+			e_key(KEY_LEFT);
 		else if (right.contains(click))
-			e_key(Qt::Key_Right);
+			e_key(KEY_RIGHT);
 		repaint();
 	}
 	virtual void paintEvent(QPaintEvent *) {
