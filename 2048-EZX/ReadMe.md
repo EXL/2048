@@ -3,13 +3,13 @@
 
 The "2048" game for the EZX OS by Motorola.
 
+*Motorola ROKR E6 Screenshots:*
+
 ![2048-EZX Motorola E6 Screenshot 1](../image/2048-EZX-E6-Screenshot1.png) ![2048-EZX Motorola E6 Screenshot 2](../image/2048-EZX-E6-Screenshot2.png) ![2048-EZX Motorola E6 Screenshot 3](../image/2048-EZX-E6-Screenshot3.png) ![2048-EZX Motorola E6 Screenshot 4](../image/2048-EZX-E6-Screenshot4.png)
 
-*Motorola ROKR E6 Screenshots*
+*Motorola E680 Screenshots:*
 
 ![2048-EZX Motorola E680 Screenshot 1](../image/2048-EZX-E680-Screenshot1.png) ![2048-EZX Motorola E680 Screenshot 2](../image/2048-EZX-E680-Screenshot2.png) ![2048-EZX Motorola E680 Screenshot 3](../image/2048-EZX-E680-Screenshot3.png) ![2048-EZX Motorola E680 Screenshot 4](../image/2048-EZX-E680-Screenshot4.png)
-
-*Motorola E680 Screenshots*
 
 ## Toolchain & SDK
 
@@ -202,7 +202,7 @@ Thanks to [Boxa](https://github.com/Voha888)'s help it was possible to make port
 
 ![Remote access to Motorola E680 through AnyDesk on Windows XP Screen](../image/AnyDesk-Remote-E680-Windows-XP-Screenshot.jpg)
 
-The emulation of button presses on the phone is done using my [pushkey](https://github.com/EXL/keyd/tree/master/pushkey) program, which I wrote for MotoMAGX in the first place. I used the [fb2bmp](https://github.com/iven/e680_fb2bmp) program of [iven](https://github.com/iven) to take screenshots from device. I was able to test and debug the project remotely on Motorola E680 thanks to this setup.
+The emulation of button presses on the phone is done using my [pushkey](https://github.com/EXL/keyd/tree/master/pushkey) program which I make for MotoMAGX in the first place. I used the [fb2bmp](https://github.com/iven/e680_fb2bmp) program by [iven](https://github.com/iven) to take screenshots from device. I was able to test and debug the project remotely on Motorola E680 thanks to this setup.
 
 ## Versions
 
@@ -233,3 +233,5 @@ Qt Embedded version 2.3.6/2.3.8
 ## Information
 
 Additional information about porting in [NotesMotoEZX.md](../doc/NotesMotoEZX.md) document file.
+
+Additional information about Motorola E680 in [NotesMotoEZX-E680.md](../doc/NotesMotoEZX-E680.md) document file.

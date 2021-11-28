@@ -17,7 +17,7 @@ To create correct Makefiles, the configuration file of the `tmake` utility needs
 10. [x] Create ReadMe.md files, screens, photos, etc.
 11. [x] Create PKG-package building script.
 12. [x] Add executable file/package information.
-13. [ ] TODO: Adapt code for Motorola E680.
+13. [x] Adapt code for Motorola E680.
 14. [ ] TODO: Adapt code for Motorola E680i.
 15. [ ] TODO: Adapt code for Motorola ROKR E2.
 
@@ -163,17 +163,17 @@ cp /opt/toolchains/motoezx/a1200/qt/include/qpainter.h /opt/toolchains/motoezx/e
 +    enum TextDirection { Auto, RTL, LTR };
 +    void	drawText( int x, int y, const QString &, int len = -1, TextDirection dir = Auto );
 +    void	drawText( const QPoint &, const QString &, int len = -1, TextDirection dir = Auto );
-     void	drawText( int x, int y, int w, int h, int flags,
- 			  const QString&, int len = -1, QRect *br=0,
- 			  char **internal=0 );
+	 void	drawText( int x, int y, int w, int h, int flags,
+			  const QString&, int len = -1, QRect *br=0,
+			  char **internal=0 );
 @@ -629,7 +630,7 @@
-     fillRect( r.x(), r.y(), r.width(), r.height(), backgroundColor() );
+	 fillRect( r.x(), r.y(), r.width(), r.height(), backgroundColor() );
  }
  
 -inline void QPainter::drawText( const QPoint &p, const QString &s, int len )
 +inline void QPainter::drawText( const QPoint &p, const QString &s, int len, TextDirection dir )
  {
-     drawText( p.x(), p.y(), s, len );
+	 drawText( p.x(), p.y(), s, len );
  }
 ```
 
@@ -208,9 +208,9 @@ cp /opt/toolchains/motoezx/a1200/qt/include/qfont.h /opt/toolchains/motoezx/e2/q
 --- motoezx-old/e2/qt/include/qfont.h	2009-11-10 04:00:21.000000000 +0600
 +++ motoezx/e2/qt/include/qfont.h	2021-11-23 11:29:29.231545206 +0700
 @@ -116,10 +116,11 @@
- 		     Bold  = 75, Black	= 87 };
-     QFont();					// default font
-     
+			 Bold  = 75, Black	= 87 };
+	 QFont();					// default font
+
 -    //QFont( const QString &family, int pointSize = 12,
 -	//   int weight = Normal, bool italic = FALSE );
 -    QFont( const QString &family, int pointSize = 12,
@@ -221,8 +221,8 @@ cp /opt/toolchains/motoezx/a1200/qt/include/qfont.h /opt/toolchains/motoezx/e2/q
 +    //    int weight = Normal, bool italic = FALSE, bool b = FALSE ); //fox add: bool b = FALSE
 +    // Fix by EXL: Revert this ^
  
-     QFont( const QString &family, int pointSize,
- 	   int weight, bool italic, CharSet charSet );
+	 QFont( const QString &family, int pointSize,
+	   int weight, bool italic, CharSet charSet );
 ```
 
 4. Copy all modern header files from Z6 directory of MotoMAGX EZX Toolchain to E2 directory:
@@ -314,12 +314,12 @@ ln -s zmessagebox.h ZMessageBox.h
 +++ motoe680/e680/include/ezx/ezxutilpushbutton.h	2021-11-26 17:00:14.303070430 +0700
 @@ -43,6 +43,7 @@
  class UTIL_PushButton : public QToolButton {
- 	Q_OBJECT
+	Q_OBJECT
  public:
 +	enum Flags { NoFlags = 0, JoinLeft = 1, JoinRight = 2, CSTStyle = 4, DialogCSTStyle = 8 };
- 	virtual void drawButton(QPainter*);
- 	virtual void paintEvent(QPaintEvent*);
- 	virtual void setPalette(QPalette const&);
+	virtual void drawButton(QPainter*);
+	virtual void paintEvent(QPaintEvent*);
+	virtual void setPalette(QPalette const&);
 ```
 
 2. Edit `ezxutilgraph.h` file:
@@ -333,9 +333,9 @@ diff -ur /home/exl/Downloads/EZX_SDK_0.3/include/ezx/ezxutilgraph.h /opt/toolcha
 
  class UTIL_Graph {
 +public:
- 	static void drawUnderLine(QPainter*, QColorGroup const&,
- 				  QPoint const&, QPoint const&);
- 	static void drawOutlineText(QPainter*, QColor, QColor, int, int,
+	static void drawUnderLine(QPainter*, QColorGroup const&,
+				  QPoint const&, QPoint const&);
+	static void drawOutlineText(QPainter*, QColor, QColor, int, int,
 ```
 
 3. Create symlink:
