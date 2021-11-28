@@ -232,6 +232,5 @@ Qt Embedded version 2.3.6/2.3.8
 
 ## Information
 
-Additional information about porting in [NotesMotoEZX.md](../doc/NotesMotoEZX.md) document file.
-
-Additional information about Motorola E680 in [NotesMotoEZX-E680.md](../doc/NotesMotoEZX-E680.md) document file.
+* [NotesMotoEZX.md](../doc/NotesMotoEZX.md) document contains additional information about porting and SDK patches.
+* [NotesMotoEZX-E680.md](../doc/NotesMotoEZX-E680.md) document contains additional information about Motorola E680.
