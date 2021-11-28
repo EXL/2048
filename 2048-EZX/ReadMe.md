@@ -1,9 +1,15 @@
 2048-EZX
 ========
 
+The "2048" game for the EZX OS by Motorola.
+
 ![2048-EZX Motorola E6 Screenshot 1](../image/2048-EZX-E6-Screenshot1.png) ![2048-EZX Motorola E6 Screenshot 2](../image/2048-EZX-E6-Screenshot2.png) ![2048-EZX Motorola E6 Screenshot 3](../image/2048-EZX-E6-Screenshot3.png) ![2048-EZX Motorola E6 Screenshot 4](../image/2048-EZX-E6-Screenshot4.png)
 
-The "2048" game for the EZX OS by Motorola.
+*Motorola ROKR E6 Screenshots*
+
+![2048-EZX Motorola E680 Screenshot 1](../image/2048-EZX-E680-Screenshot1.png) ![2048-EZX Motorola E680 Screenshot 2](../image/2048-EZX-E680-Screenshot2.png) ![2048-EZX Motorola E680 Screenshot 3](../image/2048-EZX-E680-Screenshot3.png) ![2048-EZX Motorola E680 Screenshot 4](../image/2048-EZX-E680-Screenshot4.png)
+
+*Motorola E680 Screenshots*
 
 ## Toolchain & SDK
 
@@ -176,11 +182,27 @@ make -f Makefile.e680
 
 EZX OS screenshots from Motorola ROKR E6:
 
-![EZX Motorola E6 Screenshot 1 Main Desktop Screen](../image/EZX-Screenshot1.png) ![EZX Motorola E6 Screenshot 2 Main Menu](../image/EZX-Screenshot2.png) ![EZX Motorola E6 Screenshot 3 SysInfo Ultimate Application](../image/EZX-Screenshot3.png) ![EZX Motorola E6 Screenshot 4 EKonsole Application](../image/EZX-Screenshot4.png)
+![EZX Motorola E6 Screenshot 1 Main Desktop Screen](../image/EZX-E6-Screenshot1.png) ![EZX Motorola E6 Screenshot 2 Main Menu](../image/EZX-E6-Screenshot2.png) ![EZX Motorola E6 Screenshot 3 SysInfo Ultimate Application](../image/EZX-E6-Screenshot3.png) ![EZX Motorola E6 Screenshot 4 EKonsole Application](../image/EZX-E6-Screenshot4.png)
+
+EZX OS screenshots from Motorola E680:
+
+![EZX Motorola E680 Screenshot 1 Main Desktop Screen](../image/EZX-E680-Screenshot1.png) ![EZX Motorola E680 Screenshot 2 Main Menu 1](../image/EZX-E680-Screenshot2.png) ![EZX Motorola E680 Screenshot 3 Main Menu 2](../image/EZX-E680-Screenshot3.png) ![EZX Motorola E680 Screenshot 4 Qonsole Application](../image/EZX-E680-Screenshot4.png)
 
 2048-EZX running on Motorola ROKR E6:
 
 ![2048-EZX application running on Motorola E6 Photo](../image/2048-EZX-E6-Photo.jpg)
+
+2048-EZX running on Motorola E680 (thanks to [Boxa](https://github.com/Voha888) for photo):
+
+![2048-EZX application running on Motorola E680 Photo](../image/2048-EZX-E680-Photo.jpg)
+
+## Remote development and testing
+
+Thanks to [Boxa](https://github.com/Voha888)'s help it was possible to make port of "2048" game to the Motorola E680 that he had. Boxa set up a remote session for me via AnyDesk and a webcam on a computer with Windows XP, since this operating system was required to be able to use Telnet & Samba on the Motorola E680.
+
+![Remote access to Motorola E680 through AnyDesk on Windows XP Screen](../image/AnyDesk-Remote-E680-Windows-XP-Screenshot.jpg)
+
+The emulation of button presses on the phone is done using my [pushkey](https://github.com/EXL/keyd/tree/master/pushkey) program, which I wrote for MotoMAGX in the first place. I used the [fb2bmp](https://github.com/iven/e680_fb2bmp) program of [iven](https://github.com/iven) to take screenshots from device. I was able to test and debug the project remotely on Motorola E680 thanks to this setup.
 
 ## Versions
 
