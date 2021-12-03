@@ -18,7 +18,7 @@ To create correct Makefiles, the configuration file of the `tmake` utility needs
 11. [x] Create PKG-package building script.
 12. [x] Add executable file/package information.
 13. [x] Adapt code for Motorola E680.
-14. [ ] TODO: Adapt code for Motorola E680i.
+14. [x] Adapt code for Motorola E680i.
 15. [ ] TODO: Adapt code for Motorola ROKR E2.
 
 ## EZX SDK & Toolchain patches (A1200, E6)

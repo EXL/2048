@@ -1,19 +1,27 @@
-Some information about Motorola E680
-====================================
+Some information about Motorola E680i
+=====================================
 
 See additional information in [doc/NotesMotoEZX.md](NotesMotoEZX.md) and [2048-EZX/ReadMe.md](../2048-EZX/ReadMe.md) document files.
 
 ## Telnet & Samba
 
-Install [Belcarra USBLAN for Windows]() drivers before. To activate Telnet and Samba on the Motorola E680, connect it via USB in modem mode, determine modem COM port and send `AT+MODE=99` command to modem with using [PuTTY](https://www.putty.org/) or a similar program. Now you can use Samba file transfer on `\\169.254.142.2\` path in Explorer and can connect to the Motorola E680 via `telnet 169.254.142.2` command.
+Install [Motorola USB Driver 3.7.0]() drivers before. To activate Telnet and Samba on the Motorola E680i connect device via USB in modem mode then use LinLoader application and `usbnet.lin` shell script:
 
-// TODO: Add proper link to the Belcarra USBLAN for Windows.
+```sh
+#!/bin/bash
+
+echo MotNet > /proc/motusbd
+```
+
+Now you can use Samba file transfer on `\\169.254.142.2\` path in Explorer and can connect to the Motorola E680 via `telnet 169.254.142.2` command with using [PuTTY](https://www.putty.org/) or a similar program
+
+// TODO: Add proper link to the Motorola USB Driver 3.7.0 for Windows and maybe some another links.
 
 ## System information
 
 ```sh
 # cat /etc/ap_version.txt
-R51_G_0F.51.A1P
+E680I_G_0D.C5.A4P
 
 # mount
 rootfs on / type rootfs (rw)
@@ -57,23 +65,23 @@ Serial          : 0000000000000000
 
 # cat /proc/meminfo
         total:    used:    free:  shared: buffers:  cached:
-Mem:  47734784 46616576  1118208        0  1970176 27783168
+Mem:  47722496 45809664  1912832        0   466944 23162880
 Swap:        0        0        0
-MemTotal:        46616 kB
-MemFree:          1092 kB
+MemTotal:        46604 kB
+MemFree:          1868 kB
 MemShared:           0 kB
-Buffers:          1924 kB
-Cached:          27132 kB
+Buffers:           456 kB
+Cached:          22620 kB
 SwapCached:          0 kB
-Active:           9848 kB
-Inactive:        30636 kB
+Active:          17636 kB
+Inactive:        18796 kB
 HighTotal:           0 kB
 HighFree:            0 kB
-LowTotal:        46616 kB
-LowFree:          1092 kB
+LowTotal:        46604 kB
+LowFree:          1868 kB
 SwapTotal:           0 kB
 SwapFree:            0 kB
-Committed_AS:    55500 kB
+Committed_AS:    56704 kB
 
 # cat /proc/version
 Linux version 2.4.20_mvlcee30-mainstone (BJDC@LINUX) (GCC 3.x for XSCALE) #1 Jan 1,2003
@@ -87,11 +95,11 @@ Linux version 2.4.20_mvlcee30-mainstone (BJDC@LINUX) (GCC 3.x for XSCALE) #1 Jan
 # cat /proc/iomem
 08000000-08007fff : TrueFFS Device
 a0000000-a0ffffff : System RAM
-  a001b000-a017ea2b : Kernel code
-  a017ea2c-a0204703 : Kernel data
+  a001b000-a018069b : Kernel code
+  a018069c-a0207063 : Kernel data
 a1000000-a1ffffff : System RAM
 ac000000-acffffff : System RAM
-d12d2000-d12d2003 : midi
+d1231000-d1231003 : midi
 
 # cat /proc/mtd
 dev:    size   erasesize  name
