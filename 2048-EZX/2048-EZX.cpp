@@ -25,12 +25,19 @@
 
 #if defined(EZX_E680)
 #define EZX_MainWidget(titlebar, editmode, parent, name, flags) ZMainWidget(editmode, parent, name, flags)
-#elif defined(EZX_E680I) || defined(EZX_E6)
-#define EZX_MainWidget(titlebar, editmode, parent, name, flags) ZMainWidget(titlebar, editmode, parent, name, flags)
-#endif
-#if defined(EZX_E680) || defined(EZX_E680I)
 #define EZX_MessageBox(p, button) ZMessageBox(p, NULL, QString::null, button, QString::null, QString::null)
 #define EZX_ICON_Reader(iconName) RES_ICON_Reader().getIcon(iconName)
+#elif defined(EZX_E680I)
+#define EZX_MainWidget(titlebar, editmode, parent, name, flags) ZMainWidget(titlebar, editmode, parent, name, flags)
+#define EZX_MessageBox(p, button) ZMessageBox(p, NULL, QString::null, button, QString::null, QString::null)
+#define EZX_ICON_Reader(iconName) RES_ICON_Reader().getIcon(iconName)
+#elif defined(EZX_E6)
+#define EZX_MainWidget(titlebar, editmode, parent, name, flags) ZMainWidget(titlebar, editmode, parent, name, flags)
+#define EZX_MessageBox(p, button) ZMessageBox(p, NULL, QString::null, button)
+#define EZX_ICON_Reader(iconName) RES_ICON_Reader().getIcon(iconName, true)
+#endif
+
+#if defined(EZX_E680) || defined(EZX_E680I)
 #define STR_ABOUT "<font size=\"2\"><b>About 2048-EZX</b></font><br><br><font size=\"1\">" \
 	"2048 Game implementation especially for Motorola EZX platform.<br><br>Version: 1.0, %1<br>© EXL (exl@bk.ru)<br>" \
 	"<u>https://github.com/EXL/2048</u></font>"
@@ -42,16 +49,7 @@
 #define STR_LOAD_OK "<font size=\"2\"><b>Game Loaded!</b></font><br><br><font size=\"1\">State on:<br>%1</font>"
 #define STR_LOAD_ERR "<font size=\"2\"><b>Load Error!</b></font><br><br><font size=\"1\">" \
 	"Cannot find save.dat file.</font>"
-#define ICN_DLG_OK "Dialog_Complete.g"
-#define ICN_DLG_ERR "Dialog_Error.g"
-#define ICN_DLG_QUE "Dialog_Question_Mark.g"
-#define KEY_RESET      Qt::Key_F7
-#define KEY_RESET_ADD  Qt::Key_F8
-#define KEY_LEFT       Qt::Key_Prior
-#define KEY_RIGHT      Qt::Key_Next
 #elif defined(EZX_E6)
-#define EZX_MessageBox(p, button) ZMessageBox(p, NULL, QString::null, button)
-#define EZX_ICON_Reader(iconName) RES_ICON_Reader().getIcon(iconName, true)
 #define STR_ABOUT "<h3>About 2048-EZX</h3><br><font size=\"2\">" \
 	"2048 Game implementation especially for Motorola EZX platform.<br><br>Version: 1.0, %1<br>© EXL (exl@bk.ru)<br>" \
 	"<u>https://github.com/EXL/2048</u></font>"
@@ -61,9 +59,29 @@
 #define STR_SAV_ERR "<h3>Save Error!</h3><br>Cannot create save.dat file."
 #define STR_LOAD_OK "<h3>Game Loaded!</h3><br>State on:\n%1"
 #define STR_LOAD_ERR "<h3>Load Error!</h3><br>Cannot find save.dat file."
+#endif
+
+#if defined(EZX_E680) || defined(EZX_E680I)
+#define ICN_DLG_OK "Dialog_Complete.g"
+#define ICN_DLG_ERR "Dialog_Error.g"
+#define ICN_DLG_QUE "Dialog_Question_Mark.g"
+#elif defined(EZX_E6)
 #define ICN_DLG_OK "Dialog_Complete"
 #define ICN_DLG_ERR "Dialog_Error"
 #define ICN_DLG_QUE "Dialog_Exclamatory_Mark"
+#endif
+
+#if defined(EZX_E680)
+#define KEY_RESET      Qt::Key_F7
+#define KEY_RESET_ADD  Qt::Key_F8
+#define KEY_LEFT       Qt::Key_Prior
+#define KEY_RIGHT      Qt::Key_Next
+#elif defined(EZX_E680I)
+#define KEY_RESET      Qt::Key_F11
+#define KEY_RESET_ADD  Qt::Key_F12
+#define KEY_LEFT       Qt::Key_Left
+#define KEY_RIGHT      Qt::Key_Right
+#elif defined(EZX_E6)
 #define KEY_RESET      Qt::Key_PageUp
 #define KEY_RESET_ADD  Qt::Key_PageDown
 #define KEY_LEFT       Qt::Key_Left
