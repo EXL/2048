@@ -3,12 +3,12 @@
 #include <ZApplication.h>
 #include <ZMainWidget.h>
 #include <ZMessageBox.h>
-#if defined(EZX_E680)
+#if defined(EZX_A760) || defined(EZX_E680)
 #include <ZGlobal.h>
 #endif
 
 #include <ezxres.h>
-#if defined(EZX_E680)
+#if defined(EZX_A760) || defined(EZX_E680)
 #include <ezxutilgraph.h>
 #include <ezxutilpushbutton.h>
 #elif defined(EZX_E680I) || defined(EZX_E6)
@@ -23,7 +23,7 @@
 
 #include <ctime>
 
-#if defined(EZX_E680)
+#if defined(EZX_A760) || defined(EZX_E680)
 #define EZX_MainWidget(titlebar, editmode, parent, name, flags) ZMainWidget(editmode, parent, name, flags)
 #define EZX_MessageBox(p, button) ZMessageBox(p, NULL, QString::null, button, QString::null, QString::null)
 #define EZX_ICON_Reader(iconName) RES_ICON_Reader().getIcon(iconName)
@@ -37,7 +37,7 @@
 #define EZX_ICON_Reader(iconName) RES_ICON_Reader().getIcon(iconName, true)
 #endif
 
-#if defined(EZX_E680) || defined(EZX_E680I)
+#if defined(EZX_A760) || defined(EZX_E680) || defined(EZX_E680I)
 #define STR_ABOUT "<font size=\"2\"><b>About 2048-EZX</b></font><br><br><font size=\"1\">" \
 	"2048 Game implementation especially for Motorola EZX platform.<br><br>Version: 1.0, %1<br>© EXL (exl@bk.ru)<br>" \
 	"<u>https://github.com/EXL/2048</u></font>"
@@ -61,7 +61,7 @@
 #define STR_LOAD_ERR "<h3>Load Error!</h3><br>Cannot find save.dat file."
 #endif
 
-#if defined(EZX_E680) || defined(EZX_E680I)
+#if defined(EZX_A760) || defined(EZX_E680) || defined(EZX_E680I)
 #define ICN_DLG_OK "Dialog_Complete.g"
 #define ICN_DLG_ERR "Dialog_Error.g"
 #define ICN_DLG_QUE "Dialog_Question_Mark.g"
@@ -71,7 +71,7 @@
 #define ICN_DLG_QUE "Dialog_Exclamatory_Mark"
 #endif
 
-#if defined(EZX_E680)
+#if defined(EZX_A760) || defined(EZX_E680)
 #define KEY_RESET      Qt::Key_F7
 #define KEY_RESET_ADD  Qt::Key_F8
 #define KEY_LEFT       Qt::Key_Prior
