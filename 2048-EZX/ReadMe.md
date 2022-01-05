@@ -7,13 +7,13 @@ The "2048" game for the EZX OS by Motorola.
 
 ![2048-EZX Motorola E6 Screenshot 1](../image/2048-EZX-E6-Screenshot1.png) ![2048-EZX Motorola E6 Screenshot 2](../image/2048-EZX-E6-Screenshot2.png) ![2048-EZX Motorola E6 Screenshot 3](../image/2048-EZX-E6-Screenshot3.png) ![2048-EZX Motorola E6 Screenshot 4](../image/2048-EZX-E6-Screenshot4.png)
 
-*Motorola E680 Screenshots:*
-
-![2048-EZX Motorola E680 Screenshot 1](../image/2048-EZX-E680-Screenshot1.png) ![2048-EZX Motorola E680 Screenshot 2](../image/2048-EZX-E680-Screenshot2.png) ![2048-EZX Motorola E680 Screenshot 3](../image/2048-EZX-E680-Screenshot3.png) ![2048-EZX Motorola E680 Screenshot 4](../image/2048-EZX-E680-Screenshot4.png)
-
 *Motorola E680i Screenshots:*
 
 ![2048-EZX Motorola E680i Screenshot 1](../image/2048-EZX-E680i-Screenshot1.png) ![2048-EZX Motorola E680i Screenshot 2](../image/2048-EZX-E680i-Screenshot2.png) ![2048-EZX Motorola E680i Screenshot 3](../image/2048-EZX-E680i-Screenshot3.png) ![2048-EZX Motorola E680i Screenshot 4](../image/2048-EZX-E680i-Screenshot4.png)
+
+*Motorola E680 Screenshots:*
+
+![2048-EZX Motorola E680 Screenshot 1](../image/2048-EZX-E680-Screenshot1.png) ![2048-EZX Motorola E680 Screenshot 2](../image/2048-EZX-E680-Screenshot2.png) ![2048-EZX Motorola E680 Screenshot 3](../image/2048-EZX-E680-Screenshot3.png) ![2048-EZX Motorola E680 Screenshot 4](../image/2048-EZX-E680-Screenshot4.png)
 
 ## Toolchain & SDK
 
@@ -188,13 +188,13 @@ EZX OS screenshots from Motorola ROKR E6:
 
 ![EZX Motorola E6 Screenshot 1 Main Desktop Screen](../image/EZX-E6-Screenshot1.png) ![EZX Motorola E6 Screenshot 2 Main Menu](../image/EZX-E6-Screenshot2.png) ![EZX Motorola E6 Screenshot 3 SysInfo Ultimate Application](../image/EZX-E6-Screenshot3.png) ![EZX Motorola E6 Screenshot 4 eKonsole Application](../image/EZX-E6-Screenshot4.png)
 
-EZX OS screenshots from Motorola E680:
-
-![EZX Motorola E680 Screenshot 1 Main Desktop Screen](../image/EZX-E680-Screenshot1.png) ![EZX Motorola E680 Screenshot 2 Main Menu 1](../image/EZX-E680-Screenshot2.png) ![EZX Motorola E680 Screenshot 3 Main Menu 2](../image/EZX-E680-Screenshot3.png) ![EZX Motorola E680 Screenshot 4 Qonsole Application](../image/EZX-E680-Screenshot4.png)
-
 EZX OS screenshots from Motorola E680i:
 
 ![EZX Motorola E680i Screenshot 1 Main Desktop Screen](../image/EZX-E680i-Screenshot1.png) ![EZX Motorola E680i Screenshot 2 Main Menu 1](../image/EZX-E680i-Screenshot2.png) ![EZX Motorola E680i Screenshot 3 Main Menu 2](../image/EZX-E680i-Screenshot3.png) ![EZX Motorola E680 Screenshot 4 eKonsole Application](../image/EZX-E680i-Screenshot4.png)
+
+EZX OS screenshots from Motorola E680:
+
+![EZX Motorola E680 Screenshot 1 Main Desktop Screen](../image/EZX-E680-Screenshot1.png) ![EZX Motorola E680 Screenshot 2 Main Menu 1](../image/EZX-E680-Screenshot2.png) ![EZX Motorola E680 Screenshot 3 Main Menu 2](../image/EZX-E680-Screenshot3.png) ![EZX Motorola E680 Screenshot 4 Qonsole Application](../image/EZX-E680-Screenshot4.png)
 
 2048-EZX running on Motorola ROKR E6:
 
