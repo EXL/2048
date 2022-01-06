@@ -11,8 +11,8 @@
 CC       = arm-linux-gcc
 CXX      = arm-linux-g++
 STRIP    = arm-linux-strip
-CFLAGS   = -pipe -Wall -W -O2 -D_REENTRANT -DQT_THREAD_SUPPORT -DNO_DEBUG -DEZX_A760
-CXXFLAGS = -pipe -DQWS -fno-exceptions -fno-rtti -Wall -W -O2 -D_REENTRANT -DQT_THREAD_SUPPORT -DNO_DEBUG -DEZX_A760
+CFLAGS   = -pipe -Wall -W -march=armv5te -mtune=xscale -D_REENTRANT -DQT_THREAD_SUPPORT -DEZX_A760
+CXXFLAGS = -pipe -DQWS -fno-exceptions -fno-rtti -Wall -W -march=armv5te -mtune=xscale -D_REENTRANT -DQT_THREAD_SUPPORT -DEZX_A760
 INCPATH  = -I../src -I$(QTDIR)/include/ezx -I$(QTDIR)/include/qt
 LINK     = arm-linux-g++
 LFLAGS   = -Wl,-rpath-link,$(QTDIR)/lib
@@ -39,7 +39,7 @@ all: $(TARGET)
 
 $(TARGET): $(OBJECTS) $(OBJMOC)
 	$(LINK) $(LFLAGS) -o $(TARGET) $(OBJECTS) $(OBJMOC) $(LIBS)
-	$(STRIP) -s $(TARGET)
+	# $(STRIP) -s $(TARGET)
 
 mpkg: $(TARGET)
 	-mkdir $(APPDIR)
