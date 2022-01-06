@@ -141,14 +141,22 @@ signals:
 	void scoreChanged(int);
 public:
 	Widget(QWidget *parent = 0, const char *name = 0) : QWidget(parent, name, WRepaintNoErase | WResizeNoErase) {
+		fprintf(stderr, "Widget 1\n");
 		e_init(KEY_RESET, KEY_LEFT, KEY_RIGHT, KEY_UP, KEY_DOWN);
+		fprintf(stderr, "Widget 2\n");
 		fb = NULL; score = 0; rounded = true;
 		font_large = new QFont("Sans", 20, QFont::Bold);
+		fprintf(stderr, "Widget 3\n");
 		font_middle = new QFont("Sans", 18, QFont::Bold);
+		fprintf(stderr, "Widget 4\n");
 		font_small = new QFont("Sans", 16, QFont::Bold);
+		fprintf(stderr, "Widget 5\n");
 		QPixmap::setDefaultOptimization(QPixmap::NormalOptim);
+		fprintf(stderr, "Widget 6\n");
 		setBackgroundMode(NoBackground);
+		fprintf(stderr, "Widget 7\n");
 		setFocusPolicy(QWidget::StrongFocus);
+		fprintf(stderr, "Widget 8\n");
 	}
 	~Widget() { delete fb; delete font_large; delete font_middle; delete font_small; }
 	void setRounded(bool aRounded) {
@@ -307,25 +315,34 @@ public slots:
 	}
 public:
 	MainWidget() : EZX_MainWidget(" 2048-EZX | Score: 0 ", false, NULL, NULL, 0), sound(true) {
+		fprintf(stderr, "EZX_MainWidget 1\n");
 		widget = new Widget(this, NULL);
+		fprintf(stderr, "EZX_MainWidget 2\n");
 		connect(widget, SIGNAL(scoreChanged(int)), this, SLOT(setTitleScore(int)));
+		fprintf(stderr, "EZX_MainWidget 3\n");
 		setContentWidget(widget);
+		fprintf(stderr, "EZX_MainWidget 4\n");
 
 		menu = new QPopupMenu(this);
+		fprintf(stderr, "EZX_MainWidget 5\n");
 		menu->insertItem("Take Screenshot", widget, SLOT(screenShotTimer()), 0, M_SCREEN);
 		menu->insertSeparator();
+		fprintf(stderr, "EZX_MainWidget 6\n");
 		menu->insertItem("Save Game", widget, SLOT(save()), 0, M_SAVE);
 		menu->insertItem("Load Game", widget, SLOT(load()), 0, M_LOAD);
 		menu->insertItem("Reset Game", widget, SLOT(reset()), 0, M_RESET);
 		menu->insertSeparator();
+		fprintf(stderr, "EZX_MainWidget 7\n");
 		menu->insertItem("Touch Sounds", this, SLOT(soundOnOff()), 0, M_SOUND);
 		menu->setItemChecked(M_SOUND, true);
 		tileMenu = new QPopupMenu(this);
+		fprintf(stderr, "EZX_MainWidget 8\n");
 		tileMenu->insertItem("Rounded", this, SLOT(roundedOn()), 0, M_ROUNDED);
 		tileMenu->insertItem("Rectangle", this, SLOT(roundedOff()), 0, M_RECTANGLE);
 		tileMenu->setItemChecked(M_ROUNDED, true);
 		menu->insertItem("Tiles", tileMenu, 0, M_TILES);
 		menu->insertSeparator();
+		fprintf(stderr, "EZX_MainWidget 9\n");
 		menu->insertItem("About...", this, SLOT(about()), 0, M_ABOUT);
 		menu->insertItem("Exit", qApp, SLOT(quit()), 0, M_EXIT);
 
@@ -376,9 +393,13 @@ public:
 };
 
 int main(int argc, char *argv[]) {
+	fprintf(stderr, "main 1\n");
 	ZApplication application(argc, argv);
+	fprintf(stderr, "main 2\n");
 	MainWidget mainWidget;
+	fprintf(stderr, "main 3\n");
 	application.showMainWidget(&mainWidget);
+	fprintf(stderr, "main 4\n");
 	return application.exec();
 }
 
