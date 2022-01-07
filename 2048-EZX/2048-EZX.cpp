@@ -20,6 +20,7 @@
 #include <qpainter.h>
 #include <qtextcodec.h>
 #include <qtimer.h>
+#include <qpopupmenu.h>
 
 #include <ctime>
 
@@ -93,6 +94,10 @@
 const int FIELD_OFFSET_SCALE  = 32;
 const int TILE_SIZE           = 48;
 const int TILE_MARGIN         = 5;
+
+extern "C" {
+	void _ZN9QMenuData10insertItemERK7QStringii(QPopupMenu *, QString const&, int, int);
+}
 
 class Widget : public QWidget {
 	Q_OBJECT
@@ -234,6 +239,7 @@ protected:
 	virtual void keyPressEvent(QKeyEvent *keyEvent) {
 		QWidget::keyPressEvent(keyEvent);
 		int key = keyEvent->key();
+		fprintf(stderr, "Keycode: %d\n", key);
 		if (key == KEY_RESET_ADD) // Side button "A" or Vol "-" button and side button "B" or Vol "+" button.
 			e_key(KEY_RESET);
 		else
@@ -280,7 +286,8 @@ class MainWidget : public ZMainWidget {
 	enum Menu { M_SCREEN, M_SAVE, M_LOAD, M_RESET, M_SOUND, M_ROUNDED, M_RECTANGLE, M_TILES, M_ABOUT, M_EXIT };
 	Widget *widget;
 	QLabel *titleBar;
-	QPopupMenu *menu, *tileMenu;
+	QPopupMenu *mainMenu;
+	QPopupMenu *tileMenu;
 	bool sound;
 
 public slots:
@@ -310,8 +317,11 @@ public slots:
 	}
 	void soundOnOff() {
 		sound = !sound;
-		menu->setItemChecked(M_SOUND, sound);
+		mainMenu->setItemChecked(M_SOUND, sound);
 		static_cast<ZApplication *>(qApp)->enableTouchSound(sound);
+	}
+	void menuActivated(int id) {
+		fprintf(stderr, "====> Menu Item: %d\n", id);
 	}
 public:
 	MainWidget() : EZX_MainWidget(" 2048-EZX | Score: 0 ", false, NULL, NULL, 0), sound(true) {
@@ -323,28 +333,70 @@ public:
 		setContentWidget(widget);
 		fprintf(stderr, "EZX_MainWidget 4\n");
 
-		menu = new QPopupMenu(this);
+#if !defined(EZX_A760)
+		mainMenu = new QPopupMenu(this);
 		fprintf(stderr, "EZX_MainWidget 5\n");
-		menu->insertItem("Take Screenshot", widget, SLOT(screenShotTimer()), 0, M_SCREEN);
-		menu->insertSeparator();
+		mainMenu->insertItem("Take Screenshot", widget, SLOT(screenShotTimer()), 0, M_SCREEN);
+		fprintf(stderr, "EZX_MainWidget 51\n");
+		mainMenu->insertSeparator();
 		fprintf(stderr, "EZX_MainWidget 6\n");
-		menu->insertItem("Save Game", widget, SLOT(save()), 0, M_SAVE);
-		menu->insertItem("Load Game", widget, SLOT(load()), 0, M_LOAD);
-		menu->insertItem("Reset Game", widget, SLOT(reset()), 0, M_RESET);
-		menu->insertSeparator();
+		mainMenu->insertItem("Save Game", widget, SLOT(save()), 0, M_SAVE);
+		mainMenu->insertItem("Load Game", widget, SLOT(load()), 0, M_LOAD);
+		mainMenu->insertItem("Reset Game", widget, SLOT(reset()), 0, M_RESET);
+		mainMenu->insertSeparator();
 		fprintf(stderr, "EZX_MainWidget 7\n");
-		menu->insertItem("Touch Sounds", this, SLOT(soundOnOff()), 0, M_SOUND);
-		menu->setItemChecked(M_SOUND, true);
+		mainMenu->insertItem("Touch Sounds", this, SLOT(soundOnOff()), 0, M_SOUND);
+		mainMenu->setItemChecked(M_SOUND, true);
 		tileMenu = new QPopupMenu(this);
 		fprintf(stderr, "EZX_MainWidget 8\n");
 		tileMenu->insertItem("Rounded", this, SLOT(roundedOn()), 0, M_ROUNDED);
 		tileMenu->insertItem("Rectangle", this, SLOT(roundedOff()), 0, M_RECTANGLE);
 		tileMenu->setItemChecked(M_ROUNDED, true);
-		menu->insertItem("Tiles", tileMenu, 0, M_TILES);
-		menu->insertSeparator();
+		mainMenu->insertItem("Tiles", tileMenu, 0, M_TILES);
+		mainMenu->insertSeparator();
 		fprintf(stderr, "EZX_MainWidget 9\n");
-		menu->insertItem("About...", this, SLOT(about()), 0, M_ABOUT);
-		menu->insertItem("Exit", qApp, SLOT(quit()), 0, M_EXIT);
+		mainMenu->insertItem("About...", this, SLOT(about()), 0, M_ABOUT);
+		mainMenu->insertItem("Exit", qApp, SLOT(quit()), 0, M_EXIT);
+#elif !defined(EZX_A760)
+		mainMenu = new QPopupMenu(this, "TEST");
+		// fprintf(stderr, "EZX_MainWidget 8800\n");
+		//QPoint pos(20, 20);
+		fprintf(stderr, "EZX_MainWidget 8880\n");
+		//ZGlobal::getPopupMenuTopLeft(this, mainMenu, pos);
+		fprintf(stderr, "EZX_MainWidget 8881\n");
+		mainMenu->insertItem("Take Screenshot", M_SCREEN, M_SCREEN);
+		fprintf(stderr, "EZX_MainWidget 8882\n");
+		mainMenu->insertSeparator();
+		fprintf(stderr, "EZX_MainWidget 8883\n");
+		mainMenu->insertItem("Save Game", M_SAVE, M_SAVE);
+		fprintf(stderr, "EZX_MainWidget 8884\n");
+		mainMenu->insertItem("Load Game", M_LOAD, M_LOAD);
+		fprintf(stderr, "EZX_MainWidget 8885\n");
+		mainMenu->insertItem("Reset Game", M_RESET, M_RESET);
+		fprintf(stderr, "EZX_MainWidget 8886\n");
+		mainMenu->insertSeparator();
+		fprintf(stderr, "EZX_MainWidget 8887\n");
+		mainMenu->insertItem("Touch Sounds", M_SOUND, M_SOUND);
+		fprintf(stderr, "EZX_MainWidget 8888\n");
+		mainMenu->setItemChecked(M_SOUND, true);
+		fprintf(stderr, "EZX_MainWidget 8889\n");
+		tileMenu = new QPopupMenu(this);
+		fprintf(stderr, "EZX_MainWidget 8890\n");
+		tileMenu->insertItem("Rounded", M_ROUNDED, M_ROUNDED);
+		fprintf(stderr, "EZX_MainWidget 8891\n");
+		tileMenu->insertItem("Rectangle", M_RECTANGLE, M_RECTANGLE);
+		fprintf(stderr, "EZX_MainWidget 8892\n");
+		tileMenu->setItemChecked(M_ROUNDED, true);
+		fprintf(stderr, "EZX_MainWidget 8893\n");
+		mainMenu->insertItem("Tiles", tileMenu, 0, M_TILES);
+		fprintf(stderr, "EZX_MainWidget 8894\n");
+		mainMenu->insertSeparator();
+		fprintf(stderr, "EZX_MainWidget 8895\n");
+		mainMenu->insertItem("About...", M_ABOUT, M_ABOUT);
+		fprintf(stderr, "EZX_MainWidget 8896\n");
+		mainMenu->insertItem("Exit", M_EXIT, M_EXIT);
+		fprintf(stderr, "EZX_MainWidget 8897\n");
+#endif
 
 #if defined(EZX_E680I) || defined(EZX_E6)
 		titleBar = static_cast<QLabel *>(getTitleBarWidget());
@@ -354,41 +406,77 @@ public:
 		connect(cst->getRightBtn(), SIGNAL(clicked()), qApp, SLOT(quit()));
 		cst->getLeftBtn()->setPopup(menu);
 		setCSTWidget(cst);
-#elif defined(EZX_E680)
+#elif defined(EZX_E680) || defined(EZX_A760)
+		fprintf(stderr, "EZX_MainWidget 7771\n");
 		titleBar = new QLabel(" 2048-EZX | Score: 0 ", this);
+		fprintf(stderr, "EZX_MainWidget 7772\n");
 		titleBar->setIndent(5);
+		fprintf(stderr, "EZX_MainWidget 7773\n");
 		titleBar->setGeometry(ZGlobal::mapFromGlobalR(titleBar, ZGlobal::getStatusBarR()));
+		fprintf(stderr, "EZX_MainWidget 7774\n");
 		titleBar->setFixedSize(ZGlobal::getStatusBarR().size());
+		fprintf(stderr, "EZX_MainWidget 7775\n");
 		UTIL_Graph::makeTitle(titleBar, 0);
+		fprintf(stderr, "EZX_MainWidget 7776\n");
 		QFont titleFont("Sans", 18, QFont::Normal);
+		fprintf(stderr, "EZX_MainWidget 7777\n");
 		titleBar->setFont(titleFont);
+		fprintf(stderr, "EZX_MainWidget 7778\n");
 		titleBar->show();
+		fprintf(stderr, "EZX_MainWidget 7779\n");
 
 		QWidget *cst = (QWidget *) this->getCSTWidget();
 
+		fprintf(stderr, "EZX_MainWidget 7780\n");
+
 		UTIL_PushButton *buttonExit = new UTIL_PushButton("CST_Exit", cst, 0, -1, -1);
+		fprintf(stderr, "EZX_MainWidget 7781\n");
 		buttonExit->setFlags(UTIL_PushButton::JoinRight);
+		fprintf(stderr, "EZX_MainWidget 7782\n");
 		buttonExit->setGeometry(ZGlobal::mapFromGlobalR(buttonExit, ZGlobal::getCst3_1R()));
+		fprintf(stderr, "EZX_MainWidget 7783\n");
 		buttonExit->show();
+		fprintf(stderr, "EZX_MainWidget 7784\n");
 		connect(buttonExit, SIGNAL(clicked()), qApp, SLOT(quit()));
+		fprintf(stderr, "EZX_MainWidget 7785\n");
 
 		UTIL_PushButton *buttonReset = new UTIL_PushButton(NULL, cst, 0, -1, -1);
+		fprintf(stderr, "EZX_MainWidget 7786\n");
 		buttonReset->setFlags(UTIL_PushButton::JoinRight | UTIL_PushButton::JoinLeft);
+		fprintf(stderr, "EZX_MainWidget 7787\n");
 		buttonReset->setGeometry(ZGlobal::mapFromGlobalR(buttonReset, ZGlobal::getCst3_2R()));
+		fprintf(stderr, "EZX_MainWidget 7788\n");
 		buttonReset->setText("Reset");
+		fprintf(stderr, "EZX_MainWidget 7789\n");
 		buttonReset->show();
+		fprintf(stderr, "EZX_MainWidget 7790\n");
 		connect(buttonReset, SIGNAL(clicked()), widget, SLOT(reset()));
+		fprintf(stderr, "EZX_MainWidget 7791\n");
 
 		UTIL_PushButton *buttonMenu = new UTIL_PushButton("CST_Menu", cst, 0, -1, -1);
+		fprintf(stderr, "EZX_MainWidget 7792\n");
 		buttonMenu->setFlags(UTIL_PushButton::JoinLeft);
+		fprintf(stderr, "EZX_MainWidget 7793\n");
 		buttonMenu->setGeometry(ZGlobal::mapFromGlobalR(buttonMenu, ZGlobal::getCst3_3R()));
+		fprintf(stderr, "EZX_MainWidget 7794\n");
 		buttonMenu->show();
-		buttonMenu->setPopup(menu);
+		fprintf(stderr, "EZX_MainWidget 7795\n");
+		fprintf(stderr, "EZX_MainWidget 7796\n");
 
 		QRect widgetRect = ZGlobal::getContentR();
+		fprintf(stderr, "EZX_MainWidget 7797\n");
 		widgetRect.setY(widgetRect.y() + ZGlobal::getStatusBarR().height());
+		fprintf(stderr, "EZX_MainWidget 7798\n");
 		widget->setGeometry(ZGlobal::mapFromGlobalR(widget, widgetRect));
+		fprintf(stderr, "EZX_MainWidget 7799\n");
 #endif
+		mainMenu = new QPopupMenu(this);
+//		fprintf(stderr, "EZX_MainWidget 41\n");
+//		_ZN9QMenuData10insertItemERK7QStringii(mainMenu, "About", 0, 0);
+//		fprintf(stderr, "EZX_MainWidget 42\n");
+//		mainMenu->insertItem("Quit", 0, 0);
+//		fprintf(stderr, "EZX_MainWidget 43\n");
+		buttonMenu->setPopup(mainMenu);
 	}
 };
 
