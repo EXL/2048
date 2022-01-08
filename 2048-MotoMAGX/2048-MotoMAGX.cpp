@@ -32,9 +32,11 @@ const int TILE_MARGIN = 5;
 #if !defined(EZX_E2)
 #define ICON_ABOUT_NAME "icon_usr.png"
 #define ICON_ABOUT_SIZE 48
+#define TARGET_PLATFORM "MotoMAGX"
 #else
 #define ICON_ABOUT_NAME "ezx_dia_50x50.png"
 #define ICON_ABOUT_SIZE 50
+#define TARGET_PLATFORM "EZX"
 #endif
 
 class Widget : public QWidget {
@@ -202,8 +204,9 @@ class MainWidget : public ZKbMainWidget {
 public slots:
 	void about() {
 		ZMessageDlg *msgDlg = new ZMessageDlg("About 2048", QTextCodec::codecForName("UTF-8")->toUnicode(
-			"2048 Game implementation especially for MotoMAGX platform.\n\nVersion: 1.0, %1\nThanks to: Boxa, fill.sa, "
-			"VINRARUS, Unreal_man\n© EXL (exl@bk.ru), 2020\nSource code: https://github.com/EXL/2048").arg(__DATE__),
+			"2048 Game implementation especially for %1 platform.\n\n"
+			"Version: 1.0, %2\nThanks to: Boxa, fill.sa, VINRARUS, Unreal_man\n"
+			"© EXL (exl@bk.ru), 2020\nSource code: https://github.com/EXL/2048").arg(TARGET_PLATFORM).arg(__DATE__),
 			ZMessageDlg::TypeOK, 60*1000);
 		QString iconPath = QString("%1/%2").arg(QFileInfo(qApp->argv()[0]).dirPath(true)).arg(ICON_ABOUT_NAME);
 		if (QFile::exists(iconPath)) {
