@@ -22,7 +22,7 @@
 #include <qtimer.h>
 #include <qpopupmenu.h>
 
-#include <ctime>
+#include <time.h>
 
 #if defined(EZX_A760) || defined(EZX_E680)
 #define EZX_MainWidget(titlebar, editmode, parent, name, flags) ZMainWidget(editmode, parent, name, flags)
@@ -470,13 +470,18 @@ public:
 		widget->setGeometry(ZGlobal::mapFromGlobalR(widget, widgetRect));
 		fprintf(stderr, "EZX_MainWidget 7799\n");
 #endif
+
+#if 1
 		mainMenu = new QPopupMenu(this);
-//		fprintf(stderr, "EZX_MainWidget 41\n");
+		fprintf(stderr, "EZX_MainWidget 41\n");
 //		_ZN9QMenuData10insertItemERK7QStringii(mainMenu, "About", 0, 0);
-//		fprintf(stderr, "EZX_MainWidget 42\n");
+		fprintf(stderr, "EZX_MainWidget 42\n");
 //		mainMenu->insertItem("Quit", 0, 0);
-//		fprintf(stderr, "EZX_MainWidget 43\n");
+		mainMenu->insertSeparator();
+		fprintf(stderr, "EZX_MainWidget 43\n");
 		buttonMenu->setPopup(mainMenu);
+#endif
+
 	}
 };
 
