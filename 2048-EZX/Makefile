@@ -13,7 +13,7 @@ CXX      = arm-linux-gnu-g++
 STRIP    = arm-linux-gnu-strip
 CFLAGS   = -pipe -Wall -W -O2 -mcpu=iwmmxt -mtune=iwmmxt -D_REENTRANT -DQT_THREAD_SUPPORT -DNO_DEBUG -DEZX_E6
 CXXFLAGS = -pipe -DQWS -fno-exceptions -fno-rtti -Wall -W -O2 -mcpu=iwmmxt -mtune=iwmmxt -D_REENTRANT -DQT_THREAD_SUPPORT -DNO_DEBUG -DEZX_E6
-INCPATH  = -I$(QTDIR)/include -I$(EZXDIR)/include -I../src
+INCPATH  = -I$(QTDIR)/include -I$(QTDIR)/include/qt -I$(EZXDIR)/include -I../src
 LINK     = arm-linux-gnu-g++
 LFLAGS   = -Wl,-rpath-link,$(QTDIR)/lib,-rpath-link,$(EZXDIR)/lib
 LIBS     = $(SUBLIBS) -L$(QTDIR)/lib -lqte-mt -L$(EZXDIR)/lib -L$(EZXDIR)/lib/ezx/lib -lezxappbase
