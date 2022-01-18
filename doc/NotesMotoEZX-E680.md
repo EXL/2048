@@ -5,7 +5,7 @@ See additional information in [doc/NotesMotoEZX.md](NotesMotoEZX.md) and [2048-E
 
 ## Telnet & Samba
 
-Install [Belcarra USBLAN for Windows]() drivers before. To activate Telnet and Samba on the Motorola E680, connect it via USB in modem mode, determine modem COM port and send `AT+MODE=99` command to modem with using [PuTTY](https://www.putty.org/) or a similar program. Now you can use Samba file transfer on `\\169.254.142.2\` path in Explorer and can connect to the Motorola E680 via `telnet 169.254.142.2` command.
+Install [Belcarra USBLAN for Windows]() drivers before. To activate Telnet and Samba on the Motorola E680, connect it via USB in modem mode, determine modem COM port and send `AT+MODE=99` command to modem with using [PuTTY](https://www.putty.org/), Command Prompt `echo AT+MODE=99 > COM5`, or a similar program. Now you can use Samba file transfer on `\\169.254.142.2\` path in Explorer and can connect to the Motorola E680 via `telnet 169.254.142.2` command.
 
 // TODO: Add proper link to the Belcarra USBLAN for Windows.
 

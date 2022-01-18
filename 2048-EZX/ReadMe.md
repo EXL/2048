@@ -7,6 +7,10 @@ The "2048" game for the EZX OS by Motorola.
 
 ![2048-EZX Motorola E6 Screenshot 1](../image/2048-EZX-E6-Screenshot1.png) ![2048-EZX Motorola E6 Screenshot 2](../image/2048-EZX-E6-Screenshot2.png) ![2048-EZX Motorola E6 Screenshot 3](../image/2048-EZX-E6-Screenshot3.png) ![2048-EZX Motorola E6 Screenshot 4](../image/2048-EZX-E6-Screenshot4.png)
 
+*Motorola ROKR E2 Screenshots:*
+
+![2048-EZX Motorola E2 Screenshot 1](../image/2048-EZX-E2-Screenshot1.png) ![2048-EZX Motorola E2 Screenshot 2](../image/2048-EZX-E2-Screenshot2.png) ![2048-EZX Motorola E2 Screenshot 3](../image/2048-EZX-E2-Screenshot3.png) ![2048-EZX Motorola E2 Screenshot 4](../image/2048-EZX-E2-Screenshot4.png)
+
 *Motorola E680i Screenshots:*
 
 ![2048-EZX Motorola E680i Screenshot 1](../image/2048-EZX-E680i-Screenshot1.png) ![2048-EZX Motorola E680i Screenshot 2](../image/2048-EZX-E680i-Screenshot2.png) ![2048-EZX Motorola E680i Screenshot 3](../image/2048-EZX-E680i-Screenshot3.png) ![2048-EZX Motorola E680i Screenshot 4](../image/2048-EZX-E680i-Screenshot4.png)
@@ -188,6 +192,10 @@ EZX OS screenshots from Motorola ROKR E6:
 
 ![EZX Motorola E6 Screenshot 1 Main Desktop Screen](../image/EZX-E6-Screenshot1.png) ![EZX Motorola E6 Screenshot 2 Main Menu](../image/EZX-E6-Screenshot2.png) ![EZX Motorola E6 Screenshot 3 SysInfo Ultimate Application](../image/EZX-E6-Screenshot3.png) ![EZX Motorola E6 Screenshot 4 eKonsole Application](../image/EZX-E6-Screenshot4.png)
 
+EZX OS screenshots from Motorola ROKR E2:
+
+![EZX Motorola E2 Screenshot 1 Main Desktop Screen](../image/EZX-E2-Screenshot1.png) ![EZX Motorola E2 Screenshot 2 Main Menu](../image/EZX-E2-Screenshot2.png) ![EZX Motorola E2 Screenshot 3 Firmware Versions](../image/EZX-E2-Screenshot3.png) ![EZX Motorola E2 Screenshot 4 EzxTerm Application](../image/EZX-E2-Screenshot4.png)
+
 EZX OS screenshots from Motorola E680i:
 
 ![EZX Motorola E680i Screenshot 1 Main Desktop Screen](../image/EZX-E680i-Screenshot1.png) ![EZX Motorola E680i Screenshot 2 Main Menu 1](../image/EZX-E680i-Screenshot2.png) ![EZX Motorola E680i Screenshot 3 Main Menu 2](../image/EZX-E680i-Screenshot3.png) ![EZX Motorola E680 Screenshot 4 eKonsole Application](../image/EZX-E680i-Screenshot4.png)
@@ -243,3 +251,4 @@ Qt Embedded version 2.3.6/2.3.8
 * [NotesMotoEZX.md](../doc/NotesMotoEZX.md) document contains additional information about porting and SDK patches.
 * [NotesMotoEZX-E680.md](../doc/NotesMotoEZX-E680.md) document contains additional information about Motorola E680.
 * [NotesMotoEZX-E680i.md](../doc/NotesMotoEZX-E680i.md) document contains additional information about Motorola E680i.
+* [NotesMotoEZX-E2.md](../doc/NotesMotoEZX-E2.md) document contains additional information about Motorola ROKR E2.

@@ -19,7 +19,8 @@ To create correct Makefiles, the configuration file of the `tmake` utility needs
 12. [x] Add executable file/package information.
 13. [x] Adapt code for Motorola E680.
 14. [x] Adapt code for Motorola E680i.
-15. [ ] TODO: Adapt code for Motorola ROKR E2.
+15. [x] Adapt code for Motorola ROKR E2.
+16. [ ] TODO: Adapt code for Motorola A760.
 
 ## EZX SDK & Toolchain patches (A1200, E6)
 
@@ -128,107 +129,13 @@ cp -avR /opt/toolchains/motoezx/a1200/qt/tmake /opt/toolchains/motoezx/e2/qt/tma
  TMAKE_LIBS_QT		= -lqte
 ```
 
-2. Edit `qpainter.h` file:
-
-```sh
-cd /opt/toolchains/motoezx/e2/qt/lib
-readelf -s -W libqte-mt.so.2.3.8 | c++filt | grep drawText
-   308: 41531ae0  1228 FUNC    WEAK   DEFAULT   10 QGfxPTF<18, 0>::drawText(QGlyphString const&, QPoint*)
-  1060: 4153c070  1228 FUNC    WEAK   DEFAULT   10 QGfxPTF<1, 0>::drawText(QGlyphString const&, QPoint*)
-  2551: 41574a14    44 FUNC    GLOBAL DEFAULT   10 QPainter::drawText(int, int, QString const&, int, QPainter::TextDirection)
-  3568: 41535210  1228 FUNC    WEAK   DEFAULT   10 QGfxPTF<8, 0>::drawText(QGlyphString const&, QPoint*)
-  5305: 41519b68   576 FUNC    GLOBAL DEFAULT   10 QGfxRasterBase::drawText(QGlyphString const&, QPoint*)
-  5313: 4157a670   136 FUNC    GLOBAL DEFAULT   10 QWidget::drawText(int, int, QString const&)
-  6840: 41538940  1228 FUNC    WEAK   DEFAULT   10 QGfxPTF<16, 0>::drawText(QGlyphString const&, QPoint*)
-  7523: 4152ad98  1228 FUNC    WEAK   DEFAULT   10 QGfxPTF<32, 0>::drawText(QGlyphString const&, QPoint*)
-  8264: 4152e4c8  1228 FUNC    WEAK   DEFAULT   10 QGfxPTF<24, 0>::drawText(QGlyphString const&, QPoint*)
-  9710: 415d8898   724 FUNC    GLOBAL DEFAULT   10 QPainter::drawText(int, int, int, int, int, QString const&, int, QRect*, char**)
- 10781: 41574a40  6492 FUNC    GLOBAL DEFAULT   10 QPainter::drawText(int, int, QString const&, int, int, QPainter::TextDirection)
-```
-
-```sh
-rm /opt/toolchains/motoezx/e2/qt/include/qpainter.h
-cp /opt/toolchains/motoezx/a1200/qt/include/qpainter.h /opt/toolchains/motoezx/e2/qt/include/qpainter.h
-```
-
-```diff
---- motoezx-old/e2/qt/include/qpainter.h	2009-11-10 04:00:21.000000000 +0600
-+++ motoezx/e2/qt/include/qpainter.h	2021-11-23 11:33:34.304246325 +0700
-@@ -226,8 +226,9 @@
- 
-   // Text drawing functions
- 
--    void	drawText( int x, int y, const QString &, int len = -1 );
--    void	drawText( const QPoint &, const QString &, int len = -1 );
-+    enum TextDirection { Auto, RTL, LTR };
-+    void	drawText( int x, int y, const QString &, int len = -1, TextDirection dir = Auto );
-+    void	drawText( const QPoint &, const QString &, int len = -1, TextDirection dir = Auto );
-	 void	drawText( int x, int y, int w, int h, int flags,
-			  const QString&, int len = -1, QRect *br=0,
-			  char **internal=0 );
-@@ -629,7 +630,7 @@
-	 fillRect( r.x(), r.y(), r.width(), r.height(), backgroundColor() );
- }
- 
--inline void QPainter::drawText( const QPoint &p, const QString &s, int len )
-+inline void QPainter::drawText( const QPoint &p, const QString &s, int len, TextDirection dir )
- {
-	 drawText( p.x(), p.y(), s, len );
- }
-```
-
-3. Edit `qfont.h` file:
-
-```sh
-cd /opt/toolchains/motoezx/e2/qt/lib
-readelf -s -W libqte-mt.so.2.3.8 | c++filt | grep QFont::QFont
-   568: 415a72c8     4 FUNC    GLOBAL DEFAULT   10 QFont::QFont()
-   829: 415a70f0     4 FUNC    GLOBAL DEFAULT   10 QFont::QFont(QFontData*)
-  1104: 415a735c   140 FUNC    GLOBAL DEFAULT   10 QFont::QFont(QString const&, int, int, bool)
-  2198: 415a7348    20 FUNC    GLOBAL DEFAULT   10 QFont::QFont(QString const&, int, int, bool)
-  2613: 415a72c4     4 FUNC    GLOBAL DEFAULT   10 QFont::QFont()
-  3360: 415a72cc   104 FUNC    GLOBAL DEFAULT   10 QFont::QFont()
-  3380: 415a73e8    28 FUNC    GLOBAL DEFAULT   10 QFont::QFont(QString const&, int, int, bool, QFont::CharSet)
-  3577: 415a74c0    72 FUNC    GLOBAL DEFAULT   10 QFont::QFont(QFont const&)
-  4250: 415a7420   152 FUNC    GLOBAL DEFAULT   10 QFont::QFont(QString const&, int, int, bool, QFont::CharSet)
-  4848: 415a74b8     4 FUNC    GLOBAL DEFAULT   10 QFont::QFont(QFont const&)
-  6747: 415a7334    20 FUNC    GLOBAL DEFAULT   10 QFont::QFont(QString const&, int, int, bool)
-  7647: 415a70f4   392 FUNC    GLOBAL DEFAULT   10 QFont::QFont(QFontData*)
-  9098: 415a74bc     4 FUNC    GLOBAL DEFAULT   10 QFont::QFont(QFont const&)
-  9613: 415a7404    28 FUNC    GLOBAL DEFAULT   10 QFont::QFont(QString const&, int, int, bool, QFont::CharSet)
- 10922: 415a70ec     4 FUNC    GLOBAL DEFAULT   10 QFont::QFont(QFontData*)
-```
-
-```sh
-rm /opt/toolchains/motoezx/e2/qt/include/qfont.h 
-cp /opt/toolchains/motoezx/a1200/qt/include/qfont.h /opt/toolchains/motoezx/e2/qt/include/qfont.h
-```
-
-```diff
---- motoezx-old/e2/qt/include/qfont.h	2009-11-10 04:00:21.000000000 +0600
-+++ motoezx/e2/qt/include/qfont.h	2021-11-23 11:29:29.231545206 +0700
-@@ -116,10 +116,11 @@
-			 Bold  = 75, Black	= 87 };
-	 QFont();					// default font
-
--    //QFont( const QString &family, int pointSize = 12,
--	//   int weight = Normal, bool italic = FALSE );
--    QFont( const QString &family, int pointSize = 12,
--        int weight = Normal, bool italic = FALSE, bool b = FALSE ); //fox add: bool b = FALSE
-+    QFont( const QString &family, int pointSize = 12,
-+	   int weight = Normal, bool italic = FALSE );
-+    //QFont( const QString &family, int pointSize = 12,
-+    //    int weight = Normal, bool italic = FALSE, bool b = FALSE ); //fox add: bool b = FALSE
-+    // Fix by EXL: Revert this ^
- 
-	 QFont( const QString &family, int pointSize,
-	   int weight, bool italic, CharSet charSet );
-```
-
-4. Copy all modern header files from Z6 directory of MotoMAGX EZX Toolchain to E2 directory:
+2. Copy all modern header files from Z6 directory of MotoMAGX EZX Toolchain to E2 directory:
 // TODO: Link to MotoMAGX EZX Toolchain
 
 ```sh
+rm -Rf /opt/toolchains/motoezx/e2/qt/include
+cp -avR /arm-eabi/lib/qt-z6/include /opt/toolchains/motoezx/e2/qt
+
 cp /arm-eabi/lib/ezx-z6/include/ZApplication.h /opt/toolchains/motoezx/e2/ezx/include/
 cp /arm-eabi/lib/ezx-z6/include/ZKbMainWidget.h /opt/toolchains/motoezx/e2/ezx/include/
 cp /arm-eabi/lib/ezx-z6/include/ZHeader.h /opt/toolchains/motoezx/e2/ezx/include/
