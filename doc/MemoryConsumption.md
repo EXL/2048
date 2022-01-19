@@ -392,6 +392,18 @@ VmExe:        40 kB
 VmLib:      8220 kB
 ```
 
+```
+cat /proc/`pidof 2048-EZX_E2`/status
+...
+VmSize:    25328 kB
+VmLck:         0 kB
+VmRSS:      5388 kB
+VmData:      704 kB
+VmStk:        24 kB
+VmExe:        36 kB
+VmLib:      9848 kB
+```
+
 ### 2048-Serenity
 
 ```

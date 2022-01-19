@@ -208,7 +208,11 @@ EZX OS screenshots from Motorola E680:
 
 ![2048-EZX application running on Motorola E6 Photo](../image/2048-EZX-E6-Photo.jpg)
 
-2048-EZX running on Motorola E680 (thanks to [Boxa](https://github.com/Voha888) for photo):
+2048-EZX running on Motorola ROKR E2 (thanks to [Unreal_man](https://github.com/KathyTi) for the photo):
+
+![2048-EZX application running on Motorola E2 Photo](../image/2048-EZX-E2-Photo.jpg)
+
+2048-EZX running on Motorola E680 (thanks to [Boxa](https://github.com/Voha888) for the photo):
 
 ![2048-EZX application running on Motorola E680 Photo](../image/2048-EZX-E680-Photo.jpg)
 
