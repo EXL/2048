@@ -6,7 +6,7 @@ APPNAME     := 2048-MotoMAGX
 APP_DEFINES :=
 
 ####### SDK and Toolchains
-TOOLPREFIX  := /opt/toolchains/motomagx/emulator
+TOOLPREFIX  := /opt/toolchains/motoemu
 
 ####### Emulator platform
 LINKLIB     := -lm -lqte-mt -lezxappbase
