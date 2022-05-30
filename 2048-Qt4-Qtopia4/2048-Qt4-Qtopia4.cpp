@@ -2,7 +2,7 @@
 
 #include <qtopiaapplication.h>
 
-class GameWindow : public QWidget, public Ui_ExampleBase {
+class GameWindow : public QWidget, public Ui_GameWindow {
 	Q_OBJECT
 public:
 	GameWindow(QWidget *parent = 0, Qt::WFlags f = 0) {

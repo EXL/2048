@@ -19,14 +19,14 @@ LANGUAGES=$$AVAILABLE_LANGUAGES
 
 # These are the source files that get built to create the application
 FORMS=2048-Qt4-Qtopia4.ui
-#HEADERS=2048-Qt4-Qtopia4.cpp
+# HEADERS=2048-Qt4-Qtopia4.cpp
 SOURCES=2048-Qt4-Qtopia4.cpp
 
 # Install the launcher item. The metadata comes from the .desktop file
 # and the path here.
 desktop.files=2048-Qt4-Qtopia4.desktop
 desktop.path=/apps/Games
-desktop.trtarget=2048-Qt4-Qtopia4-nct
+desktop.trtarget=2048-nct
 desktop.hint=nct desktop
 INSTALLS+=desktop
 
@@ -48,7 +48,7 @@ target.domain=untrusted
 
 # Package information (used for make packages)
 pkg.name=2048-Qt4-Qtopia4
-pkg.desc=A simple implementation of the 2048 puzzle game for Qtopia 4.
+pkg.desc=A simple implementation of the 2048 puzzle game for Qtopia 4 using Qt 4.
 pkg.version=1.0.0-1
-pkg.maintainer=EXL (exlmoto.ru, github.com/EXL/2048)
+pkg.maintainer=EXL (https://exlmoto.ru, https://github.com/EXL/2048)
 pkg.license=MIT
