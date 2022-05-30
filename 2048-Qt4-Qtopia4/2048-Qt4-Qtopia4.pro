@@ -19,7 +19,7 @@ LANGUAGES=$$AVAILABLE_LANGUAGES
 
 # These are the source files that get built to create the application
 FORMS=2048-Qt4-Qtopia4.ui
-HEADERS=2048-Qt4-Qtopia4.cpp
+#HEADERS=2048-Qt4-Qtopia4.cpp
 SOURCES=2048-Qt4-Qtopia4.cpp
 
 # Install the launcher item. The metadata comes from the .desktop file
