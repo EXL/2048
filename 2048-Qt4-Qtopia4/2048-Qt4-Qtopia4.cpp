@@ -2,10 +2,11 @@
 
 #include "ui_2048-Qt4-Qtopia4.h"
 
-#include <qwidget.h>
-#include <qsoftmenubar.h>
+#include <QWidget>
 
-#include <qtopiaapplication.h>
+#include <QSoftMenuBar>
+
+#include <QtopiaApplication>
 
 class GameMainWidget : public QWidget, public Ui_GameMainWidget {
 	Q_OBJECT

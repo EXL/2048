@@ -34,13 +34,13 @@ INSTALLS+=desktop
 
 # Install some pictures.
 pics.files=pics/*
-pics.path=/pics/2048
+pics.path=/pics/2048-Qt4-Qtopia4
 pics.hint=pics
 INSTALLS+=pics
 
 # Install help files
 help.source=help
-help.files=example.html
+help.files=2048-Qt4-Qtopia4.html
 help.hint=help
 INSTALLS+=help
 
