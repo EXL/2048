@@ -7,10 +7,10 @@
 
 #include <qtopiaapplication.h>
 
-class GameWindow : public QWidget, public Ui_GameWindow {
+class GameMainWidget : public QWidget, public Ui_GameMainWidget {
 	Q_OBJECT
 public:
-	GameWindow(QWidget *parent = 0, Qt::WFlags flags = 0) : QWidget(parent, flags) {
+	GameMainWidget(QWidget *parent = 0, Qt::WFlags flags = 0) : QWidget(parent, flags) {
 		setupUi(this);
 
 		QMenu *menu = QSoftMenuBar::menuFor(this);
@@ -18,10 +18,10 @@ public:
 
 		QSoftMenuBar::setHelpEnabled(this, true);
 	}
-	~GameWindow() { }
+	~GameMainWidget() { }
 };
 
-QTOPIA_ADD_APPLICATION(QTOPIA_TARGET, GameWindow)
+QTOPIA_ADD_APPLICATION(QTOPIA_TARGET, GameMainWidget)
 QTOPIA_MAIN
 
 #include "2048-Qt4-Qtopia4.moc"
