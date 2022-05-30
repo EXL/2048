@@ -1,0 +1,4 @@
+#include <qtopiaapplication.h>
+
+QTOPIA_ADD_APPLICATION(QTOPIA_TARGET, 2048)
+QTOPIA_MAIN
