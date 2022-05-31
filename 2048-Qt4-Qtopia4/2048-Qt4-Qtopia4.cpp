@@ -12,6 +12,7 @@
 
 #include <QSoftMenuBar>
 
+#include <QtopiaStyle>
 #include <QtopiaApplication>
 
 #include <ctime>
@@ -36,7 +37,8 @@ class GameMainWidget : public QWidget, public Ui_GameMainWidget {
 		painter.setPen(Qt::NoPen);
 		painter.setBrush(QColor(e_background(value)));
 		if (rounded)
-			painter.drawRoundRect(xOffset, yOffset, TILE_SIZE, TILE_SIZE, 36, 36);
+			QtopiaStyle::drawRoundRect(&painter, QRect(xOffset, yOffset, TILE_SIZE, TILE_SIZE), 20, 20);
+			// painter.drawRoundRect(xOffset, yOffset, TILE_SIZE, TILE_SIZE, 36, 36);
 		else
 			painter.drawRect(xOffset, yOffset, TILE_SIZE, TILE_SIZE);
 		if (value) {
@@ -155,10 +157,8 @@ private slots:
 protected:
 	virtual void paintEvent(QPaintEvent *) {
 		ww = width(); hh = height();
-
 		if (!fb)
 			fb = new QPixmap(ww, hh);
-
 		QPainter painter;
 		painter.begin(fb);
 		painter.fillRect(0, 0, ww, hh, QColor(COLOR_BOARD));
@@ -167,7 +167,6 @@ protected:
 				drawTile(painter, e_board[x + y * LINE_SIZE], x, y);
 		drawFinal(painter);
 		painter.end();
-
 		QPainter painterScreen(this);
 		painterScreen.drawPixmap(0, 0, *fb);
 	}
@@ -258,6 +257,14 @@ public:
 		QtopiaApplication::setInputMethodHint(this, QtopiaApplication::AlwaysOff);
 
 		setWindowIcon(QIcon(":icon/2048_qt4_qtopia4"));
+
+		// HACK: Don't use long game name in window title on Smart and Classic themes.
+		QSettings gConfig("Trolltech", "qpe");
+		gConfig.beginGroup("Appearance");
+    	const QString activeTheme = gConfig.value("Theme", "qtopia.conf").toString();
+		if (activeTheme == "smart.conf" || activeTheme == "classic.conf")
+			setWindowTitle("2048");
+		gConfig.endGroup();
 	}
 	~GameMainWidget() { }
 };
