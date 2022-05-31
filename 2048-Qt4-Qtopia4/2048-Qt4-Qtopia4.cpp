@@ -16,11 +16,12 @@ const int TILE_MARGIN         = 5;
 class GameMainWidget : public QWidget, public Ui_GameMainWidget {
 	Q_OBJECT
 
-	QPixmap *fb;
-	QFont *font_large, *font_middle, *font_normal, *font_small;
 	int ww, hh;
 	int score;
 	bool rounded;
+	QPixmap *fb;
+	QFont *font_large, *font_middle, *font_normal, *font_small;
+	QAction *actionRouned, *actionRectangle;
 
 	inline int offsetCoords(int coord) { return coord * (TILE_MARGIN + TILE_SIZE) + TILE_MARGIN * 2; }
 	void drawTile(QPainter &painter, int value, int x, int y) {
@@ -65,8 +66,10 @@ class GameMainWidget : public QWidget, public Ui_GameMainWidget {
 protected:
 	virtual void paintEvent(QPaintEvent *) {
 		ww = width(); hh = height();
+
 		if (!fb)
 			fb = new QPixmap(ww, hh);
+
 		QPainter painter;
 		painter.begin(fb);
 		painter.fillRect(0, 0, ww, hh, QColor(COLOR_BOARD));
@@ -75,7 +78,7 @@ protected:
 				drawTile(painter, e_board[x + y * LINE_SIZE], x, y);
 		drawFinal(painter);
 		painter.end();
-		
+
 		QPainter painterScreen(this);
 		painterScreen.drawPixmap(0, 0, *fb);
 	}

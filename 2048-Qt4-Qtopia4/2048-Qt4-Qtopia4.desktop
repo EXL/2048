@@ -1,10 +1,10 @@
+[Desktop Entry]
+Name[]=2048
+Type=Application
+Exec=2048-Qt4-Qtopia4
+Icon=2048-Qt4-Qtopia4/2048_qt4_qtopia4
+Comment[]=A simple implementation of the 2048 puzzle game for Qtopia 4 using Qt 4.
+
 [Translation]
 File=2048-nct
 Context=2048
-
-[Desktop Entry]
-Comment[]=A simple implementation of the 2048 puzzle game for Qtopia 4 using Qt 4.
-Exec=2048-Qt4-Qtopia4
-Icon=2048-Qt4-Qtopia4/2048_qt4_qtopia4
-Type=Application
-Name[]=2048
