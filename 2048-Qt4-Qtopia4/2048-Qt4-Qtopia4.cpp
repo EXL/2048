@@ -2,12 +2,19 @@
 
 #include "ui_2048-Qt4-Qtopia4.h"
 
-#include <QPainter>
+#include <QDesktopWidget>
 #include <QKeyEvent>
+#include <QMenu>
 #include <QMouseEvent>
+#include <QPainter>
+#include <QTextCodec>
+#include <QTimer>
 
 #include <QSoftMenuBar>
+
 #include <QtopiaApplication>
+
+#include <ctime>
 
 const int FIELD_OFFSET_SCALE  = 32;
 const int TILE_SIZE           = 48;
@@ -21,7 +28,7 @@ class GameMainWidget : public QWidget, public Ui_GameMainWidget {
 	bool rounded;
 	QPixmap *fb;
 	QFont *font_large, *font_middle, *font_normal, *font_small;
-	QAction *actionRouned, *actionRectangle;
+	QAction *actionRounded, *actionRectangle;
 
 	inline int offsetCoords(int coord) { return coord * (TILE_MARGIN + TILE_SIZE) + TILE_MARGIN * 2; }
 	void drawTile(QPainter &painter, int value, int x, int y) {
@@ -41,7 +48,7 @@ class GameMainWidget : public QWidget, public Ui_GameMainWidget {
 			else
 				painter.setPen(QColor(e_foreground(value)));
 			painter.setFont(font);
-			const int wo = (value < 100) ? 1 : (value < 1000) ? 0 : (-1), ho = (value > 1000) ? 0 : 3;
+			const int wo = (value < 100) ? 1 : (value < 1000) ? 0 : (-1), ho = (value > 1000) ? 2 : 3;
 			const int w = QFontMetrics(font).width(strValue) - wo, h = size - ho;
 			painter.drawText(xOffset + (TILE_SIZE - w) / 2, yOffset + TILE_SIZE - (TILE_SIZE - h) / 2, strValue);
 		}
@@ -61,6 +68,88 @@ class GameMainWidget : public QWidget, public Ui_GameMainWidget {
 		const int w = QFontMetrics(*font_normal).width(strScore);
 		painter.drawText(TILE_MARGIN, hh - 10, "Press '0' to Reset!");
 		painter.drawText(ww - w - TILE_MARGIN, hh - 10, strScore);
+	}
+	void updateActions(bool isRounded) {
+		rounded = isRounded;
+		actionRounded->setChecked(rounded);
+		actionRectangle->setChecked(!rounded);
+		update();
+	}
+
+private slots:
+	void slotScreenshot() { QTimer::singleShot(500, this, SLOT(slotMakeScreenshot())); }
+	void slotMakeScreenshot() {
+		QPixmap fullScreenPixmap = QPixmap::grabWindow(QtopiaApplication::desktop()->winId());
+		const QString path = QString("%1/%2.png").arg(QFileInfo(qApp->argv()[0]).dir().absolutePath()).arg(time(NULL));
+		if (fullScreenPixmap.save(path, "PNG")) {
+			QMessageBox::information(
+				this,
+				tr("Saved!"),
+				tr("Screenshot Saved!<br><br>Path:<br><font size=\"2\">%1</font>").arg(path)
+			);
+		} else {
+			QMessageBox::critical(
+				this,
+				tr("Error!"),
+				tr("Error: Cannot Save Screenshot!<br>Path:<br><font size=\"2\">%1</font>").arg(path)
+			);
+		}
+	}
+	void slotSave() {
+		QFile save(QString("%1/save.dat").arg(QFileInfo(qApp->argv()[0]).dir().absolutePath()));
+		if (save.open(QIODevice::WriteOnly)) {
+			QDateTime saveDateTime = QDateTime::currentDateTime();
+			QDataStream dataStream(&save);
+			dataStream << saveDateTime;
+			for (int i = 0; i < BOARD_SIZE; ++i)
+				dataStream << e_board[i];
+			dataStream << e_score; dataStream << e_win; dataStream << e_lose;
+			QMessageBox::information(
+				this,
+				tr("Game Saved!"),
+				tr("Game Saved!<br>State on:<br><font size=\"2\">%1</font>").arg(saveDateTime.toString())
+			);
+		} else
+			QMessageBox::critical(this, tr("Save Error!"), tr("Save Error!<br>Cannot create save.dat file."));
+	}
+	void slotLoad() {
+		QFile save(QString("%1/save.dat").arg(QFileInfo(qApp->argv()[0]).dir().absolutePath()));
+		if (save.open(QIODevice::ReadOnly)) {
+			QDateTime loadDateTime;
+			QDataStream dataStream(&save);
+			dataStream >> loadDateTime;
+			int value, score, win, lose;
+			for (int i = 0; i < BOARD_SIZE; ++i) {
+				dataStream >> value;
+				e_board[i] = value;
+			}
+			dataStream >> score; dataStream >> win; dataStream >> lose;
+			e_score = score; e_win = win; e_lose = lose;
+			QMessageBox::information(
+				this,
+				tr("Game Loaded!"),
+				tr("Game Loaded!<br>State on:<br><font size=\"2\">%1</font>").arg(loadDateTime.toString())
+			);
+			update();
+		} else
+			QMessageBox::critical(this, tr("Load Error!"), tr("Load Error!<br>Cannot find save.dat file."));
+	}
+	void slotReset() {
+		e_key(Qt::Key_0);
+		update();
+	}
+	void slotRounded() { updateActions(true); }
+	void slotRectangle() { updateActions(false); }
+	void slotAbout() {
+		QString aboutStr = tr("2048-Qt4-Qtopia4<br><br>");
+		aboutStr += "<font size=\"2\">";
+		aboutStr += tr("A 2048 puzzle game for Qtopia 4 platform using Qt 4 framework.<br><br>");
+		aboutStr += tr("Version: 1.0, %1<br>").arg(__DATE__);
+		aboutStr += QTextCodec::codecForName("UTF-8")->toUnicode("© EXL (exl@bk.ru)<br>");
+		aboutStr += "1. <a href=\"https://exlmoto.ru\">exlmoto.ru</a><br>";
+		aboutStr += "2. <a href=\"https://github.com/EXL/2048\">github.com/EXL/2048</a>";
+		aboutStr += "</font>";
+		QMessageBox::about(this, tr("About 2048"), aboutStr);
 	}
 
 protected:
@@ -125,10 +214,50 @@ public:
 		font_small = new QFont("Sans", 6, QFont::Bold);
 		setFocusPolicy(Qt::StrongFocus);
 
-		QMenu *menu = QSoftMenuBar::menuFor(this);
-		Q_UNUSED(menu);
+		QAction *actionScreenshot = new QAction(tr("Take Screenshot"), this);
+		connect(actionScreenshot, SIGNAL(triggered()), this, SLOT(slotScreenshot()));
+		QAction *actionSave = new QAction(tr("Save Game"), this);
+		connect(actionSave, SIGNAL(triggered()), this, SLOT(slotSave()));
+		QAction *actionLoad = new QAction(tr("Load Game"), this);
+		connect(actionLoad, SIGNAL(triggered()), this, SLOT(slotLoad()));
+		QAction *actionReset = new QAction(tr("Reset Game"), this);
+		connect(actionReset, SIGNAL(triggered()), this, SLOT(slotReset()));
+		actionRounded = new QAction(tr("Rounded"), this);
+		actionRounded->setCheckable(true);
+		actionRounded->setChecked(true);
+		connect(actionRounded, SIGNAL(triggered()), this, SLOT(slotRounded()));
+		actionRectangle = new QAction(tr("Rectangle"), this);
+		actionRectangle->setCheckable(true);
+		connect(actionRectangle, SIGNAL(triggered()), this, SLOT(slotRectangle()));
+		QAction *actionAbout = new QAction(QIcon(":icon/2048_qt4_qtopia4"), tr("About..."), this);
+		connect(actionAbout, SIGNAL(triggered()), this, SLOT(slotAbout()));
+		QAction *actionAboutQt = new QAction(tr("About Qt..."), this);
+		connect(actionAboutQt, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
 
+		QMenu *tilesMenu = new QMenu(tr("Tiles"), this);
+		tilesMenu->addAction(actionRounded);
+		tilesMenu->addAction(actionRectangle);
+
+		QMenu *aboutMenu = new QMenu(tr("About"), this);
+		aboutMenu->addAction(actionAbout);
+		aboutMenu->addAction(actionAboutQt);
+
+		QMenu *mainMenu = QSoftMenuBar::menuFor(this);
+		mainMenu->addAction(actionScreenshot);
+		mainMenu->addSeparator();
+		mainMenu->addAction(actionSave);
+		mainMenu->addAction(actionLoad);
+		mainMenu->addAction(actionReset);
+		mainMenu->addSeparator();
+		mainMenu->addMenu(tilesMenu);
+		mainMenu->addMenu(aboutMenu);
+
+		QSoftMenuBar::setLabel(this, Qt::Key_Select, QSoftMenuBar::NoLabel);
 		QSoftMenuBar::setHelpEnabled(this, true);
+
+		QtopiaApplication::setInputMethodHint(this, QtopiaApplication::AlwaysOff);
+
+		setWindowIcon(QIcon(":icon/2048_qt4_qtopia4"));
 	}
 	~GameMainWidget() { }
 };
