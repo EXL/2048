@@ -261,7 +261,7 @@ public:
 		// HACK: Don't use long game name in window title on Smart and Classic themes.
 		QSettings gConfig("Trolltech", "qpe");
 		gConfig.beginGroup("Appearance");
-    	const QString activeTheme = gConfig.value("Theme", "qtopia.conf").toString();
+		const QString activeTheme = gConfig.value("Theme", "qtopia.conf").toString();
 		if (activeTheme == "smart.conf" || activeTheme == "classic.conf")
 			setWindowTitle("2048");
 		gConfig.endGroup();

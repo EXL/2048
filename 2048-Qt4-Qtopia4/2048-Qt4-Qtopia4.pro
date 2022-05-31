@@ -11,8 +11,8 @@ LANGUAGES           = $$AVAILABLE_LANGUAGES
 INCLUDEPATH += ../src/
 
 FORMS     += 2048-Qt4-Qtopia4.ui
-HEADERS   += ../src/2048.h 
-SOURCES   += ../src/2048.c 
+HEADERS   += ../src/2048.h
+SOURCES   += ../src/2048.c
 SOURCES   += 2048-Qt4-Qtopia4.cpp
 
 desktop.files    = 2048-Qt4-Qtopia4.desktop
