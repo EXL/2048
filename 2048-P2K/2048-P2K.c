@@ -3,8 +3,11 @@
 #include <uis.h>
 #include <canvas.h>
 #include <mem.h>
+#include <utilities.h>
 
 #include "app_icon.h"
+#include "2048.h"
+#include "2048.c"
 
 #define TIMER_UNPUSH_MS (1)
 
@@ -16,8 +19,9 @@ typedef enum {
 } APP_STATE_T;
 
 typedef enum {
-	APP_TIMER_EXIT,
-	APP_TIMER_UNPUSH
+	APP_TIMER_LEFT_SOFT,
+	APP_TIMER_MENU,
+	APP_TIMER_RIGHT_SOFT
 } APP_TIMER_T;
 
 typedef enum {
@@ -50,6 +54,9 @@ static UINT32 HandleEventTimerExpired(EVENT_STACK_T *ev_st, APPLICATION_T *app);
 static UINT32 GetWorikingArea(GRAPHIC_REGION_T *working_area);
 static UINT32 PaintAll(EVENT_STACK_T *ev_st, APPLICATION_T *app);
 static UINT32 PaintBoard(EVENT_STACK_T *ev_st, APPLICATION_T *app);
+static UINT32 PaintBackground(EVENT_STACK_T *ev_st, APPLICATION_T *app);
+static UINT32 PaintTile(EVENT_STACK_T *ev_st, APPLICATION_T *app, UINT32 value, UINT8 x, UINT8 y);
+static UINT32 PaintFinal(EVENT_STACK_T *ev_st, APPLICATION_T *app);
 
 static const char g_app_name[APP_NAME_LEN] = "2048-P2K";
 
@@ -102,6 +109,8 @@ static UINT32 ApplicationStart(EVENT_STACK_T *ev_st, REG_ID_T reg_id, void *reg_
 	status = RESULT_FAIL;
 
 	if (AFW_InquireRoutingStackByRegId(reg_id) != RESULT_OK) {
+		e_init(KEY_0, KEY_LEFT, KEY_RIGHT, KEY_UP, KEY_DOWN);
+
 		app_instance = (APP_INSTANCE_T *) APP_InitAppData((void *) APP_HandleEvent, sizeof(APP_INSTANCE_T),
 			reg_id, 0, 1, 1, 1, 1, 0);
 
@@ -245,9 +254,38 @@ static UINT32 HandleEventKeyPress(EVENT_STACK_T *ev_st, APPLICATION_T *app) {
 		case KEY_SOFT_RIGHT:
 			UIS_CanvasDrawColorSoftkey((WCHAR *) g_str_app_soft_right, 2, TRUE, TRUE, app->dialog);
 			break;
+		case KEY_4:
+		case KEY_LEFT:
+			e_key(KEY_LEFT);
+			PaintAll(ev_st, app);
+			break;
+		case KEY_6:
+		case KEY_RIGHT:
+			e_key(KEY_RIGHT);
+			PaintAll(ev_st, app);
+			break;
+		case KEY_2:
+		case KEY_UP:
+			e_key(KEY_UP);
+			PaintAll(ev_st, app);
+			break;
+		case KEY_8:
+		case KEY_DOWN:
+			e_key(KEY_DOWN);
+			PaintAll(ev_st, app);
+			break;
+		case KEY_0:
+			e_key(KEY_0);
+			PaintAll(ev_st, app);
+			break;
 		default:
 			break;
 	}
+
+//	PaintBoard(ev_st, app);
+//	UIS_CanvasRefreshDisplayBuffer(app->dialog);
+//	UIS_Refresh();
+//	UIS_CanvasRefreshDisplayRegion(app->dialog, ((APP_INSTANCE_T *) app)->area);
 
 	return status;
 }
@@ -264,11 +302,13 @@ static UINT32 HandleEventKeyRelease(EVENT_STACK_T *ev_st, APPLICATION_T *app) {
 	switch (event->data.key_pressed) {
 		case KEY_RED:
 		case KEY_SOFT_LEFT:
-			status |= APP_UtilStartTimer(TIMER_UNPUSH_MS, APP_TIMER_EXIT, app);
+			status |= APP_UtilStartTimer(TIMER_UNPUSH_MS, APP_TIMER_LEFT_SOFT, app);
 			break;
 		case KEY_MENU:
+			status |= APP_UtilStartTimer(TIMER_UNPUSH_MS, APP_TIMER_MENU, app);
+			break;
 		case KEY_SOFT_RIGHT:
-			status |= APP_UtilStartTimer(TIMER_UNPUSH_MS, APP_TIMER_UNPUSH, app);
+			status |= APP_UtilStartTimer(TIMER_UNPUSH_MS, APP_TIMER_RIGHT_SOFT, app);
 			break;
 		default:
 			break;
@@ -285,13 +325,16 @@ static UINT32 HandleEventTimerExpired(EVENT_STACK_T *ev_st, APPLICATION_T *app) 
 	timer_id = ((DL_TIMER_DATA_T *) event->attachment)->ID;
 
 	switch (timer_id) {
-		case APP_TIMER_UNPUSH:
-			UIS_CanvasDrawColorSoftkey(NULL, 0, FALSE, TRUE, app->dialog);
-			UIS_CanvasDrawColorSoftkey((WCHAR *) g_str_app_soft_right, 2, FALSE, TRUE, app->dialog);
-			break;
-		case APP_TIMER_EXIT:
+		case APP_TIMER_LEFT_SOFT:
 			UIS_CanvasDrawColorSoftkey((WCHAR *) g_str_app_soft_left, 1, FALSE, TRUE, app->dialog);
 			return ApplicationStop(ev_st, app);
+			break;
+		case APP_TIMER_MENU:
+			UIS_CanvasDrawColorSoftkey(NULL, 0, FALSE, TRUE, app->dialog);
+			break;
+		case APP_TIMER_RIGHT_SOFT:
+			e_key(KEY_0);
+			PaintAll(ev_st, app);
 			break;
 		default:
 			break;
@@ -346,6 +389,22 @@ static UINT32 PaintAll(EVENT_STACK_T *ev_st, APPLICATION_T *app) {
 
 static UINT32 PaintBoard(EVENT_STACK_T *ev_st, APPLICATION_T *app) {
 	UINT32 status;
+	UINT8 x;
+	UINT8 y;
+
+	status = RESULT_OK;
+
+	status |= PaintBackground(ev_st, app);
+	for (y = 0; y < LINE_SIZE; ++y)
+		for (x = 0; x < LINE_SIZE; ++x)
+			status |= PaintTile(ev_st, app, e_board[x + y * LINE_SIZE], x, y);
+	status |= PaintFinal(ev_st, app);
+
+	return status;
+}
+
+static UINT32 PaintBackground(EVENT_STACK_T *ev_st, APPLICATION_T *app) {
+	UINT32 status;
 	APP_INSTANCE_T *app_instance;
 	COLOR_T color;
 
@@ -355,11 +414,90 @@ static UINT32 PaintBoard(EVENT_STACK_T *ev_st, APPLICATION_T *app) {
 	color.red = 0xFF;
 	color.green = 0xFF;
 	color.blue = 0xFF;
+	color.transparent = 0x00;
+
+	UIS_CanvasSetFillColor(color);
+	UIS_CanvasFillRect(app_instance->area, app->dialog);
+
+	color.red = 0xFF;
+	color.green = 0xFF;
+	color.blue = 0xFF;
+	color.transparent = 0x00;
+	UIS_CanvasSetForegroundColor(color);
+
+//	UIS_CanvasDrawRect(app_instance->area, TRUE, app->dialog);
+
+	return status;
+}
+
+static UINT32 PaintTile(EVENT_STACK_T *ev_st, APPLICATION_T *app, UINT32 value, UINT8 x, UINT8 y) {
+	UINT32 status;
+	APP_INSTANCE_T *app_instance;
+	UINT32 coord_x;
+	UINT32 coord_y;
+	GRAPHIC_REGION_T rect;
+	COLOR_T color;
+
+	status = RESULT_OK;
+	app_instance = (APP_INSTANCE_T *) app;
+
+	coord_x = x * (22 + 8) + 8;
+	coord_y = (y * (22 + 4) + 4) + app_instance->area.ulc.y + 1;
+
+	rect.ulc.x = coord_x;
+	rect.ulc.y = coord_y;
+	rect.lrc.x = coord_x + 22;
+	rect.lrc.y = coord_y + 22;
+
+	color.red = 0xFF;
+	color.green = 0x00;
+	color.blue = 0x00;
 	color.transparent = 0xFF;
 
 	UIS_CanvasSetFillColor(color);
-//	UIS_CanvasFillRect(app_instance->area, app->dialog);
-	UIS_CanvasDrawRect(app_instance->area, TRUE, app->dialog);
+
+	UIS_CanvasDrawRoundRect(rect, 4, 4, TRUE, app->dialog);
+
+	if (value) {
+		WCHAR str_value[5];
+		GRAPHIC_POINT_T point;
+
+		u_ltou(value, str_value);
+		if (value < 10) {
+			UIS_CanvasSetFont(0x0A, app->dialog);
+			point.x = coord_x + 8;
+			point.y = coord_y + 3;
+		} else if (value < 100) {
+			UIS_CanvasSetFont(0x01, app->dialog);
+			if (value < 32) {
+				point.x = coord_x + 6;
+			} else {
+				point.x = coord_x + 5;
+			}
+			point.y = coord_y + 3;
+		} else if (value < 1000) {
+			UIS_CanvasSetFont(0x06, app->dialog);
+			if (value < 256) {
+				point.x = coord_x + 2;
+			} else {
+				point.x = coord_x + 3;
+			}
+			point.y = coord_y + 4;
+		} else {
+			UIS_CanvasSetFont(0x09, app->dialog);
+			point.x = coord_x + 4;
+			point.y = coord_y + 2;
+		}
+		UIS_CanvasDrawColorText(str_value, 0, u_strlen(str_value), point, 0, app->dialog);
+	}
+
+	return status;
+}
+
+static UINT32 PaintFinal(EVENT_STACK_T *ev_st, APPLICATION_T *app) {
+	UINT32 status;
+
+	status = RESULT_OK;
 
 	return status;
 }
