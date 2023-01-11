@@ -438,21 +438,19 @@ static UINT32 PaintBackground(EVENT_STACK_T *ev_st, APPLICATION_T *app) {
 	status = RESULT_OK;
 	app_instance = (APP_INSTANCE_T *) app;
 
-	color.red = 0xFF;
-	color.green = 0xFF;
-	color.blue = 0xFF;
-	color.transparent = 0x00;
+	if (0) {
+		UIS_CanvasFillRect(app_instance->area, app->dialog);
+	} else {
+		color.red = (COLOR_BOARD & 0x00FF0000) >> 16;
+		color.green = (COLOR_BOARD & 0x0000FF00) >> 8;
+		color.blue = (COLOR_BOARD & 0x000000FF) >> 0;
+		color.transparent = (COLOR_BOARD & 0xFF000000) >> 24;
 
-	UIS_CanvasSetFillColor(color);
-	UIS_CanvasFillRect(app_instance->area, app->dialog);
+		UIS_CanvasSetBackgroundColor(color);
+		UIS_CanvasSetForegroundColor(color);
 
-	color.red = 0xFF;
-	color.green = 0xFF;
-	color.blue = 0xFF;
-	color.transparent = 0x00;
-	UIS_CanvasSetForegroundColor(color);
-
-//	UIS_CanvasDrawRect(app_instance->area, TRUE, app->dialog);
+		UIS_CanvasDrawRect(app_instance->area, TRUE, app->dialog);
+	}
 
 	return status;
 }
@@ -464,6 +462,7 @@ static UINT32 PaintTile(EVENT_STACK_T *ev_st, APPLICATION_T *app, UINT32 value, 
 	UINT32 coord_y;
 	GRAPHIC_REGION_T rect;
 	COLOR_T color;
+	UINT32 tile_color;
 
 	status = RESULT_OK;
 	app_instance = (APP_INSTANCE_T *) app;
@@ -476,12 +475,19 @@ static UINT32 PaintTile(EVENT_STACK_T *ev_st, APPLICATION_T *app, UINT32 value, 
 	rect.lrc.x = coord_x + 22;
 	rect.lrc.y = coord_y + 22;
 
-	color.red = 0xFF;
-	color.green = 0x00;
-	color.blue = 0x00;
-	color.transparent = 0xFF;
+	tile_color = e_background(value);
+	color.red = (tile_color & 0x00FF0000) >> 16;
+	color.green = (tile_color & 0x0000FF00) >> 8;
+	color.blue = (tile_color & 0x000000FF) >> 0;
+	color.transparent = (tile_color & 0xFF000000) >> 24;
+	UIS_CanvasSetBackgroundColor(color);
 
-	UIS_CanvasSetFillColor(color);
+	tile_color = e_foreground(value);
+	color.red = (tile_color & 0x00FF0000) >> 16;
+	color.green = (tile_color & 0x0000FF00) >> 8;
+	color.blue = (tile_color & 0x000000FF) >> 0;
+	color.transparent = (tile_color & 0xFF000000) >> 24;
+	UIS_CanvasSetForegroundColor(color);
 
 	UIS_CanvasDrawRoundRect(rect, 4, 4, TRUE, app->dialog);
 
