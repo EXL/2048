@@ -47,8 +47,9 @@ static UINT32 HandleEventKeyPress(EVENT_STACK_T *ev_st, APPLICATION_T *app);
 static UINT32 HandleEventKeyRelease(EVENT_STACK_T *ev_st, APPLICATION_T *app);
 static UINT32 HandleEventTimerExpired(EVENT_STACK_T *ev_st, APPLICATION_T *app);
 
-static UINT32 PaintOnCanvas(EVENT_STACK_T *ev_st, APPLICATION_T *app);
 static UINT32 GetWorikingArea(GRAPHIC_REGION_T *working_area);
+static UINT32 PaintAll(EVENT_STACK_T *ev_st, APPLICATION_T *app);
+static UINT32 PaintBoard(EVENT_STACK_T *ev_st, APPLICATION_T *app);
 
 static const char g_app_name[APP_NAME_LEN] = "2048-P2K";
 
@@ -198,7 +199,7 @@ static UINT32 HandleStateEnter(EVENT_STACK_T *ev_st, APPLICATION_T *app, ENTER_S
 
 	switch (app_state) {
 	case APP_STATE_MAIN:
-		PaintOnCanvas(ev_st, app);
+		PaintAll(ev_st, app);
 		break;
 	default:
 		break;
@@ -299,35 +300,6 @@ static UINT32 HandleEventTimerExpired(EVENT_STACK_T *ev_st, APPLICATION_T *app) 
 	return RESULT_OK;
 }
 
-static UINT32 PaintOnCanvas(EVENT_STACK_T *ev_st, APPLICATION_T *app) {
-	UINT32 status;
-	APP_INSTANCE_T *app_instance;
-	COLOR_T color;
-
-	status = RESULT_OK;
-	app_instance = (APP_INSTANCE_T *) app;
-
-	color.red = 0xFF;
-	color.green = 0x00;
-	color.blue = 0x00;
-	color.transparent = 0x00;
-
-//	UIS_CanvasSetBackgroundColor(color);
-//	UIS_CanvasSetForegroundColor(color);
-	UIS_CanvasSetFillColor(color);
-
-	UIS_CanvasDrawRect(app_instance->area, TRUE, app->dialog);
-
-	UIS_CanvasDrawTitleBarWithIcon((WCHAR *) g_str_app_name, app_instance->resources[APP_RESOURCE_ICON],
-		FALSE, 1, FALSE, FALSE, app->dialog, 0, 0);
-
-	UIS_CanvasDrawColorSoftkey((WCHAR *) g_str_app_soft_left, 1, FALSE, TRUE, app->dialog);
-	UIS_CanvasDrawColorSoftkey(NULL, 0, FALSE, TRUE, app->dialog);
-	UIS_CanvasDrawColorSoftkey((WCHAR *) g_str_app_soft_right, 2, FALSE, TRUE, app->dialog);
-
-	return status;
-}
-
 static UINT32 GetWorikingArea(GRAPHIC_REGION_T *working_area) {
 	UINT32 status;
 	GRAPHIC_REGION_T rect;
@@ -349,6 +321,45 @@ static UINT32 GetWorikingArea(GRAPHIC_REGION_T *working_area) {
 	rect.lrc.y = height_soft_keys_start;
 
 	memcpy(working_area, &rect, sizeof(GRAPHIC_REGION_T));
+
+	return status;
+}
+
+static UINT32 PaintAll(EVENT_STACK_T *ev_st, APPLICATION_T *app) {
+	UINT32 status;
+	APP_INSTANCE_T *app_instance;
+
+	status = RESULT_OK;
+	app_instance = (APP_INSTANCE_T *) app;
+
+	UIS_CanvasDrawTitleBarWithIcon((WCHAR *) g_str_app_name, app_instance->resources[APP_RESOURCE_ICON],
+		FALSE, 1, FALSE, FALSE, app->dialog, 0, 0);
+
+	status |= PaintBoard(ev_st, app);
+
+	UIS_CanvasDrawColorSoftkey((WCHAR *) g_str_app_soft_left, 1, FALSE, TRUE, app->dialog);
+	UIS_CanvasDrawColorSoftkey(NULL, 0, FALSE, TRUE, app->dialog);
+	UIS_CanvasDrawColorSoftkey((WCHAR *) g_str_app_soft_right, 2, FALSE, TRUE, app->dialog);
+
+	return status;
+}
+
+static UINT32 PaintBoard(EVENT_STACK_T *ev_st, APPLICATION_T *app) {
+	UINT32 status;
+	APP_INSTANCE_T *app_instance;
+	COLOR_T color;
+
+	status = RESULT_OK;
+	app_instance = (APP_INSTANCE_T *) app;
+
+	color.red = 0xFF;
+	color.green = 0xFF;
+	color.blue = 0xFF;
+	color.transparent = 0xFF;
+
+	UIS_CanvasSetFillColor(color);
+//	UIS_CanvasFillRect(app_instance->area, app->dialog);
+	UIS_CanvasDrawRect(app_instance->area, TRUE, app->dialog);
 
 	return status;
 }
