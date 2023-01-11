@@ -5,6 +5,7 @@
 #include <mem.h>
 #include <utilities.h>
 
+#include <res_def.h>
 #include "app_icon.h"
 #include "2048.h"
 #include "2048.c"
@@ -15,6 +16,7 @@ typedef enum {
 	APP_STATE_ANY,
 	APP_STATE_INIT,
 	APP_STATE_MAIN,
+	APP_STATE_MENU,
 	APP_STATE_MAX
 } APP_STATE_T;
 
@@ -50,13 +52,16 @@ static UINT32 DeleteDialog(APPLICATION_T *app);
 static UINT32 HandleEventKeyPress(EVENT_STACK_T *ev_st, APPLICATION_T *app);
 static UINT32 HandleEventKeyRelease(EVENT_STACK_T *ev_st, APPLICATION_T *app);
 static UINT32 HandleEventTimerExpired(EVENT_STACK_T *ev_st, APPLICATION_T *app);
+static UINT32 HandleEventBack(EVENT_STACK_T *ev_st, APPLICATION_T *app);
 
 static UINT32 GetWorikingArea(GRAPHIC_REGION_T *working_area);
-static UINT32 PaintAll(EVENT_STACK_T *ev_st, APPLICATION_T *app);
+static UINT32 PaintAll(EVENT_STACK_T *ev_st, APPLICATION_T *app, BOOL update_title, BOOL update_soft_keys);
 static UINT32 PaintBoard(EVENT_STACK_T *ev_st, APPLICATION_T *app);
 static UINT32 PaintBackground(EVENT_STACK_T *ev_st, APPLICATION_T *app);
 static UINT32 PaintTile(EVENT_STACK_T *ev_st, APPLICATION_T *app, UINT32 value, UINT8 x, UINT8 y);
 static UINT32 PaintFinal(EVENT_STACK_T *ev_st, APPLICATION_T *app);
+
+static LIST_ENTRY_T *TestTestTest(EVENT_STACK_T *ev_st, APPLICATION_T *app, UINT32 start, UINT32 count);
 
 static const char g_app_name[APP_NAME_LEN] = "2048-P2K";
 
@@ -83,10 +88,19 @@ static const EVENT_HANDLER_ENTRY_T g_state_main_hdls[] = {
 	{ STATE_HANDLERS_END, NULL }
 };
 
+static const EVENT_HANDLER_ENTRY_T g_state_menu_hdls[] = {
+//	{ EV_REQUEST_LIST_ITEMS, HandleEventMenuRequestListItems },
+	{ EV_DONE, HandleEventBack },
+	{ EV_DIALOG_DONE, HandleEventBack },
+//	{ EV_SELECT, HandleEventSelect },
+	{ STATE_HANDLERS_END, NULL }
+};
+
 static const STATE_HANDLERS_ENTRY_T g_state_table_hdls[] = {
 	{ APP_STATE_ANY, NULL, NULL, g_state_any_hdls },
 	{ APP_STATE_INIT, NULL, NULL, g_state_init_hdls },
-	{ APP_STATE_MAIN, HandleStateEnter, HandleStateExit, g_state_main_hdls }
+	{ APP_STATE_MAIN, HandleStateEnter, HandleStateExit, g_state_main_hdls },
+	{ APP_STATE_MENU, HandleStateEnter, HandleStateExit, g_state_menu_hdls }
 };
 
 UINT32 Register(const char *elf_path_uri, const char *args, UINT32 ev_code) {
@@ -195,6 +209,9 @@ static UINT32 HandleStateEnter(EVENT_STACK_T *ev_st, APPLICATION_T *app, ENTER_S
 			GetWorikingArea(&app_instance->area);
 			dialog = UIS_CreateColorCanvasWithWallpaper(&port, &buffer, FALSE, TRUE);
 			break;
+		case APP_STATE_MENU:
+			dialog = UIS_CreateStaticList(&port, 0, 3, 0, TestTestTest(ev_st, app, 1, 3), FALSE, 2, NULL, LANG_MENU);
+			break;
 		default:
 			dialog = DialogType_None;
 			break;
@@ -208,7 +225,7 @@ static UINT32 HandleStateEnter(EVENT_STACK_T *ev_st, APPLICATION_T *app, ENTER_S
 
 	switch (app_state) {
 	case APP_STATE_MAIN:
-		PaintAll(ev_st, app);
+		PaintAll(ev_st, app, TRUE, TRUE);
 		break;
 	default:
 		break;
@@ -257,26 +274,26 @@ static UINT32 HandleEventKeyPress(EVENT_STACK_T *ev_st, APPLICATION_T *app) {
 		case KEY_4:
 		case KEY_LEFT:
 			e_key(KEY_LEFT);
-			PaintAll(ev_st, app);
+			PaintAll(ev_st, app, TRUE, FALSE);
 			break;
 		case KEY_6:
 		case KEY_RIGHT:
 			e_key(KEY_RIGHT);
-			PaintAll(ev_st, app);
+			PaintAll(ev_st, app, TRUE, FALSE);
 			break;
 		case KEY_2:
 		case KEY_UP:
 			e_key(KEY_UP);
-			PaintAll(ev_st, app);
+			PaintAll(ev_st, app, TRUE, FALSE);
 			break;
 		case KEY_8:
 		case KEY_DOWN:
 			e_key(KEY_DOWN);
-			PaintAll(ev_st, app);
+			PaintAll(ev_st, app, TRUE, FALSE);
 			break;
 		case KEY_0:
 			e_key(KEY_0);
-			PaintAll(ev_st, app);
+			PaintAll(ev_st, app, TRUE, FALSE);
 			break;
 		default:
 			break;
@@ -331,10 +348,12 @@ static UINT32 HandleEventTimerExpired(EVENT_STACK_T *ev_st, APPLICATION_T *app) 
 			break;
 		case APP_TIMER_MENU:
 			UIS_CanvasDrawColorSoftkey(NULL, 0, FALSE, TRUE, app->dialog);
+			APP_UtilChangeState(APP_STATE_MENU, ev_st, app);
 			break;
 		case APP_TIMER_RIGHT_SOFT:
+			UIS_CanvasDrawColorSoftkey((WCHAR *) g_str_app_soft_right, 2, FALSE, TRUE, app->dialog);
 			e_key(KEY_0);
-			PaintAll(ev_st, app);
+			PaintAll(ev_st, app, TRUE, FALSE);
 			break;
 		default:
 			break;
@@ -368,21 +387,25 @@ static UINT32 GetWorikingArea(GRAPHIC_REGION_T *working_area) {
 	return status;
 }
 
-static UINT32 PaintAll(EVENT_STACK_T *ev_st, APPLICATION_T *app) {
+static UINT32 PaintAll(EVENT_STACK_T *ev_st, APPLICATION_T *app, BOOL update_title, BOOL update_soft_keys) {
 	UINT32 status;
 	APP_INSTANCE_T *app_instance;
 
 	status = RESULT_OK;
 	app_instance = (APP_INSTANCE_T *) app;
 
-	UIS_CanvasDrawTitleBarWithIcon((WCHAR *) g_str_app_name, app_instance->resources[APP_RESOURCE_ICON],
-		FALSE, 1, FALSE, FALSE, app->dialog, 0, 0);
+	if (update_title) {
+		UIS_CanvasDrawTitleBarWithIcon((WCHAR *) g_str_app_name, app_instance->resources[APP_RESOURCE_ICON],
+			FALSE, 1, FALSE, FALSE, app->dialog, 0, 0);
+	}
 
 	status |= PaintBoard(ev_st, app);
 
-	UIS_CanvasDrawColorSoftkey((WCHAR *) g_str_app_soft_left, 1, FALSE, TRUE, app->dialog);
-	UIS_CanvasDrawColorSoftkey(NULL, 0, FALSE, TRUE, app->dialog);
-	UIS_CanvasDrawColorSoftkey((WCHAR *) g_str_app_soft_right, 2, FALSE, TRUE, app->dialog);
+	if (update_soft_keys) {
+		UIS_CanvasDrawColorSoftkey((WCHAR *) g_str_app_soft_left, 1, FALSE, TRUE, app->dialog);
+		UIS_CanvasDrawColorSoftkey(NULL, 0, FALSE, TRUE, app->dialog);
+		UIS_CanvasDrawColorSoftkey((WCHAR *) g_str_app_soft_right, 2, FALSE, TRUE, app->dialog);
+	}
 
 	return status;
 }
@@ -500,4 +523,62 @@ static UINT32 PaintFinal(EVENT_STACK_T *ev_st, APPLICATION_T *app) {
 	status = RESULT_OK;
 
 	return status;
+}
+
+static UINT32 HandleEventBack(EVENT_STACK_T *ev_st, APPLICATION_T *app) {
+	UINT32 status;
+	EVENT_T *event;
+
+	status = RESULT_OK;
+	event = AFW_GetEv(ev_st);
+
+	APP_ConsumeEv(ev_st, app);
+
+	status |= APP_UtilChangeState(APP_STATE_MAIN, ev_st, app);
+
+	return status;
+}
+
+static LIST_ENTRY_T *TestTestTest(EVENT_STACK_T *ev_st, APPLICATION_T *app, UINT32 start, UINT32 count) {
+	UINT32 status;
+	INT32 result;
+	UINT32 i;
+	LIST_ENTRY_T *list;
+
+	status = RESULT_OK;
+	result = RESULT_OK;
+
+	if (count == 0) {
+//		return RESULT_FAIL;
+	}
+	list = (LIST_ENTRY_T *) suAllocMem(sizeof(LIST_ENTRY_T) * 3, &result);
+	if (result != RESULT_OK) {
+//		return RESULT_FAIL;
+	}
+
+	for (i = 0; i < 3; ++i) {
+		memclr(&list[i], sizeof(LIST_ENTRY_T));
+		list[i].editable = FALSE;
+		list[i].content.static_entry.formatting = TRUE;
+	}
+
+	status |= UIS_MakeContentFromString("q0",
+		&list[0].content.static_entry.text,
+		L"1");
+	status |= UIS_MakeContentFromString("q0",
+		&list[1].content.static_entry.text,
+		L"2");
+	status |= UIS_MakeContentFromString("q0",
+		&list[2].content.static_entry.text,
+		L"3");
+
+	status |= APP_UtilAddEvUISListData(ev_st, app, 0, start, 3, FBF_LEAVE,
+		sizeof(LIST_ENTRY_T) * 3, list);
+	if (status != RESULT_FAIL) {
+		UIS_HandleEvent(app->dialog, ev_st);
+	}
+
+//	suFreeMem(list);
+
+	return list;
 }
