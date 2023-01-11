@@ -2,8 +2,9 @@
 #include <apps.h>
 #include <uis.h>
 #include <canvas.h>
-#include <res_def.h> // TODO: Delete?
 #include <mem.h>
+
+#include "app_icon.h"
 
 #define TIMER_UNPUSH_MS (1)
 
@@ -19,15 +20,24 @@ typedef enum {
 	APP_TIMER_UNPUSH
 } APP_TIMER_T;
 
+typedef enum {
+	APP_RESOURCE_ICON,
+	APP_RESOURCE_MAX
+} APP_RESOURCES_T;
+
 typedef struct {
 	APPLICATION_T app;
 
+	RESOURCE_ID resources[APP_RESOURCE_MAX];
 	GRAPHIC_REGION_T area;
 } APP_INSTANCE_T;
 
 UINT32 Register(const char *elf_path_uri, const char *args, UINT32 ev_code);
 static UINT32 ApplicationStart(EVENT_STACK_T *ev_st, REG_ID_T reg_id, void *reg_hdl);
 static UINT32 ApplicationStop(EVENT_STACK_T *ev_st, APPLICATION_T *app);
+
+static UINT32 InitResourses(RESOURCE_ID *resources);
+static UINT32 FreeResourses(RESOURCE_ID *resources);
 
 static UINT32 HandleStateEnter(EVENT_STACK_T *ev_st, APPLICATION_T *app, ENTER_STATE_TYPE_T state);
 static UINT32 HandleStateExit(EVENT_STACK_T *ev_st, APPLICATION_T *app, EXIT_STATE_TYPE_T state);
@@ -94,6 +104,8 @@ static UINT32 ApplicationStart(EVENT_STACK_T *ev_st, REG_ID_T reg_id, void *reg_
 		app_instance = (APP_INSTANCE_T *) APP_InitAppData((void *) APP_HandleEvent, sizeof(APP_INSTANCE_T),
 			reg_id, 0, 1, 1, 1, 1, 0);
 
+		InitResourses(app_instance->resources);
+
 		status = APP_Start(ev_st, &app_instance->app, APP_STATE_MAIN,
 			g_state_table_hdls, ApplicationStop, g_app_name, 0);
 	}
@@ -103,12 +115,44 @@ static UINT32 ApplicationStart(EVENT_STACK_T *ev_st, REG_ID_T reg_id, void *reg_
 
 static UINT32 ApplicationStop(EVENT_STACK_T *ev_st, APPLICATION_T *app) {
 	UINT32 status;
+	APP_INSTANCE_T *app_instance;
+
+	status = RESULT_OK;
+	app_instance = (APP_INSTANCE_T *) app;
 
 	DeleteDialog(app);
 
-	status = APP_Exit(ev_st, app, 0);
+	FreeResourses(app_instance->resources);
+
+	status |= APP_Exit(ev_st, app, 0);
 
 	LdrUnloadELF(&Lib);
+
+	return status;
+}
+
+static UINT32 InitResourses(RESOURCE_ID *resources) {
+	UINT32 status;
+
+	status = RESULT_OK;
+
+	status |= DRM_CreateResource(&resources[APP_RESOURCE_ICON], RES_TYPE_GRAPHICS,
+		(void *) g_app_icon, sizeof(g_app_icon));
+
+	return status;
+}
+
+static UINT32 FreeResourses(RESOURCE_ID *resources) {
+	UINT32 status;
+	UINT32 i;
+
+	status = RESULT_OK;
+
+	for (i = 0; i < APP_RESOURCE_MAX; ++i) {
+		if (resources[i]) {
+			status |= DRM_ClearResource(resources[i]);
+		}
+	}
 
 	return status;
 }
@@ -274,7 +318,8 @@ static UINT32 PaintOnCanvas(EVENT_STACK_T *ev_st, APPLICATION_T *app) {
 
 	UIS_CanvasDrawRect(app_instance->area, TRUE, app->dialog);
 
-	UIS_CanvasDrawTitleBarWithIcon((WCHAR *) g_str_app_name, RES_GIF_FOLDER, FALSE, 1, FALSE, FALSE, app->dialog, 0, 0);
+	UIS_CanvasDrawTitleBarWithIcon((WCHAR *) g_str_app_name, app_instance->resources[APP_RESOURCE_ICON],
+		FALSE, 1, FALSE, FALSE, app->dialog, 0, 0);
 
 	UIS_CanvasDrawColorSoftkey((WCHAR *) g_str_app_soft_left, 1, FALSE, TRUE, app->dialog);
 	UIS_CanvasDrawColorSoftkey(NULL, 0, FALSE, TRUE, app->dialog);
