@@ -55,7 +55,7 @@ static UINT32 HandleEventTimerExpired(EVENT_STACK_T *ev_st, APPLICATION_T *app);
 static UINT32 HandleEventBack(EVENT_STACK_T *ev_st, APPLICATION_T *app);
 
 static UINT32 GetWorikingArea(GRAPHIC_REGION_T *working_area);
-static UINT32 PaintAll(EVENT_STACK_T *ev_st, APPLICATION_T *app, BOOL update_title, BOOL update_soft_keys);
+static UINT32 PaintAll(EVENT_STACK_T *ev_st, APPLICATION_T *app, BOOL show_score, BOOL update_soft_keys);
 static UINT32 PaintBoard(EVENT_STACK_T *ev_st, APPLICATION_T *app);
 static UINT32 PaintBackground(EVENT_STACK_T *ev_st, APPLICATION_T *app);
 static UINT32 PaintTile(EVENT_STACK_T *ev_st, APPLICATION_T *app, UINT32 value, UINT8 x, UINT8 y);
@@ -68,6 +68,7 @@ static const char g_app_name[APP_NAME_LEN] = "2048-P2K";
 static const WCHAR g_str_app_name[] = L"2048-P2K";
 static const WCHAR g_str_app_soft_left[] = L"Exit";
 static const WCHAR g_str_app_soft_right[] = L"Reset";
+static const WCHAR g_str_app_score[] = L"Score: ";
 
 static const EVENT_HANDLER_ENTRY_T g_state_any_hdls[] = {
 	{ EV_REVOKE_TOKEN, APP_HandleUITokenRevoked },
@@ -225,7 +226,7 @@ static UINT32 HandleStateEnter(EVENT_STACK_T *ev_st, APPLICATION_T *app, ENTER_S
 
 	switch (app_state) {
 	case APP_STATE_MAIN:
-		PaintAll(ev_st, app, TRUE, TRUE);
+		PaintAll(ev_st, app, FALSE, TRUE);
 		break;
 	default:
 		break;
@@ -293,16 +294,11 @@ static UINT32 HandleEventKeyPress(EVENT_STACK_T *ev_st, APPLICATION_T *app) {
 			break;
 		case KEY_0:
 			e_key(KEY_0);
-			PaintAll(ev_st, app, TRUE, FALSE);
+			PaintAll(ev_st, app, FALSE, FALSE);
 			break;
 		default:
 			break;
 	}
-
-//	PaintBoard(ev_st, app);
-//	UIS_CanvasRefreshDisplayBuffer(app->dialog);
-//	UIS_Refresh();
-//	UIS_CanvasRefreshDisplayRegion(app->dialog, ((APP_INSTANCE_T *) app)->area);
 
 	return status;
 }
@@ -353,7 +349,7 @@ static UINT32 HandleEventTimerExpired(EVENT_STACK_T *ev_st, APPLICATION_T *app) 
 		case APP_TIMER_RIGHT_SOFT:
 			UIS_CanvasDrawColorSoftkey((WCHAR *) g_str_app_soft_right, 2, FALSE, TRUE, app->dialog);
 			e_key(KEY_0);
-			PaintAll(ev_st, app, TRUE, FALSE);
+			PaintAll(ev_st, app, FALSE, FALSE);
 			break;
 		default:
 			break;
@@ -387,14 +383,22 @@ static UINT32 GetWorikingArea(GRAPHIC_REGION_T *working_area) {
 	return status;
 }
 
-static UINT32 PaintAll(EVENT_STACK_T *ev_st, APPLICATION_T *app, BOOL update_title, BOOL update_soft_keys) {
+static UINT32 PaintAll(EVENT_STACK_T *ev_st, APPLICATION_T *app, BOOL show_score, BOOL update_soft_keys) {
 	UINT32 status;
 	APP_INSTANCE_T *app_instance;
+	WCHAR score_title[32] = { 0 };
+	WCHAR score_string[10] = { 0 };
 
 	status = RESULT_OK;
 	app_instance = (APP_INSTANCE_T *) app;
 
-	if (update_title) {
+	if (show_score) {
+		u_ltou(e_score, score_string);
+		u_strcat(score_title, g_str_app_score);
+		u_strcat(score_title, score_string);
+		UIS_CanvasDrawTitleBarWithIcon(score_title, app_instance->resources[APP_RESOURCE_ICON],
+			FALSE, 1, FALSE, FALSE, app->dialog, 0, 0);
+	} else {
 		UIS_CanvasDrawTitleBarWithIcon((WCHAR *) g_str_app_name, app_instance->resources[APP_RESOURCE_ICON],
 			FALSE, 1, FALSE, FALSE, app->dialog, 0, 0);
 	}
@@ -482,7 +486,7 @@ static UINT32 PaintTile(EVENT_STACK_T *ev_st, APPLICATION_T *app, UINT32 value, 
 	UIS_CanvasDrawRoundRect(rect, 4, 4, TRUE, app->dialog);
 
 	if (value) {
-		WCHAR str_value[5];
+		WCHAR str_value[5] = { 0 };
 		GRAPHIC_POINT_T point;
 
 		u_ltou(value, str_value);
