@@ -22,11 +22,13 @@ typedef enum {
 	APP_STATE_INIT,
 	APP_STATE_MAIN,
 	APP_STATE_MENU,
+	APP_STATE_VIEW,
 	APP_STATE_MAX
 } APP_STATE_T;
 
 typedef enum {
 	APP_TIMER_EXIT,
+	APP_TIMER_EXIT_FAST,
 	APP_TIMER_MENU,
 	APP_TIMER_RESET
 } APP_TIMER_T;
@@ -55,6 +57,11 @@ typedef enum {
 	APP_MENU_ITEM_EXIT,
 	APP_MENU_ITEM_MAX
 } APP_MENU_ITEM_T;
+
+typedef enum {
+	APP_VIEW_HELP,
+	APP_VIEW_ABOUT
+} APP_VIEW_T;
 
 typedef struct {
 	BOOL show_background;
@@ -87,6 +94,8 @@ typedef struct {
 	GRAPHIC_REGION_T area;
 	APP_OPTIONS_T options;
 	APP_MEASURED_T measured;
+	APP_VIEW_T view;
+	APP_MENU_ITEM_T menu_current_item_index;
 } APP_INSTANCE_T;
 
 static __inline UINT32 OffsetCoord(UINT8 coord, UINT16 tile_size, UINT16 offset);
@@ -138,6 +147,10 @@ static const WCHAR g_str_menu_about[] = L"About...";
 static const WCHAR g_str_menu_exit[] = L"Exit";
 static const WCHAR g_str_game_won[] = L"You Won!";
 static const WCHAR g_str_game_over[] = L"Game Over!";
+static const WCHAR g_str_view_help[] = L"Help";
+static const WCHAR g_str_view_about[] = L"About";
+static const WCHAR g_str_view_help_content[] = L"Help content.";
+static const WCHAR g_str_view_about_content[] = L"About content.";
 
 static const COLOR_T g_color_board   = { 0xBB, 0xAD, 0xA0, 0xFF }; /* COLOR_BOARD   */
 static const COLOR_T g_color_overlay = { 0x88, 0x88, 0x88, 0xFF }; /* COLOR_OVERLAY */
@@ -170,11 +183,18 @@ static const EVENT_HANDLER_ENTRY_T g_state_menu_hdls[] = {
 	{ STATE_HANDLERS_END, NULL }
 };
 
+static const EVENT_HANDLER_ENTRY_T g_state_popup_hdls[] = {
+	{ EV_DONE, HandleEventBack },
+	{ EV_DIALOG_DONE, HandleEventBack },
+	{ STATE_HANDLERS_END, NULL }
+};
+
 static const STATE_HANDLERS_ENTRY_T g_state_table_hdls[] = {
 	{ APP_STATE_ANY, NULL, NULL, g_state_any_hdls },
 	{ APP_STATE_INIT, NULL, NULL, g_state_init_hdls },
 	{ APP_STATE_MAIN, HandleStateEnter, HandleStateExit, g_state_main_hdls },
-	{ APP_STATE_MENU, HandleStateEnter, HandleStateExit, g_state_menu_hdls }
+	{ APP_STATE_MENU, HandleStateEnter, HandleStateExit, g_state_menu_hdls },
+	{ APP_STATE_VIEW, HandleStateEnter, HandleStateExit, g_state_popup_hdls } /* Same as popups. */
 };
 
 static __inline UINT32 OffsetCoord(UINT8 coord, UINT16 tile_size, UINT16 offset) {
@@ -223,6 +243,8 @@ static UINT32 ApplicationStart(EVENT_STACK_T *ev_st, REG_ID_T reg_id, void *reg_
 		InitResourses(app_instance->resources);
 		app_instance->options.rounded_tiles = TRUE;
 		app_instance->options.show_background = TRUE;
+		app_instance->menu_current_item_index = APP_MENU_ITEM_FIRST;
+		app_instance->view = APP_VIEW_HELP;
 
 		status = APP_Start(ev_st, &app_instance->app, APP_STATE_MAIN,
 			g_state_table_hdls, ApplicationStop, g_app_name, 0);
@@ -280,9 +302,10 @@ static UINT32 FreeResourses(RESOURCE_ID *resources) {
 static UINT32 HandleStateEnter(EVENT_STACK_T *ev_st, APPLICATION_T *app, ENTER_STATE_TYPE_T state) {
 	APP_INSTANCE_T *app_instance;
 	SU_PORT_T port;
-	DRAWING_BUFFER_T buffer;
+	CONTENT_T content;
 	UIS_DIALOG_T dialog;
 	APP_STATE_T app_state;
+	DRAWING_BUFFER_T buffer;
 	GRAPHIC_POINT_T point;
 	LIST_ENTRY_T *list;
 
@@ -314,6 +337,18 @@ static UINT32 HandleStateEnter(EVENT_STACK_T *ev_st, APPLICATION_T *app, ENTER_S
 					app_instance->resources[APP_RESOURCE_NAME]);
 				suFreeMem(list);
 			}
+			break;
+		case APP_STATE_VIEW:
+			switch (app_instance->view) {
+				default:
+				case APP_VIEW_HELP:
+					UIS_MakeContentFromString("q0Nq1", &content, g_str_view_help, g_str_view_help_content);
+					break;
+				case APP_VIEW_ABOUT:
+					UIS_MakeContentFromString("q0Nq1", &content, g_str_view_about, g_str_view_about_content);
+					break;
+			}
+			dialog = UIS_CreateViewer(&port, &content, NULL);
 			break;
 		default:
 			dialog = DialogType_None;
@@ -444,6 +479,9 @@ static UINT32 HandleEventTimerExpired(EVENT_STACK_T *ev_st, APPLICATION_T *app) 
 			DrawSoftKeys(ev_st, app, APP_SOFT_KEY_LEFT, FALSE);
 			return ApplicationStop(ev_st, app);
 			break;
+		case APP_TIMER_EXIT_FAST:
+			return ApplicationStop(ev_st, app);
+			break;
 		case APP_TIMER_MENU:
 			DrawSoftKeys(ev_st, app, APP_SOFT_KEY_MENU, FALSE);
 			APP_UtilChangeState(APP_STATE_MENU, ev_st, app);
@@ -462,12 +500,42 @@ static UINT32 HandleEventTimerExpired(EVENT_STACK_T *ev_st, APPLICATION_T *app) 
 
 static UINT32 HandleEventSelect(EVENT_STACK_T *ev_st, APPLICATION_T *app) {
 	UINT32 status;
+	APP_INSTANCE_T *app_instance;
 	EVENT_T *event;
 
 	status = RESULT_OK;
+	app_instance = (APP_INSTANCE_T *) app;
 	event = AFW_GetEv(ev_st);
 
-	UtilLogStringData("Selected item index: %d", event->data.index - 1);
+	app_instance->menu_current_item_index = event->data.index - 1;
+
+	switch (app_instance->menu_current_item_index) {
+		case APP_MENU_ITEM_SAVE:
+			break;
+		case APP_MENU_ITEM_LOAD:
+			break;
+		case APP_MENU_ITEM_RESET:
+			e_key(KEY_0);
+			status |= APP_UtilChangeState(APP_STATE_MAIN, ev_st, app);
+			break;
+		case APP_MENU_ITEM_BACKGROUND:
+			break;
+		case APP_MENU_ITEM_TILES:
+			break;
+		case APP_MENU_ITEM_HELP:
+			app_instance->view = APP_VIEW_HELP;
+			status |= APP_UtilChangeState(APP_STATE_VIEW, ev_st, app);
+			break;
+		case APP_MENU_ITEM_ABOUT:
+			app_instance->view = APP_VIEW_ABOUT;
+			status |= APP_UtilChangeState(APP_STATE_VIEW, ev_st, app);
+			break;
+		case APP_MENU_ITEM_EXIT:
+			status |= APP_UtilStartTimer(TIMER_FAST_TRIGGER_MS, APP_TIMER_EXIT_FAST, app);
+			break;
+		default:
+			break;
+	}
 
 	return status;
 }
