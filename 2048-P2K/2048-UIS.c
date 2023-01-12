@@ -62,13 +62,34 @@ typedef struct {
 } APP_OPTIONS_T;
 
 typedef struct {
+	UINT16 tile_size;
+	UINT16 offset_x;
+	UINT16 offset_y;
+	UINT16 rounded_rad;
+	UINT16 font_large;
+	UINT16 font_normal;
+	UINT16 font_small;
+	UINT16 font_ultra_small;
+	UINT16 gap;
+	UINT16 gap_y_huge;
+} APP_MEASURED_T;
+
+typedef enum {
+	APP_DISPLAY_128x160 = 160,
+	APP_DISPLAY_176x220 = 220,
+	APP_DISPLAY_240x320 = 320
+} APP_DISPLAY_T;
+
+typedef struct {
 	APPLICATION_T app;
 
 	RESOURCE_ID resources[APP_RESOURCE_MAX];
 	GRAPHIC_REGION_T area;
 	APP_OPTIONS_T options;
+	APP_MEASURED_T measured;
 } APP_INSTANCE_T;
 
+static __inline UINT32 OffsetCoord(UINT8 coord, UINT16 tile_size, UINT16 offset);
 static __inline void SetRgbColor(COLOR_T *color, UINT32 rgb);
 
 UINT32 Register(const char *elf_path_uri, const char *args, UINT32 ev_code);
@@ -88,7 +109,8 @@ static UINT32 HandleEventTimerExpired(EVENT_STACK_T *ev_st, APPLICATION_T *app);
 static UINT32 HandleEventSelect(EVENT_STACK_T *ev_st, APPLICATION_T *app);
 static UINT32 HandleEventBack(EVENT_STACK_T *ev_st, APPLICATION_T *app);
 
-static UINT32 GetWorikingArea(GRAPHIC_REGION_T *working_area);
+static UINT32 SetWorikingArea(GRAPHIC_REGION_T *working_area);
+static UINT32 SetMeasuredValues(APP_MEASURED_T *measured_values, DRAWING_BUFFER_T *buffer);
 static UINT32 DrawSoftKeys(EVENT_STACK_T *ev_st, APPLICATION_T *app, APP_SOFT_KEY_T softkey, BOOL pushed);
 
 static UINT32 PaintAll(EVENT_STACK_T *ev_st, APPLICATION_T *app, BOOL show_score, BOOL update_soft_keys);
@@ -149,6 +171,10 @@ static const STATE_HANDLERS_ENTRY_T g_state_table_hdls[] = {
 	{ APP_STATE_MAIN, HandleStateEnter, HandleStateExit, g_state_main_hdls },
 	{ APP_STATE_MENU, HandleStateEnter, HandleStateExit, g_state_menu_hdls }
 };
+
+static __inline UINT32 OffsetCoord(UINT8 coord, UINT16 tile_size, UINT16 offset) {
+	return (coord * (tile_size + offset) + offset);
+}
 
 static __inline void SetRgbColor(COLOR_T *color, UINT32 rgb) {
 	color->red         = (rgb & 0x00FF0000) >> 16;
@@ -265,7 +291,8 @@ static UINT32 HandleStateEnter(EVENT_STACK_T *ev_st, APPLICATION_T *app, ENTER_S
 			buffer.w = point.x + 1;
 			buffer.h = point.y + 1;
 			buffer.buf = NULL;
-			GetWorikingArea(&app_instance->area);
+			SetWorikingArea(&app_instance->area);
+			SetMeasuredValues(&app_instance->measured, &buffer);
 			dialog = UIS_CreateColorCanvasWithWallpaper(&port, &buffer, FALSE, TRUE);
 			break;
 		case APP_STATE_MENU:
@@ -443,7 +470,7 @@ static UINT32 HandleEventBack(EVENT_STACK_T *ev_st, APPLICATION_T *app) {
 	return status;
 }
 
-static UINT32 GetWorikingArea(GRAPHIC_REGION_T *working_area) {
+static UINT32 SetWorikingArea(GRAPHIC_REGION_T *working_area) {
 	UINT32 status;
 	GRAPHIC_REGION_T rect;
 	UINT8 count_lines;
@@ -464,6 +491,43 @@ static UINT32 GetWorikingArea(GRAPHIC_REGION_T *working_area) {
 	rect.lrc.y = height_soft_keys_start;
 
 	memcpy(working_area, &rect, sizeof(GRAPHIC_REGION_T));
+
+	return status;
+}
+
+static UINT32 SetMeasuredValues(APP_MEASURED_T *measured_values, DRAWING_BUFFER_T *buffer) {
+	UINT32 status;
+
+	status = RESULT_OK;
+
+	switch (buffer->h) {
+		default:
+		case APP_DISPLAY_128x160:
+			measured_values->tile_size = 22;
+			measured_values->offset_x = 8;
+			measured_values->offset_y = 4;
+			measured_values->rounded_rad = 4;
+			measured_values->font_large = 0x0A;
+			measured_values->font_normal = 0x01;
+			measured_values->font_small = 0x06;
+			measured_values->font_ultra_small = 0x09;
+			measured_values->gap = 1;
+			measured_values->gap_y_huge = 2;
+			break;
+		case APP_DISPLAY_176x220:
+		case APP_DISPLAY_240x320: /* FIXME: Unknown values for 240x320 screen, set them similar to 176x220. */
+			measured_values->tile_size = 22;
+			measured_values->offset_x = 8;
+			measured_values->offset_y = 4;
+			measured_values->rounded_rad = 4;
+			measured_values->font_large = 0x0A;
+			measured_values->font_normal = 0x01;
+			measured_values->font_small = 0x06;
+			measured_values->font_ultra_small = 0x09;
+			measured_values->gap = 1;
+			measured_values->gap_y_huge = 2;
+			break;
+	}
 
 	return status;
 }
@@ -562,24 +626,29 @@ static UINT32 PaintTile(EVENT_STACK_T *ev_st, APPLICATION_T *app, UINT32 value, 
 	UINT32 coord_y;
 	GRAPHIC_REGION_T rect;
 	COLOR_T color;
+	UINT32 font_id;
+	UINT16 tile_size;
+	UINT16 radius;
 
 	status = RESULT_OK;
 	app_instance = (APP_INSTANCE_T *) app;
+	tile_size = app_instance->measured.tile_size;
 
-	coord_x = x * (22 + 8) + 8;
-	coord_y = (y * (22 + 4) + 4) + app_instance->area.ulc.y + 1;
+	coord_x = OffsetCoord(x, tile_size, app_instance->measured.offset_x);
+	coord_y = OffsetCoord(y, tile_size, app_instance->measured.offset_y) + app_instance->area.ulc.y + 1;
 
 	rect.ulc.x = coord_x;
 	rect.ulc.y = coord_y;
-	rect.lrc.x = coord_x + 22;
-	rect.lrc.y = coord_y + 22;
+	rect.lrc.x = coord_x + app_instance->measured.tile_size;
+	rect.lrc.y = coord_y + app_instance->measured.tile_size;
 
 	SetRgbColor(&color, e_background(value));
 	UIS_CanvasSetBackgroundColor(color);
 	UIS_CanvasSetForegroundColor(g_color_text);
 
 	if (app_instance->options.rounded_tiles) {
-		UIS_CanvasDrawRoundRect(rect, 4, 4, TRUE, app->dialog);
+		radius = app_instance->measured.rounded_rad;
+		UIS_CanvasDrawRoundRect(rect, radius, radius, TRUE, app->dialog);
 	} else {
 		UIS_CanvasDrawRect(rect, TRUE, app->dialog);
 	}
@@ -587,6 +656,7 @@ static UINT32 PaintTile(EVENT_STACK_T *ev_st, APPLICATION_T *app, UINT32 value, 
 	if (value) {
 		WCHAR tile_value[TILE_VALUE_MAX_LENGTH] = { 0 };
 		GRAPHIC_POINT_T point;
+		GRAPHIC_METRIC_T string_measure;
 
 		if (value < 64) {
 			SetRgbColor(&color, e_foreground(value));
@@ -594,27 +664,27 @@ static UINT32 PaintTile(EVENT_STACK_T *ev_st, APPLICATION_T *app, UINT32 value, 
 		}
 
 		u_ltou(value, tile_value);
+
 		if (value < 10) {
-			UIS_CanvasSetFont(0x0A, app->dialog);
-			point.x = coord_x + 8;
-			point.y = coord_y + 3;
+			font_id = app_instance->measured.font_large;
 		} else if (value < 100) {
-			UIS_CanvasSetFont(0x01, app->dialog);
-			if (value < 32) {
-				point.x = coord_x + 6;
-			} else {
-				point.x = coord_x + 5;
-			}
-			point.y = coord_y + 3;
+			font_id = app_instance->measured.font_normal;
 		} else if (value < 1000) {
-			UIS_CanvasSetFont(0x06, app->dialog);
-			point.x = coord_x + 3;
-			point.y = coord_y + 4;
+			font_id = app_instance->measured.font_small;
 		} else {
-			UIS_CanvasSetFont(0x09, app->dialog);
-			point.x = coord_x + 4;
-			point.y = coord_y + 2;
+			font_id = app_instance->measured.font_ultra_small;
 		}
+
+		UIS_CanvasSetFont(font_id, app->dialog);
+		UIS_CanvasGetStringSize(tile_value, &string_measure, font_id);
+
+		point.x = (coord_x + (tile_size - string_measure.width) / 2) + app_instance->measured.gap;
+		point.y = (coord_y + (tile_size - string_measure.height) / 2) + app_instance->measured.gap;
+
+		if (value > 1000) {
+			point.y -= app_instance->measured.gap_y_huge;
+		}
+
 		UIS_CanvasDrawColorText(tile_value, 0, u_strlen(tile_value), point, 0, app->dialog);
 	}
 
@@ -676,14 +746,6 @@ static LIST_ENTRY_T *CreateMainMenuList(EVENT_STACK_T *ev_st, APPLICATION_T *app
 	status |= UIS_MakeContentFromString("Mq0",
 		&list[APP_MENU_ITEM_EXIT].content.static_entry.text,
 		g_str_menu_exit);
-
-#if 0
-	status |= APP_UtilAddEvUISListData(ev_st, app, 0, start, APP_MENU_ITEM_MAX, FBF_LEAVE,
-		sizeof(LIST_ENTRY_T) * APP_MENU_ITEM_MAX, list);
-	if (status != RESULT_FAIL) {
-		UIS_HandleEvent(app->dialog, ev_st);
-	}
-#endif
 
 	if (status != RESULT_OK) {
 		suFreeMem(list);
