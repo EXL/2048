@@ -5,12 +5,17 @@
 #include <mem.h>
 #include <utilities.h>
 
+/* TODO BLOCK!!!! */
 #include <res_def.h>
 #include "app_icon.h"
 #include "2048.h"
 #include "2048.c"
+/* TODO BLOCK!!!! */
 
-#define TIMER_UNPUSH_MS (1)
+#define TIMER_FAST_TRIGGER_MS             (1)
+#define SCORE_TITLE_MAX_LENGTH           (16)
+#define SCORE_VALUE_MAX_LENGTH            (6)
+#define TILE_VALUE_MAX_LENGTH             (5)
 
 typedef enum {
 	APP_STATE_ANY,
@@ -21,22 +26,50 @@ typedef enum {
 } APP_STATE_T;
 
 typedef enum {
-	APP_TIMER_LEFT_SOFT,
+	APP_TIMER_EXIT,
 	APP_TIMER_MENU,
-	APP_TIMER_RIGHT_SOFT
+	APP_TIMER_RESET
 } APP_TIMER_T;
 
 typedef enum {
+	APP_SOFT_KEY_MENU,
+	APP_SOFT_KEY_LEFT,
+	APP_SOFT_KEY_RIGHT
+} APP_SOFT_KEY_T;
+
+typedef enum {
+	APP_RESOURCE_NAME,
 	APP_RESOURCE_ICON,
 	APP_RESOURCE_MAX
 } APP_RESOURCES_T;
+
+typedef enum {
+	APP_MENU_ITEM_FIRST,
+	APP_MENU_ITEM_SAVE = APP_MENU_ITEM_FIRST,
+	APP_MENU_ITEM_LOAD,
+	APP_MENU_ITEM_RESET,
+	APP_MENU_ITEM_BACKGROUND,
+	APP_MENU_ITEM_TILES,
+	APP_MENU_ITEM_HELP,
+	APP_MENU_ITEM_ABOUT,
+	APP_MENU_ITEM_EXIT,
+	APP_MENU_ITEM_MAX
+} APP_MENU_ITEM_T;
+
+typedef struct {
+	BOOL show_background;
+	BOOL rounded_tiles;
+} APP_OPTIONS_T;
 
 typedef struct {
 	APPLICATION_T app;
 
 	RESOURCE_ID resources[APP_RESOURCE_MAX];
 	GRAPHIC_REGION_T area;
+	APP_OPTIONS_T options;
 } APP_INSTANCE_T;
+
+static __inline void SetRgbColor(COLOR_T *color, UINT32 rgb);
 
 UINT32 Register(const char *elf_path_uri, const char *args, UINT32 ev_code);
 static UINT32 ApplicationStart(EVENT_STACK_T *ev_st, REG_ID_T reg_id, void *reg_hdl);
@@ -52,23 +85,37 @@ static UINT32 DeleteDialog(APPLICATION_T *app);
 static UINT32 HandleEventKeyPress(EVENT_STACK_T *ev_st, APPLICATION_T *app);
 static UINT32 HandleEventKeyRelease(EVENT_STACK_T *ev_st, APPLICATION_T *app);
 static UINT32 HandleEventTimerExpired(EVENT_STACK_T *ev_st, APPLICATION_T *app);
+static UINT32 HandleEventSelect(EVENT_STACK_T *ev_st, APPLICATION_T *app);
 static UINT32 HandleEventBack(EVENT_STACK_T *ev_st, APPLICATION_T *app);
 
 static UINT32 GetWorikingArea(GRAPHIC_REGION_T *working_area);
+static UINT32 DrawSoftKeys(EVENT_STACK_T *ev_st, APPLICATION_T *app, APP_SOFT_KEY_T softkey, BOOL pushed);
+
 static UINT32 PaintAll(EVENT_STACK_T *ev_st, APPLICATION_T *app, BOOL show_score, BOOL update_soft_keys);
 static UINT32 PaintBoard(EVENT_STACK_T *ev_st, APPLICATION_T *app);
 static UINT32 PaintBackground(EVENT_STACK_T *ev_st, APPLICATION_T *app);
 static UINT32 PaintTile(EVENT_STACK_T *ev_st, APPLICATION_T *app, UINT32 value, UINT8 x, UINT8 y);
 static UINT32 PaintFinal(EVENT_STACK_T *ev_st, APPLICATION_T *app);
 
-static LIST_ENTRY_T *TestTestTest(EVENT_STACK_T *ev_st, APPLICATION_T *app, UINT32 start, UINT32 count);
+static LIST_ENTRY_T *CreateMainMenuList(EVENT_STACK_T *ev_st, APPLICATION_T *app, UINT32 start, UINT32 count);
 
-static const char g_app_name[APP_NAME_LEN] = "2048-P2K";
+static const char g_app_name[APP_NAME_LEN] = "2048-UIS";
 
-static const WCHAR g_str_app_name[] = L"2048-P2K";
+static const WCHAR g_str_app_name[] = L"2048-P2K-UIS";
 static const WCHAR g_str_app_soft_left[] = L"Exit";
 static const WCHAR g_str_app_soft_right[] = L"Reset";
 static const WCHAR g_str_app_score[] = L"Score: ";
+static const WCHAR g_str_menu_save[] = L"Save Game";
+static const WCHAR g_str_menu_load[] = L"Load Game";
+static const WCHAR g_str_menu_reset[] = L"Reset Game";
+static const WCHAR g_str_menu_background[] = L"Background";
+static const WCHAR g_str_menu_tiles[] = L"Tiles";
+static const WCHAR g_str_menu_help[] = L"Help...";
+static const WCHAR g_str_menu_about[] = L"About...";
+static const WCHAR g_str_menu_exit[] = L"Exit";
+
+static const COLOR_T g_color_board = { 0xBB, 0xAD, 0xA0, 0xFF }; /* COLOR_BOARD */
+static const COLOR_T g_color_text  = { 0x77, 0x6E, 0x65, 0xFF }; /* COLOR_TEXT  */
 
 static const EVENT_HANDLER_ENTRY_T g_state_any_hdls[] = {
 	{ EV_REVOKE_TOKEN, APP_HandleUITokenRevoked },
@@ -90,10 +137,9 @@ static const EVENT_HANDLER_ENTRY_T g_state_main_hdls[] = {
 };
 
 static const EVENT_HANDLER_ENTRY_T g_state_menu_hdls[] = {
-//	{ EV_REQUEST_LIST_ITEMS, HandleEventMenuRequestListItems },
 	{ EV_DONE, HandleEventBack },
 	{ EV_DIALOG_DONE, HandleEventBack },
-//	{ EV_SELECT, HandleEventSelect },
+	{ EV_SELECT, HandleEventSelect },
 	{ STATE_HANDLERS_END, NULL }
 };
 
@@ -103,6 +149,13 @@ static const STATE_HANDLERS_ENTRY_T g_state_table_hdls[] = {
 	{ APP_STATE_MAIN, HandleStateEnter, HandleStateExit, g_state_main_hdls },
 	{ APP_STATE_MENU, HandleStateEnter, HandleStateExit, g_state_menu_hdls }
 };
+
+static __inline void SetRgbColor(COLOR_T *color, UINT32 rgb) {
+	color->red         = (rgb & 0x00FF0000) >> 16;
+	color->green       = (rgb & 0x0000FF00) >>  8;
+	color->blue        = (rgb & 0x000000FF) >>  0;
+	color->transparent = (rgb & 0xFF000000) >> 24;
+}
 
 UINT32 Register(const char *elf_path_uri, const char *args, UINT32 ev_code) {
 	UINT32 status;
@@ -130,6 +183,8 @@ static UINT32 ApplicationStart(EVENT_STACK_T *ev_st, REG_ID_T reg_id, void *reg_
 			reg_id, 0, 1, 1, 1, 1, 0);
 
 		InitResourses(app_instance->resources);
+		app_instance->options.rounded_tiles = TRUE;
+		app_instance->options.show_background = TRUE;
 
 		status = APP_Start(ev_st, &app_instance->app, APP_STATE_MAIN,
 			g_state_table_hdls, ApplicationStop, g_app_name, 0);
@@ -161,6 +216,8 @@ static UINT32 InitResourses(RESOURCE_ID *resources) {
 
 	status = RESULT_OK;
 
+	status |= DRM_CreateResource(&resources[APP_RESOURCE_NAME], RES_TYPE_STRING,
+		(void *) g_str_app_name, (u_strlen(g_str_app_name) + 1) * sizeof(WCHAR));
 	status |= DRM_CreateResource(&resources[APP_RESOURCE_ICON], RES_TYPE_GRAPHICS,
 		(void *) g_app_icon, sizeof(g_app_icon));
 
@@ -189,6 +246,7 @@ static UINT32 HandleStateEnter(EVENT_STACK_T *ev_st, APPLICATION_T *app, ENTER_S
 	UIS_DIALOG_T dialog;
 	APP_STATE_T app_state;
 	GRAPHIC_POINT_T point;
+	LIST_ENTRY_T *list;
 
 	if (state != ENTER_STATE_ENTER) {
 		return RESULT_OK;
@@ -211,7 +269,12 @@ static UINT32 HandleStateEnter(EVENT_STACK_T *ev_st, APPLICATION_T *app, ENTER_S
 			dialog = UIS_CreateColorCanvasWithWallpaper(&port, &buffer, FALSE, TRUE);
 			break;
 		case APP_STATE_MENU:
-			dialog = UIS_CreateStaticList(&port, 0, 3, 0, TestTestTest(ev_st, app, 1, 3), FALSE, 2, NULL, LANG_MENU);
+			list = CreateMainMenuList(ev_st, app, 1, APP_MENU_ITEM_MAX);
+			if (list != NULL) {
+				dialog = UIS_CreateStaticList(&port, 0, APP_MENU_ITEM_MAX, 0, list, FALSE, 2, NULL,
+					app_instance->resources[APP_RESOURCE_NAME]);
+				suFreeMem(list);
+			}
 			break;
 		default:
 			dialog = DialogType_None;
@@ -264,13 +327,13 @@ static UINT32 HandleEventKeyPress(EVENT_STACK_T *ev_st, APPLICATION_T *app) {
 
 	switch (event->data.key_pressed) {
 		case KEY_SOFT_LEFT:
-			UIS_CanvasDrawColorSoftkey((WCHAR *) g_str_app_soft_left, 1, TRUE, TRUE, app->dialog);
+			DrawSoftKeys(ev_st, app, APP_SOFT_KEY_LEFT, TRUE);
 			break;
 		case KEY_MENU:
-			UIS_CanvasDrawColorSoftkey(NULL, 0, TRUE, TRUE, app->dialog);
+			DrawSoftKeys(ev_st, app, APP_SOFT_KEY_MENU, TRUE);
 			break;
 		case KEY_SOFT_RIGHT:
-			UIS_CanvasDrawColorSoftkey((WCHAR *) g_str_app_soft_right, 2, TRUE, TRUE, app->dialog);
+			DrawSoftKeys(ev_st, app, APP_SOFT_KEY_RIGHT, TRUE);
 			break;
 		case KEY_4:
 		case KEY_LEFT:
@@ -315,13 +378,13 @@ static UINT32 HandleEventKeyRelease(EVENT_STACK_T *ev_st, APPLICATION_T *app) {
 	switch (event->data.key_pressed) {
 		case KEY_RED:
 		case KEY_SOFT_LEFT:
-			status |= APP_UtilStartTimer(TIMER_UNPUSH_MS, APP_TIMER_LEFT_SOFT, app);
+			status |= APP_UtilStartTimer(TIMER_FAST_TRIGGER_MS, APP_TIMER_EXIT, app);
 			break;
 		case KEY_MENU:
-			status |= APP_UtilStartTimer(TIMER_UNPUSH_MS, APP_TIMER_MENU, app);
+			status |= APP_UtilStartTimer(TIMER_FAST_TRIGGER_MS, APP_TIMER_MENU, app);
 			break;
 		case KEY_SOFT_RIGHT:
-			status |= APP_UtilStartTimer(TIMER_UNPUSH_MS, APP_TIMER_RIGHT_SOFT, app);
+			status |= APP_UtilStartTimer(TIMER_FAST_TRIGGER_MS, APP_TIMER_RESET, app);
 			break;
 		default:
 			break;
@@ -338,16 +401,16 @@ static UINT32 HandleEventTimerExpired(EVENT_STACK_T *ev_st, APPLICATION_T *app) 
 	timer_id = ((DL_TIMER_DATA_T *) event->attachment)->ID;
 
 	switch (timer_id) {
-		case APP_TIMER_LEFT_SOFT:
-			UIS_CanvasDrawColorSoftkey((WCHAR *) g_str_app_soft_left, 1, FALSE, TRUE, app->dialog);
+		case APP_TIMER_EXIT:
+			DrawSoftKeys(ev_st, app, APP_SOFT_KEY_LEFT, FALSE);
 			return ApplicationStop(ev_st, app);
 			break;
 		case APP_TIMER_MENU:
-			UIS_CanvasDrawColorSoftkey(NULL, 0, FALSE, TRUE, app->dialog);
+			DrawSoftKeys(ev_st, app, APP_SOFT_KEY_MENU, FALSE);
 			APP_UtilChangeState(APP_STATE_MENU, ev_st, app);
 			break;
-		case APP_TIMER_RIGHT_SOFT:
-			UIS_CanvasDrawColorSoftkey((WCHAR *) g_str_app_soft_right, 2, FALSE, TRUE, app->dialog);
+		case APP_TIMER_RESET:
+			DrawSoftKeys(ev_st, app, APP_SOFT_KEY_RIGHT, FALSE);
 			e_key(KEY_0);
 			PaintAll(ev_st, app, FALSE, FALSE);
 			break;
@@ -356,6 +419,28 @@ static UINT32 HandleEventTimerExpired(EVENT_STACK_T *ev_st, APPLICATION_T *app) 
 	}
 
 	return RESULT_OK;
+}
+
+static UINT32 HandleEventSelect(EVENT_STACK_T *ev_st, APPLICATION_T *app) {
+	UINT32 status;
+	EVENT_T *event;
+
+	status = RESULT_OK;
+	event = AFW_GetEv(ev_st);
+
+	UtilLogStringData("Selected item index: %d", event->data.index - 1);
+
+	return status;
+}
+
+static UINT32 HandleEventBack(EVENT_STACK_T *ev_st, APPLICATION_T *app) {
+	UINT32 status;
+
+	status = RESULT_OK;
+
+	status |= APP_UtilChangeState(APP_STATE_MAIN, ev_st, app);
+
+	return status;
 }
 
 static UINT32 GetWorikingArea(GRAPHIC_REGION_T *working_area) {
@@ -383,19 +468,41 @@ static UINT32 GetWorikingArea(GRAPHIC_REGION_T *working_area) {
 	return status;
 }
 
+static UINT32 DrawSoftKeys(EVENT_STACK_T *ev_st, APPLICATION_T *app, APP_SOFT_KEY_T softkey, BOOL pushed) {
+	UINT32 status;
+
+	status = RESULT_OK;
+
+	switch (softkey) {
+		case APP_SOFT_KEY_MENU:
+			UIS_CanvasDrawColorSoftkey(NULL, 0, pushed, TRUE, app->dialog);
+			break;
+		case APP_SOFT_KEY_LEFT:
+			UIS_CanvasDrawColorSoftkey((WCHAR *) g_str_app_soft_left, 1, pushed, TRUE, app->dialog);
+			break;
+		case APP_SOFT_KEY_RIGHT:
+			UIS_CanvasDrawColorSoftkey((WCHAR *) g_str_app_soft_right, 2, pushed, TRUE, app->dialog);
+			break;
+		default:
+			break;
+	}
+
+	return status;
+}
+
 static UINT32 PaintAll(EVENT_STACK_T *ev_st, APPLICATION_T *app, BOOL show_score, BOOL update_soft_keys) {
 	UINT32 status;
 	APP_INSTANCE_T *app_instance;
-	WCHAR score_title[32] = { 0 };
-	WCHAR score_string[10] = { 0 };
+	WCHAR score_title[SCORE_TITLE_MAX_LENGTH] = { 0 };
+	WCHAR score_value[SCORE_VALUE_MAX_LENGTH] = { 0 };
 
 	status = RESULT_OK;
 	app_instance = (APP_INSTANCE_T *) app;
 
 	if (show_score) {
-		u_ltou(e_score, score_string);
+		u_ltou(e_score, score_value);
 		u_strcat(score_title, g_str_app_score);
-		u_strcat(score_title, score_string);
+		u_strcat(score_title, score_value);
 		UIS_CanvasDrawTitleBarWithIcon(score_title, app_instance->resources[APP_RESOURCE_ICON],
 			FALSE, 1, FALSE, FALSE, app->dialog, 0, 0);
 	} else {
@@ -406,9 +513,9 @@ static UINT32 PaintAll(EVENT_STACK_T *ev_st, APPLICATION_T *app, BOOL show_score
 	status |= PaintBoard(ev_st, app);
 
 	if (update_soft_keys) {
-		UIS_CanvasDrawColorSoftkey((WCHAR *) g_str_app_soft_left, 1, FALSE, TRUE, app->dialog);
-		UIS_CanvasDrawColorSoftkey(NULL, 0, FALSE, TRUE, app->dialog);
-		UIS_CanvasDrawColorSoftkey((WCHAR *) g_str_app_soft_right, 2, FALSE, TRUE, app->dialog);
+		DrawSoftKeys(ev_st, app, APP_SOFT_KEY_LEFT, FALSE);
+		DrawSoftKeys(ev_st, app, APP_SOFT_KEY_MENU, FALSE);
+		DrawSoftKeys(ev_st, app, APP_SOFT_KEY_RIGHT, FALSE);
 	}
 
 	return status;
@@ -433,22 +540,15 @@ static UINT32 PaintBoard(EVENT_STACK_T *ev_st, APPLICATION_T *app) {
 static UINT32 PaintBackground(EVENT_STACK_T *ev_st, APPLICATION_T *app) {
 	UINT32 status;
 	APP_INSTANCE_T *app_instance;
-	COLOR_T color;
 
 	status = RESULT_OK;
 	app_instance = (APP_INSTANCE_T *) app;
 
-	if (0) {
+	if (app_instance->options.show_background) {
 		UIS_CanvasFillRect(app_instance->area, app->dialog);
 	} else {
-		color.red = (COLOR_BOARD & 0x00FF0000) >> 16;
-		color.green = (COLOR_BOARD & 0x0000FF00) >> 8;
-		color.blue = (COLOR_BOARD & 0x000000FF) >> 0;
-		color.transparent = (COLOR_BOARD & 0xFF000000) >> 24;
-
-		UIS_CanvasSetBackgroundColor(color);
-		UIS_CanvasSetForegroundColor(color);
-
+		UIS_CanvasSetBackgroundColor(g_color_board);
+		UIS_CanvasSetForegroundColor(g_color_board);
 		UIS_CanvasDrawRect(app_instance->area, TRUE, app->dialog);
 	}
 
@@ -462,7 +562,6 @@ static UINT32 PaintTile(EVENT_STACK_T *ev_st, APPLICATION_T *app, UINT32 value, 
 	UINT32 coord_y;
 	GRAPHIC_REGION_T rect;
 	COLOR_T color;
-	UINT32 tile_color;
 
 	status = RESULT_OK;
 	app_instance = (APP_INSTANCE_T *) app;
@@ -475,27 +574,26 @@ static UINT32 PaintTile(EVENT_STACK_T *ev_st, APPLICATION_T *app, UINT32 value, 
 	rect.lrc.x = coord_x + 22;
 	rect.lrc.y = coord_y + 22;
 
-	tile_color = e_background(value);
-	color.red = (tile_color & 0x00FF0000) >> 16;
-	color.green = (tile_color & 0x0000FF00) >> 8;
-	color.blue = (tile_color & 0x000000FF) >> 0;
-	color.transparent = (tile_color & 0xFF000000) >> 24;
+	SetRgbColor(&color, e_background(value));
 	UIS_CanvasSetBackgroundColor(color);
+	UIS_CanvasSetForegroundColor(g_color_text);
 
-	tile_color = e_foreground(value);
-	color.red = (tile_color & 0x00FF0000) >> 16;
-	color.green = (tile_color & 0x0000FF00) >> 8;
-	color.blue = (tile_color & 0x000000FF) >> 0;
-	color.transparent = (tile_color & 0xFF000000) >> 24;
-	UIS_CanvasSetForegroundColor(color);
-
-	UIS_CanvasDrawRoundRect(rect, 4, 4, TRUE, app->dialog);
+	if (app_instance->options.rounded_tiles) {
+		UIS_CanvasDrawRoundRect(rect, 4, 4, TRUE, app->dialog);
+	} else {
+		UIS_CanvasDrawRect(rect, TRUE, app->dialog);
+	}
 
 	if (value) {
-		WCHAR str_value[5] = { 0 };
+		WCHAR tile_value[TILE_VALUE_MAX_LENGTH] = { 0 };
 		GRAPHIC_POINT_T point;
 
-		u_ltou(value, str_value);
+		if (value < 64) {
+			SetRgbColor(&color, e_foreground(value));
+			UIS_CanvasSetForegroundColor(color);
+		}
+
+		u_ltou(value, tile_value);
 		if (value < 10) {
 			UIS_CanvasSetFont(0x0A, app->dialog);
 			point.x = coord_x + 8;
@@ -510,18 +608,14 @@ static UINT32 PaintTile(EVENT_STACK_T *ev_st, APPLICATION_T *app, UINT32 value, 
 			point.y = coord_y + 3;
 		} else if (value < 1000) {
 			UIS_CanvasSetFont(0x06, app->dialog);
-			if (value < 256) {
-				point.x = coord_x + 2;
-			} else {
-				point.x = coord_x + 3;
-			}
+			point.x = coord_x + 3;
 			point.y = coord_y + 4;
 		} else {
 			UIS_CanvasSetFont(0x09, app->dialog);
 			point.x = coord_x + 4;
 			point.y = coord_y + 2;
 		}
-		UIS_CanvasDrawColorText(str_value, 0, u_strlen(str_value), point, 0, app->dialog);
+		UIS_CanvasDrawColorText(tile_value, 0, u_strlen(tile_value), point, 0, app->dialog);
 	}
 
 	return status;
@@ -535,21 +629,7 @@ static UINT32 PaintFinal(EVENT_STACK_T *ev_st, APPLICATION_T *app) {
 	return status;
 }
 
-static UINT32 HandleEventBack(EVENT_STACK_T *ev_st, APPLICATION_T *app) {
-	UINT32 status;
-	EVENT_T *event;
-
-	status = RESULT_OK;
-	event = AFW_GetEv(ev_st);
-
-	APP_ConsumeEv(ev_st, app);
-
-	status |= APP_UtilChangeState(APP_STATE_MAIN, ev_st, app);
-
-	return status;
-}
-
-static LIST_ENTRY_T *TestTestTest(EVENT_STACK_T *ev_st, APPLICATION_T *app, UINT32 start, UINT32 count) {
+static LIST_ENTRY_T *CreateMainMenuList(EVENT_STACK_T *ev_st, APPLICATION_T *app, UINT32 start, UINT32 count) {
 	UINT32 status;
 	INT32 result;
 	UINT32 i;
@@ -559,36 +639,56 @@ static LIST_ENTRY_T *TestTestTest(EVENT_STACK_T *ev_st, APPLICATION_T *app, UINT
 	result = RESULT_OK;
 
 	if (count == 0) {
-//		return RESULT_FAIL;
+		return NULL;
 	}
-	list = (LIST_ENTRY_T *) suAllocMem(sizeof(LIST_ENTRY_T) * 3, &result);
+	list = (LIST_ENTRY_T *) suAllocMem(sizeof(LIST_ENTRY_T) * APP_MENU_ITEM_MAX, &result);
 	if (result != RESULT_OK) {
-//		return RESULT_FAIL;
+		return NULL;
 	}
 
-	for (i = 0; i < 3; ++i) {
+	for (i = 0; i < APP_MENU_ITEM_MAX; ++i) {
 		memclr(&list[i], sizeof(LIST_ENTRY_T));
 		list[i].editable = FALSE;
 		list[i].content.static_entry.formatting = TRUE;
 	}
 
-	status |= UIS_MakeContentFromString("q0",
-		&list[0].content.static_entry.text,
-		L"1");
-	status |= UIS_MakeContentFromString("q0",
-		&list[1].content.static_entry.text,
-		L"2");
-	status |= UIS_MakeContentFromString("q0",
-		&list[2].content.static_entry.text,
-		L"3");
+	status |= UIS_MakeContentFromString("Mq0",
+		&list[APP_MENU_ITEM_SAVE].content.static_entry.text,
+		g_str_menu_save);
+	status |= UIS_MakeContentFromString("Mq0",
+		&list[APP_MENU_ITEM_LOAD].content.static_entry.text,
+		g_str_menu_load);
+	status |= UIS_MakeContentFromString("Mq0",
+		&list[APP_MENU_ITEM_RESET].content.static_entry.text,
+		g_str_menu_reset);
+	status |= UIS_MakeContentFromString("Mq0Sq1",
+		&list[APP_MENU_ITEM_BACKGROUND].content.static_entry.text,
+		g_str_menu_background, L"TODO");
+	status |= UIS_MakeContentFromString("Mq0Sq1",
+		&list[APP_MENU_ITEM_TILES].content.static_entry.text,
+		g_str_menu_tiles, L"TODO");
+	status |= UIS_MakeContentFromString("Mq0",
+		&list[APP_MENU_ITEM_HELP].content.static_entry.text,
+		g_str_menu_help);
+	status |= UIS_MakeContentFromString("Mq0",
+		&list[APP_MENU_ITEM_ABOUT].content.static_entry.text,
+		g_str_menu_about);
+	status |= UIS_MakeContentFromString("Mq0",
+		&list[APP_MENU_ITEM_EXIT].content.static_entry.text,
+		g_str_menu_exit);
 
-	status |= APP_UtilAddEvUISListData(ev_st, app, 0, start, 3, FBF_LEAVE,
-		sizeof(LIST_ENTRY_T) * 3, list);
+#if 0
+	status |= APP_UtilAddEvUISListData(ev_st, app, 0, start, APP_MENU_ITEM_MAX, FBF_LEAVE,
+		sizeof(LIST_ENTRY_T) * APP_MENU_ITEM_MAX, list);
 	if (status != RESULT_FAIL) {
 		UIS_HandleEvent(app->dialog, ev_st);
 	}
+#endif
 
-//	suFreeMem(list);
+	if (status != RESULT_OK) {
+		suFreeMem(list);
+		return NULL;
+	}
 
 	return list;
 }
