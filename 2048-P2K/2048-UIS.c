@@ -91,6 +91,7 @@ typedef struct {
 
 static __inline UINT32 OffsetCoord(UINT8 coord, UINT16 tile_size, UINT16 offset);
 static __inline void SetRgbColor(COLOR_T *color, UINT32 rgb);
+static __inline void CenterRect(GRAPHIC_REGION_T *r_i, GRAPHIC_REGION_T *r_o);
 
 UINT32 Register(const char *elf_path_uri, const char *args, UINT32 ev_code);
 static UINT32 ApplicationStart(EVENT_STACK_T *ev_st, REG_ID_T reg_id, void *reg_hdl);
@@ -135,9 +136,13 @@ static const WCHAR g_str_menu_tiles[] = L"Tiles";
 static const WCHAR g_str_menu_help[] = L"Help...";
 static const WCHAR g_str_menu_about[] = L"About...";
 static const WCHAR g_str_menu_exit[] = L"Exit";
+static const WCHAR g_str_game_won[] = L"You Won!";
+static const WCHAR g_str_game_over[] = L"Game Over!";
 
-static const COLOR_T g_color_board = { 0xBB, 0xAD, 0xA0, 0xFF }; /* COLOR_BOARD */
-static const COLOR_T g_color_text  = { 0x77, 0x6E, 0x65, 0xFF }; /* COLOR_TEXT  */
+static const COLOR_T g_color_board   = { 0xBB, 0xAD, 0xA0, 0xFF }; /* COLOR_BOARD   */
+static const COLOR_T g_color_overlay = { 0x88, 0x88, 0x88, 0xFF }; /* COLOR_OVERLAY */
+static const COLOR_T g_color_text    = { 0x77, 0x6E, 0x65, 0xFF }; /* COLOR_TEXT    */
+static const COLOR_T g_color_final   = { 0x88, 0x00, 0x00, 0xFF }; /* COLOR_FINAL   */
 
 static const EVENT_HANDLER_ENTRY_T g_state_any_hdls[] = {
 	{ EV_REVOKE_TOKEN, APP_HandleUITokenRevoked },
@@ -181,6 +186,13 @@ static __inline void SetRgbColor(COLOR_T *color, UINT32 rgb) {
 	color->green       = (rgb & 0x0000FF00) >>  8;
 	color->blue        = (rgb & 0x000000FF) >>  0;
 	color->transparent = (rgb & 0xFF000000) >> 24;
+}
+
+static __inline void CenterRect(GRAPHIC_REGION_T *r_i, GRAPHIC_REGION_T *r_o) {
+	r_i->ulc.x = r_o->ulc.x + (r_o->lrc.x - r_o->ulc.x - r_i->lrc.x) / 2;
+	r_i->ulc.y = r_o->ulc.y + (r_o->lrc.y - r_o->ulc.y - r_i->lrc.y) / 2;
+	r_i->lrc.x = r_i->ulc.x + r_i->lrc.x;
+	r_i->lrc.y = r_i->ulc.y + r_i->lrc.y;
 }
 
 UINT32 Register(const char *elf_path_uri, const char *args, UINT32 ev_code) {
@@ -507,10 +519,10 @@ static UINT32 SetMeasuredValues(APP_MEASURED_T *measured_values, DRAWING_BUFFER_
 			measured_values->offset_x = 8;
 			measured_values->offset_y = 4;
 			measured_values->rounded_rad = 4;
-			measured_values->font_large = 0x0A;
-			measured_values->font_normal = 0x01;
-			measured_values->font_small = 0x06;
-			measured_values->font_ultra_small = 0x09;
+			measured_values->font_large = 0x0A;        /* Bold WAP-browser font. */
+			measured_values->font_normal = 0x01;       /* General font. */
+			measured_values->font_small = 0x06;        /* Software keys font. */
+			measured_values->font_ultra_small = 0x09;  /* Very narrow numbers font. */
 			measured_values->gap = 1;
 			measured_values->gap_y_huge = 2;
 			break;
@@ -695,6 +707,38 @@ static UINT32 PaintFinal(EVENT_STACK_T *ev_st, APPLICATION_T *app) {
 	UINT32 status;
 
 	status = RESULT_OK;
+
+	if (e_win || e_lose) {
+		APP_INSTANCE_T *app_instance;
+		WCHAR *string_final;
+		GRAPHIC_METRIC_T string_measure;
+		GRAPHIC_REGION_T rect;
+		GRAPHIC_POINT_T point;
+
+		app_instance = (APP_INSTANCE_T *) app;
+		if (e_win) {
+			string_final = (WCHAR *) g_str_game_won;
+		} else {
+			string_final = (WCHAR *) g_str_game_over;
+		}
+
+		UIS_CanvasGetStringSize(string_final, &string_measure, app_instance->measured.font_large);
+
+		rect.lrc.x = string_measure.width;
+		rect.lrc.y = string_measure.height;
+		CenterRect(&rect, &app_instance->area);
+		point.x = rect.ulc.x;
+		point.y = rect.ulc.y;
+
+		rect.lrc.x = string_measure.width + string_measure.width / 3;
+		rect.lrc.y = string_measure.height + string_measure.height / 2;
+		CenterRect(&rect, &app_instance->area);
+
+		UIS_CanvasSetBackgroundColor(g_color_overlay);
+		UIS_CanvasSetForegroundColor(g_color_final);
+		UIS_CanvasDrawRect(rect, TRUE, app->dialog);
+		UIS_CanvasDrawColorText(string_final, 0, u_strlen(string_final), point, 0, app->dialog);
+	}
 
 	return status;
 }
