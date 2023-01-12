@@ -4,6 +4,7 @@
 #include <canvas.h>
 #include <mem.h>
 #include <utilities.h>
+#include <dl.h>
 
 /* TODO BLOCK!!!! */
 #include <res_def.h>
@@ -22,6 +23,7 @@ typedef enum {
 	APP_STATE_INIT,
 	APP_STATE_MAIN,
 	APP_STATE_MENU,
+	APP_STATE_SELECT,
 	APP_STATE_VIEW,
 	APP_STATE_MAX
 } APP_STATE_T;
@@ -42,6 +44,8 @@ typedef enum {
 typedef enum {
 	APP_RESOURCE_NAME,
 	APP_RESOURCE_ICON,
+	APP_RESOURCE_MENU_BACKGROUND,
+	APP_RESOURCE_MENU_TILES,
 	APP_RESOURCE_MAX
 } APP_RESOURCES_T;
 
@@ -59,13 +63,36 @@ typedef enum {
 } APP_MENU_ITEM_T;
 
 typedef enum {
+	APP_LIST_MENU,
+	APP_LIST_BACKGROUND,
+	APP_LIST_TILES,
+} APP_LIST_T;
+
+typedef enum {
+	APP_BACKGROUND_SHOW,
+	APP_BACKGROUND_HIDE,
+	APP_BACKGROUND_MAX,
+} APP_BACKGROUND_T;
+
+typedef enum {
+	APP_TILES_ROUNDED,
+	APP_TILES_RECTANGLE,
+	APP_TILES_MAX
+} APP_TILES_T;
+
+typedef enum {
+	APP_SELECT_BACKGROUND,
+	APP_SELECT_TILES
+} APP_SELECT_T;
+
+typedef enum {
 	APP_VIEW_HELP,
 	APP_VIEW_ABOUT
 } APP_VIEW_T;
 
 typedef struct {
-	BOOL show_background;
-	BOOL rounded_tiles;
+	APP_BACKGROUND_T background;
+	APP_TILES_T tiles;
 } APP_OPTIONS_T;
 
 typedef struct {
@@ -94,8 +121,10 @@ typedef struct {
 	GRAPHIC_REGION_T area;
 	APP_OPTIONS_T options;
 	APP_MEASURED_T measured;
+	APP_SELECT_T select;
 	APP_VIEW_T view;
 	APP_MENU_ITEM_T menu_current_item_index;
+	BOOL flag_from_select;
 } APP_INSTANCE_T;
 
 static __inline UINT32 OffsetCoord(UINT8 coord, UINT16 tile_size, UINT16 offset);
@@ -119,6 +148,9 @@ static UINT32 HandleEventTimerExpired(EVENT_STACK_T *ev_st, APPLICATION_T *app);
 static UINT32 HandleEventSelect(EVENT_STACK_T *ev_st, APPLICATION_T *app);
 static UINT32 HandleEventBack(EVENT_STACK_T *ev_st, APPLICATION_T *app);
 
+static UINT32 HandleEventSelectDone(EVENT_STACK_T *ev_st, APPLICATION_T *app);
+static UINT32 HandleEventSelectBack(EVENT_STACK_T *ev_st, APPLICATION_T *app);
+
 static UINT32 SetWorikingArea(GRAPHIC_REGION_T *working_area);
 static UINT32 SetMeasuredValues(APP_MEASURED_T *measured_values, DRAWING_BUFFER_T *buffer);
 static UINT32 DrawSoftKeys(EVENT_STACK_T *ev_st, APPLICATION_T *app, APP_SOFT_KEY_T softkey, BOOL pushed);
@@ -129,7 +161,9 @@ static UINT32 PaintBackground(EVENT_STACK_T *ev_st, APPLICATION_T *app);
 static UINT32 PaintTile(EVENT_STACK_T *ev_st, APPLICATION_T *app, UINT32 value, UINT8 x, UINT8 y);
 static UINT32 PaintFinal(EVENT_STACK_T *ev_st, APPLICATION_T *app);
 
-static LIST_ENTRY_T *CreateMainMenuList(EVENT_STACK_T *ev_st, APPLICATION_T *app, UINT32 start, UINT32 count);
+static LIST_ENTRY_T *CreateList(EVENT_STACK_T *ev_st, APPLICATION_T *app, UINT32 start, UINT32 count, APP_LIST_T list);
+static const WCHAR *GetBackgroundOptionString(APP_BACKGROUND_T background);
+static const WCHAR *GetTilesOptionString(APP_TILES_T tiles);
 
 static const char g_app_name[APP_NAME_LEN] = "2048-UIS";
 
@@ -151,6 +185,10 @@ static const WCHAR g_str_view_help[] = L"Help";
 static const WCHAR g_str_view_about[] = L"About";
 static const WCHAR g_str_view_help_content[] = L"Help content.";
 static const WCHAR g_str_view_about_content[] = L"About content.";
+static const WCHAR g_str_select_backgroud_show[] = L"Show";
+static const WCHAR g_str_select_backgroud_hide[] = L"Hide";
+static const WCHAR g_str_select_tiles_rounded[] = L"Rounded";
+static const WCHAR g_str_select_tiles_rectangle[] = L"Rectangle";
 
 static const COLOR_T g_color_board   = { 0xBB, 0xAD, 0xA0, 0xFF }; /* COLOR_BOARD   */
 static const COLOR_T g_color_overlay = { 0x88, 0x88, 0x88, 0xFF }; /* COLOR_OVERLAY */
@@ -189,11 +227,19 @@ static const EVENT_HANDLER_ENTRY_T g_state_popup_hdls[] = {
 	{ STATE_HANDLERS_END, NULL }
 };
 
+static const EVENT_HANDLER_ENTRY_T g_state_select_hdls[] = {
+	{ EV_DONE, HandleEventSelectDone },
+	{ EV_DIALOG_DONE, HandleEventSelectBack },
+	{ EV_CANCEL, HandleEventSelectBack },
+	{ STATE_HANDLERS_END, NULL }
+};
+
 static const STATE_HANDLERS_ENTRY_T g_state_table_hdls[] = {
 	{ APP_STATE_ANY, NULL, NULL, g_state_any_hdls },
 	{ APP_STATE_INIT, NULL, NULL, g_state_init_hdls },
 	{ APP_STATE_MAIN, HandleStateEnter, HandleStateExit, g_state_main_hdls },
 	{ APP_STATE_MENU, HandleStateEnter, HandleStateExit, g_state_menu_hdls },
+	{ APP_STATE_SELECT, HandleStateEnter, HandleStateExit, g_state_select_hdls },
 	{ APP_STATE_VIEW, HandleStateEnter, HandleStateExit, g_state_popup_hdls } /* Same as popups. */
 };
 
@@ -241,10 +287,12 @@ static UINT32 ApplicationStart(EVENT_STACK_T *ev_st, REG_ID_T reg_id, void *reg_
 			reg_id, 0, 1, 1, 1, 1, 0);
 
 		InitResourses(app_instance->resources);
-		app_instance->options.rounded_tiles = TRUE;
-		app_instance->options.show_background = TRUE;
+		app_instance->options.background = APP_BACKGROUND_SHOW;
+		app_instance->options.tiles = APP_TILES_ROUNDED;
 		app_instance->menu_current_item_index = APP_MENU_ITEM_FIRST;
+		app_instance->select = APP_SELECT_BACKGROUND;
 		app_instance->view = APP_VIEW_HELP;
+		app_instance->flag_from_select = FALSE;
 
 		status = APP_Start(ev_st, &app_instance->app, APP_STATE_MAIN,
 			g_state_table_hdls, ApplicationStop, g_app_name, 0);
@@ -278,6 +326,11 @@ static UINT32 InitResourses(RESOURCE_ID *resources) {
 
 	status |= DRM_CreateResource(&resources[APP_RESOURCE_NAME], RES_TYPE_STRING,
 		(void *) g_str_app_name, (u_strlen(g_str_app_name) + 1) * sizeof(WCHAR));
+	status |= DRM_CreateResource(&resources[APP_RESOURCE_MENU_BACKGROUND], RES_TYPE_STRING,
+		(void *) g_str_menu_background, (u_strlen(g_str_menu_background) + 1) * sizeof(WCHAR));
+	status |= DRM_CreateResource(&resources[APP_RESOURCE_MENU_TILES], RES_TYPE_STRING,
+		(void *) g_str_menu_tiles, (u_strlen(g_str_menu_tiles) + 1) * sizeof(WCHAR));
+
 	status |= DRM_CreateResource(&resources[APP_RESOURCE_ICON], RES_TYPE_GRAPHICS,
 		(void *) g_app_icon, sizeof(g_app_icon));
 
@@ -331,11 +384,43 @@ static UINT32 HandleStateEnter(EVENT_STACK_T *ev_st, APPLICATION_T *app, ENTER_S
 			dialog = UIS_CreateColorCanvasWithWallpaper(&port, &buffer, FALSE, TRUE);
 			break;
 		case APP_STATE_MENU:
-			list = CreateMainMenuList(ev_st, app, 1, APP_MENU_ITEM_MAX);
+			list = CreateList(ev_st, app, 1, APP_MENU_ITEM_MAX, APP_LIST_MENU);
 			if (list != NULL) {
 				dialog = UIS_CreateStaticList(&port, 0, APP_MENU_ITEM_MAX, 0, list, FALSE, 2, NULL,
 					app_instance->resources[APP_RESOURCE_NAME]);
 				suFreeMem(list);
+
+				/* Insert cursor to proper position. */
+				if (app_instance->flag_from_select) {
+					if (app_instance->menu_current_item_index != APP_MENU_ITEM_FIRST) {
+						APP_UtilAddEvChangeListPosition(ev_st, app, app_instance->menu_current_item_index + 1,
+							NULL, NULL, NULL);
+						UIS_HandleEvent(dialog, ev_st);
+					}
+					app_instance->flag_from_select = FALSE;
+				}
+			}
+			break;
+		case APP_STATE_SELECT:
+			switch (app_instance->select) {
+				default:
+				case APP_SELECT_BACKGROUND:
+					list = CreateList(ev_st, app, 1, APP_BACKGROUND_MAX, APP_LIST_BACKGROUND);
+					if (list != NULL) {
+						dialog = UIS_CreateStaticSelectionEditor(&port, 0, APP_BACKGROUND_MAX, list,
+							app_instance->options.background + 1, NULL,
+							app_instance->resources[APP_RESOURCE_MENU_BACKGROUND]);
+						suFreeMem(list);
+					}
+					break;
+				case APP_SELECT_TILES:
+					list = CreateList(ev_st, app, 1, APP_TILES_MAX, APP_LIST_TILES);
+					if (list != NULL) {
+						dialog = UIS_CreateStaticSelectionEditor(&port, 0, APP_TILES_MAX, list,
+							app_instance->options.tiles + 1, NULL, app_instance->resources[APP_RESOURCE_MENU_TILES]);
+						suFreeMem(list);
+					}
+					break;
 			}
 			break;
 		case APP_STATE_VIEW:
@@ -477,9 +562,9 @@ static UINT32 HandleEventTimerExpired(EVENT_STACK_T *ev_st, APPLICATION_T *app) 
 	switch (timer_id) {
 		case APP_TIMER_EXIT:
 			DrawSoftKeys(ev_st, app, APP_SOFT_KEY_LEFT, FALSE);
-			return ApplicationStop(ev_st, app);
-			break;
+			/* No break here. */
 		case APP_TIMER_EXIT_FAST:
+			DL_AudPlayTone(0x00,  0xFF);
 			return ApplicationStop(ev_st, app);
 			break;
 		case APP_TIMER_MENU:
@@ -519,8 +604,12 @@ static UINT32 HandleEventSelect(EVENT_STACK_T *ev_st, APPLICATION_T *app) {
 			status |= APP_UtilChangeState(APP_STATE_MAIN, ev_st, app);
 			break;
 		case APP_MENU_ITEM_BACKGROUND:
+			app_instance->select = APP_SELECT_BACKGROUND;
+			status |= APP_UtilChangeState(APP_STATE_SELECT, ev_st, app);
 			break;
 		case APP_MENU_ITEM_TILES:
+			app_instance->select = APP_SELECT_TILES;
+			status |= APP_UtilChangeState(APP_STATE_SELECT, ev_st, app);
 			break;
 		case APP_MENU_ITEM_HELP:
 			app_instance->view = APP_VIEW_HELP;
@@ -546,6 +635,44 @@ static UINT32 HandleEventBack(EVENT_STACK_T *ev_st, APPLICATION_T *app) {
 	status = RESULT_OK;
 
 	status |= APP_UtilChangeState(APP_STATE_MAIN, ev_st, app);
+
+	return status;
+}
+
+static UINT32 HandleEventSelectDone(EVENT_STACK_T *ev_st, APPLICATION_T *app) {
+	UINT32 status;
+	APP_INSTANCE_T *app_instance;
+	EVENT_T *event;
+
+	status = RESULT_OK;
+	app_instance = (APP_INSTANCE_T *) app;
+	event = AFW_GetEv(ev_st);
+
+	switch (app_instance->select) {
+		default:
+		case APP_SELECT_BACKGROUND:
+			app_instance->options.background = event->data.index - 1;
+			break;
+		case APP_SELECT_TILES:
+			app_instance->options.tiles = event->data.index - 1;
+			break;
+	}
+
+	status |= APP_UtilChangeState(APP_STATE_MAIN, ev_st, app);
+
+	return status;
+}
+
+static UINT32 HandleEventSelectBack(EVENT_STACK_T *ev_st, APPLICATION_T *app) {
+	UINT32 status;
+	APP_INSTANCE_T *app_instance;
+
+	status = RESULT_OK;
+	app_instance = (APP_INSTANCE_T *) app;
+
+	app_instance->flag_from_select = TRUE;
+
+	status |= APP_UtilChangeState(APP_STATE_MENU, ev_st, app);
 
 	return status;
 }
@@ -688,12 +815,16 @@ static UINT32 PaintBackground(EVENT_STACK_T *ev_st, APPLICATION_T *app) {
 	status = RESULT_OK;
 	app_instance = (APP_INSTANCE_T *) app;
 
-	if (app_instance->options.show_background) {
-		UIS_CanvasFillRect(app_instance->area, app->dialog);
-	} else {
-		UIS_CanvasSetBackgroundColor(g_color_board);
-		UIS_CanvasSetForegroundColor(g_color_board);
-		UIS_CanvasDrawRect(app_instance->area, TRUE, app->dialog);
+	switch (app_instance->options.background) {
+		default:
+		case APP_BACKGROUND_SHOW:
+			UIS_CanvasFillRect(app_instance->area, app->dialog);
+			break;
+		case APP_BACKGROUND_HIDE:
+			UIS_CanvasSetBackgroundColor(g_color_board);
+			UIS_CanvasSetForegroundColor(g_color_board);
+			UIS_CanvasDrawRect(app_instance->area, TRUE, app->dialog);
+			break;
 	}
 
 	return status;
@@ -726,11 +857,15 @@ static UINT32 PaintTile(EVENT_STACK_T *ev_st, APPLICATION_T *app, UINT32 value, 
 	UIS_CanvasSetBackgroundColor(color);
 	UIS_CanvasSetForegroundColor(g_color_text);
 
-	if (app_instance->options.rounded_tiles) {
-		radius = app_instance->measured.rounded_rad;
-		UIS_CanvasDrawRoundRect(rect, radius, radius, TRUE, app->dialog);
-	} else {
-		UIS_CanvasDrawRect(rect, TRUE, app->dialog);
+	switch (app_instance->options.tiles) {
+		default:
+		case APP_TILES_ROUNDED:
+			radius = app_instance->measured.rounded_rad;
+			UIS_CanvasDrawRoundRect(rect, radius, radius, TRUE, app->dialog);
+			break;
+		case APP_TILES_RECTANGLE:
+			UIS_CanvasDrawRect(rect, TRUE, app->dialog);
+			break;
 	}
 
 	if (value) {
@@ -811,58 +946,101 @@ static UINT32 PaintFinal(EVENT_STACK_T *ev_st, APPLICATION_T *app) {
 	return status;
 }
 
-static LIST_ENTRY_T *CreateMainMenuList(EVENT_STACK_T *ev_st, APPLICATION_T *app, UINT32 start, UINT32 count) {
+static LIST_ENTRY_T *CreateList(EVENT_STACK_T *ev_st, APPLICATION_T *app, UINT32 start, UINT32 count, APP_LIST_T list) {
 	UINT32 status;
 	INT32 result;
+	APP_INSTANCE_T *app_instance;
 	UINT32 i;
-	LIST_ENTRY_T *list;
+	LIST_ENTRY_T *list_elements;
 
 	status = RESULT_OK;
 	result = RESULT_OK;
+	app_instance = (APP_INSTANCE_T *) app;
 
 	if (count == 0) {
 		return NULL;
 	}
-	list = (LIST_ENTRY_T *) suAllocMem(sizeof(LIST_ENTRY_T) * APP_MENU_ITEM_MAX, &result);
+	list_elements = (LIST_ENTRY_T *) suAllocMem(sizeof(LIST_ENTRY_T) * count, &result);
 	if (result != RESULT_OK) {
 		return NULL;
 	}
 
-	for (i = 0; i < APP_MENU_ITEM_MAX; ++i) {
-		memclr(&list[i], sizeof(LIST_ENTRY_T));
-		list[i].editable = FALSE;
-		list[i].content.static_entry.formatting = TRUE;
+	for (i = 0; i < count; ++i) {
+		memclr(&list_elements[i], sizeof(LIST_ENTRY_T));
+		list_elements[i].editable = FALSE;
+		list_elements[i].content.static_entry.formatting = TRUE;
 	}
 
-	status |= UIS_MakeContentFromString("Mq0",
-		&list[APP_MENU_ITEM_SAVE].content.static_entry.text,
-		g_str_menu_save);
-	status |= UIS_MakeContentFromString("Mq0",
-		&list[APP_MENU_ITEM_LOAD].content.static_entry.text,
-		g_str_menu_load);
-	status |= UIS_MakeContentFromString("Mq0",
-		&list[APP_MENU_ITEM_RESET].content.static_entry.text,
-		g_str_menu_reset);
-	status |= UIS_MakeContentFromString("Mq0Sq1",
-		&list[APP_MENU_ITEM_BACKGROUND].content.static_entry.text,
-		g_str_menu_background, L"TODO");
-	status |= UIS_MakeContentFromString("Mq0Sq1",
-		&list[APP_MENU_ITEM_TILES].content.static_entry.text,
-		g_str_menu_tiles, L"TODO");
-	status |= UIS_MakeContentFromString("Mq0",
-		&list[APP_MENU_ITEM_HELP].content.static_entry.text,
-		g_str_menu_help);
-	status |= UIS_MakeContentFromString("Mq0",
-		&list[APP_MENU_ITEM_ABOUT].content.static_entry.text,
-		g_str_menu_about);
-	status |= UIS_MakeContentFromString("Mq0",
-		&list[APP_MENU_ITEM_EXIT].content.static_entry.text,
-		g_str_menu_exit);
+	switch (list) {
+		default:
+		case APP_LIST_MENU:
+			status |= UIS_MakeContentFromString("Mq0",
+				&list_elements[APP_MENU_ITEM_SAVE].content.static_entry.text,
+				g_str_menu_save);
+			status |= UIS_MakeContentFromString("Mq0",
+				&list_elements[APP_MENU_ITEM_LOAD].content.static_entry.text,
+				g_str_menu_load);
+			status |= UIS_MakeContentFromString("Mq0",
+				&list_elements[APP_MENU_ITEM_RESET].content.static_entry.text,
+				g_str_menu_reset);
+			status |= UIS_MakeContentFromString("Mq0Sq1",
+				&list_elements[APP_MENU_ITEM_BACKGROUND].content.static_entry.text,
+				g_str_menu_background, GetBackgroundOptionString(app_instance->options.background));
+			status |= UIS_MakeContentFromString("Mq0Sq1",
+				&list_elements[APP_MENU_ITEM_TILES].content.static_entry.text,
+				g_str_menu_tiles, GetTilesOptionString(app_instance->options.tiles));
+			status |= UIS_MakeContentFromString("Mq0",
+				&list_elements[APP_MENU_ITEM_HELP].content.static_entry.text,
+				g_str_menu_help);
+			status |= UIS_MakeContentFromString("Mq0",
+				&list_elements[APP_MENU_ITEM_ABOUT].content.static_entry.text,
+				g_str_menu_about);
+			status |= UIS_MakeContentFromString("Mq0",
+				&list_elements[APP_MENU_ITEM_EXIT].content.static_entry.text,
+				g_str_menu_exit);
+			break;
+		case APP_LIST_BACKGROUND:
+			status |= UIS_MakeContentFromString("q0",
+				&list_elements[APP_BACKGROUND_SHOW].content.static_entry.text,
+				g_str_select_backgroud_show);
+			status |= UIS_MakeContentFromString("q0",
+				&list_elements[APP_BACKGROUND_HIDE].content.static_entry.text,
+				g_str_select_backgroud_hide);
+			break;
+		case APP_LIST_TILES:
+			status |= UIS_MakeContentFromString("q0",
+				&list_elements[APP_TILES_ROUNDED].content.static_entry.text,
+				g_str_select_tiles_rounded);
+			status |= UIS_MakeContentFromString("q0",
+				&list_elements[APP_TILES_RECTANGLE].content.static_entry.text,
+				g_str_select_tiles_rectangle);
+			break;
+	}
 
 	if (status != RESULT_OK) {
-		suFreeMem(list);
+		suFreeMem(list_elements);
 		return NULL;
 	}
 
-	return list;
+	return list_elements;
+}
+
+static const WCHAR *GetBackgroundOptionString(APP_BACKGROUND_T background) {
+	switch (background) {
+		default:
+		case APP_BACKGROUND_SHOW:
+			return g_str_select_backgroud_show;
+		case APP_BACKGROUND_HIDE:
+			return g_str_select_backgroud_hide;
+	}
+}
+
+static const WCHAR *GetTilesOptionString(APP_TILES_T tiles) {
+	switch (tiles) {
+		default:
+		case APP_TILES_ROUNDED:
+			return g_str_select_tiles_rounded;
+		case APP_TILES_RECTANGLE:
+			return g_str_select_tiles_rectangle;
+	}
 }
