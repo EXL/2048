@@ -115,6 +115,7 @@ typedef struct {
 	UINT16 font_normal;
 	UINT16 font_small;
 	UINT16 font_ultra_small;
+	UINT16 font_final;
 	UINT16 gap;
 	UINT16 gap_y_huge;
 } APP_MEASURED_T;
@@ -759,21 +760,23 @@ static UINT32 SetMeasuredValues(APP_MEASURED_T *measured_values, DRAWING_BUFFER_
 			measured_values->font_normal = 0x01;       /* General font. */
 			measured_values->font_small = 0x06;        /* Software keys font. */
 			measured_values->font_ultra_small = 0x09;  /* Very narrow numbers font. */
+			measured_values->font_final = 0x0A;        /* Bold WAP-browser font. */
 			measured_values->gap = 1;
 			measured_values->gap_y_huge = 2;
 			break;
 		case APP_DISPLAY_176x220:
 		case APP_DISPLAY_240x320: /* FIXME: Unknown values for 240x320 screen, set them similar to 176x220. */
-			measured_values->tile_size = 22;
+			measured_values->tile_size = 34;
 			measured_values->offset_x = 8;
-			measured_values->offset_y = 4;
+			measured_values->offset_y = 6;
 			measured_values->rounded_rad = 4;
-			measured_values->font_large = 0x0A;
-			measured_values->font_normal = 0x01;
-			measured_values->font_small = 0x06;
-			measured_values->font_ultra_small = 0x09;
+			measured_values->font_large = 0x03;        /* Small numbers for screensaver-clock font. */
+			measured_values->font_normal = 0x05;       /* Big numbers at set of number font. */
+			measured_values->font_small = 0x04;        /* Small numbers at set of number font. */
+			measured_values->font_ultra_small = 0x0A;  /* Bold WAP-browser font. */
+			measured_values->font_final = 0x0A;        /* Bold WAP-browser font. */
 			measured_values->gap = 1;
-			measured_values->gap_y_huge = 2;
+			measured_values->gap_y_huge = 0;
 			break;
 	}
 
@@ -966,7 +969,7 @@ static UINT32 PaintFinal(EVENT_STACK_T *ev_st, APPLICATION_T *app) {
 			string_final = (WCHAR *) g_str_game_over;
 		}
 
-		UIS_CanvasGetStringSize(string_final, &string_measure, app_instance->measured.font_large);
+		UIS_CanvasGetStringSize(string_final, &string_measure, app_instance->measured.font_final);
 
 		rect.lrc.x = string_measure.width;
 		rect.lrc.y = string_measure.height;
@@ -981,6 +984,7 @@ static UINT32 PaintFinal(EVENT_STACK_T *ev_st, APPLICATION_T *app) {
 		UIS_CanvasSetBackgroundColor(g_color_overlay);
 		UIS_CanvasSetForegroundColor(g_color_final);
 		UIS_CanvasDrawRect(rect, TRUE, app->dialog);
+		UIS_CanvasSetFont(app_instance->measured.font_final, app->dialog);
 		UIS_CanvasDrawColorText(string_final, 0, u_strlen(string_final), point, 0, app->dialog);
 	}
 
