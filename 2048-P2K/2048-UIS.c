@@ -23,6 +23,7 @@ typedef enum {
 	APP_STATE_INIT,
 	APP_STATE_MAIN,
 	APP_STATE_MENU,
+	APP_STATE_POPUP,
 	APP_STATE_SELECT,
 	APP_STATE_VIEW,
 	APP_STATE_MAX
@@ -65,13 +66,23 @@ typedef enum {
 typedef enum {
 	APP_LIST_MENU,
 	APP_LIST_BACKGROUND,
-	APP_LIST_TILES,
+	APP_LIST_TILES
 } APP_LIST_T;
+
+typedef enum {
+	APP_POPUP_SAVE_OK,
+	APP_POPUP_SAVE_FAIL,
+	APP_POPUP_LOAD_OK,
+	APP_POPUP_LOAD_FAIL,
+	APP_POPUP_RESETED,
+	APP_POPUP_BACKGROUND_CHANGED,
+	APP_POPUP_TILES_CHANGED
+} APP_POPUP_T;
 
 typedef enum {
 	APP_BACKGROUND_SHOW,
 	APP_BACKGROUND_HIDE,
-	APP_BACKGROUND_MAX,
+	APP_BACKGROUND_MAX
 } APP_BACKGROUND_T;
 
 typedef enum {
@@ -121,6 +132,7 @@ typedef struct {
 	GRAPHIC_REGION_T area;
 	APP_OPTIONS_T options;
 	APP_MEASURED_T measured;
+	APP_POPUP_T popup;
 	APP_SELECT_T select;
 	APP_VIEW_T view;
 	APP_MENU_ITEM_T menu_current_item_index;
@@ -174,19 +186,23 @@ static const WCHAR g_str_app_score[] = L"Score: ";
 static const WCHAR g_str_menu_save[] = L"Save Game";
 static const WCHAR g_str_menu_load[] = L"Load Game";
 static const WCHAR g_str_menu_reset[] = L"Reset Game";
-static const WCHAR g_str_menu_background[] = L"Background";
-static const WCHAR g_str_menu_tiles[] = L"Tiles";
+static const WCHAR g_str_menu_background[] = L"Background:";
+static const WCHAR g_str_menu_tiles[] = L"Tiles:";
 static const WCHAR g_str_menu_help[] = L"Help...";
 static const WCHAR g_str_menu_about[] = L"About...";
 static const WCHAR g_str_menu_exit[] = L"Exit";
+static const WCHAR g_str_changed[] = L"Changed:";
+static const WCHAR g_str_reseted[] = L"The game has been reset!";
 static const WCHAR g_str_game_won[] = L"You Won!";
 static const WCHAR g_str_game_over[] = L"Game Over!";
 static const WCHAR g_str_view_help[] = L"Help";
 static const WCHAR g_str_view_about[] = L"About";
 static const WCHAR g_str_view_help_content[] = L"Help content.";
 static const WCHAR g_str_view_about_content[] = L"About content.";
+static const WCHAR g_str_select_background[] = L"Background";
 static const WCHAR g_str_select_backgroud_show[] = L"Show";
 static const WCHAR g_str_select_backgroud_hide[] = L"Hide";
+static const WCHAR g_str_select_tiles[] = L"Tiles";
 static const WCHAR g_str_select_tiles_rounded[] = L"Rounded";
 static const WCHAR g_str_select_tiles_rectangle[] = L"Rectangle";
 
@@ -239,6 +255,7 @@ static const STATE_HANDLERS_ENTRY_T g_state_table_hdls[] = {
 	{ APP_STATE_INIT, NULL, NULL, g_state_init_hdls },
 	{ APP_STATE_MAIN, HandleStateEnter, HandleStateExit, g_state_main_hdls },
 	{ APP_STATE_MENU, HandleStateEnter, HandleStateExit, g_state_menu_hdls },
+	{ APP_STATE_POPUP, HandleStateEnter, HandleStateExit, g_state_popup_hdls },
 	{ APP_STATE_SELECT, HandleStateEnter, HandleStateExit, g_state_select_hdls },
 	{ APP_STATE_VIEW, HandleStateEnter, HandleStateExit, g_state_popup_hdls } /* Same as popups. */
 };
@@ -291,6 +308,7 @@ static UINT32 ApplicationStart(EVENT_STACK_T *ev_st, REG_ID_T reg_id, void *reg_
 		app_instance->options.tiles = APP_TILES_ROUNDED;
 		app_instance->menu_current_item_index = APP_MENU_ITEM_FIRST;
 		app_instance->select = APP_SELECT_BACKGROUND;
+		app_instance->popup = APP_POPUP_RESETED;
 		app_instance->view = APP_VIEW_HELP;
 		app_instance->flag_from_select = FALSE;
 
@@ -327,9 +345,9 @@ static UINT32 InitResourses(RESOURCE_ID *resources) {
 	status |= DRM_CreateResource(&resources[APP_RESOURCE_NAME], RES_TYPE_STRING,
 		(void *) g_str_app_name, (u_strlen(g_str_app_name) + 1) * sizeof(WCHAR));
 	status |= DRM_CreateResource(&resources[APP_RESOURCE_MENU_BACKGROUND], RES_TYPE_STRING,
-		(void *) g_str_menu_background, (u_strlen(g_str_menu_background) + 1) * sizeof(WCHAR));
+		(void *) g_str_select_background, (u_strlen(g_str_select_background) + 1) * sizeof(WCHAR));
 	status |= DRM_CreateResource(&resources[APP_RESOURCE_MENU_TILES], RES_TYPE_STRING,
-		(void *) g_str_menu_tiles, (u_strlen(g_str_menu_tiles) + 1) * sizeof(WCHAR));
+		(void *) g_str_select_tiles, (u_strlen(g_str_select_tiles) + 1) * sizeof(WCHAR));
 
 	status |= DRM_CreateResource(&resources[APP_RESOURCE_ICON], RES_TYPE_GRAPHICS,
 		(void *) g_app_icon, sizeof(g_app_icon));
@@ -358,6 +376,7 @@ static UINT32 HandleStateEnter(EVENT_STACK_T *ev_st, APPLICATION_T *app, ENTER_S
 	CONTENT_T content;
 	UIS_DIALOG_T dialog;
 	APP_STATE_T app_state;
+	UINT8 notice_type;
 	DRAWING_BUFFER_T buffer;
 	GRAPHIC_POINT_T point;
 	LIST_ENTRY_T *list;
@@ -400,6 +419,24 @@ static UINT32 HandleStateEnter(EVENT_STACK_T *ev_st, APPLICATION_T *app, ENTER_S
 					app_instance->flag_from_select = FALSE;
 				}
 			}
+			break;
+		case APP_STATE_POPUP:
+			notice_type = NOTICE_TYPE_OK;
+			switch (app_instance->popup) {
+				default:
+				case APP_POPUP_RESETED:
+					UIS_MakeContentFromString("MCq0", &content, g_str_reseted);
+					break;
+				case APP_POPUP_BACKGROUND_CHANGED:
+					UIS_MakeContentFromString("MCq0NMCq1NMCq2", &content, g_str_changed,
+						g_str_select_background, GetBackgroundOptionString(app_instance->options.background));
+					break;
+				case APP_POPUP_TILES_CHANGED:
+					UIS_MakeContentFromString("MCq0NMCq1NMCq2", &content, g_str_changed,
+						g_str_select_tiles, GetTilesOptionString(app_instance->options.tiles));
+					break;
+			}
+			dialog = UIS_CreateTransientNotice(&port, &content, notice_type);
 			break;
 		case APP_STATE_SELECT:
 			switch (app_instance->select) {
@@ -601,7 +638,8 @@ static UINT32 HandleEventSelect(EVENT_STACK_T *ev_st, APPLICATION_T *app) {
 			break;
 		case APP_MENU_ITEM_RESET:
 			e_key(KEY_0);
-			status |= APP_UtilChangeState(APP_STATE_MAIN, ev_st, app);
+			app_instance->popup = APP_POPUP_RESETED;
+			status |= APP_UtilChangeState(APP_STATE_POPUP, ev_st, app);
 			break;
 		case APP_MENU_ITEM_BACKGROUND:
 			app_instance->select = APP_SELECT_BACKGROUND;
@@ -651,14 +689,16 @@ static UINT32 HandleEventSelectDone(EVENT_STACK_T *ev_st, APPLICATION_T *app) {
 	switch (app_instance->select) {
 		default:
 		case APP_SELECT_BACKGROUND:
+			app_instance->popup = APP_POPUP_BACKGROUND_CHANGED;
 			app_instance->options.background = event->data.index - 1;
 			break;
 		case APP_SELECT_TILES:
+			app_instance->popup = APP_POPUP_TILES_CHANGED;
 			app_instance->options.tiles = event->data.index - 1;
 			break;
 	}
 
-	status |= APP_UtilChangeState(APP_STATE_MAIN, ev_st, app);
+	status |= APP_UtilChangeState(APP_STATE_POPUP, ev_st, app);
 
 	return status;
 }
@@ -696,6 +736,7 @@ static UINT32 SetWorikingArea(GRAPHIC_REGION_T *working_area) {
 	rect.ulc.y = height_title_bar_end;
 	/* rect.lrc.x -= 1; */
 	rect.lrc.y = height_soft_keys_start;
+	/* rect.lrc.y += 1; */
 
 	memcpy(working_area, &rect, sizeof(GRAPHIC_REGION_T));
 
