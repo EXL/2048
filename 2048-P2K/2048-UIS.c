@@ -110,7 +110,10 @@ typedef struct {
 	UINT16 tile_size;
 	UINT16 offset_x;
 	UINT16 offset_y;
+	UINT16 offset_width;
+	UINT16 offset_height;
 	UINT16 rounded_rad;
+	UINT16 pencil_width;
 	UINT16 font_large;
 	UINT16 font_normal;
 	UINT16 font_small;
@@ -755,7 +758,10 @@ static UINT32 SetMeasuredValues(APP_MEASURED_T *measured_values, DRAWING_BUFFER_
 			measured_values->tile_size = 22;
 			measured_values->offset_x = 8;
 			measured_values->offset_y = 4;
+			measured_values->offset_width = 0;
+			measured_values->offset_height = 1;
 			measured_values->rounded_rad = 4;
+			measured_values->pencil_width = 1;
 			measured_values->font_large = 0x0A;        /* Bold WAP-browser font. */
 			measured_values->font_normal = 0x01;       /* General font. */
 			measured_values->font_small = 0x06;        /* Software keys font. */
@@ -767,13 +773,16 @@ static UINT32 SetMeasuredValues(APP_MEASURED_T *measured_values, DRAWING_BUFFER_
 		case APP_DISPLAY_176x220:
 		case APP_DISPLAY_240x320: /* FIXME: Unknown values for 240x320 screen, set them similar to 176x220. */
 			measured_values->tile_size = 34;
-			measured_values->offset_x = 8;
-			measured_values->offset_y = 6;
+			measured_values->offset_x = 4;
+			measured_values->offset_y = 4;
+			measured_values->offset_width = 9;
+			measured_values->offset_height = 2;
 			measured_values->rounded_rad = 4;
-			measured_values->font_large = 0x03;        /* Small numbers for screensaver-clock font. */
+			measured_values->pencil_width = 2;
+			measured_values->font_large = 0x05;        /* Big numbers at set of number font. */
 			measured_values->font_normal = 0x05;       /* Big numbers at set of number font. */
 			measured_values->font_small = 0x04;        /* Small numbers at set of number font. */
-			measured_values->font_ultra_small = 0x0A;  /* Bold WAP-browser font. */
+			measured_values->font_ultra_small = 0x01;  /* General font. */
 			measured_values->font_final = 0x0A;        /* Bold WAP-browser font. */
 			measured_values->gap = 1;
 			measured_values->gap_y_huge = 0;
@@ -871,6 +880,8 @@ static UINT32 PaintBackground(EVENT_STACK_T *ev_st, APPLICATION_T *app) {
 			break;
 	}
 
+	UIS_CanvasSetLineWidth(app_instance->measured.pencil_width);
+
 	return status;
 }
 
@@ -884,13 +895,17 @@ static UINT32 PaintTile(EVENT_STACK_T *ev_st, APPLICATION_T *app, UINT32 value, 
 	UINT32 font_id;
 	UINT16 tile_size;
 	UINT16 radius;
+	UINT16 offset_w;
+	UINT16 offset_h;
 
 	status = RESULT_OK;
 	app_instance = (APP_INSTANCE_T *) app;
 	tile_size = app_instance->measured.tile_size;
+	offset_w = app_instance->measured.offset_width;
+	offset_h = app_instance->measured.offset_height;
 
-	coord_x = OffsetCoord(x, tile_size, app_instance->measured.offset_x);
-	coord_y = OffsetCoord(y, tile_size, app_instance->measured.offset_y) + app_instance->area.ulc.y + 1;
+	coord_x = OffsetCoord(x, tile_size, app_instance->measured.offset_x) + offset_w;
+	coord_y = OffsetCoord(y, tile_size, app_instance->measured.offset_y) + app_instance->area.ulc.y + offset_h;
 
 	rect.ulc.x = coord_x;
 	rect.ulc.y = coord_y;
