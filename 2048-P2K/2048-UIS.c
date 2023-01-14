@@ -287,7 +287,7 @@ static const EVENT_HANDLER_ENTRY_T g_state_select_hdls[] = {
 static const STATE_HANDLERS_ENTRY_T g_state_table_hdls[] = {
 	{ APP_STATE_ANY, NULL, NULL, g_state_any_hdls },
 	{ APP_STATE_INIT, NULL, NULL, g_state_init_hdls },
-	{ APP_STATE_MAIN, HandleStateEnter, HandleStateExit, g_state_main_hdls },
+	{ APP_STATE_MAIN, HandleStateEnter, NULL, g_state_main_hdls },
 	{ APP_STATE_MENU, HandleStateEnter, HandleStateExit, g_state_menu_hdls },
 	{ APP_STATE_POPUP, HandleStateEnter, HandleStateExit, g_state_popup_hdls },
 	{ APP_STATE_SELECT, HandleStateEnter, HandleStateExit, g_state_select_hdls },
@@ -429,7 +429,9 @@ static UINT32 HandleStateEnter(EVENT_STACK_T *ev_st, APPLICATION_T *app, ENTER_S
 	LIST_ENTRY_T *list;
 
 	if (state != ENTER_STATE_ENTER) {
-		return RESULT_OK;
+		if (app->state != APP_STATE_MAIN) {
+			return RESULT_OK;
+		}
 	}
 
 	app_instance = (APP_INSTANCE_T *) app;
