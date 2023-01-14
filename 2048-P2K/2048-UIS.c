@@ -5,6 +5,7 @@
 #include <mem.h>
 #include <utilities.h>
 #include <dl.h>
+#include <filesystem.h>
 
 /* TODO BLOCK!!!! */
 #include <res_def.h>
@@ -181,6 +182,9 @@ static LIST_ENTRY_T *CreateList(EVENT_STACK_T *ev_st, APPLICATION_T *app, UINT32
 static const WCHAR *GetBackgroundOptionString(APP_BACKGROUND_T background);
 static const WCHAR *GetTilesOptionString(APP_TILES_T tiles);
 
+static UINT32 ReadFileConfig(APPLICATION_T *app, const WCHAR *file_config_path);
+static UINT32 SaveFileConfig(APPLICATION_T *app, const WCHAR *file_config_path);
+
 static const char g_app_name[APP_NAME_LEN] = "2048-UIS";
 
 static const WCHAR g_str_app_name[] = L"2048-P2K-UIS";
@@ -214,6 +218,9 @@ static const COLOR_T g_color_board   = { 0xBB, 0xAD, 0xA0, 0xFF }; /* COLOR_BOAR
 static const COLOR_T g_color_overlay = { 0x88, 0x88, 0x88, 0xFF }; /* COLOR_OVERLAY */
 static const COLOR_T g_color_text    = { 0x77, 0x6E, 0x65, 0xFF }; /* COLOR_TEXT    */
 static const COLOR_T g_color_final   = { 0x88, 0x00, 0x00, 0xFF }; /* COLOR_FINAL   */
+
+static WCHAR g_config_file_path[FS_MAX_URI_NAME_LENGTH]; /* FIXME: Can it be non-global? */
+static WCHAR g_save_file_path[FS_MAX_URI_NAME_LENGTH]; /* FIXME: Can it be non-global? */
 
 static const EVENT_HANDLER_ENTRY_T g_state_any_hdls[] = {
 	{ EV_REVOKE_TOKEN, APP_HandleUITokenRevoked },
@@ -290,6 +297,13 @@ UINT32 Register(const char *elf_path_uri, const char *args, UINT32 ev_code) {
 
 	status = APP_Register(&ev_code_base, 1, g_state_table_hdls, APP_STATE_MAX, (void *) ApplicationStart);
 
+	u_atou(elf_path_uri, g_config_file_path);
+	u_atou(elf_path_uri, g_save_file_path);
+	g_config_file_path[u_strlen(g_config_file_path) - 3] = '\0';
+	g_save_file_path[u_strlen(g_save_file_path) - 3] = '\0';
+	u_strcat(g_config_file_path, L"cfg");
+	u_strcat(g_save_file_path, L"sav");
+
 	LdrStartApp(ev_code_base);
 
 	return status;
@@ -315,6 +329,12 @@ static UINT32 ApplicationStart(EVENT_STACK_T *ev_st, REG_ID_T reg_id, void *reg_
 		app_instance->popup = APP_POPUP_RESETED;
 		app_instance->view = APP_VIEW_HELP;
 		app_instance->flag_from_select = FALSE;
+
+		if (DL_FsFFileExist(g_config_file_path)) {
+			ReadFileConfig((APPLICATION_T *) app_instance, g_config_file_path);
+		} else {
+			SaveFileConfig((APPLICATION_T *) app_instance, g_config_file_path);
+		}
 
 		status = APP_Start(ev_st, &app_instance->app, APP_STATE_MAIN,
 			g_state_table_hdls, ApplicationStop, g_app_name, 0);
@@ -702,6 +722,7 @@ static UINT32 HandleEventSelectDone(EVENT_STACK_T *ev_st, APPLICATION_T *app) {
 			break;
 	}
 
+	status |= SaveFileConfig(app, g_config_file_path);
 	status |= APP_UtilChangeState(APP_STATE_POPUP, ev_st, app);
 
 	return status;
@@ -1103,4 +1124,33 @@ static const WCHAR *GetTilesOptionString(APP_TILES_T tiles) {
 		case APP_TILES_RECTANGLE:
 			return g_str_select_tiles_rectangle;
 	}
+}
+
+static UINT32 ReadFileConfig(APPLICATION_T *app, const WCHAR *file_config_path) {
+	UINT32 readen;
+	APP_INSTANCE_T *app_instance;
+	FILE_HANDLE_T file_config;
+
+	readen = 0;
+	app_instance = (APP_INSTANCE_T *) app;
+	file_config = DL_FsOpenFile(file_config_path, FILE_READ_MODE, 0);
+	DL_FsReadFile(&app_instance->options, sizeof(APP_OPTIONS_T), 1, file_config, &readen);
+	DL_FsCloseFile(file_config);
+
+	return (readen == 0);
+}
+
+static UINT32 SaveFileConfig(APPLICATION_T *app, const WCHAR *file_config_path) {
+	UINT32 written;
+	APP_INSTANCE_T *app_instance;
+	FILE_HANDLE_T file_config;
+
+	written = 0;
+	app_instance = (APP_INSTANCE_T *) app;
+
+	file_config = DL_FsOpenFile(file_config_path, FILE_WRITE_MODE, 0);
+	DL_FsWriteFile(&app_instance->options, sizeof(APP_OPTIONS_T), 1, file_config, &written);
+	DL_FsCloseFile(file_config);
+
+	return (written == 0);
 }
