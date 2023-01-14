@@ -12,6 +12,7 @@
 /* TODO BLOCK!!!! */
 #include <res_def.h>
 #include "app_icon.h"
+#include "app_icon_big.h"
 #include "2048.h"
 #include "2048.c"
 /* TODO BLOCK!!!! */
@@ -50,6 +51,7 @@ typedef enum {
 typedef enum {
 	APP_RESOURCE_NAME,
 	APP_RESOURCE_ICON,
+	APP_RESOURCE_ICON_BIG,
 	APP_RESOURCE_MENU_BACKGROUND,
 	APP_RESOURCE_MENU_TILES,
 	APP_RESOURCE_MAX
@@ -220,9 +222,6 @@ static const WCHAR g_str_reseted[] = L"The game has been reset!";
 static const WCHAR g_str_game_won[] = L"You Won!";
 static const WCHAR g_str_game_over[] = L"Game Over!";
 static const WCHAR g_str_view_help[] = L"Help";
-static const WCHAR g_str_view_about[] = L"About";
-static const WCHAR g_str_view_help_content[] = L"Help content.";
-static const WCHAR g_str_view_about_content[] = L"About content.";
 static const WCHAR g_str_select_background[] = L"Background";
 static const WCHAR g_str_select_backgroud_show[] = L"Show";
 static const WCHAR g_str_select_backgroud_hide[] = L"Hide";
@@ -236,6 +235,13 @@ static const WCHAR g_str_load_ok[] = L"Game Loaded!";
 static const WCHAR g_str_load_fail[] = L"Load Error!";
 static const WCHAR g_str_load_fail_desc[] = L"Cannot find file.";
 static const WCHAR g_str_state_on[] = L"State on:";
+static const WCHAR g_str_help_content_p1[] = L"A popular puzzle game for Motorola P2K as native ELF-application "
+	L"written using AFW and UIS frameworks. Collect \"2048\" by moving tiles! Use \"0\" button to reset game. "
+	L"Use \"Rectangle\" tiles if the game is slow.";
+static const WCHAR g_str_about_content_p1[] = L"Version: 1.0";
+static const WCHAR g_str_about_content_p2[] = L"Thanks: K. Bulenkov.";
+static const WCHAR g_str_about_content_p3[] = L"\x00A9 EXL, 15-Jan-2023.";
+static const WCHAR g_str_about_content_p4[] = L"https://github.com/EXL/2048/tree/master/2048-P2K";
 
 static const COLOR_T g_color_board   = { 0xBB, 0xAD, 0xA0, 0xFF }; /* COLOR_BOARD   */
 static const COLOR_T g_color_overlay = { 0x88, 0x88, 0x88, 0xFF }; /* COLOR_OVERLAY */
@@ -398,6 +404,8 @@ static UINT32 InitResourses(RESOURCE_ID *resources) {
 
 	status |= DRM_CreateResource(&resources[APP_RESOURCE_ICON], RES_TYPE_GRAPHICS,
 		(void *) g_app_icon, sizeof(g_app_icon));
+	status |= DRM_CreateResource(&resources[APP_RESOURCE_ICON_BIG], RES_TYPE_GRAPHICS,
+		(void *) g_app_icon_big, sizeof(g_app_icon_big));
 
 	return status;
 }
@@ -479,7 +487,7 @@ static UINT32 HandleStateEnter(EVENT_STACK_T *ev_st, APPLICATION_T *app, ENTER_S
 					break;
 				case APP_POPUP_SAVE_FAIL:
 					notice_type = NOTICE_TYPE_FAIL;
-					UIS_MakeContentFromString("MCq0N NMCq1", &content, g_str_save_fail, g_str_save_fail_desc);
+					UIS_MakeContentFromString("MCq0NMCq1", &content, g_str_save_fail, g_str_save_fail_desc);
 					break;
 				case APP_POPUP_LOAD_OK:
 					UIS_MakeContentFromString("MCq0NMCq1NMCd2 t3", &content, g_str_load_ok,
@@ -487,7 +495,7 @@ static UINT32 HandleStateEnter(EVENT_STACK_T *ev_st, APPLICATION_T *app, ENTER_S
 					break;
 				case APP_POPUP_LOAD_FAIL:
 					notice_type = NOTICE_TYPE_FAIL;
-					UIS_MakeContentFromString("MCq0N NMCq1", &content, g_str_load_fail, g_str_load_fail_desc);
+					UIS_MakeContentFromString("MCq0NMCq1", &content, g_str_load_fail, g_str_load_fail_desc);
 					break;
 				case APP_POPUP_RESETED:
 					UIS_MakeContentFromString("MCq0", &content, g_str_reseted);
@@ -529,10 +537,12 @@ static UINT32 HandleStateEnter(EVENT_STACK_T *ev_st, APPLICATION_T *app, ENTER_S
 			switch (app_instance->view) {
 				default:
 				case APP_VIEW_HELP:
-					UIS_MakeContentFromString("q0Nq1", &content, g_str_view_help, g_str_view_help_content);
+					UIS_MakeContentFromString("q0Nq1", &content, g_str_view_help, g_str_help_content_p1);
 					break;
 				case APP_VIEW_ABOUT:
-					UIS_MakeContentFromString("q0Nq1", &content, g_str_view_about, g_str_view_about_content);
+					UIS_MakeContentFromString("q0NMCp1NMCq2NMCq3NMCq4NMCq5", &content, g_str_app_name,
+						app_instance->resources[APP_RESOURCE_ICON_BIG], g_str_about_content_p1,
+						g_str_about_content_p2, g_str_about_content_p3, g_str_about_content_p4);
 					break;
 			}
 			dialog = UIS_CreateViewer(&port, &content, NULL);
@@ -860,7 +870,7 @@ static UINT32 SetMeasuredValues(APP_MEASURED_T *measured_values, DRAWING_BUFFER_
 			measured_values->tile_size = 34;
 			measured_values->offset_x = 4;
 			measured_values->offset_y = 4;
-			measured_values->offset_width = 9;
+			measured_values->offset_width = 10;
 			measured_values->offset_height = 2;
 			measured_values->rounded_rad = 4;
 			measured_values->pencil_width = 2;
