@@ -6,6 +6,7 @@
 #include <utilities.h>
 #include <dl.h>
 #include <filesystem.h>
+#include <time_date.h>
 
 /* TODO BLOCK!!!! */
 #include <res_def.h>
@@ -131,6 +132,15 @@ typedef enum {
 } APP_DISPLAY_T;
 
 typedef struct {
+	CLK_DATE_T date;
+	CLK_TIME_T time;
+	UINT16 board[BOARD_SIZE];
+	UINT16 win;
+	UINT16 lose;
+	UINT16 score;
+} SAVE_T;
+
+typedef struct {
 	APPLICATION_T app;
 
 	RESOURCE_ID resources[APP_RESOURCE_MAX];
@@ -141,6 +151,7 @@ typedef struct {
 	APP_SELECT_T select;
 	APP_VIEW_T view;
 	APP_MENU_ITEM_T menu_current_item_index;
+	SAVE_T save;
 	BOOL flag_from_select;
 } APP_INSTANCE_T;
 
@@ -184,6 +195,8 @@ static const WCHAR *GetTilesOptionString(APP_TILES_T tiles);
 
 static UINT32 ReadFile(void *data_struct, UINT32 size, const WCHAR *file_path);
 static UINT32 SaveFile(void *data_struct, UINT32 size, const WCHAR *file_path);
+static UINT32 LoadGame(APPLICATION_T *app);
+static UINT32 SaveGame(APPLICATION_T *app);
 
 static const char g_app_name[APP_NAME_LEN] = "2048-UIS";
 
@@ -213,6 +226,13 @@ static const WCHAR g_str_select_backgroud_hide[] = L"Hide";
 static const WCHAR g_str_select_tiles[] = L"Tiles";
 static const WCHAR g_str_select_tiles_rounded[] = L"Rounded";
 static const WCHAR g_str_select_tiles_rectangle[] = L"Rectangle";
+static const WCHAR g_str_save_ok[] = L"Game Saved!";
+static const WCHAR g_str_save_fail[] = L"Save Error!";
+static const WCHAR g_str_save_fail_desc[] = L"Cannot create file.";
+static const WCHAR g_str_load_ok[] = L"Game Loaded!";
+static const WCHAR g_str_load_fail[] = L"Load Error!";
+static const WCHAR g_str_load_fail_desc[] = L"Cannot find file.";
+static const WCHAR g_str_state_on[] = L"State on:";
 
 static const COLOR_T g_color_board   = { 0xBB, 0xAD, 0xA0, 0xFF }; /* COLOR_BOARD   */
 static const COLOR_T g_color_overlay = { 0x88, 0x88, 0x88, 0xFF }; /* COLOR_OVERLAY */
@@ -448,6 +468,22 @@ static UINT32 HandleStateEnter(EVENT_STACK_T *ev_st, APPLICATION_T *app, ENTER_S
 			notice_type = NOTICE_TYPE_OK;
 			switch (app_instance->popup) {
 				default:
+				case APP_POPUP_SAVE_OK:
+					UIS_MakeContentFromString("MCq0NMCq1NMCd2 t3", &content, g_str_save_ok,
+						g_str_state_on, app_instance->save.date, app_instance->save.time);
+					break;
+				case APP_POPUP_SAVE_FAIL:
+					notice_type = NOTICE_TYPE_FAIL;
+					UIS_MakeContentFromString("MCq0N NMCq1", &content, g_str_save_fail, g_str_save_fail_desc);
+					break;
+				case APP_POPUP_LOAD_OK:
+					UIS_MakeContentFromString("MCq0NMCq1NMCd2 t3", &content, g_str_load_ok,
+						g_str_state_on, app_instance->save.date, app_instance->save.time);
+					break;
+				case APP_POPUP_LOAD_FAIL:
+					notice_type = NOTICE_TYPE_FAIL;
+					UIS_MakeContentFromString("MCq0N NMCq1", &content, g_str_load_fail, g_str_load_fail_desc);
+					break;
 				case APP_POPUP_RESETED:
 					UIS_MakeContentFromString("MCq0", &content, g_str_reseted);
 					break;
@@ -509,7 +545,7 @@ static UINT32 HandleStateEnter(EVENT_STACK_T *ev_st, APPLICATION_T *app, ENTER_S
 
 	switch (app_state) {
 	case APP_STATE_MAIN:
-		PaintAll(ev_st, app, FALSE, TRUE);
+		PaintAll(ev_st, app, (e_score > 0), TRUE);
 		break;
 	default:
 		break;
@@ -615,9 +651,11 @@ static UINT32 HandleEventKeyRelease(EVENT_STACK_T *ev_st, APPLICATION_T *app) {
 
 static UINT32 HandleEventTimerExpired(EVENT_STACK_T *ev_st, APPLICATION_T *app) {
 	EVENT_T *event;
+	APP_INSTANCE_T *app_instance;
 	APP_TIMER_T timer_id;
 
 	event = AFW_GetEv(ev_st);
+	app_instance = (APP_INSTANCE_T *) app;
 	timer_id = ((DL_TIMER_DATA_T *) event->attachment)->ID;
 
 	switch (timer_id) {
@@ -657,8 +695,20 @@ static UINT32 HandleEventSelect(EVENT_STACK_T *ev_st, APPLICATION_T *app) {
 
 	switch (app_instance->menu_current_item_index) {
 		case APP_MENU_ITEM_SAVE:
+			if (SaveGame(app) == RESULT_OK) {
+				app_instance->popup = APP_POPUP_SAVE_OK;
+			} else {
+				app_instance->popup = APP_POPUP_SAVE_FAIL;
+			}
+			status |= APP_UtilChangeState(APP_STATE_POPUP, ev_st, app);
 			break;
 		case APP_MENU_ITEM_LOAD:
+			if (LoadGame(app) == RESULT_OK) {
+				app_instance->popup = APP_POPUP_LOAD_OK;
+			} else {
+				app_instance->popup = APP_POPUP_LOAD_FAIL;
+			}
+			status |= APP_UtilChangeState(APP_STATE_POPUP, ev_st, app);
 			break;
 		case APP_MENU_ITEM_RESET:
 			e_key(KEY_0);
@@ -781,7 +831,7 @@ static UINT32 SetMeasuredValues(APP_MEASURED_T *measured_values, DRAWING_BUFFER_
 			measured_values->offset_y = 4;
 			measured_values->offset_width = 0;
 			measured_values->offset_height = 1;
-			measured_values->rounded_rad = 4;
+			measured_values->rounded_rad = 3;
 			measured_values->pencil_width = 1;
 			measured_values->font_large = 0x0A;        /* Bold WAP-browser font. */
 			measured_values->font_normal = 0x01;       /* General font. */
@@ -1150,4 +1200,46 @@ static UINT32 SaveFile(void *data_struct, UINT32 size, const WCHAR *file_path) {
 	DL_FsCloseFile(file_handle);
 
 	return (written == 0);
+}
+
+static UINT32 LoadGame(APPLICATION_T *app) {
+	UINT32 i;
+	APP_INSTANCE_T *app_instance;
+
+	app_instance = (APP_INSTANCE_T *) app;
+
+	if (ReadFile(&app_instance->save, sizeof(SAVE_T), g_save_file_path) == RESULT_OK) {
+		e_win = app_instance->save.win;
+		e_lose = app_instance->save.lose;
+		e_score = app_instance->save.score;
+		for (i = 0; i < BOARD_SIZE; ++i) {
+			e_board[i] = app_instance->save.board[i];
+		}
+		return RESULT_OK;
+	}
+
+	return RESULT_FAIL;
+}
+
+static UINT32 SaveGame(APPLICATION_T *app) {
+	UINT32 status;
+	APP_INSTANCE_T *app_instance;
+	UINT32 i;
+
+	status = RESULT_OK;
+	app_instance = (APP_INSTANCE_T *) app;
+
+	status |= (DL_ClkGetDate(&app_instance->save.date) == FALSE);
+	status |= (DL_ClkGetTime(&app_instance->save.time) == FALSE);
+
+	app_instance->save.win = e_win;
+	app_instance->save.lose = e_lose;
+	app_instance->save.score = e_score;
+	for (i = 0; i < BOARD_SIZE; ++i) {
+		app_instance->save.board[i] = e_board[i];
+	}
+
+	status |= SaveFile(&app_instance->save, sizeof(SAVE_T), g_save_file_path);
+
+	return status;
 }
