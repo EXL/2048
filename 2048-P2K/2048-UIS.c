@@ -7,6 +7,7 @@
 #include <dl.h>
 #include <filesystem.h>
 #include <time_date.h>
+#include <mme.h>
 
 /* TODO BLOCK!!!! */
 #include <res_def.h>
@@ -16,6 +17,7 @@
 /* TODO BLOCK!!!! */
 
 #define TIMER_FAST_TRIGGER_MS             (1)
+#define TIMER_POPUP_DELAY_MS            (100)
 #define SCORE_TITLE_MAX_LENGTH           (16)
 #define SCORE_VALUE_MAX_LENGTH            (6)
 #define TILE_VALUE_MAX_LENGTH             (5)
@@ -35,7 +37,8 @@ typedef enum {
 	APP_TIMER_EXIT,
 	APP_TIMER_EXIT_FAST,
 	APP_TIMER_MENU,
-	APP_TIMER_RESET
+	APP_TIMER_RESET,
+	APP_TIMER_SAVE
 } APP_TIMER_T;
 
 typedef enum {
@@ -663,6 +666,7 @@ static UINT32 HandleEventTimerExpired(EVENT_STACK_T *ev_st, APPLICATION_T *app) 
 			DrawSoftKeys(ev_st, app, APP_SOFT_KEY_LEFT, FALSE);
 			/* No break here. */
 		case APP_TIMER_EXIT_FAST:
+			/* Play an exit sound using quiet speaker. */
 			DL_AudPlayTone(0x00,  0xFF);
 			return ApplicationStop(ev_st, app);
 			break;
@@ -674,6 +678,13 @@ static UINT32 HandleEventTimerExpired(EVENT_STACK_T *ev_st, APPLICATION_T *app) 
 			DrawSoftKeys(ev_st, app, APP_SOFT_KEY_RIGHT, FALSE);
 			e_key(KEY_0);
 			PaintAll(ev_st, app, FALSE, FALSE);
+			break;
+		case APP_TIMER_SAVE:
+#ifdef USE_MME
+			/* Play a normal camera shutter sound using loud speaker. */
+			/* NOTE: Function `MME_GC_playback_open_audio_play_forget()` may not be available on most libraries. */
+			MME_GC_playback_open_audio_play_forget(L"/a/mobile/system/shutter5.amr");
+#endif
 			break;
 		default:
 			break;
@@ -697,6 +708,7 @@ static UINT32 HandleEventSelect(EVENT_STACK_T *ev_st, APPLICATION_T *app) {
 		case APP_MENU_ITEM_SAVE:
 			if (SaveGame(app) == RESULT_OK) {
 				app_instance->popup = APP_POPUP_SAVE_OK;
+				APP_UtilStartTimer(TIMER_POPUP_DELAY_MS, APP_TIMER_SAVE, app);
 			} else {
 				app_instance->popup = APP_POPUP_SAVE_FAIL;
 			}
