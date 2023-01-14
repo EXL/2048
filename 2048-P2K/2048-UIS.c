@@ -182,8 +182,8 @@ static LIST_ENTRY_T *CreateList(EVENT_STACK_T *ev_st, APPLICATION_T *app, UINT32
 static const WCHAR *GetBackgroundOptionString(APP_BACKGROUND_T background);
 static const WCHAR *GetTilesOptionString(APP_TILES_T tiles);
 
-static UINT32 ReadFileConfig(APPLICATION_T *app, const WCHAR *file_config_path);
-static UINT32 SaveFileConfig(APPLICATION_T *app, const WCHAR *file_config_path);
+static UINT32 ReadFile(void *data_struct, UINT32 size, const WCHAR *file_path);
+static UINT32 SaveFile(void *data_struct, UINT32 size, const WCHAR *file_path);
 
 static const char g_app_name[APP_NAME_LEN] = "2048-UIS";
 
@@ -331,9 +331,9 @@ static UINT32 ApplicationStart(EVENT_STACK_T *ev_st, REG_ID_T reg_id, void *reg_
 		app_instance->flag_from_select = FALSE;
 
 		if (DL_FsFFileExist(g_config_file_path)) {
-			ReadFileConfig((APPLICATION_T *) app_instance, g_config_file_path);
+			ReadFile(&app_instance->options, sizeof(APP_OPTIONS_T), g_config_file_path);
 		} else {
-			SaveFileConfig((APPLICATION_T *) app_instance, g_config_file_path);
+			SaveFile(&app_instance->options, sizeof(APP_OPTIONS_T), g_config_file_path);
 		}
 
 		status = APP_Start(ev_st, &app_instance->app, APP_STATE_MAIN,
@@ -722,7 +722,7 @@ static UINT32 HandleEventSelectDone(EVENT_STACK_T *ev_st, APPLICATION_T *app) {
 			break;
 	}
 
-	status |= SaveFileConfig(app, g_config_file_path);
+	status |= SaveFile(&app_instance->options, sizeof(APP_OPTIONS_T), g_config_file_path);
 	status |= APP_UtilChangeState(APP_STATE_POPUP, ev_st, app);
 
 	return status;
@@ -1126,31 +1126,28 @@ static const WCHAR *GetTilesOptionString(APP_TILES_T tiles) {
 	}
 }
 
-static UINT32 ReadFileConfig(APPLICATION_T *app, const WCHAR *file_config_path) {
+static UINT32 ReadFile(void *data_struct, UINT32 size, const WCHAR *file_path) {
 	UINT32 readen;
-	APP_INSTANCE_T *app_instance;
-	FILE_HANDLE_T file_config;
+	FILE_HANDLE_T file_handle;
 
 	readen = 0;
-	app_instance = (APP_INSTANCE_T *) app;
-	file_config = DL_FsOpenFile(file_config_path, FILE_READ_MODE, 0);
-	DL_FsReadFile(&app_instance->options, sizeof(APP_OPTIONS_T), 1, file_config, &readen);
-	DL_FsCloseFile(file_config);
+	file_handle = DL_FsOpenFile(file_path, FILE_READ_MODE, 0);
+
+	DL_FsReadFile(data_struct, size, 1, file_handle, &readen);
+	DL_FsCloseFile(file_handle);
 
 	return (readen == 0);
 }
 
-static UINT32 SaveFileConfig(APPLICATION_T *app, const WCHAR *file_config_path) {
+static UINT32 SaveFile(void *data_struct, UINT32 size, const WCHAR *file_path) {
 	UINT32 written;
-	APP_INSTANCE_T *app_instance;
-	FILE_HANDLE_T file_config;
+	FILE_HANDLE_T file_handle;
 
 	written = 0;
-	app_instance = (APP_INSTANCE_T *) app;
+	file_handle = DL_FsOpenFile(file_path, FILE_WRITE_MODE, 0);
 
-	file_config = DL_FsOpenFile(file_config_path, FILE_WRITE_MODE, 0);
-	DL_FsWriteFile(&app_instance->options, sizeof(APP_OPTIONS_T), 1, file_config, &written);
-	DL_FsCloseFile(file_config);
+	DL_FsWriteFile(data_struct, size, 1, file_handle, &written);
+	DL_FsCloseFile(file_handle);
 
 	return (written == 0);
 }
