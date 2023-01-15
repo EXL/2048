@@ -1,3 +1,8 @@
+/*
+ * https://wiki.motofan.ru/ElfPack
+ * https://wiki.motofan.ru/ElfPack2
+ */
+
 #include <loader.h>
 #include <apps.h>
 #include <uis.h>
@@ -161,7 +166,12 @@ static __inline UINT32 OffsetCoord(UINT8 coord, UINT16 tile_size, UINT16 offset)
 static __inline void SetRgbColor(COLOR_T *color, UINT32 rgb);
 static __inline void CenterRect(GRAPHIC_REGION_T *r_i, GRAPHIC_REGION_T *r_o);
 
-UINT32 Register(const char *elf_path_uri, const char *args, UINT32 ev_code);
+#if defined(EP1)
+UINT32 Register(const char *elf_path_uri, const char *args, UINT32 ev_code); /* ElfPack 1.x entry point. */
+#elif defined(EP2)
+ldrElf *_start(WCHAR *uri, WCHAR *arguments);                                /* ElfPack 2.x entry point. */
+#endif
+
 static UINT32 ApplicationStart(EVENT_STACK_T *ev_st, REG_ID_T reg_id, void *reg_hdl);
 static UINT32 ApplicationStop(EVENT_STACK_T *ev_st, APPLICATION_T *app);
 
@@ -181,6 +191,7 @@ static UINT32 HandleEventBack(EVENT_STACK_T *ev_st, APPLICATION_T *app);
 static UINT32 HandleEventSelectDone(EVENT_STACK_T *ev_st, APPLICATION_T *app);
 static UINT32 HandleEventSelectBack(EVENT_STACK_T *ev_st, APPLICATION_T *app);
 
+static void SetPathsToFiles(void);
 static UINT32 SetWorikingArea(GRAPHIC_REGION_T *working_area);
 static UINT32 SetMeasuredValues(APP_MEASURED_T *measured_values, DRAWING_BUFFER_T *buffer);
 static UINT32 DrawSoftKeys(EVENT_STACK_T *ev_st, APPLICATION_T *app, APP_SOFT_KEY_T softkey, BOOL pushed);
@@ -245,21 +256,25 @@ static const COLOR_T g_color_overlay = { 0x88, 0x88, 0x88, 0xFF }; /* COLOR_OVER
 static const COLOR_T g_color_text    = { 0x77, 0x6E, 0x65, 0xFF }; /* COLOR_TEXT    */
 static const COLOR_T g_color_final   = { 0x88, 0x00, 0x00, 0xFF }; /* COLOR_FINAL   */
 
-static WCHAR g_config_file_path[FS_MAX_URI_NAME_LENGTH]; /* FIXME: Can it be non-global? */
-static WCHAR g_save_file_path[FS_MAX_URI_NAME_LENGTH]; /* FIXME: Can it be non-global? */
+static WCHAR g_config_file_path[FS_MAX_URI_NAME_LENGTH];
+static WCHAR g_save_file_path[FS_MAX_URI_NAME_LENGTH];
 
-static const EVENT_HANDLER_ENTRY_T g_state_any_hdls[] = {
+#if defined(EP2)
+static ldrElf g_app_elf;
+#endif
+
+static EVENT_HANDLER_ENTRY_T g_state_any_hdls[] = {
 	{ EV_REVOKE_TOKEN, APP_HandleUITokenRevoked },
 	{ EV_TIMER_EXPIRED, HandleEventTimerExpired },
 	{ STATE_HANDLERS_END, NULL }
 };
 
-static const EVENT_HANDLER_ENTRY_T g_state_init_hdls[] = {
+static EVENT_HANDLER_ENTRY_T g_state_init_hdls[] = {
 	{ EV_GRANT_TOKEN, APP_HandleUITokenGranted },
 	{ STATE_HANDLERS_END, NULL }
 };
 
-static const EVENT_HANDLER_ENTRY_T g_state_main_hdls[] = {
+static EVENT_HANDLER_ENTRY_T g_state_main_hdls[] = {
 	{ EV_DONE, ApplicationStop },
 	{ EV_DIALOG_DONE, ApplicationStop },
 	{ EV_INK_KEY_PRESS, HandleEventKeyPress },
@@ -267,20 +282,20 @@ static const EVENT_HANDLER_ENTRY_T g_state_main_hdls[] = {
 	{ STATE_HANDLERS_END, NULL }
 };
 
-static const EVENT_HANDLER_ENTRY_T g_state_menu_hdls[] = {
+static EVENT_HANDLER_ENTRY_T g_state_menu_hdls[] = {
 	{ EV_DONE, HandleEventBack },
 	{ EV_DIALOG_DONE, HandleEventBack },
 	{ EV_SELECT, HandleEventSelect },
 	{ STATE_HANDLERS_END, NULL }
 };
 
-static const EVENT_HANDLER_ENTRY_T g_state_popup_hdls[] = {
+static EVENT_HANDLER_ENTRY_T g_state_popup_hdls[] = {
 	{ EV_DONE, HandleEventBack },
 	{ EV_DIALOG_DONE, HandleEventBack },
 	{ STATE_HANDLERS_END, NULL }
 };
 
-static const EVENT_HANDLER_ENTRY_T g_state_select_hdls[] = {
+static EVENT_HANDLER_ENTRY_T g_state_select_hdls[] = {
 	{ EV_DONE, HandleEventSelectDone },
 	{ EV_DIALOG_DONE, HandleEventSelectBack },
 	{ EV_CANCEL, HandleEventSelectBack },
@@ -315,6 +330,7 @@ static __inline void CenterRect(GRAPHIC_REGION_T *r_i, GRAPHIC_REGION_T *r_o) {
 	r_i->lrc.y = r_i->ulc.y + r_i->lrc.y;
 }
 
+#if defined(EP1)
 UINT32 Register(const char *elf_path_uri, const char *args, UINT32 ev_code) {
 	UINT32 status;
 	UINT32 ev_code_base;
@@ -325,15 +341,47 @@ UINT32 Register(const char *elf_path_uri, const char *args, UINT32 ev_code) {
 
 	u_atou(elf_path_uri, g_config_file_path);
 	u_atou(elf_path_uri, g_save_file_path);
-	g_config_file_path[u_strlen(g_config_file_path) - 3] = '\0';
-	g_save_file_path[u_strlen(g_save_file_path) - 3] = '\0';
-	u_strcat(g_config_file_path, L"cfg");
-	u_strcat(g_save_file_path, L"sav");
+	SetPathsToFiles();
 
 	LdrStartApp(ev_code_base);
 
 	return status;
 }
+#elif defined(EP2)
+ldrElf *_start(WCHAR *uri, WCHAR *arguments) {
+	UINT32 status;
+	UINT32 ev_code_base;
+
+	if (ldrIsLoaded(g_app_name)) {
+		cprint("2048-UIS: Error! Application has already been loaded!\n");
+		return NULL;
+	}
+
+	status = RESULT_OK;
+	ev_code_base = ldrRequestEventBase();
+
+	ldrInitEventHandlersTbl(g_state_any_hdls, ev_code_base);
+	ldrInitEventHandlersTbl(g_state_init_hdls, ev_code_base);
+	ldrInitEventHandlersTbl(g_state_main_hdls, ev_code_base);
+	ldrInitEventHandlersTbl(g_state_menu_hdls, ev_code_base);
+	ldrInitEventHandlersTbl(g_state_popup_hdls, ev_code_base);
+	ldrInitEventHandlersTbl(g_state_select_hdls, ev_code_base);
+	status |= APP_Register(&ev_code_base, 1, g_state_table_hdls, APP_STATE_MAX, (void *) ApplicationStart);
+
+	u_strcpy(g_config_file_path, uri);
+	u_strcpy(g_save_file_path, uri);
+	SetPathsToFiles();
+
+	status |= ldrSendEvent(ev_code_base);
+	g_app_elf.name = (char *) g_app_name;
+
+	return (status == RESULT_OK) ? &g_app_elf : NULL;
+}
+
+void __wrap_memcpy(void *dst, const void *src, size_t sz) {
+	__rt_memcpy(dst, src, sz);
+}
+#endif
 
 static UINT32 ApplicationStart(EVENT_STACK_T *ev_st, REG_ID_T reg_id, void *reg_hdl) {
 	UINT32 status;
@@ -364,6 +412,10 @@ static UINT32 ApplicationStart(EVENT_STACK_T *ev_st, REG_ID_T reg_id, void *reg_
 
 		status = APP_Start(ev_st, &app_instance->app, APP_STATE_MAIN,
 			g_state_table_hdls, ApplicationStop, g_app_name, 0);
+
+#if defined(EP2)
+		g_app_elf.app = (APPLICATION_T *) app_instance;
+#endif
 	}
 
 	return status;
@@ -382,7 +434,11 @@ static UINT32 ApplicationStop(EVENT_STACK_T *ev_st, APPLICATION_T *app) {
 
 	status |= APP_Exit(ev_st, app, 0);
 
+#if defined(EP1)
 	LdrUnloadELF(&Lib);
+#elif defined(EP2)
+	ldrUnloadElf();
+#endif
 
 	return status;
 }
@@ -809,6 +865,13 @@ static UINT32 HandleEventSelectBack(EVENT_STACK_T *ev_st, APPLICATION_T *app) {
 	status |= APP_UtilChangeState(APP_STATE_MENU, ev_st, app);
 
 	return status;
+}
+
+static void SetPathsToFiles(void) {
+	g_config_file_path[u_strlen(g_config_file_path) - 3] = '\0';
+	g_save_file_path[u_strlen(g_save_file_path) - 3] = '\0';
+	u_strcat(g_config_file_path, L"cfg");
+	u_strcat(g_save_file_path, L"sav");
 }
 
 static UINT32 SetWorikingArea(GRAPHIC_REGION_T *working_area) {
