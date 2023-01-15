@@ -2,15 +2,20 @@
 
 #if defined(mc68000) && !defined(NeXT) /* GCC on Sega Mega Drive and Sega Genesis platform. */
 	#include <genesis.h>
+	#include <string.h>
 	#define rand random
+#elif defined(THINK_C) /* Symantec THINK C IDE on Classic Mac OS platform. */
+	#include <string.h>
+	#define rand Random
+#elif defined(__P2K__) /* Motorola P2K platform. */
+	#include <utilities.h>
+	#include <time_date.h>
+	#include <mem.h>
+	#define time(x) suPalReadTime
 #else
 	#include <time.h>
 	#include <stdlib.h>
-#endif
-#include <string.h>
-
-#if defined(THINK_C) /* Symantec THINK C IDE on Classic Mac OS platform. */
-#define rand Random
+	#include <string.h>
 #endif
 
 #define E_RANDOM         ((unsigned int) rand() % 100 + 1)
