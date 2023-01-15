@@ -9,13 +9,10 @@
 #include <time_date.h>
 #include <mme.h>
 
-/* TODO BLOCK!!!! */
-#include <res_def.h>
-#include "app_icon.h"
-#include "app_icon_big.h"
 #include "2048.h"
-#include "2048.c"
-/* TODO BLOCK!!!! */
+
+#include "p2k_app_icon_15x15_gif.h"
+#include "p2k_app_icon_41x41_gif.h"
 
 #define TIMER_FAST_TRIGGER_MS             (1)
 #define TIMER_POPUP_DELAY_MS            (100)
@@ -403,9 +400,9 @@ static UINT32 InitResourses(RESOURCE_ID *resources) {
 		(void *) g_str_select_tiles, (u_strlen(g_str_select_tiles) + 1) * sizeof(WCHAR));
 
 	status |= DRM_CreateResource(&resources[APP_RESOURCE_ICON], RES_TYPE_GRAPHICS,
-		(void *) g_app_icon, sizeof(g_app_icon));
+		(void *) p2k_app_icon_15x15_gif, sizeof(p2k_app_icon_15x15_gif));
 	status |= DRM_CreateResource(&resources[APP_RESOURCE_ICON_BIG], RES_TYPE_GRAPHICS,
-		(void *) g_app_icon_big, sizeof(g_app_icon_big));
+		(void *) p2k_app_icon_41x41_gif, sizeof(p2k_app_icon_41x41_gif));
 
 	return status;
 }
@@ -448,6 +445,7 @@ static UINT32 HandleStateEnter(EVENT_STACK_T *ev_st, APPLICATION_T *app, ENTER_S
 
 	port = app->port;
 	app_state = app->state;
+	dialog = DialogType_None;
 
 	switch (app_state) {
 		case APP_STATE_MAIN:
@@ -548,7 +546,6 @@ static UINT32 HandleStateEnter(EVENT_STACK_T *ev_st, APPLICATION_T *app, ENTER_S
 			dialog = UIS_CreateViewer(&port, &content, NULL);
 			break;
 		default:
-			dialog = DialogType_None;
 			break;
 	}
 
@@ -666,11 +663,9 @@ static UINT32 HandleEventKeyRelease(EVENT_STACK_T *ev_st, APPLICATION_T *app) {
 
 static UINT32 HandleEventTimerExpired(EVENT_STACK_T *ev_st, APPLICATION_T *app) {
 	EVENT_T *event;
-	APP_INSTANCE_T *app_instance;
 	APP_TIMER_T timer_id;
 
 	event = AFW_GetEv(ev_st);
-	app_instance = (APP_INSTANCE_T *) app;
 	timer_id = ((DL_TIMER_DATA_T *) event->attachment)->ID;
 
 	switch (timer_id) {
