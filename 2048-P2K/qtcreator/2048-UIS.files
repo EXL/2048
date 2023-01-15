@@ -6,3 +6,6 @@
 ../../image/icon/precompiled/p2k_app_icon_15x15_gif.h
 ../../image/icon/precompiled/p2k_app_icon_41x41_gif.h
 ../ReadMe.md
+../Makefile
+../make_ep1.bat
+../make_ep2.bat
