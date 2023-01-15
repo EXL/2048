@@ -1,5 +1,6 @@
-# Qt Creator user files.
+# Qt Creator user files and directories.
 *.user*
+.qtc_clangd/
 
 # Qt MOC generated files.
 *.moc

@@ -1,0 +1,8 @@
+../Makefile
+../make.bat
+../2048-UIS.c
+../../src/2048.c
+../../src/2048.h
+../../image/icon/precompiled/p2k_app_icon_15x15_gif.h
+../../image/icon/precompiled/p2k_app_icon_41x41_gif.h
+../ReadMe.md
