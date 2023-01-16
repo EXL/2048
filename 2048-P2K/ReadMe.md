@@ -19,7 +19,32 @@ The "2048" puzzle game for the Motorola P2K platform written using AFW and UIS f
 
 ![2048-UIS Motorola ROKR E1 Screenshot 11](../image/2048-P2K-E1-Screenshot11.png) ![2048-UIS Motorola ROKR E1 Screenshot 12](../image/2048-P2K-E1-Screenshot12.png) ![2048-UIS Motorola ROKR E1 Screenshot 13](../image/2048-P2K-E1-Screenshot13.png) ![2048-UIS Motorola ROKR E1 Screenshot 14](../image/2048-P2K-E1-Screenshot14.png) ![2048-UIS Motorola ROKR E1 Screenshot 15](../image/2048-P2K-E1-Screenshot15.png)
 
-TODO: Build recipes, etc. About ElfPacks and it's compiler versions.
+The ability to run ELF applications on Motorola phones was implemented by enthusiasts of the MotoFan.Ru forum: Andy51, Vilko, tim_apple, G-XaD, om2804, kadukmm, baat, z3DD3r, Chik_v, fkoder, DmT, motoprogger etc.
+
+## Toolchain & SDK
+
+* ElfPack v1.x Windows ELFKIT download link. // TODO:
+* ElfPack v1.x Linux ELFKIT download link. // TODO:
+* ElfPack v2.x Windows ELFKIT download link. // TODO:
+
+## Install Tools & Build
+
+Windows recipe:
+
+```bat
+> cd 2048\2048-P2K\
+> make_ep1.bat clean
+> make_ep1.bat
+> make_ep2.bat clean
+> make_ep2.bat
+```
+
+Linux recipe (ElfPack 1.x build only):
+
+```bash
+$ cd 2048/2048-P2K/
+$ make clean
+```
 
 ## Additional Stuff
 
@@ -39,6 +64,49 @@ The P2K OS screenshots from Motorola ROKR E1:
 
 ![P2K Motorola E1 Screenshot 11 Main Desktop Screen](../image/P2K-E1-Screenshot11.png) ![P2K Motorola E1 Screenshot 12 Main Menu](../image/P2K-E1-Screenshot12.png) ![P2K Motorola E1 Screenshot 13 Multimedia Menu](../image/P2K-E1-Screenshot13.png) ![P2K Motorola E1 Screenshot 14 S/W Version](../image/P2K-E1-Screenshot14.png) ![P2K Motorola E1 Screenshot 15 Flex Version](../image/P2K-E1-Screenshot15.png)
 
-TODO: Move this to notes!
+The 2048 game running on Motorola SLVR L6 and Motorola ROKR E1:
 
-Icon sizes is 41x41 (GIF big, animated), 33x33 (GIF big, static), 15x15 (GIF small, static)
+TODO: Photos.
+
+## Versions
+
+ElfPack v1.x Tools:
+
+```bat
+> tcc
+Thumb C Compiler, ADS1.2 [Build 848]
+> armcc
+ARM C Compiler, ADS1.2 [Build 848]
+> tcpp
+Thumb C++ Compiler, ADS1.2 [Build 848]
+> armcpp
+ARM C++ Compiler, ADS1.2 [Build 848]
+> armlink
+ARM Linker, ADS1.2 [Build 848]
+```
+
+ElfPack v2.x Tools:
+
+```bat
+> arm-eabi-gcc -v
+Target: arm-eabi
+Configured with: ../../gcc-4.4.0/configure --enable-languages=c,c++,objc --with-cpu=arm7tdmi --enable-interwork --enable-multilib --with-gcc --with-gnu-ld --with-gnu-as --disable-shared --disable-threads --disable-win32-registry --disable-nls --disable-debug --disable-libmudflap --disable-libssp --disable-libgomp --disable-libstdcxx-pch --target=arm-eabi --with-newlib --prefix=c:/devkitPro/devkitARM --with-bugurl=http://wiki.devkitpro.org/index.php/Bug_Reports --with-pkgversion='devkitARM release 26'
+Thread model: single
+gcc version 4.4.0 (devkitARM release 26)
+> arm-eabi-g++ -v
+Target: arm-eabi
+Configured with: ../../gcc-4.4.0/configure --enable-languages=c,c++,objc --with-cpu=arm7tdmi --enable-interwork --enable-multilib --with-gcc --with-gnu-ld --with-gnu-as --disable-shared --disable-threads --disable-win32-registry --disable-nls --disable-debug --disable-libmudflap --disable-libssp --disable-libgomp --disable-libstdcxx-pch --target=arm-eabi --with-newlib --prefix=c:/devkitPro/devkitARM --with-bugurl=http://wiki.devkitpro.org/index.php/Bug_Reports --with-pkgversion='devkitARM release 26'
+Thread model: single
+gcc version 4.4.0 (devkitARM release 26)
+> arm-eabi-ld -V
+GNU ld (GNU Binutils) 2.19.1
+  Supported emulations:
+   armelf
+```
+
+## Information
+
+* [NotesMotoP2K.md](../doc/NotesMotoP2K.md): document contains additional information about ElfPacks on Motorola P2K phones.
+* [ELFs development and porting](https://forum.motofan.ru/index.php?showforum=184): A section of the MotoFan.Ru forum dedicated to the development and porting of ELFs.
+* [ElfPack 1.x](https://wiki.motofan.ru/ElfPack): Page on MotoWiki site about first version of ElfPack for Motorola P2K phones.
+* [ElfPack 2.x](https://wiki.motofan.ru/ElfPack2): Page on MotoWiki site about second version of ElfPack for Motorola P2K phones.

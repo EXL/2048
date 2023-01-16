@@ -1,7 +1,20 @@
 /*
- * TODO: DESCRIPTION.
- * https://wiki.motofan.ru/ElfPack
- * https://wiki.motofan.ru/ElfPack2
+ * About:
+ *   A popular "2048" puzzle game for Motorola P2K as native ELF-application written using AFW and UIS frameworks.
+ *
+ * Author:
+ *   EXL
+ *
+ * License:
+ *   MIT
+ *
+ * Application type:
+ *   GUI
+ *
+ * Additional information:
+ *   1. https://forum.motofan.ru/index.php?showforum=184
+ *   2. https://wiki.motofan.ru/ElfPack
+ *   3. https://wiki.motofan.ru/ElfPack2
  */
 
 #include <loader.h>

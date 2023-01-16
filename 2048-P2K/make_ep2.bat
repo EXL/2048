@@ -51,7 +51,7 @@ set FINAL_NAME=2048-P2K-UIS_EP2
 	%LIB_PATH%\%LIB_MAIN% %LIB_PATH%\%LIB_LIBC% -o %ELF_NAME%_p.elf
 
 :: Post linking step.
-%ARM_PATH%\postlink\postlink.exe %ELF_NAME%_p.elf -o %ELF_NAME%.elf
+%ARM_PATH%\libgen\postlink.exe %ELF_NAME%_p.elf -o %ELF_NAME%.elf
 
 :: Renaming step.
 move /y %ELF_NAME%.elf 2048-P2K-UIS_EP2.elf
