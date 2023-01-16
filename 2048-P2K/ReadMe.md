@@ -27,7 +27,7 @@ The ability to run ELF applications on Motorola phones was implemented by enthus
 * ElfPack v1.x Linux ELFKIT download link. // TODO:
 * ElfPack v2.x Windows ELFKIT download link. // TODO:
 
-## Install Tools & Build
+## Install Tools & Build & Run
 
 Windows recipe:
 
@@ -47,10 +47,12 @@ $ make clean
 $ make
 ```
 
-The application has been tested on the following phones and firmware:
+The ELF-application has been tested on the following phones and firmware:
 
 * Motorola SLVR L6: R3443H1_G_0A.65.0BR
 * Motorola ROKR E1: R373_G_0E.30.49R
+
+Application type: GUI.
 
 ## Additional Stuff
 
