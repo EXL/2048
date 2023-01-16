@@ -19,7 +19,7 @@ The "2048" puzzle game for the Motorola P2K platform written using AFW and UIS f
 
 ![2048-UIS Motorola ROKR E1 Screenshot 11](../image/2048-P2K-E1-Screenshot11.png) ![2048-UIS Motorola ROKR E1 Screenshot 12](../image/2048-P2K-E1-Screenshot12.png) ![2048-UIS Motorola ROKR E1 Screenshot 13](../image/2048-P2K-E1-Screenshot13.png) ![2048-UIS Motorola ROKR E1 Screenshot 14](../image/2048-P2K-E1-Screenshot14.png) ![2048-UIS Motorola ROKR E1 Screenshot 15](../image/2048-P2K-E1-Screenshot15.png)
 
-The ability to run ELF applications on Motorola phones was implemented by enthusiasts of the MotoFan.Ru forum: Andy51, Vilko, tim_apple, G-XaD, om2804, kadukmm, baat, z3DD3r, Chik_v, fkoder, DmT, motoprogger etc.
+The ability to run ELF applications on Motorola phones was implemented by enthusiasts of the MotoFan.Ru forum: Andy51, Vilko, tim_apple, G-XaD, om2804, kadukmm, baat, z3DD3r, Chik_v, fkoder, DmT, motoprogger, etc.
 
 ## Toolchain & SDK
 
@@ -44,7 +44,13 @@ Linux recipe (ElfPack 1.x build only):
 ```bash
 $ cd 2048/2048-P2K/
 $ make clean
+$ make
 ```
+
+The application has been tested on the following phones and firmware:
+
+* Motorola SLVR L6: R3443H1_G_0A.65.0BR
+* Motorola ROKR E1: R373_G_0E.30.49R
 
 ## Additional Stuff
 
@@ -106,7 +112,7 @@ GNU ld (GNU Binutils) 2.19.1
 
 ## Information
 
-* [NotesMotoP2K.md](../doc/NotesMotoP2K.md): document contains additional information about ElfPacks on Motorola P2K phones.
+* [NotesMotoP2K.md](../doc/NotesMotoP2K.md): Document contains additional information about ElfPacks on Motorola P2K phones.
 * [ELFs development and porting](https://forum.motofan.ru/index.php?showforum=184): A section of the MotoFan.Ru forum dedicated to the development and porting of ELFs.
 * [ElfPack 1.x](https://wiki.motofan.ru/ElfPack): Page on MotoWiki site about first version of ElfPack for Motorola P2K phones.
 * [ElfPack 2.x](https://wiki.motofan.ru/ElfPack2): Page on MotoWiki site about second version of ElfPack for Motorola P2K phones.
