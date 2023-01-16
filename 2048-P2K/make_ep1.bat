@@ -16,7 +16,6 @@ set LIB_PATH=%ARM_PATH%\lib
 
 :: Main link library.
 set LIB_MAIN=Lib.o
-:: set LIB_MAIN=Lib_L2_L6.o
 
 :: Defines.
 set DEFINES=-D__P2K__ -DEP1 -DUSE_MME

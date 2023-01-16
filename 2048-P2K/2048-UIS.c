@@ -360,13 +360,13 @@ ldrElf *_start(WCHAR *uri, WCHAR *arguments) {
 
 	status = RESULT_OK;
 	ev_code_base = ldrRequestEventBase();
-
 	ldrInitEventHandlersTbl(g_state_any_hdls, ev_code_base);
 	ldrInitEventHandlersTbl(g_state_init_hdls, ev_code_base);
 	ldrInitEventHandlersTbl(g_state_main_hdls, ev_code_base);
 	ldrInitEventHandlersTbl(g_state_menu_hdls, ev_code_base);
 	ldrInitEventHandlersTbl(g_state_popup_hdls, ev_code_base);
 	ldrInitEventHandlersTbl(g_state_select_hdls, ev_code_base);
+
 	status |= APP_Register(&ev_code_base, 1, g_state_table_hdls, APP_STATE_MAX, (void *) ApplicationStart);
 
 	u_strcpy(g_config_file_path, uri);
@@ -377,10 +377,6 @@ ldrElf *_start(WCHAR *uri, WCHAR *arguments) {
 	g_app_elf.name = (char *) g_app_name;
 
 	return (status == RESULT_OK) ? &g_app_elf : NULL;
-}
-
-void __wrap_memcpy(void *dst, const void *src, size_t sz) {
-	__rt_memcpy(dst, src, sz);
 }
 #endif
 
@@ -1007,9 +1003,11 @@ static UINT32 PaintBoard(EVENT_STACK_T *ev_st, APPLICATION_T *app) {
 	status = RESULT_OK;
 
 	status |= PaintBackground(ev_st, app);
-	for (y = 0; y < LINE_SIZE; ++y)
-		for (x = 0; x < LINE_SIZE; ++x)
+	for (y = 0; y < LINE_SIZE; ++y) {
+		for (x = 0; x < LINE_SIZE; ++x) {
 			status |= PaintTile(ev_st, app, e_board[x + y * LINE_SIZE], x, y);
+		}
+	}
 	status |= PaintFinal(ev_st, app);
 
 	return status;

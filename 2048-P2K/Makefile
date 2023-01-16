@@ -13,7 +13,6 @@ LIB_PATH = $(ARM_PATH)/lib
 
 # Main link library.
 LIB_MAIN = Lib.o
-# LIB_MAIN = Lib_L2_L6.o
 
 # Defines.
 DEFINES = -D__P2K__ -DEP1 -DUSE_MME
