@@ -26,6 +26,7 @@ The ability to run ELF applications on Motorola phones was implemented by enthus
 * ElfPack v1.x Windows ELFKIT download link. // TODO:
 * ElfPack v1.x Linux ELFKIT download link. // TODO:
 * ElfPack v2.x Windows ELFKIT download link. // TODO:
+* ElfPack M*CORE Windows ELFKIT download link. // TODO:
 
 ## Install Tools & Build & Run
 
@@ -37,6 +38,8 @@ Windows recipe:
 > make_ep1.bat
 > make_ep2.bat clean
 > make_ep2.bat
+> make_epmcore.bat clean
+> make_epmcore.bat
 ```
 
 Linux recipe (ElfPack 1.x build only):
@@ -112,9 +115,27 @@ GNU ld (GNU Binutils) 2.19.1
    armelf
 ```
 
+ElfPack M*CORE Tools:
+
+```bat
+> mcore-elf-gcc -v
+Configured with: /usr/local/src/gnu/gcc-3.4.6/configure --target=mcore-elf --host=i686-pc-cygwin --build=i686-pc-cygwin
+Thread model: single
+gcc version 3.4.6
+> mcore-elf-g++ -v
+Configured with: /usr/local/src/gnu/gcc-3.4.6/configure --target=mcore-elf --host=i686-pc-cygwin --build=i686-pc-cygwin
+Thread model: single
+gcc version 3.4.6
+> mcore-elf-ld -V
+GNU ld (GNU Binutils) 2.18.50.20080711
+  Supported emulations:
+   elf32mcore
+```
+
 ## Information
 
 * [NotesMotoP2K.md](../doc/NotesMotoP2K.md): Document contains additional information about ElfPacks on Motorola P2K phones.
 * [ELFs development and porting](https://forum.motofan.ru/index.php?showforum=184): A section of the MotoFan.Ru forum dedicated to the development and porting of ELFs.
 * [ElfPack 1.x](https://wiki.motofan.ru/ElfPack): Page on MotoWiki site about first version of ElfPack for Motorola P2K phones.
 * [ElfPack 2.x](https://wiki.motofan.ru/ElfPack2): Page on MotoWiki site about second version of ElfPack for Motorola P2K phones.
+* [ElfPack M*CORE](https://forum.motofan.ru/index.php?showtopic=176195): A thread on the MotoFan.Ru forum dedicated to the development and porting of ELFs to M*CORE architecture and Rainbow POG platform.

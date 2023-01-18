@@ -5,7 +5,7 @@ Developers from the MotoFan.Ru forum have made the possibility of running custom
 
 1. ElfPack v1.x: The first version, which contained some restrictions and used the ADS compiler to build ELF applications.
 2. ElfPack v2.x: The second version, with support for shared libraries and process manager, GCC compiler was used to build ELF applications.
-3. ElfPack for M·CORE: The special version of ElfPack for phones that use [M·CORE](https://en.wikipedia.org/wiki/M%C2%B7CORE) microprocessor architecture instead of ARM.
+3. ElfPack M·CORE: The special version of ElfPack for phones that use [M·CORE](https://en.wikipedia.org/wiki/M%C2%B7CORE) microprocessor architecture instead of ARM.
 
 Installing ElfLoader and ElfPack on the phone is described in detail in the appropriate section on the forum:
 

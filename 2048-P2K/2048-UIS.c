@@ -27,6 +27,7 @@
 #include <filesystem.h>
 #include <time_date.h>
 #include <mme.h>
+#include <dl_keypad.h>
 
 #include "2048.h"
 
@@ -184,6 +185,8 @@ static __inline void CenterRect(GRAPHIC_REGION_T *r_i, GRAPHIC_REGION_T *r_o);
 UINT32 Register(const char *elf_path_uri, const char *args, UINT32 ev_code); /* ElfPack 1.x entry point. */
 #elif defined(EP2)
 ldrElf *_start(WCHAR *uri, WCHAR *arguments);                                /* ElfPack 2.x entry point. */
+#elif defined(EPMCORE)
+UINT32 ELF_Entry(ldrElf *elf, WCHAR *arguments);                             /* ElfPack M*CORE entry point. */
 #endif
 
 static UINT32 ApplicationStart(EVENT_STACK_T *ev_st, REG_ID_T reg_id, void *reg_hdl);
@@ -275,6 +278,8 @@ static WCHAR g_save_file_path[FS_MAX_URI_NAME_LENGTH];
 
 #if defined(EP2)
 static ldrElf g_app_elf;
+#elif defined(EPMCORE)
+static ldrElf *g_app_elf = NULL;
 #endif
 
 static EVENT_HANDLER_ENTRY_T g_state_any_hdls[] = {
@@ -365,6 +370,7 @@ UINT32 Register(const char *elf_path_uri, const char *args, UINT32 ev_code) {
 ldrElf *_start(WCHAR *uri, WCHAR *arguments) {
 	UINT32 status;
 	UINT32 ev_code_base;
+	UINT32 reserve;
 
 	if (ldrIsLoaded(g_app_name)) {
 		cprint("2048-UIS: Error! Application has already been loaded!\n");
@@ -373,12 +379,13 @@ ldrElf *_start(WCHAR *uri, WCHAR *arguments) {
 
 	status = RESULT_OK;
 	ev_code_base = ldrRequestEventBase();
-	ldrInitEventHandlersTbl(g_state_any_hdls, ev_code_base);
-	ldrInitEventHandlersTbl(g_state_init_hdls, ev_code_base);
-	ldrInitEventHandlersTbl(g_state_main_hdls, ev_code_base);
-	ldrInitEventHandlersTbl(g_state_menu_hdls, ev_code_base);
-	ldrInitEventHandlersTbl(g_state_popup_hdls, ev_code_base);
-	ldrInitEventHandlersTbl(g_state_select_hdls, ev_code_base);
+	reserve = ev_code_base + 1;
+	reserve = ldrInitEventHandlersTbl(g_state_any_hdls, reserve);
+	reserve = ldrInitEventHandlersTbl(g_state_init_hdls, reserve);
+	reserve = ldrInitEventHandlersTbl(g_state_main_hdls, reserve);
+	reserve = ldrInitEventHandlersTbl(g_state_menu_hdls, reserve);
+	reserve = ldrInitEventHandlersTbl(g_state_popup_hdls, reserve);
+	reserve = ldrInitEventHandlersTbl(g_state_select_hdls, reserve);
 
 	status |= APP_Register(&ev_code_base, 1, g_state_table_hdls, APP_STATE_MAX, (void *) ApplicationStart);
 
@@ -390,6 +397,49 @@ ldrElf *_start(WCHAR *uri, WCHAR *arguments) {
 	g_app_elf.name = (char *) g_app_name;
 
 	return (status == RESULT_OK) ? &g_app_elf : NULL;
+}
+#elif defined(EPMCORE)
+UINT32 ELF_Entry(ldrElf *elf, WCHAR *arguments) {
+	UINT32 status;
+	UINT32 reserve;
+	WCHAR *ptr;
+
+	status = RESULT_OK;
+	g_app_elf = elf;
+	g_app_elf->name = (char *) g_app_name;
+
+	if (ldrIsLoaded(g_app_elf->name)) {
+		PFprintf("%s: Application already loaded.\n", g_app_elf->name);
+		return RESULT_FAIL;
+	}
+
+	reserve = g_app_elf->evbase + 1;
+	reserve = ldrInitEventHandlersTbl(g_state_any_hdls, reserve);
+	reserve = ldrInitEventHandlersTbl(g_state_init_hdls, reserve);
+	reserve = ldrInitEventHandlersTbl(g_state_main_hdls, reserve);
+	reserve = ldrInitEventHandlersTbl(g_state_menu_hdls, reserve);
+	reserve = ldrInitEventHandlersTbl(g_state_popup_hdls, reserve);
+	reserve = ldrInitEventHandlersTbl(g_state_select_hdls, reserve);
+
+	status |= APP_Register(&g_app_elf->evbase, 1, g_state_table_hdls, APP_STATE_MAX, (void *) ApplicationStart);
+	if (status == RESULT_OK) {
+		PFprintf("%s: Application has been registered successfully.\n", g_app_elf->name);
+
+		ptr = NULL;
+		u_strcpy(g_config_file_path, L"file:/");
+		ptr = g_config_file_path + u_strlen(g_config_file_path);
+		DL_FsGetURIFromID(&g_app_elf->id, ptr);
+		u_strcpy(g_save_file_path, L"file:/");
+		ptr = g_save_file_path + u_strlen(g_save_file_path);
+		DL_FsGetURIFromID(&g_app_elf->id, ptr);
+		SetPathsToFiles();
+
+		status |= ldrSendEvent(g_app_elf->evbase);
+	} else {
+		PFprintf("%s: Cannot register application.\n", g_app_elf->name);
+	}
+
+	return status;
 }
 #endif
 
@@ -425,6 +475,8 @@ static UINT32 ApplicationStart(EVENT_STACK_T *ev_st, REG_ID_T reg_id, void *reg_
 
 #if defined(EP2)
 		g_app_elf.app = (APPLICATION_T *) app_instance;
+#elif defined(EPMCORE)
+		g_app_elf->app = &app_instance->app;
 #endif
 	}
 
@@ -448,6 +500,8 @@ static UINT32 ApplicationStop(EVENT_STACK_T *ev_st, APPLICATION_T *app) {
 	LdrUnloadELF(&Lib);
 #elif defined(EP2)
 	ldrUnloadElf();
+#elif defined(EPMCORE)
+	ldrUnloadElf(g_app_elf);
 #endif
 
 	return status;
@@ -515,7 +569,11 @@ static UINT32 HandleStateEnter(EVENT_STACK_T *ev_st, APPLICATION_T *app, ENTER_S
 
 	switch (app_state) {
 		case APP_STATE_MAIN:
+#if defined(EPMCORE)
+			UIS_CanvasGetDisplaySize(&point);
+#else
 			point = UIS_CanvasGetDisplaySize();
+#endif
 			buffer.w = point.x + 1;
 			buffer.h = point.y + 1;
 			buffer.buf = NULL;
@@ -1115,7 +1173,13 @@ static UINT32 PaintTile(EVENT_STACK_T *ev_st, APPLICATION_T *app, UINT32 value, 
 		}
 
 		UIS_CanvasSetFont(font_id, app->dialog);
+#if defined(EPMCORE)
+		FONT_ATTRIB_T font_attrib;
+		UIS_CanvasGetAttributesFromFontID(&font_attrib, font_id);
+		GET_STRING_SIZE(tile_value, &string_measure, font_attrib);
+#else
 		UIS_CanvasGetStringSize(tile_value, &string_measure, font_id);
+#endif
 
 		point.x = (coord_x + (tile_size - string_measure.width) / 2) + app_instance->measured.gap;
 		point.y = (coord_y + (tile_size - string_measure.height) / 2) + app_instance->measured.gap;
@@ -1149,7 +1213,13 @@ static UINT32 PaintFinal(EVENT_STACK_T *ev_st, APPLICATION_T *app) {
 			string_final = (WCHAR *) g_str_game_over;
 		}
 
+#if defined(EPMCORE)
+		FONT_ATTRIB_T font_attrib;
+		UIS_CanvasGetAttributesFromFontID(&font_attrib, app_instance->measured.font_final);
+		GET_STRING_SIZE(string_final, &string_measure, font_attrib);
+#else
 		UIS_CanvasGetStringSize(string_final, &string_measure, app_instance->measured.font_final);
+#endif
 
 		rect.lrc.x = string_measure.width;
 		rect.lrc.y = string_measure.height;
@@ -1275,7 +1345,7 @@ static UINT32 ReadFile(void *data_struct, UINT32 size, const WCHAR *file_path) {
 	FILE_HANDLE_T file_handle;
 
 	readen = 0;
-	file_handle = DL_FsOpenFile(file_path, FILE_READ_MODE, 0);
+	file_handle = DL_FsOpenFile((WCHAR *) file_path, FILE_READ_MODE, 0);
 
 	DL_FsReadFile(data_struct, size, 1, file_handle, &readen);
 	DL_FsCloseFile(file_handle);
@@ -1288,7 +1358,7 @@ static UINT32 SaveFile(void *data_struct, UINT32 size, const WCHAR *file_path) {
 	FILE_HANDLE_T file_handle;
 
 	written = 0;
-	file_handle = DL_FsOpenFile(file_path, FILE_WRITE_MODE, 0);
+	file_handle = DL_FsOpenFile((WCHAR *) file_path, FILE_WRITE_MODE, 0);
 
 	DL_FsWriteFile(data_struct, size, 1, file_handle, &written);
 	DL_FsCloseFile(file_handle);
