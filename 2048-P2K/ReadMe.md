@@ -77,7 +77,7 @@ The P2K OS screenshots from Motorola ROKR E1:
 
 The 2048 game running on Motorola SLVR L6 and Motorola ROKR E1:
 
-TODO: Photos.
+![2048-P2K-UIS ELF-application running on Motorola L6 and Motorola E1 Photo](../image/2048-P2K-UIS-L6-E1-Photo.jpg)
 
 ## Versions
 
