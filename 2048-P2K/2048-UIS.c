@@ -567,6 +567,8 @@ static UINT32 HandleStateEnter(EVENT_STACK_T *ev_st, APPLICATION_T *app, ENTER_S
 	app_state = app->state;
 	dialog = DialogType_None;
 
+	memclr(&content, sizeof(CONTENT_T));
+
 	switch (app_state) {
 		case APP_STATE_MAIN:
 #if defined(EPMCORE)
