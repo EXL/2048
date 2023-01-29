@@ -52,7 +52,7 @@ typedef enum {
 } APP_STATE_T;
 
 typedef enum {
-	APP_TIMER_EXIT,
+	APP_TIMER_EXIT = 0x0001,
 	APP_TIMER_EXIT_FAST,
 	APP_TIMER_MENU,
 	APP_TIMER_RESET,
