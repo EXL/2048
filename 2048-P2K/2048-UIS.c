@@ -52,7 +52,7 @@ typedef enum {
 } APP_STATE_T;
 
 typedef enum {
-	APP_TIMER_EXIT,
+	APP_TIMER_EXIT = 0x0001,
 	APP_TIMER_EXIT_FAST,
 	APP_TIMER_MENU,
 	APP_TIMER_RESET,
@@ -566,6 +566,8 @@ static UINT32 HandleStateEnter(EVENT_STACK_T *ev_st, APPLICATION_T *app, ENTER_S
 	port = app->port;
 	app_state = app->state;
 	dialog = DialogType_None;
+
+	memclr(&content, sizeof(CONTENT_T));
 
 	switch (app_state) {
 		case APP_STATE_MAIN:
