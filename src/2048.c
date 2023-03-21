@@ -11,7 +11,7 @@
 	#include <utilities.h>
 	#include <time_date.h>
 	#include <mem.h>
-	#define time(x) suPalReadTime
+	#define srand(x) randomize()
 #else
 	#include <time.h>
 	#include <stdlib.h>
