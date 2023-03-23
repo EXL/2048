@@ -682,11 +682,11 @@ static UINT32 HandleStateEnter(EVENT_STACK_T *ev_st, APPLICATION_T *app, ENTER_S
 	app->dialog = dialog;
 
 	switch (app_state) {
-	case APP_STATE_MAIN:
-		PaintAll(ev_st, app, (e_score > 0), TRUE);
-		break;
-	default:
-		break;
+		case APP_STATE_MAIN:
+			PaintAll(ev_st, app, (e_score > 0), TRUE);
+			break;
+		default:
+			break;
 	}
 
 	return RESULT_OK;
