@@ -9,7 +9,7 @@
  *   MIT
  *
  * Application type:
- *   GUI
+ *   GUI + UIS Canvas
  *
  * Additional information:
  *   1. https://forum.motofan.ru/index.php?showforum=184
