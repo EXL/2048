@@ -185,8 +185,10 @@ static __inline void CenterRect(GRAPHIC_REGION_T *r_i, GRAPHIC_REGION_T *r_o);
 UINT32 Register(const char *elf_path_uri, const char *args, UINT32 ev_code); /* ElfPack 1.x entry point. */
 #elif defined(EP2)
 ldrElf *_start(WCHAR *uri, WCHAR *arguments);                                /* ElfPack 2.x entry point. */
+#elif defined(EM1)
+int _main(ElfLoaderApp ela);                                                 /* ElfPack 1.x M*CORE entry point. */
 #elif defined(EM2)
-UINT32 ELF_Entry(ldrElf *elf, WCHAR *arguments);                             /* ElfPack M*CORE entry point. */
+UINT32 ELF_Entry(ldrElf *elf, WCHAR *arguments);                             /* ElfPack 2.x M*CORE entry point. */
 #endif
 
 static UINT32 ApplicationStart(EVENT_STACK_T *ev_st, REG_ID_T reg_id, void *reg_hdl);
@@ -278,6 +280,8 @@ static WCHAR g_save_file_path[FS_MAX_URI_NAME_LENGTH];
 
 #if defined(EP2)
 static ldrElf g_app_elf;
+#elif defined(EM1)
+static ElfLoaderApp g_app_elf = { 0 };
 #elif defined(EM2)
 static ldrElf *g_app_elf = NULL;
 #endif
@@ -398,6 +402,20 @@ ldrElf *_start(WCHAR *uri, WCHAR *arguments) {
 
 	return (status == RESULT_OK) ? &g_app_elf : NULL;
 }
+#elif defined(EM1)
+int _main(ElfLoaderApp ela) {
+	UINT32 status;
+
+	status = RESULT_OK;
+
+	memcpy((void *) &g_app_elf, (void *) &ela, sizeof(ElfLoaderApp));
+
+	status = APP_Register(&g_app_elf.evcode, 1, g_state_table_hdls, APP_STATE_MAX, (void *) ApplicationStart);
+
+	LoaderShowApp(&g_app_elf);
+
+	return RESULT_FAIL;
+}
 #elif defined(EM2)
 UINT32 ELF_Entry(ldrElf *elf, WCHAR *arguments) {
 	UINT32 status;
@@ -500,6 +518,8 @@ static UINT32 ApplicationStop(EVENT_STACK_T *ev_st, APPLICATION_T *app) {
 	LdrUnloadELF(&Lib);
 #elif defined(EP2)
 	ldrUnloadElf();
+#elif defined(EM1)
+	LoaderEndApp(&g_app_elf);
 #elif defined(EM2)
 	ldrUnloadElf(g_app_elf);
 #endif
@@ -954,6 +974,7 @@ static UINT32 SetWorikingArea(GRAPHIC_REGION_T *working_area) {
 
 	status = RESULT_OK;
 
+#if defined(EP1) || defined(EP2)
 	UIS_CanvasGetWorkingArea(&rect, &count_lines, &chars_on_line, TITLE_BAR_AREA, TRUE, 1);
 	height_title_bar_end = rect.lrc.y + 1;
 
@@ -964,6 +985,13 @@ static UINT32 SetWorikingArea(GRAPHIC_REGION_T *working_area) {
 	/* rect.lrc.x -= 1; */
 	rect.lrc.y = height_soft_keys_start;
 	/* rect.lrc.y += 1; */
+#elif defined(EM1) || defined(EM2)
+	/* TODO: Fix these values! */
+	rect.ulc.x = 0;
+	rect.ulc.y = 32;
+	rect.lrc.x = 220;
+	rect.lrc.y = 150;
+#endif
 
 	memcpy(working_area, &rect, sizeof(GRAPHIC_REGION_T));
 

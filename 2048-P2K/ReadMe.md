@@ -32,7 +32,8 @@ At the moment, the 2048 game has been tested on Motorola ROKR E1 (E398) and Moto
 * ElfPack v1.x Windows ELFKIT download link. // TODO:
 * ElfPack v1.x Linux ELFKIT download link. // TODO:
 * ElfPack v2.x Windows ELFKIT download link. // TODO:
-* ElfPack M*CORE Windows ELFKIT download link. // TODO:
+* ElfPack v1.x M*CORE Windows ELFKIT download link. // TODO:
+* ElfPack v2.x M*CORE Windows ELFKIT download link. // TODO:
 
 ## Install Tools & Build & Run
 
@@ -44,8 +45,10 @@ Windows recipe:
 > make_ep1.bat
 > make_ep2.bat clean
 > make_ep2.bat
-> make_epmcore.bat clean
-> make_epmcore.bat
+> make_em1.bat clean
+> make_em1.bat
+> make_em2.bat clean
+> make_em2.bat
 ```
 
 Linux recipe (ElfPack 1.x build only):
@@ -144,4 +147,5 @@ GNU ld (GNU Binutils) 2.18.50.20080711
 * [ELFs development and porting](https://forum.motofan.ru/index.php?showforum=184): A section of the MotoFan.Ru forum dedicated to the development and porting of ELFs.
 * [ElfPack 1.x](https://wiki.motofan.ru/ElfPack): Page on MotoWiki site about first version of ElfPack for Motorola P2K phones.
 * [ElfPack 2.x](https://wiki.motofan.ru/ElfPack2): Page on MotoWiki site about second version of ElfPack for Motorola P2K phones.
-* [ElfPack M*CORE](https://forum.motofan.ru/index.php?showtopic=176195): A thread on the MotoFan.Ru forum dedicated to the development and porting of ELFs to M*CORE architecture and Rainbow POG platform.
+* [ElfPack 1.x M*CORE](https://forum.motofan.ru/index.php?showtopic=176195): A thread on the MotoFan.Ru forum dedicated to the development and porting of ELFs to M*CORE architecture and Rainbow POG platform (first version).
+* [ElfPack 2.x M*CORE](https://forum.motofan.ru/index.php?showtopic=149775): A thread on the MotoFan.Ru forum dedicated to the development and porting of ELFs to M*CORE architecture and Rainbow POG platform (second version).
