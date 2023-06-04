@@ -185,7 +185,7 @@ static __inline void CenterRect(GRAPHIC_REGION_T *r_i, GRAPHIC_REGION_T *r_o);
 UINT32 Register(const char *elf_path_uri, const char *args, UINT32 ev_code); /* ElfPack 1.x entry point. */
 #elif defined(EP2)
 ldrElf *_start(WCHAR *uri, WCHAR *arguments);                                /* ElfPack 2.x entry point. */
-#elif defined(EPMCORE)
+#elif defined(EM2)
 UINT32 ELF_Entry(ldrElf *elf, WCHAR *arguments);                             /* ElfPack M*CORE entry point. */
 #endif
 
@@ -278,7 +278,7 @@ static WCHAR g_save_file_path[FS_MAX_URI_NAME_LENGTH];
 
 #if defined(EP2)
 static ldrElf g_app_elf;
-#elif defined(EPMCORE)
+#elif defined(EM2)
 static ldrElf *g_app_elf = NULL;
 #endif
 
@@ -398,7 +398,7 @@ ldrElf *_start(WCHAR *uri, WCHAR *arguments) {
 
 	return (status == RESULT_OK) ? &g_app_elf : NULL;
 }
-#elif defined(EPMCORE)
+#elif defined(EM2)
 UINT32 ELF_Entry(ldrElf *elf, WCHAR *arguments) {
 	UINT32 status;
 	UINT32 reserve;
@@ -475,7 +475,7 @@ static UINT32 ApplicationStart(EVENT_STACK_T *ev_st, REG_ID_T reg_id, void *reg_
 
 #if defined(EP2)
 		g_app_elf.app = (APPLICATION_T *) app_instance;
-#elif defined(EPMCORE)
+#elif defined(EM2)
 		g_app_elf->app = &app_instance->app;
 #endif
 	}
@@ -500,7 +500,7 @@ static UINT32 ApplicationStop(EVENT_STACK_T *ev_st, APPLICATION_T *app) {
 	LdrUnloadELF(&Lib);
 #elif defined(EP2)
 	ldrUnloadElf();
-#elif defined(EPMCORE)
+#elif defined(EM2)
 	ldrUnloadElf(g_app_elf);
 #endif
 
@@ -571,7 +571,7 @@ static UINT32 HandleStateEnter(EVENT_STACK_T *ev_st, APPLICATION_T *app, ENTER_S
 
 	switch (app_state) {
 		case APP_STATE_MAIN:
-#if defined(EPMCORE)
+#if defined(EM2)
 			UIS_CanvasGetDisplaySize(&point);
 #else
 			point = UIS_CanvasGetDisplaySize();
@@ -1175,7 +1175,7 @@ static UINT32 PaintTile(EVENT_STACK_T *ev_st, APPLICATION_T *app, UINT32 value, 
 		}
 
 		UIS_CanvasSetFont(font_id, app->dialog);
-#if defined(EPMCORE)
+#if defined(EM2)
 		FONT_ATTRIB_T font_attrib;
 		UIS_CanvasGetAttributesFromFontID(&font_attrib, font_id);
 		GET_STRING_SIZE(tile_value, &string_measure, font_attrib);
@@ -1215,7 +1215,7 @@ static UINT32 PaintFinal(EVENT_STACK_T *ev_st, APPLICATION_T *app) {
 			string_final = (WCHAR *) g_str_game_over;
 		}
 
-#if defined(EPMCORE)
+#if defined(EM2)
 		FONT_ATTRIB_T font_attrib;
 		UIS_CanvasGetAttributesFromFontID(&font_attrib, app_instance->measured.font_final);
 		GET_STRING_SIZE(string_final, &string_measure, font_attrib);
