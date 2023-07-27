@@ -3,7 +3,7 @@
 
 /*
  * Generating command:
- *   xxd -i p2k_41x41.gif > p2k_app_icon_41x41_gif.h
+ *   xxd -i p2k_15x15.gif > p2k_app_icon_15x15_gif.h
  */
 
 static const unsigned char p2k_app_icon_15x15_gif[603] = {
