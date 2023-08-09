@@ -77,7 +77,7 @@ Symbian UIQ 2.1 screenshots from Motorola FOMA M1000:
 
 ![2048-UIQ2 application running on Motorola A920 Photo](../image/2048-UIQ2-A920-Photo.jpg)
 
-2048-UIQ2 running on Sony Ericsson P800 (thanks to VodkaDealer for the photo):
+2048-UIQ2 running on Sony Ericsson P800 (thanks to javelin67 for the photo):
 
 ![2048-UIQ2 application running on Sony Ericsson P800 Photo](../image/2048-UIQ2-P800-Photo.jpg)
 
