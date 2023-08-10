@@ -16,7 +16,7 @@ Download "UIQ SDK v2.1" and "UIQ SDK v2.1 update 1" archives from [this link](ht
 Windows 2000 Recipe:
 
 1. Install [Microsoft Windows 2000 Professional (Retail with SP4, English version)](https://winworldpc.com/download/413ce280-9436-18c3-9a11-c3a4e284a2ef) to the virtual machine.
-2. Install [Microsoft Visual Studio 6.0](https://winworldpc.com/download/0cc395c2-b7c3-99c3-89c3-b811c3a4efbf) IDE.
+2. Install [Microsoft Visual Studio 6.0](https://winworldpc.com/download/0cc395c2-b7c3-99c3-89c3-b811c3a4efbf) IDE.\
     _Note._ Microsoft Visual C++ 6.0 and its dependencies will suffice, be sure to register system-wide environment variables.
 3. Install [Microsoft Visual Studio 6.0 Service Pack 6](https://winworldpc.com/download/a4208baa-aaee-11eb-bc5b-0200008a0da4) update.
 4. Unpack "uiq_2_1_sdk_wins.zip" archive and setup all SDK components to the "C:\Symbian\UIQ_21\" directory.
@@ -69,13 +69,17 @@ Symbian UIQ 2.1 screenshots from Motorola FOMA M1000:
 
 ![2048-UIQ2 application running on Motorola A1000 Photo](../image/2048-UIQ2-A1000-Photo.jpg)
 
-2048-UIQ2 running on Motorola A925 (thanks to Limows for the photo):
+2048-UIQ2 running on Motorola A925 (thanks to [Limows](https://github.com/Limows/) for the photo):
 
 ![2048-UIQ2 application running on Motorola A925 Photo](../image/2048-UIQ2-A925-Photo.jpg)
 
 2048-UIQ2 running on Motorola A920 (thanks to VodkaDealer for the photo):
 
 ![2048-UIQ2 application running on Motorola A920 Photo](../image/2048-UIQ2-A920-Photo.jpg)
+
+2048-UIQ2 running on Sony Ericsson P900 (thanks to [gtrxAC](https://github.com/gtrxAC/) for the photo):
+
+![2048-UIQ2 application running on Sony Ericsson P900 Photo](../image/2048-UIQ2-P900-Photo.jpg)
 
 2048-UIQ2 running on Sony Ericsson P800 (thanks to javelin67 for the photo):
 
