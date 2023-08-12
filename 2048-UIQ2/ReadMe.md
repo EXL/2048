@@ -109,3 +109,7 @@ g++.exe -v
 Reading specs from \Symbian\UIQ_21\epoc32\gcc\bin\..\lib\gcc-lib\arm-epoc-pe\2.9-psion-98r2\specs
 gcc version 2.9-psion-98r2 (Symbian build 542)
 ```
+
+## Information
+
+* [NotesUIQ2.md](../doc/NotesUIQ2.md): Document contains additional information about developing UIQ2 applications.
