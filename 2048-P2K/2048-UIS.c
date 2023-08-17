@@ -52,7 +52,7 @@ typedef enum {
 } APP_STATE_T;
 
 typedef enum {
-	APP_TIMER_EXIT = 0x0001,
+	APP_TIMER_EXIT = 0xE398,
 	APP_TIMER_EXIT_FAST,
 	APP_TIMER_MENU,
 	APP_TIMER_RESET,
@@ -601,7 +601,11 @@ static UINT32 HandleStateEnter(EVENT_STACK_T *ev_st, APPLICATION_T *app, ENTER_S
 			buffer.buf = NULL;
 			SetWorikingArea(&app_instance->area);
 			SetMeasuredValues(&app_instance->measured, &buffer);
+#if !defined(FTR_V300)
 			dialog = UIS_CreateColorCanvasWithWallpaper(&port, &buffer, FALSE, TRUE);
+#else
+			dialog = UIS_CreateColorCanvas(&port, &buffer, TRUE);
+#endif
 			break;
 		case APP_STATE_MENU:
 			list = CreateList(ev_st, app, 1, APP_MENU_ITEM_MAX, APP_LIST_MENU);
@@ -833,11 +837,15 @@ static UINT32 HandleEventTimerExpired(EVENT_STACK_T *ev_st, APPLICATION_T *app) 
 			PaintAll(ev_st, app, FALSE, FALSE);
 			break;
 		case APP_TIMER_SAVE:
-#ifdef USE_MME
+#if defined(USE_MME)
 			/* Play a normal camera shutter sound using loud speaker. */
 			/* NOTE: Function `MME_GC_playback_open_audio_play_forget()` may not be available on most libraries. */
+#if !defined(FTR_V300)
 			MME_GC_playback_open_audio_play_forget(L"/a/mobile/system/shutter5.amr");
-#endif
+#else
+			MME_GC_playback_open_audio_play_forget(L"/a/mobile/system/shutter5.wav");
+#endif /* !defined(FTR_V300) */
+#endif /* !defined(USE_MME) */
 			break;
 		default:
 			break;
