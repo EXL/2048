@@ -601,7 +601,7 @@ static UINT32 HandleStateEnter(EVENT_STACK_T *ev_st, APPLICATION_T *app, ENTER_S
 			buffer.buf = NULL;
 			SetWorikingArea(&app_instance->area);
 			SetMeasuredValues(&app_instance->measured, &buffer);
-#if !defined(FTR_V300)
+#if !defined(FTR_V600)
 			dialog = UIS_CreateColorCanvasWithWallpaper(&port, &buffer, FALSE, TRUE);
 #else
 			dialog = UIS_CreateColorCanvas(&port, &buffer, TRUE);
@@ -840,11 +840,11 @@ static UINT32 HandleEventTimerExpired(EVENT_STACK_T *ev_st, APPLICATION_T *app) 
 #if defined(USE_MME)
 			/* Play a normal camera shutter sound using loud speaker. */
 			/* NOTE: Function `MME_GC_playback_open_audio_play_forget()` may not be available on most libraries. */
-#if !defined(FTR_V300)
+#if !defined(FTR_V600)
 			MME_GC_playback_open_audio_play_forget(L"/a/mobile/system/shutter5.amr");
 #else
 			MME_GC_playback_open_audio_play_forget(L"/a/mobile/system/shutter5.wav");
-#endif /* !defined(FTR_V300) */
+#endif /* !defined(FTR_V600) */
 #endif /* !defined(USE_MME) */
 			break;
 		default:
