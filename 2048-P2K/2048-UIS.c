@@ -28,6 +28,7 @@
 #include <time_date.h>
 #include <mme.h>
 #include <dl_keypad.h>
+#include <dal.h>
 
 #include "2048.h"
 
@@ -707,6 +708,11 @@ static UINT32 HandleStateEnter(EVENT_STACK_T *ev_st, APPLICATION_T *app, ENTER_S
 
 	switch (app_state) {
 		case APP_STATE_MAIN:
+#if defined(FTR_V600)
+			if (app_instance->options.background == APP_BACKGROUND_SHOW) {
+				flushWallpaperOnScreen((UINT32 *) theWallpaper, app_instance->area, DISPLAY_MAIN);
+			}
+#endif
 			PaintAll(ev_st, app, (e_score > 0), TRUE);
 			break;
 		default:
@@ -1132,7 +1138,9 @@ static UINT32 PaintBackground(EVENT_STACK_T *ev_st, APPLICATION_T *app) {
 	switch (app_instance->options.background) {
 		default:
 		case APP_BACKGROUND_SHOW:
+#if !defined(FTR_V600)
 			UIS_CanvasFillRect(app_instance->area, app->dialog);
+#endif
 			break;
 		case APP_BACKGROUND_HIDE:
 			UIS_CanvasSetBackgroundColor(g_color_board);

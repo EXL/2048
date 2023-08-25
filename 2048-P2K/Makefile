@@ -16,7 +16,7 @@ LIB_MAIN = Lib.o
 
 # Defines.
 DEFINES = -D__P2K__ -DEP1 -DUSE_MME
-#DEFINES = -D__P2K__ -DEP1 -DUSE_MME -DFTR_V300 -DDEBUG
+#DEFINES = -D__P2K__ -DEP1 -DUSE_MME -DFTR_V600
 
 # Includes.
 INCLUDES = -I../src/ -I../image/icon/precompiled/
@@ -27,7 +27,7 @@ OPTIM = -O2
 # Output names.
 ENG_NAME = 2048
 ELF_NAME = 2048-UIS
-FINAL_NAME = 2048-P2K
+FINAL_NAME = 2048-P2K-UIS_EP1
 
 all:
 	$(ARM_PATH)/bin/tcc -I$(SDK_PATH) $(INCLUDES) $(DEFINES) $(OPTIM) -bigend -apcs /interwork \
