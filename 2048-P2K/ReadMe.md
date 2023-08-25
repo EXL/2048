@@ -11,6 +11,14 @@ The "2048" puzzle game for the Motorola P2K platform written using AFW and UIS f
 
 ![2048-UIS Motorola SLVR L6 Screenshot 11](../image/2048-P2K-L6-Screenshot11.png) ![2048-UIS Motorola SLVR L6 Screenshot 12](../image/2048-P2K-L6-Screenshot12.png) ![2048-UIS Motorola SLVR L6 Screenshot 13](../image/2048-P2K-L6-Screenshot13.png) ![2048-UIS Motorola SLVR L6 Screenshot 14](../image/2048-P2K-L6-Screenshot14.png) ![2048-UIS Motorola SLVR L6 Screenshot 15](../image/2048-P2K-L6-Screenshot15.png)
 
+*Motorola V600 Screenshots:*
+
+![2048-UIS Motorola V600 Screenshot 1](../image/2048-P2K-V600-Screenshot1.png) ![2048-UIS Motorola V600 Screenshot 2](../image/2048-P2K-V600-Screenshot2.png) ![2048-UIS Motorola V600 Screenshot 3](../image/2048-P2K-V600-Screenshot3.png) ![2048-UIS Motorola V600 Screenshot 4](../image/2048-P2K-V600-Screenshot4.png) ![2048-UIS Motorola V600 Screenshot 5](../image/2048-P2K-V600-Screenshot5.png)
+
+![2048-UIS Motorola V600 Screenshot 6](../image/2048-P2K-V600-Screenshot6.png) ![2048-UIS Motorola V600 Screenshot 7](../image/2048-P2K-V600-Screenshot7.png) ![2048-UIS Motorola V600 Screenshot 8](../image/2048-P2K-V600-Screenshot8.png) ![2048-UIS Motorola V600 Screenshot 9](../image/2048-P2K-V600-Screenshot9.png) ![2048-UIS Motorola V600 Screenshot 10](../image/2048-P2K-V600-Screenshot10.png)
+
+![2048-UIS Motorola V600 Screenshot 11](../image/2048-P2K-V600-Screenshot11.png) ![2048-UIS Motorola V600 Screenshot 12](../image/2048-P2K-V600-Screenshot12.png) ![2048-UIS Motorola V600 Screenshot 13](../image/2048-P2K-V600-Screenshot13.png) ![2048-UIS Motorola V600 Screenshot 14](../image/2048-P2K-V600-Screenshot14.png) ![2048-UIS Motorola V600 Screenshot 15](../image/2048-P2K-V600-Screenshot15.png)
+
 *Motorola ROKR E1 Screenshots:*
 
 ![2048-UIS Motorola ROKR E1 Screenshot 1](../image/2048-P2K-E1-Screenshot1.png) ![2048-UIS Motorola ROKR E1 Screenshot 2](../image/2048-P2K-E1-Screenshot2.png) ![2048-UIS Motorola ROKR E1 Screenshot 3](../image/2048-P2K-E1-Screenshot3.png) ![2048-UIS Motorola ROKR E1 Screenshot 4](../image/2048-P2K-E1-Screenshot4.png) ![2048-UIS Motorola ROKR E1 Screenshot 5](../image/2048-P2K-E1-Screenshot5.png)
@@ -75,6 +83,14 @@ The P2K OS screenshots from Motorola SLVR L6:
 ![P2K Motorola L6 Screenshot 6 Main Desktop Screen](../image/P2K-L6-Screenshot6.png) ![P2K Motorola L6 Screenshot 7 Main Menu](../image/P2K-L6-Screenshot7.png) ![P2K Motorola L6 Screenshot 8 Multimedia Menu](../image/P2K-L6-Screenshot8.png) ![P2K Motorola L6 Screenshot 9 S/W Version](../image/P2K-L6-Screenshot9.png) ![P2K Motorola L6 Screenshot 10 Flex Version](../image/P2K-L6-Screenshot10.png)
 
 ![P2K Motorola L6 Screenshot 11 Main Desktop Screen](../image/P2K-L6-Screenshot11.png) ![P2K Motorola L6 Screenshot 12 Main Menu](../image/P2K-L6-Screenshot12.png) ![P2K Motorola L6 Screenshot 13 Multimedia Menu](../image/P2K-L6-Screenshot13.png) ![P2K Motorola L6 Screenshot 14 S/W Version](../image/P2K-L6-Screenshot14.png) ![P2K Motorola L6 Screenshot 15 Flex Version](../image/P2K-L6-Screenshot15.png)
+
+The P2K OS screenshots from Motorola V600:
+
+![P2K Motorola V600 Screenshot 1 Main Desktop Screen](../image/P2K-V600-Screenshot1.png) ![P2K Motorola V600 Screenshot 2 Main Menu](../image/P2K-V600-Screenshot2.png) ![P2K Motorola V600 Screenshot 3 Multimedia Menu](../image/P2K-V600-Screenshot3.png) ![P2K Motorola V600 Screenshot 4 S/W Version](../image/P2K-V600-Screenshot4.png) ![P2K Motorola V600 Screenshot 5 Flex Version](../image/P2K-V600-Screenshot5.png)
+
+![P2K Motorola V600 Screenshot 6 Main Desktop Screen](../image/P2K-V600-Screenshot6.png) ![P2K Motorola V600 Screenshot 7 Main Menu](../image/P2K-V600-Screenshot7.png) ![P2K Motorola V600 Screenshot 8 Multimedia Menu](../image/P2K-V600-Screenshot8.png) ![P2K Motorola V600 Screenshot 9 S/W Version](../image/P2K-V600-Screenshot9.png) ![P2K Motorola V600 Screenshot 10 Flex Version](../image/P2K-V600-Screenshot10.png)
+
+![P2K Motorola V600 Screenshot 11 Main Desktop Screen](../image/P2K-V600-Screenshot11.png) ![P2K Motorola V600 Screenshot 12 Main Menu](../image/P2K-V600-Screenshot12.png) ![P2K Motorola V600 Screenshot 13 Multimedia Menu](../image/P2K-V600-Screenshot13.png) ![P2K Motorola V600 Screenshot 14 S/W Version](../image/P2K-V600-Screenshot14.png) ![P2K Motorola V600 Screenshot 15 Flex Version](../image/P2K-V600-Screenshot15.png)
 
 The P2K OS screenshots from Motorola ROKR E1:
 
