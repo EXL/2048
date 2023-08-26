@@ -71,6 +71,12 @@ The ELF-application has been tested on the following phones and firmware:
 
 * Motorola SLVR L6: R3443H1_G_0A.65.0BR
 * Motorola ROKR E1: R373_G_0E.30.49R
+* Motorola V600: TRIPLETS_G_0B.09.72R
+* Motorola V360: R4513_G_08.B7.ACR
+* Motorola V235: R3512_G_0A.30.6CR
+* Motorola SLVR L7: R4513_G_08.B7.E0R_RB
+* Motorola RAZR V3i: R4441D_G_08.01.03R
+* Motorola RAZR V3r: R4515_G_08.BD.D3R
 
 Application type: GUI.
 
@@ -100,9 +106,17 @@ The P2K OS screenshots from Motorola ROKR E1:
 
 ![P2K Motorola E1 Screenshot 11 Main Desktop Screen](../image/P2K-E1-Screenshot11.png) ![P2K Motorola E1 Screenshot 12 Main Menu](../image/P2K-E1-Screenshot12.png) ![P2K Motorola E1 Screenshot 13 Multimedia Menu](../image/P2K-E1-Screenshot13.png) ![P2K Motorola E1 Screenshot 14 S/W Version](../image/P2K-E1-Screenshot14.png) ![P2K Motorola E1 Screenshot 15 Flex Version](../image/P2K-E1-Screenshot15.png)
 
-The 2048 game running on Motorola SLVR L6 and Motorola ROKR E1:
+Photos of 2048 game running on Motorola SLVR L6 and Motorola ROKR E1:
 
-![2048-P2K-UIS ELF-application running on Motorola L6 and Motorola E1 Photo](../image/2048-P2K-UIS-L6-E1-Photo.jpg)
+![2048-P2K-UIS ELF-application running on Motorola SLVR L6 and Motorola ROKR E1 Photo](../image/2048-P2K-UIS-L6-E1-Photo.jpg)
+
+Photos of 2048 game running on Motorola V235, thanks @Indepth6:
+
+![2048-P2K-UIS ELF-application running on Motorola V235 Photo](../image/2048-P2K-UIS-V235-Photo.jpg)
+
+Photos of 2048 game running on Motorola RAZR V3r, thanks @Blue_Screen_0f_Death:
+
+![2048-P2K-UIS ELF-application running on Motorola RAZR V3r Photo 1](../image/2048-P2K-UIS-V3r-Photo_1.jpg) ![2048-P2K-UIS ELF-application running on Motorola RAZR V3r Photo 2](../image/2048-P2K-UIS-V3r-Photo_2.jpg)
 
 ## Versions
 
