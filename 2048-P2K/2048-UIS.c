@@ -28,7 +28,9 @@
 #include <time_date.h>
 #include <mme.h>
 #include <dl_keypad.h>
+#if !defined(EM1)
 #include <dal.h>
+#endif
 
 #include "2048.h"
 
