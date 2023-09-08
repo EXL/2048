@@ -67,6 +67,14 @@ $ make clean
 $ make
 ```
 
+## ELF files
+
+* 2048-P2K-UIS_EP1.elf (ELF for ElfPack 1.0)
+* 2048-P2K-UIS_EP1_V600.elf (ELF for ElfPack 1.0, Motorola V600 version)
+* 2048-P2K-UIS_EP2.elf (ELF for ElfPack 2.0)
+* 2048-P2K-UIS_EM1.elf (ELF for ElfPack 1.0, M·CORE)
+* 2048-P2K-UIS_EM2.elf (ELF for ElfPack 2.0, M·CORE)
+
 The ELF-application has been tested on the following phones and firmware:
 
 * Motorola SLVR L6: R3443H1_G_0A.65.0BR
