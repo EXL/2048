@@ -55,7 +55,7 @@ set FINAL_NAME=2048-P2K-UIS_EP2
 %ARM_PATH%\libgen\postlink.exe %ELF_NAME%_p.elf -o %ELF_NAME%.elf
 
 :: Renaming step.
-move /y %ELF_NAME%.elf 2048-P2K-UIS_EP2.elf
+move /y %ELF_NAME%.elf %FINAL_NAME%.elf
 
 if /I "%1"=="clean" (
 	del *.o
