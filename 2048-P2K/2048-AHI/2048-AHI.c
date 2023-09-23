@@ -674,14 +674,6 @@ static UINT32 ATI_Driver_Flush(APPLICATION_T *app) {
 
 	appi = (APP_INSTANCE_T *) app;
 
-	AhiDrawSurfDstSet(appi->ahi.context, appi->ahi.draw, 0);
-
-	AhiDrawBrushFgColorSet(appi->ahi.context, ATI_565RGB(0x88, 0x88, 0x88));
-	AhiDrawBrushSet(appi->ahi.context, NULL, NULL, 0, AHIFLAG_BRUSH_SOLID);
-	AhiDrawRopSet(appi->ahi.context, AHIROP3(AHIROP_PATCOPY));
-	AhiDrawSpans(appi->ahi.context, &r, 1, 0);
-	AhiDrawRopSet(appi->ahi.context, AHIROP3(AHIROP_SRCCOPY));
-
 	AhiDispWaitVBlank(appi->ahi.context, 0);
 
 	if (appi->is_CSTN_display) {
@@ -1255,6 +1247,9 @@ static UINT32 PaintAll(EVENT_STACK_T *ev_st, APPLICATION_T *app, BOOL show_score
 		DrawSoftKeys(ev_st, app, APP_SOFT_KEY_LEFT, FALSE);
 		DrawSoftKeys(ev_st, app, APP_SOFT_KEY_MENU, FALSE);
 		DrawSoftKeys(ev_st, app, APP_SOFT_KEY_RIGHT, FALSE);
+	} else {
+		/* HACK: Update board region to make ATI driver happy. */
+		UIS_CanvasRefreshDisplayRegion(app->dialog, app_instance->area);
 	}
 
 	status |= ATI_Driver_Flush(app);
@@ -1294,10 +1289,18 @@ static UINT32 PaintBackground(EVENT_STACK_T *ev_st, APPLICATION_T *app) {
 			UIS_CanvasFillRect(app_instance->area, app->dialog);
 #endif
 			break;
-		case APP_BACKGROUND_HIDE:
-			UIS_CanvasSetBackgroundColor(g_color_board);
-			UIS_CanvasSetForegroundColor(g_color_board);
-			UIS_CanvasDrawRect(app_instance->area, TRUE, app->dialog);
+		case APP_BACKGROUND_HIDE: {
+				AhiDrawSurfDstSet(app_instance->ahi.context, app_instance->ahi.draw, 0);
+
+				AhiDrawBrushSet(app_instance->ahi.context, NULL, NULL, 0, AHIFLAG_BRUSH_SOLID);
+				AhiDrawRopSet(app_instance->ahi.context, AHIROP3(AHIROP_PATCOPY));
+
+				AhiDrawBrushFgColorSet(app_instance->ahi.context,
+					ATI_565RGB(g_color_board.red, g_color_board.green, g_color_board.blue));
+				AhiDrawSpans(app_instance->ahi.context, &app_instance->ahi.update_params.rect, 1, 0);
+
+				AhiDrawRopSet(app_instance->ahi.context, AHIROP3(AHIROP_SRCCOPY));
+			}
 			break;
 	}
 
@@ -1311,7 +1314,8 @@ static UINT32 PaintTile(EVENT_STACK_T *ev_st, APPLICATION_T *app, UINT32 value, 
 	APP_INSTANCE_T *app_instance;
 	UINT32 coord_x;
 	UINT32 coord_y;
-	GRAPHIC_REGION_T rect;
+	AHIRECT_T rect_I;
+	AHIRECT_T rect_O;
 	COLOR_T color;
 	UINT32 font_id;
 	UINT16 tile_size;
@@ -1328,26 +1332,42 @@ static UINT32 PaintTile(EVENT_STACK_T *ev_st, APPLICATION_T *app, UINT32 value, 
 	coord_x = OffsetCoord(x, tile_size, app_instance->measured.offset_x) + offset_w;
 	coord_y = OffsetCoord(y, tile_size, app_instance->measured.offset_y) + app_instance->area.ulc.y + offset_h;
 
-	rect.ulc.x = coord_x;
-	rect.ulc.y = coord_y;
-	rect.lrc.x = coord_x + app_instance->measured.tile_size;
-	rect.lrc.y = coord_y + app_instance->measured.tile_size;
+	rect_O.x1 = coord_x;
+	rect_O.y1 = coord_y;
+	rect_O.x2 = coord_x + app_instance->measured.tile_size;
+	rect_O.y2 = coord_y + app_instance->measured.tile_size;
 
-	SetRgbColor(&color, e_background(value));
-	UIS_CanvasSetBackgroundColor(color);
-	UIS_CanvasSetForegroundColor(g_color_text);
+	rect_I.x1 = rect_O.x1 + app_instance->measured.pencil_width;
+	rect_I.y1 = rect_O.y1 + app_instance->measured.pencil_width;
+	rect_I.x2 = rect_O.x2 - app_instance->measured.pencil_width;
+	rect_I.y2 = rect_O.y2 - app_instance->measured.pencil_width;
+
+	AhiDrawSurfDstSet(app_instance->ahi.context, app_instance->ahi.draw, 0);
 
 	switch (app_instance->options.tiles) {
 		default:
 		case APP_TILES_ROUNDED:
-			radius = app_instance->measured.rounded_rad;
-			UIS_CanvasDrawRoundRect(rect, radius, radius, TRUE, app->dialog);
+//			radius = app_instance->measured.rounded_rad;
+//			UIS_CanvasDrawRoundRect(rect, radius, radius, TRUE, app->dialog);
 			break;
 		case APP_TILES_RECTANGLE:
-			UIS_CanvasDrawRect(rect, TRUE, app->dialog);
+			AhiDrawBrushSet(app_instance->ahi.context, NULL, NULL, 0, AHIFLAG_BRUSH_SOLID);
+			AhiDrawRopSet(app_instance->ahi.context, AHIROP3(AHIROP_PATCOPY));
+
+			AhiDrawBrushFgColorSet(app_instance->ahi.context,
+				ATI_565RGB(g_color_text.red, g_color_text.green, g_color_text.blue));
+			AhiDrawSpans(app_instance->ahi.context, &rect_O, 1, 0);
+
+			SetRgbColor(&color, e_background(value));
+			AhiDrawBrushFgColorSet(app_instance->ahi.context, ATI_565RGB(color.red, color.green, color.blue));
+
+			AhiDrawSpans(app_instance->ahi.context, &rect_I, 1, 0);
 			break;
 	}
 
+	AhiDrawRopSet(app_instance->ahi.context, AHIROP3(AHIROP_SRCCOPY));
+
+#if 0
 	if (value) {
 		WCHAR tile_value[TILE_VALUE_MAX_LENGTH] = { 0 };
 		GRAPHIC_POINT_T point;
@@ -1382,7 +1402,7 @@ static UINT32 PaintTile(EVENT_STACK_T *ev_st, APPLICATION_T *app, UINT32 value, 
 
 		UIS_CanvasDrawColorText(tile_value, 0, u_strlen(tile_value), point, 0, app->dialog);
 	}
-
+#endif
 	return status;
 }
 
