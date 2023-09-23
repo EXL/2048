@@ -165,6 +165,21 @@ typedef struct {
 } SAVE_T;
 
 typedef struct {
+	AHIDRVINFO_T *info_driver;
+	AHIDEVCONTEXT_T context;
+	AHISURFACE_T screen;
+	AHISURFACE_T draw;
+	AHISURFINFO_T info_surface_screen;
+	AHISURFINFO_T info_surface_draw;
+	AHIBITMAP_T bitmap;
+
+	AHIPOINT_T point_bitmap;
+	AHIRECT_T rect_bitmap;
+	AHIRECT_T rect_draw;
+	AHIUPDATEPARAMS_T update_params;
+} APP_AHI_T;
+
+typedef struct {
 	APPLICATION_T app;
 
 	RESOURCE_ID resources[APP_RESOURCE_MAX];
@@ -177,6 +192,9 @@ typedef struct {
 	APP_MENU_ITEM_T menu_current_item_index;
 	SAVE_T save;
 	BOOL flag_from_select;
+
+	APP_AHI_T ahi;
+	BOOL is_CSTN_display;
 } APP_INSTANCE_T;
 
 static __inline UINT32 OffsetCoord(UINT8 coord, UINT16 tile_size, UINT16 offset);
@@ -191,6 +209,12 @@ ldrElf *_start(WCHAR *uri, WCHAR *arguments);                                /* 
 
 static UINT32 ApplicationStart(EVENT_STACK_T *ev_st, REG_ID_T reg_id, void *reg_hdl);
 static UINT32 ApplicationStop(EVENT_STACK_T *ev_st, APPLICATION_T *app);
+
+static UINT32 ATI_Driver_Log(APPLICATION_T *app);
+static UINT32 ATI_Driver_Log_Memory(APPLICATION_T *app, AHIPIXFMT_T pixel_format);
+static UINT32 ATI_Driver_Start(APPLICATION_T *app);
+static UINT32 ATI_Driver_Stop(APPLICATION_T *app);
+static UINT32 ATI_Driver_Flush(APPLICATION_T *app);
 
 static UINT32 InitResourses(RESOURCE_ID *resources);
 static UINT32 FreeResourses(RESOURCE_ID *resources);
@@ -427,7 +451,11 @@ static UINT32 ApplicationStart(EVENT_STACK_T *ev_st, REG_ID_T reg_id, void *reg_
 			SaveFile(&app_instance->options, sizeof(APP_OPTIONS_T), g_config_file_path);
 		}
 
-		status = APP_Start(ev_st, &app_instance->app, APP_STATE_MAIN,
+		SetWorikingArea(&app_instance->area);
+
+		status |= ATI_Driver_Start((APPLICATION_T *) app_instance);
+
+		status |= APP_Start(ev_st, &app_instance->app, APP_STATE_MAIN,
 			g_state_table_hdls, ApplicationStop, g_app_name, 0);
 
 #if defined(EP2)
@@ -449,6 +477,7 @@ static UINT32 ApplicationStop(EVENT_STACK_T *ev_st, APPLICATION_T *app) {
 
 	FreeResourses(app_instance->resources);
 
+	status |= ATI_Driver_Stop(app);
 	status |= APP_Exit(ev_st, app, 0);
 
 #if defined(EP1)
@@ -458,6 +487,208 @@ static UINT32 ApplicationStop(EVENT_STACK_T *ev_st, APPLICATION_T *app) {
 #endif
 
 	return status;
+}
+
+static UINT32 ATI_Driver_Log(APPLICATION_T *app) {
+	APP_INSTANCE_T *appi;
+
+	appi = (APP_INSTANCE_T *) app;
+
+	LOG("%s\n", "ATI Driver Dump.");
+	LOG("ATI Driver Name: %s\n", appi->ahi.info_driver->drvName);
+	LOG("ATI Driver Version: %s\n", appi->ahi.info_driver->drvVer);
+	LOG("ATI S/W Revision: %d (0x%08X)\n",
+		appi->ahi.info_driver->swRevision, appi->ahi.info_driver->swRevision);
+	LOG("ATI Chip ID: %d (0x%08X)\n",
+		appi->ahi.info_driver->chipId, appi->ahi.info_driver->chipId);
+	LOG("ATI Revision ID: %d (0x%08X)\n",
+		appi->ahi.info_driver->revisionId, appi->ahi.info_driver->revisionId);
+	LOG("ATI CPU Bus Interface Mode: %d (0x%08X)\n",
+		appi->ahi.info_driver->cpuBusInterfaceMode, appi->ahi.info_driver->cpuBusInterfaceMode);
+	LOG("ATI Total Memory: %d (%d KiB)\n",
+		appi->ahi.info_driver->totalMemory, appi->ahi.info_driver->totalMemory / 1024);
+	LOG("ATI Internal Memory: %d (%d KiB)\n",
+		appi->ahi.info_driver->internalMemSize, appi->ahi.info_driver->internalMemSize / 1024);
+	LOG("ATI External Memory: %d (%d KiB)\n",
+		appi->ahi.info_driver->externalMemSize, appi->ahi.info_driver->externalMemSize / 1024);
+	LOG("ATI CAPS 1: %d (0x%08X)\n", appi->ahi.info_driver->caps1, appi->ahi.info_driver->caps1);
+	LOG("ATI CAPS 2: %d (0x%08X)\n", appi->ahi.info_driver->caps2, appi->ahi.info_driver->caps2);
+
+	LOG("ATI Surface Screen Info: width=%d, height=%d, pixFormat=%d, byteSize=%d, byteSize=%d KiB\n",
+		appi->ahi.info_surface_screen.width, appi->ahi.info_surface_screen.height,
+		appi->ahi.info_surface_screen.pixFormat,
+		appi->ahi.info_surface_screen.byteSize, appi->ahi.info_surface_screen.byteSize / 1024);
+	LOG("ATI Surface Screen Info: offset=%d, stride=%d, numPlanes=%d\n",
+		appi->ahi.info_surface_screen.offset,
+		appi->ahi.info_surface_screen.stride,
+		appi->ahi.info_surface_screen.numPlanes);
+
+	LOG("ATI Surface Draw Info: width=%d, height=%d, pixFormat=%d, byteSize=%d, byteSize=%d KiB\n",
+		appi->ahi.info_surface_draw.width, appi->ahi.info_surface_draw.height,
+		appi->ahi.info_surface_draw.pixFormat,
+		appi->ahi.info_surface_draw.byteSize, appi->ahi.info_surface_draw.byteSize / 1024);
+	LOG("ATI Surface Draw Info: offset=%d, stride=%d, numPlanes=%d\n",
+		appi->ahi.info_surface_draw.offset,
+		appi->ahi.info_surface_draw.stride,
+		appi->ahi.info_surface_draw.numPlanes);
+
+	return RESULT_OK;
+}
+
+static UINT32 ATI_Driver_Log_Memory(APPLICATION_T *app, AHIPIXFMT_T pixel_format) {
+	enum {
+		INTERNAL_MEMORY,
+		EXTERNAL_MEMORY,
+		SYSTEM_MEMORY,
+		MEMORY_MAX
+	};
+
+	APP_INSTANCE_T *appi;
+	UINT32 status[MEMORY_MAX] = { 0 };
+	UINT32 sizes[MEMORY_MAX] = { 0 };
+	UINT32 alignment[MEMORY_MAX] = { 0 };
+
+	appi = (APP_INSTANCE_T *) app;
+
+	status[INTERNAL_MEMORY] = AhiSurfGetLargestFreeBlockSize(appi->ahi.context, pixel_format,
+		&sizes[INTERNAL_MEMORY], &alignment[INTERNAL_MEMORY], AHIFLAG_INTMEMORY);
+	status[EXTERNAL_MEMORY] = AhiSurfGetLargestFreeBlockSize(appi->ahi.context, pixel_format,
+		&sizes[EXTERNAL_MEMORY], &alignment[EXTERNAL_MEMORY], AHIFLAG_EXTMEMORY);
+	status[SYSTEM_MEMORY] = AhiSurfGetLargestFreeBlockSize(appi->ahi.context, pixel_format,
+		&sizes[SYSTEM_MEMORY], &alignment[SYSTEM_MEMORY], AHIFLAG_SYSMEMORY);
+
+	LOG("%s\n", "ATI Memory Dump.");
+	LOG("\tATI Internal Memory Largest Block: status=%d, pixel_format=%d, size=%d, size=%d KiB, align=%d\n",
+		status[INTERNAL_MEMORY], pixel_format, sizes[INTERNAL_MEMORY], sizes[INTERNAL_MEMORY] / 1024, alignment[INTERNAL_MEMORY]);
+	LOG("\tATI External Memory Largest Block: status=%d, pixel_format=%d, size=%d, size=%d KiB, align=%d\n",
+		status[EXTERNAL_MEMORY], pixel_format, sizes[EXTERNAL_MEMORY], sizes[EXTERNAL_MEMORY] / 1024, alignment[EXTERNAL_MEMORY]);
+	LOG("\tATI System Memory Largest Block: status=%d, pixel_format=%d, size=%d, size=%d KiB, align=%d\n",
+		status[SYSTEM_MEMORY], pixel_format, sizes[SYSTEM_MEMORY], sizes[SYSTEM_MEMORY] / 1024, alignment[SYSTEM_MEMORY]);
+
+	return status[INTERNAL_MEMORY] && status[EXTERNAL_MEMORY] && status[SYSTEM_MEMORY];
+}
+
+static UINT32 ATI_Driver_Start(APPLICATION_T *app) {
+	UINT32 status;
+	INT32 result;
+	APP_INSTANCE_T *appi;
+	AHIDEVICE_T ahi_device;
+	AHIDISPMODE_T display_mode;
+
+	status = RESULT_OK;
+	result = RESULT_OK;
+	appi = (APP_INSTANCE_T *) app;
+
+	LOG("%s\n", "ATI Driver Start Initialization.");
+
+	appi->ahi.info_driver = suAllocMem(sizeof(AHIDRVINFO_T), &result);
+	if (!appi->ahi.info_driver && result) {
+		return RESULT_FAIL;
+	}
+	status |= AhiDevEnum(&ahi_device, appi->ahi.info_driver, 0);
+	if (status != RESULT_OK) {
+		return RESULT_FAIL;
+	}
+	status |= AhiDevOpen(&appi->ahi.context, ahi_device, g_app_name, 0);
+	if (status != RESULT_OK) {
+		return RESULT_FAIL;
+	}
+
+	status |= AhiDispModeGet(appi->ahi.context, &display_mode);
+
+	status |= AhiDispSurfGet(appi->ahi.context, &appi->ahi.screen);
+	appi->ahi.draw = DAL_GetDrawingSurface(DISPLAY_MAIN);
+
+	/*
+	 * Motorola SLVR L6: 128x160
+	 * Motorola ROKR E1: 176x220
+	 */
+	appi->is_CSTN_display =
+			(display_mode.size.x < DISPLAY_WIDTH) ||
+			(display_mode.size.y < DISPLAY_HEIGHT);
+
+	status |= AhiDrawClipDstSet(appi->ahi.context, NULL);
+	status |= AhiDrawClipSrcSet(appi->ahi.context, NULL);
+
+	status |= AhiSurfInfo(appi->ahi.context, appi->ahi.screen, &appi->ahi.info_surface_screen);
+	status |= AhiSurfInfo(appi->ahi.context, appi->ahi.draw, &appi->ahi.info_surface_draw);
+
+	appi->ahi.update_params.size = sizeof(AHIUPDATEPARAMS_T);
+	appi->ahi.update_params.sync = FALSE;
+	appi->ahi.update_params.rect.x1 = appi->area.ulc.x;
+	appi->ahi.update_params.rect.y1 = appi->area.ulc.y;
+	appi->ahi.update_params.rect.x2 = appi->area.lrc.x + 1;
+	appi->ahi.update_params.rect.y2 = appi->area.lrc.y + 1;
+	appi->ahi.point_bitmap.x = 0;
+	appi->ahi.point_bitmap.y = 0;
+
+	appi->ahi.bitmap.width = appi->area.lrc.x - appi->area.ulc.x;
+	appi->ahi.bitmap.height = appi->area.lrc.y - appi->area.ulc.y;
+	appi->ahi.bitmap.stride = (appi->area.lrc.x - appi->area.ulc.x) * 2; /* (width * bpp) */
+	appi->ahi.bitmap.format = AHIFMT_16BPP_565;
+	appi->ahi.bitmap.image = suAllocMem(appi->ahi.bitmap.width * appi->ahi.bitmap.height * 2, &result);
+	if (result != RESULT_OK) {
+		LOG("%s\n", "Error: Cannot allocate screen buffer memory.");
+		return RESULT_FAIL;
+	}
+	appi->ahi.rect_bitmap.x1 = 0;
+	appi->ahi.rect_bitmap.y1 = 0;
+	appi->ahi.rect_bitmap.x2 = 0 + appi->ahi.bitmap.width;
+	appi->ahi.rect_bitmap.y2 = 0 + appi->ahi.bitmap.height;
+
+	appi->ahi.rect_draw.x1 = appi->area.ulc.x;
+	appi->ahi.rect_draw.y1 = appi->area.ulc.y;
+	appi->ahi.rect_draw.x2 = appi->area.lrc.x;
+	appi->ahi.rect_draw.y2 = appi->area.lrc.y;
+
+	status |= ATI_Driver_Log(app);
+	status |= ATI_Driver_Log_Memory(app, AHIFMT_16BPP_565);
+
+	return status;
+}
+
+static UINT32 ATI_Driver_Stop(APPLICATION_T *app) {
+	UINT32 status;
+	APP_INSTANCE_T *app_instance;
+
+	status = RESULT_OK;
+	app_instance = (APP_INSTANCE_T *) app;
+
+	if (app_instance->ahi.bitmap.image) {
+		LOG("%s\n", "Free: ATI Bitmap memory.");
+		suFreeMem(app_instance->ahi.bitmap.image);
+		app_instance->ahi.bitmap.image = NULL;
+	}
+
+	status |= AhiDevClose(app_instance->ahi.context);
+	if (app_instance->ahi.info_driver) {
+		LOG("%s\n", "Free: ATI Driver Info memory.");
+		suFreeMem(app_instance->ahi.info_driver);
+	}
+
+	return status;
+}
+
+static UINT32 ATI_Driver_Flush(APPLICATION_T *app) {
+	APP_INSTANCE_T *appi;
+
+	appi = (APP_INSTANCE_T *) app;
+
+	AhiDrawSurfDstSet(appi->ahi.context, appi->ahi.draw, 0);
+
+	AhiDrawBrushFgColorSet(appi->ahi.context, ATI_565RGB(0x88, 0x88, 0x88));
+	AhiDrawBrushSet(appi->ahi.context, NULL, NULL, 0, AHIFLAG_BRUSH_SOLID);
+	AhiDrawRopSet(appi->ahi.context, AHIROP3(AHIROP_PATCOPY));
+	AhiDrawSpans(appi->ahi.context, &r, 1, 0);
+	AhiDrawRopSet(appi->ahi.context, AHIROP3(AHIROP_SRCCOPY));
+
+	AhiDispWaitVBlank(appi->ahi.context, 0);
+
+	if (appi->is_CSTN_display) {
+		AhiDispUpdate(appi->ahi.context, &appi->ahi.update_params);
+	}
+
+	return RESULT_OK;
 }
 
 static UINT32 InitResourses(RESOURCE_ID *resources) {
@@ -528,7 +759,6 @@ static UINT32 HandleStateEnter(EVENT_STACK_T *ev_st, APPLICATION_T *app, ENTER_S
 			buffer.w = point.x + 1;
 			buffer.h = point.y + 1;
 			buffer.buf = NULL;
-			SetWorikingArea(&app_instance->area);
 			SetMeasuredValues(&app_instance->measured, &buffer);
 #if !defined(FTR_V600)
 			dialog = UIS_CreateColorCanvasWithWallpaper(&port, &buffer, FALSE, TRUE);
@@ -1026,6 +1256,8 @@ static UINT32 PaintAll(EVENT_STACK_T *ev_st, APPLICATION_T *app, BOOL show_score
 		DrawSoftKeys(ev_st, app, APP_SOFT_KEY_MENU, FALSE);
 		DrawSoftKeys(ev_st, app, APP_SOFT_KEY_RIGHT, FALSE);
 	}
+
+	status |= ATI_Driver_Flush(app);
 
 	return status;
 }
