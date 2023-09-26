@@ -20,7 +20,7 @@ DEFINES = -D__P2K__ -DEP1 -DUSE_MME
 #DEFINES = -D__P2K__ -DEP1 -DUSE_MME -DFTR_L7E
 
 # Includes.
-INCLUDES = -I../../src/ -I../../image/icon/precompiled/
+INCLUDES = -I../../src/ -I../../image/icon/precompiled/ -I../../image/gfx/
 
 # Optimization.
 OPTIM = -O2

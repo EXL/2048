@@ -34,6 +34,8 @@
 
 #include "2048.h"
 
+#include "P2K_GFX_Bitmaps.h"
+
 #include "p2k_app_icon_15x15_gif.h"
 #include "p2k_app_icon_41x41_gif.h"
 
@@ -164,6 +166,14 @@ typedef struct {
 	UINT16 score;
 } SAVE_T;
 
+typedef enum {
+	GFX_BMP_FRAME,   /* 2 */
+	GFX_BMP_NUMBERS, /* 2 */
+	GFX_BMP_WIN,     /* 1 */
+	GFX_BMP_LOSE,    /* 1 */
+	GFX_BMP_MAX
+} GFX_BITMAP_T;
+
 typedef struct {
 	AHIDRVINFO_T *info_driver;
 	AHIDEVCONTEXT_T context;
@@ -171,10 +181,8 @@ typedef struct {
 	AHISURFACE_T draw;
 	AHISURFINFO_T info_surface_screen;
 	AHISURFINFO_T info_surface_draw;
-	AHIBITMAP_T bitmap;
+	AHIBITMAP_T bitmaps[GFX_BMP_MAX];
 
-	AHIPOINT_T point_bitmap;
-	AHIRECT_T rect_bitmap;
 	AHIRECT_T rect_draw;
 	AHIUPDATEPARAMS_T update_params;
 } APP_AHI_T;
@@ -210,6 +218,7 @@ ldrElf *_start(WCHAR *uri, WCHAR *arguments);                                /* 
 static UINT32 ApplicationStart(EVENT_STACK_T *ev_st, REG_ID_T reg_id, void *reg_hdl);
 static UINT32 ApplicationStop(EVENT_STACK_T *ev_st, APPLICATION_T *app);
 
+static UINT32 SetBitmapParameters(APPLICATION_T *app);
 static UINT32 ATI_Driver_Log(APPLICATION_T *app);
 static UINT32 ATI_Driver_Log_Memory(APPLICATION_T *app, AHIPIXFMT_T pixel_format);
 static UINT32 ATI_Driver_Start(APPLICATION_T *app);
@@ -489,6 +498,30 @@ static UINT32 ApplicationStop(EVENT_STACK_T *ev_st, APPLICATION_T *app) {
 	return status;
 }
 
+static UINT32 SetBitmapParameters(APPLICATION_T *app) {
+	UINT32 status;
+	APP_INSTANCE_T *appi;
+
+	status = RESULT_OK;
+	appi = (APP_INSTANCE_T *) app;
+
+	if (appi->is_CSTN_display) {
+		appi->ahi.bitmaps[GFX_BMP_FRAME].width = P2K_Frame_23x23_bmp_width;
+		appi->ahi.bitmaps[GFX_BMP_FRAME].height = P2K_Frame_23x23_bmp_height;
+		appi->ahi.bitmaps[GFX_BMP_FRAME].stride = 4; /* (width / 8) */
+		appi->ahi.bitmaps[GFX_BMP_FRAME].format = AHIFMT_1BPP;
+		appi->ahi.bitmaps[GFX_BMP_FRAME].image = (void *) P2K_Frame_23x23_bmp;
+	} else {
+		appi->ahi.bitmaps[GFX_BMP_FRAME].width = P2K_Frame_36x36_bmp_width;
+		appi->ahi.bitmaps[GFX_BMP_FRAME].height = P2K_Frame_36x36_bmp_height;
+		appi->ahi.bitmaps[GFX_BMP_FRAME].stride = 8; /* (width / 8) */
+		appi->ahi.bitmaps[GFX_BMP_FRAME].format = AHIFMT_1BPP;
+		appi->ahi.bitmaps[GFX_BMP_FRAME].image = (void *) P2K_Frame_36x36_bmp;
+	}
+
+	return status;
+}
+
 static UINT32 ATI_Driver_Log(APPLICATION_T *app) {
 	APP_INSTANCE_T *appi;
 
@@ -619,22 +652,8 @@ static UINT32 ATI_Driver_Start(APPLICATION_T *app) {
 	appi->ahi.update_params.rect.y1 = appi->area.ulc.y;
 	appi->ahi.update_params.rect.x2 = appi->area.lrc.x + 1;
 	appi->ahi.update_params.rect.y2 = appi->area.lrc.y + 1;
-	appi->ahi.point_bitmap.x = 0;
-	appi->ahi.point_bitmap.y = 0;
 
-	appi->ahi.bitmap.width = appi->area.lrc.x - appi->area.ulc.x;
-	appi->ahi.bitmap.height = appi->area.lrc.y - appi->area.ulc.y;
-	appi->ahi.bitmap.stride = (appi->area.lrc.x - appi->area.ulc.x) * 2; /* (width * bpp) */
-	appi->ahi.bitmap.format = AHIFMT_16BPP_565;
-	appi->ahi.bitmap.image = suAllocMem(appi->ahi.bitmap.width * appi->ahi.bitmap.height * 2, &result);
-	if (result != RESULT_OK) {
-		LOG("%s\n", "Error: Cannot allocate screen buffer memory.");
-		return RESULT_FAIL;
-	}
-	appi->ahi.rect_bitmap.x1 = 0;
-	appi->ahi.rect_bitmap.y1 = 0;
-	appi->ahi.rect_bitmap.x2 = 0 + appi->ahi.bitmap.width;
-	appi->ahi.rect_bitmap.y2 = 0 + appi->ahi.bitmap.height;
+	SetBitmapParameters(app);
 
 	appi->ahi.rect_draw.x1 = appi->area.ulc.x;
 	appi->ahi.rect_draw.y1 = appi->area.ulc.y;
@@ -653,12 +672,6 @@ static UINT32 ATI_Driver_Stop(APPLICATION_T *app) {
 
 	status = RESULT_OK;
 	app_instance = (APP_INSTANCE_T *) app;
-
-	if (app_instance->ahi.bitmap.image) {
-		LOG("%s\n", "Free: ATI Bitmap memory.");
-		suFreeMem(app_instance->ahi.bitmap.image);
-		app_instance->ahi.bitmap.image = NULL;
-	}
 
 	status |= AhiDevClose(app_instance->ahi.context);
 	if (app_instance->ahi.info_driver) {
@@ -1316,10 +1329,10 @@ static UINT32 PaintTile(EVENT_STACK_T *ev_st, APPLICATION_T *app, UINT32 value, 
 	UINT32 coord_y;
 	AHIRECT_T rect_I;
 	AHIRECT_T rect_O;
+	AHIPOINT_T point_B;
 	COLOR_T color;
 	UINT32 font_id;
 	UINT16 tile_size;
-	UINT16 radius;
 	UINT16 offset_w;
 	UINT16 offset_h;
 
@@ -1342,13 +1355,32 @@ static UINT32 PaintTile(EVENT_STACK_T *ev_st, APPLICATION_T *app, UINT32 value, 
 	rect_I.x2 = rect_O.x2 - app_instance->measured.pencil_width;
 	rect_I.y2 = rect_O.y2 - app_instance->measured.pencil_width;
 
+	point_B.x = 0;
+	point_B.y = 0;
+
 	AhiDrawSurfDstSet(app_instance->ahi.context, app_instance->ahi.draw, 0);
 
 	switch (app_instance->options.tiles) {
 		default:
 		case APP_TILES_ROUNDED:
-//			radius = app_instance->measured.rounded_rad;
-//			UIS_CanvasDrawRoundRect(rect, radius, radius, TRUE, app->dialog);
+			rect_O.x2 += app_instance->measured.pencil_width;
+			rect_O.y2 += app_instance->measured.pencil_width;
+			rect_I.x2 += app_instance->measured.pencil_width;
+			rect_I.y2 += app_instance->measured.pencil_width;
+
+			AhiDrawBrushSet(app_instance->ahi.context, NULL, NULL, 0, AHIFLAG_BRUSH_SOLID);
+			AhiDrawRopSet(app_instance->ahi.context, AHIROP3(AHIROP_PATCOPY));
+
+			SetRgbColor(&color, e_background(value));
+			AhiDrawBrushFgColorSet(app_instance->ahi.context, ATI_565RGB(color.red, color.green, color.blue));
+			AhiDrawSpans(app_instance->ahi.context, &rect_I, 1, 0);
+
+			AhiDrawRopSet(app_instance->ahi.context, AHIROP3(AHIROP_SRCCOPY));
+
+			AhiDrawBgColorSet(app_instance->ahi.context,
+				ATI_565RGB(g_color_text.red, g_color_text.green, g_color_text.blue));
+			AhiDrawBitmapBlt(app_instance->ahi.context, &rect_O, &point_B,
+				&app_instance->ahi.bitmaps[GFX_BMP_FRAME], NULL, 2);
 			break;
 		case APP_TILES_RECTANGLE:
 			AhiDrawBrushSet(app_instance->ahi.context, NULL, NULL, 0, AHIFLAG_BRUSH_SOLID);
@@ -1360,12 +1392,9 @@ static UINT32 PaintTile(EVENT_STACK_T *ev_st, APPLICATION_T *app, UINT32 value, 
 
 			SetRgbColor(&color, e_background(value));
 			AhiDrawBrushFgColorSet(app_instance->ahi.context, ATI_565RGB(color.red, color.green, color.blue));
-
 			AhiDrawSpans(app_instance->ahi.context, &rect_I, 1, 0);
 			break;
 	}
-
-	AhiDrawRopSet(app_instance->ahi.context, AHIROP3(AHIROP_SRCCOPY));
 
 #if 0
 	if (value) {

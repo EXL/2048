@@ -4,6 +4,6 @@ Application {
 
 	cpp.defines: [ "EP1", "USE_MME" ]
 	cpp.optimization: "O2"
-	cpp.includePaths: [ "../../src", "../../image/icon/precompiled"]
+	cpp.includePaths: [ "../../src", "../../image/icon/precompiled", "../../image/gfx"]
 	cpp.staticLibraries: ["Lib"]
 }

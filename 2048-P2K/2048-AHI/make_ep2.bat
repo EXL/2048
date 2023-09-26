@@ -24,7 +24,7 @@ set DEFINES=-D__P2K__ -DEP2 -DUSE_MME
 :: set DEFINES=-D__P2K__ -DEP2 -DUSE_MME -DFTR_L7E
 
 :: Includes.
-set INCLUDES=-I..\..\src\ -I..\..\image\icon\precompiled\
+set INCLUDES=-I..\..\src\ -I..\..\image\icon\precompiled\ -I..\..\image\gfx\
 
 :: Optimization.
 set OPTIM=-O2
