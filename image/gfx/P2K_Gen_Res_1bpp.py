@@ -2,10 +2,16 @@
 
 """
 Generate C-like headers from BMP 1bpp sprites.
+
+python -m pip install --upgrade pip
+python -m pip install --upgrade Pillow
 """
 
 import os
 import sys
+
+import PIL
+from PIL import Image
 
 bmp_offset = 0x0A
 out = 'P2K_GFX_Bitmaps.h'
@@ -15,13 +21,15 @@ files = [
 ]
 
 def generate_c_resource_header(filename):
-	with open(filename, 'rb') as file_in, open(out, 'a') as file_out:
+	bmp_temp = 'temp_' + filename
+	bmp_flip = Image.open(filename).transpose(PIL.Image.FLIP_TOP_BOTTOM)
+	bmp_flip.save(bmp_temp)
 
+	with open(bmp_temp, 'rb') as file_in, open(out, 'a') as file_out:
 		file_in.seek(bmp_offset)
 		data_offset = int.from_bytes(file_in.read(1))
 
 		file_in.seek(data_offset)
-#		rev_buff = bytes(reversed(file_in.read()))
 		rev_buff = bytes(file_in.read())
 
 		filename = filename.replace('.', '_')
@@ -53,7 +61,11 @@ def generate_c_resource_header(filename):
 
 		file_out.write('\n};\n\n')
 
+	if os.path.exists(bmp_temp):
+		os.remove(bmp_temp)
+
 if __name__ == '__main__':
-	os.remove(out)
+	if os.path.exists(out):
+		os.remove(out)
 	for filename in files:
 		generate_c_resource_header(filename)
