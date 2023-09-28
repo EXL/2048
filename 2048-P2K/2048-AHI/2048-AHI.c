@@ -208,6 +208,7 @@ typedef struct {
 static __inline UINT32 OffsetCoord(UINT8 coord, UINT16 tile_size, UINT16 offset);
 static __inline void SetRgbColor(COLOR_T *color, UINT32 rgb);
 static __inline void CenterRect(GRAPHIC_REGION_T *r_i, GRAPHIC_REGION_T *r_o);
+static __inline UINT32 Log2(UINT32 value);
 
 #if defined(EP1)
 UINT32 Register(const char *elf_path_uri, const char *args, UINT32 ev_code); /* ElfPack 1.x entry point. */
@@ -382,6 +383,19 @@ static __inline void CenterRect(GRAPHIC_REGION_T *r_i, GRAPHIC_REGION_T *r_o) {
 	r_i->lrc.y = r_i->ulc.y + r_i->lrc.y;
 }
 
+static __inline UINT32 Log2(UINT32 value) {
+	// http://graphics.stanford.edu/~seander/bithacks.html
+	// OR (IF YOU KNOW v IS A POWER OF 2):
+	UINT32 i;
+	UINT32 v = value; // 32-bit value to find the log2 of
+	static const UINT32 b[] = {0xAAAAAAAA, 0xCCCCCCCC, 0xF0F0F0F0, 0xFF00FF00, 0xFFFF0000};
+	register UINT32 r = (v & b[0]) != 0;
+	for (i = 4; i > 0; i--) { // unroll for speed...
+		r |= ((v & b[i]) != 0) << i;
+	}
+	return r - 1;
+}
+
 #if defined(EP1)
 UINT32 Register(const char *elf_path_uri, const char *args, UINT32 ev_code) {
 	UINT32 status;
@@ -508,15 +522,27 @@ static UINT32 SetBitmapParameters(APPLICATION_T *app) {
 	if (appi->is_CSTN_display) {
 		appi->ahi.bitmaps[GFX_BMP_FRAME].width = P2K_Frame_23x23_bmp_width;
 		appi->ahi.bitmaps[GFX_BMP_FRAME].height = P2K_Frame_23x23_bmp_height;
-		appi->ahi.bitmaps[GFX_BMP_FRAME].stride = 4; /* (width / 8) */
+		appi->ahi.bitmaps[GFX_BMP_FRAME].stride = 4; /* (width / 8) % 4 = 0 */
 		appi->ahi.bitmaps[GFX_BMP_FRAME].format = AHIFMT_1BPP;
 		appi->ahi.bitmaps[GFX_BMP_FRAME].image = (void *) P2K_Frame_23x23_bmp;
+
+		appi->ahi.bitmaps[GFX_BMP_NUMBERS].width = P2K_Numbers_231x21_bmp_width;
+		appi->ahi.bitmaps[GFX_BMP_NUMBERS].height = P2K_Numbers_231x21_bmp_height;
+		appi->ahi.bitmaps[GFX_BMP_NUMBERS].stride = 32; /* (width / 8) % 4 = 0 */
+		appi->ahi.bitmaps[GFX_BMP_NUMBERS].format = AHIFMT_1BPP;
+		appi->ahi.bitmaps[GFX_BMP_NUMBERS].image = (void *) P2K_Numbers_231x21_bmp;
 	} else {
 		appi->ahi.bitmaps[GFX_BMP_FRAME].width = P2K_Frame_36x36_bmp_width;
 		appi->ahi.bitmaps[GFX_BMP_FRAME].height = P2K_Frame_36x36_bmp_height;
-		appi->ahi.bitmaps[GFX_BMP_FRAME].stride = 8; /* (width / 8) */
+		appi->ahi.bitmaps[GFX_BMP_FRAME].stride = 8; /* (width / 8) % 4 = 0 */
 		appi->ahi.bitmaps[GFX_BMP_FRAME].format = AHIFMT_1BPP;
 		appi->ahi.bitmaps[GFX_BMP_FRAME].image = (void *) P2K_Frame_36x36_bmp;
+
+		appi->ahi.bitmaps[GFX_BMP_NUMBERS].width = P2K_Numbers_352x32_bmp_width;
+		appi->ahi.bitmaps[GFX_BMP_NUMBERS].height = P2K_Numbers_352x32_bmp_height;
+		appi->ahi.bitmaps[GFX_BMP_NUMBERS].stride = 44; /* (width / 8) % 4 = 0 */
+		appi->ahi.bitmaps[GFX_BMP_NUMBERS].format = AHIFMT_1BPP;
+		appi->ahi.bitmaps[GFX_BMP_NUMBERS].image = (void *) P2K_Numbers_352x32_bmp;
 	}
 
 	return status;
@@ -1331,7 +1357,6 @@ static UINT32 PaintTile(EVENT_STACK_T *ev_st, APPLICATION_T *app, UINT32 value, 
 	AHIRECT_T rect_O;
 	AHIPOINT_T point_B;
 	COLOR_T color;
-	UINT32 font_id;
 	UINT16 tile_size;
 	UINT16 offset_w;
 	UINT16 offset_h;
@@ -1347,8 +1372,8 @@ static UINT32 PaintTile(EVENT_STACK_T *ev_st, APPLICATION_T *app, UINT32 value, 
 
 	rect_O.x1 = coord_x;
 	rect_O.y1 = coord_y;
-	rect_O.x2 = coord_x + app_instance->measured.tile_size;
-	rect_O.y2 = coord_y + app_instance->measured.tile_size;
+	rect_O.x2 = coord_x + app_instance->measured.tile_size + app_instance->measured.pencil_width;
+	rect_O.y2 = coord_y + app_instance->measured.tile_size + app_instance->measured.pencil_width;
 
 	rect_I.x1 = rect_O.x1 + app_instance->measured.pencil_width;
 	rect_I.y1 = rect_O.y1 + app_instance->measured.pencil_width;
@@ -1363,11 +1388,6 @@ static UINT32 PaintTile(EVENT_STACK_T *ev_st, APPLICATION_T *app, UINT32 value, 
 	switch (app_instance->options.tiles) {
 		default:
 		case APP_TILES_ROUNDED:
-			rect_O.x2 += app_instance->measured.pencil_width;
-			rect_O.y2 += app_instance->measured.pencil_width;
-			rect_I.x2 += app_instance->measured.pencil_width;
-			rect_I.y2 += app_instance->measured.pencil_width;
-
 			AhiDrawBrushSet(app_instance->ahi.context, NULL, NULL, 0, AHIFLAG_BRUSH_SOLID);
 			AhiDrawRopSet(app_instance->ahi.context, AHIROP3(AHIROP_PATCOPY));
 
@@ -1396,42 +1416,23 @@ static UINT32 PaintTile(EVENT_STACK_T *ev_st, APPLICATION_T *app, UINT32 value, 
 			break;
 	}
 
-#if 0
 	if (value) {
-		WCHAR tile_value[TILE_VALUE_MAX_LENGTH] = { 0 };
-		GRAPHIC_POINT_T point;
-		GRAPHIC_METRIC_T string_measure;
+		point_B.x = app_instance->ahi.bitmaps[GFX_BMP_NUMBERS].height * Log2(value);
+
+		AhiDrawRopSet(app_instance->ahi.context, AHIROP3(AHIROP_SRCCOPY));
 
 		if (value < 64) {
 			SetRgbColor(&color, e_foreground(value));
-			UIS_CanvasSetForegroundColor(color);
-		}
-
-		u_ltou(value, tile_value);
-
-		if (value < 10) {
-			font_id = app_instance->measured.font_large;
-		} else if (value < 100) {
-			font_id = app_instance->measured.font_normal;
-		} else if (value < 1000) {
-			font_id = app_instance->measured.font_small;
+			AhiDrawBgColorSet(app_instance->ahi.context, ATI_565RGB(color.red, color.green, color.blue));
 		} else {
-			font_id = app_instance->measured.font_ultra_small;
+			AhiDrawBgColorSet(app_instance->ahi.context,
+				ATI_565RGB(g_color_text.red, g_color_text.green, g_color_text.blue));
 		}
 
-		UIS_CanvasSetFont(font_id, app->dialog);
-		UIS_CanvasGetStringSize(tile_value, &string_measure, font_id);
-
-		point.x = (coord_x + (tile_size - string_measure.width) / 2) + app_instance->measured.gap;
-		point.y = (coord_y + (tile_size - string_measure.height) / 2) + app_instance->measured.gap;
-
-		if (value > 1000) {
-			point.y -= app_instance->measured.gap_y_huge;
-		}
-
-		UIS_CanvasDrawColorText(tile_value, 0, u_strlen(tile_value), point, 0, app->dialog);
+		AhiDrawBitmapBlt(app_instance->ahi.context, &rect_I, &point_B,
+			&app_instance->ahi.bitmaps[GFX_BMP_NUMBERS], NULL, 2);
 	}
-#endif
+
 	return status;
 }
 

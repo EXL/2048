@@ -18,6 +18,8 @@ out = 'P2K_GFX_Bitmaps.h'
 files = [
 	'P2K_Frame_23x23.bmp',
 	'P2K_Frame_36x36.bmp',
+	'P2K_Numbers_231x21.bmp',
+	'P2K_Numbers_352x32.bmp',
 ]
 
 def generate_c_resource_header(filename):
