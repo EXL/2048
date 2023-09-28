@@ -169,8 +169,8 @@ typedef struct {
 typedef enum {
 	GFX_BMP_FRAME,   /* 2 */
 	GFX_BMP_NUMBERS, /* 2 */
-	GFX_BMP_WIN,     /* 1 */
-	GFX_BMP_LOSE,    /* 1 */
+	GFX_BMP_PATTERN, /* 1 */
+	GFX_BMP_END,     /* 1 */
 	GFX_BMP_MAX
 } GFX_BITMAP_T;
 
@@ -544,6 +544,18 @@ static UINT32 SetBitmapParameters(APPLICATION_T *app) {
 		appi->ahi.bitmaps[GFX_BMP_NUMBERS].format = AHIFMT_1BPP;
 		appi->ahi.bitmaps[GFX_BMP_NUMBERS].image = (void *) P2K_Numbers_352x32_bmp;
 	}
+
+	appi->ahi.bitmaps[GFX_BMP_PATTERN].width = P2K_Pattern_16x16_bmp_width;
+	appi->ahi.bitmaps[GFX_BMP_PATTERN].height = P2K_Pattern_16x16_bmp_height;
+	appi->ahi.bitmaps[GFX_BMP_PATTERN].stride = 4; /* (width / 8) % 4 = 0 */
+	appi->ahi.bitmaps[GFX_BMP_PATTERN].format = AHIFMT_1BPP;
+	appi->ahi.bitmaps[GFX_BMP_PATTERN].image = (void *) P2K_Pattern_16x16_bmp;
+
+	appi->ahi.bitmaps[GFX_BMP_END].width = P2K_End_102x64_bmp_width;
+	appi->ahi.bitmaps[GFX_BMP_END].height = P2K_End_102x64_bmp_height;
+	appi->ahi.bitmaps[GFX_BMP_END].stride = 16; /* (width / 8) % 4 = 0 */
+	appi->ahi.bitmaps[GFX_BMP_END].format = AHIFMT_1BPP;
+	appi->ahi.bitmaps[GFX_BMP_END].image = (void *) P2K_End_102x64_bmp;
 
 	return status;
 }
@@ -1443,35 +1455,52 @@ static UINT32 PaintFinal(EVENT_STACK_T *ev_st, APPLICATION_T *app) {
 
 	if (e_win || e_lose) {
 		APP_INSTANCE_T *app_instance;
-		WCHAR *string_final;
-		GRAPHIC_METRIC_T string_measure;
-		GRAPHIC_REGION_T rect;
-		GRAPHIC_POINT_T point;
+		UINT32 x;
+		UINT32 y;
+		GRAPHIC_REGION_T rect_E;
+		AHIRECT_T rect_F;
+		AHIPOINT_T point_B;
 
 		app_instance = (APP_INSTANCE_T *) app;
-		if (e_win) {
-			string_final = (WCHAR *) g_str_game_won;
-		} else {
-			string_final = (WCHAR *) g_str_game_over;
+
+		point_B.x = 0;
+		point_B.y = 0;
+
+		AhiDrawRopSet(app_instance->ahi.context, AHIROP3(AHIROP_SRCCOPY));
+
+		AhiDrawBgColorSet(app_instance->ahi.context,
+			ATI_565RGB(g_color_overlay.red, g_color_overlay.green, g_color_overlay.blue));
+
+		for (x = app_instance->area.ulc.x; x < app_instance->area.lrc.x; x += P2K_Pattern_16x16_bmp_width) {
+			for (y = app_instance->area.ulc.y; y < app_instance->area.lrc.y; y += P2K_Pattern_16x16_bmp_height) {
+				rect_F.x1 = x;
+				rect_F.y1 = y;
+				rect_F.x2 = rect_F.x1 + P2K_Pattern_16x16_bmp_width;
+				rect_F.y2 = rect_F.y1 + P2K_Pattern_16x16_bmp_height;
+
+				AhiDrawBitmapBlt(app_instance->ahi.context, &rect_F, &point_B,
+					&app_instance->ahi.bitmaps[GFX_BMP_PATTERN], NULL, 2);
+			}
 		}
 
-		UIS_CanvasGetStringSize(string_final, &string_measure, app_instance->measured.font_final);
+		rect_E.lrc.x = P2K_End_102x64_bmp_width;
+		rect_E.lrc.y = P2K_End_102x64_bmp_height / 2;
+		CenterRect(&rect_E, &app_instance->area);
+		rect_F.x1 = rect_E.ulc.x;
+		rect_F.y1 = rect_E.ulc.y;
+		rect_F.x2 = rect_E.lrc.x;
+		rect_F.y2 = rect_E.lrc.y;
 
-		rect.lrc.x = string_measure.width;
-		rect.lrc.y = string_measure.height;
-		CenterRect(&rect, &app_instance->area);
-		point.x = rect.ulc.x;
-		point.y = rect.ulc.y;
+		point_B.y = (e_win) ? P2K_End_102x64_bmp_height / 2 : 0;
 
-		rect.lrc.x = string_measure.width + string_measure.width / 3;
-		rect.lrc.y = string_measure.height + string_measure.height / 2;
-		CenterRect(&rect, &app_instance->area);
+		AhiDrawFgColorSet(app_instance->ahi.context,
+			ATI_565RGB(g_color_overlay.red, g_color_overlay.green, g_color_overlay.blue));
 
-		UIS_CanvasSetBackgroundColor(g_color_overlay);
-		UIS_CanvasSetForegroundColor(g_color_final);
-		UIS_CanvasDrawRect(rect, TRUE, app->dialog);
-		UIS_CanvasSetFont(app_instance->measured.font_final, app->dialog);
-		UIS_CanvasDrawColorText(string_final, 0, u_strlen(string_final), point, 0, app->dialog);
+		AhiDrawBgColorSet(app_instance->ahi.context,
+			ATI_565RGB(g_color_final.red, g_color_final.green, g_color_final.blue));
+
+		AhiDrawBitmapBlt(app_instance->ahi.context, &rect_F, &point_B,
+			&app_instance->ahi.bitmaps[GFX_BMP_END], NULL, 0);
 	}
 
 	return status;

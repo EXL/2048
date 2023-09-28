@@ -20,6 +20,8 @@ files = [
 	'P2K_Frame_36x36.bmp',
 	'P2K_Numbers_231x21.bmp',
 	'P2K_Numbers_352x32.bmp',
+	'P2K_Pattern_16x16.bmp',
+	'P2K_End_102x64.bmp'
 ]
 
 def generate_c_resource_header(filename):
