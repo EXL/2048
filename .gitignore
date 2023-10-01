@@ -33,3 +33,23 @@ out/
 # Generated SMD files.
 2048-SMD/res/gfx.h
 2048-SMD/res/sfx.h
+
+# CMake
+CMakeLists.txt.user
+CMakeCache.txt
+CMakeFiles
+CMakeScripts
+Testing
+Makefile
+cmake_install.cmake
+install_manifest.txt
+compile_commands.json
+CTestTestfile.cmake
+_deps
+
+# CMake patch
+*-prefix/
+
+# Ninja
+build.ninja
+.ninja_*
