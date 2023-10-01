@@ -26,7 +26,10 @@ endif()
 #
 project(2048-UIS LANGUAGES C VERSION "1.0.0")
 
-include_directories(${PROJECT_SOURCE_DIR} ${PROJECT_SOURCE_DIR}/../src ${PROJECT_SOURCE_DIR}/../image/icon/precompiled/)
+include_directories(
+	${PROJECT_SOURCE_DIR}
+	${PROJECT_SOURCE_DIR}/../src
+	${PROJECT_SOURCE_DIR}/../image/icon/precompiled)
 
 add_definitions("-DUSE_MME")
 #add_definitions("-DFTR_V600")
@@ -37,6 +40,11 @@ set(SOURCE_FILES
 	2048-UIS.c)
 
 add_executable(${PROJECT_NAME} ${SOURCE_FILES})
+
+if(ELFPACK STREQUAL "EP2")
+	include("${P2K_EP2_TOOLCHAIN_ROOT}/cmake/PreLink.cmake")
+	redefine_sym("memcpy" "__rt_memcpy" "2048-UIS.c" ${CMAKE_C_OUTPUT_EXTENSION})
+endif()
 
 ########################################################################################################################
 # Linking and postlinking section

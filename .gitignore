@@ -8,6 +8,7 @@
 # Executable Binaries and Object code.
 *.o
 *.obj
+*.elfp
 *.elf
 a.out
 2048-Photon/x86/o/2048-Photon
