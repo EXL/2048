@@ -1,6 +1,8 @@
 # Qt Creator user files and directories.
 *.user*
 .qtc_clangd/
+.qtc/
+qtcsettings.cmake
 
 # Qt MOC generated files.
 *.moc
@@ -36,8 +38,10 @@ out/
 2048-SMD/res/sfx.h
 
 # CMake
+.cmake/
 CMakeLists.txt.user
 CMakeCache.txt
+CMakeCache.txt.prev
 CMakeFiles
 CMakeScripts
 Testing
