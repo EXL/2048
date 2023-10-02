@@ -1,19 +1,20 @@
 ########################################################################################################################
-# CMake build script for Motorola P2K ELFs: 01-Oct-2023
+# CMake build script for Motorola P2K ELFs: 02-Oct-2023
 #
 cmake_minimum_required(VERSION 3.16)
 if(NOT ELFPACK)
 	set(ELFPACK "EP1")
 endif()
-if(ELFPACK STREQUAL "EP1") # Motorola P2K, ARM/Thumb, ElfPack v1.x, ADS1.2 [Build 848] on Windows and Linux.
+if(NOT ARM_MODE)
 	set(ARM_MODE "Thumb")
+endif()
+if(ELFPACK STREQUAL "EP1") # Motorola P2K, ARM/Thumb, ElfPack v1.x, ADS1.2 [Build 848] on Windows and Linux.
 	if (WIN32)
 		set(CMAKE_TOOLCHAIN_FILE "C:/ARM/cmake/P2K_EP1_Toolchain.cmake")
 	else()
 		set(CMAKE_TOOLCHAIN_FILE "/opt/arm/cmake/P2K_EP1_Toolchain.cmake")
 	endif()
 elseif(ELFPACK STREQUAL "EP2") # ElfPack v2.x, ARM/Thumb, devkitARM release 26 (GCC 4.4.0) on Windows.
-	set(ARM_MODE "Thumb")
 	set(CMAKE_TOOLCHAIN_FILE "C:/devkitARM/cmake/P2K_EP2_Toolchain.cmake")
 elseif(ELFPACK STREQUAL "EM1") # ElfPack v1.x, M*CORE, mcore-elf-gcc (GCC) 3.4.6 on Windows.
 	set(CMAKE_TOOLCHAIN_FILE "C:/MCORE_EM1/cmake/P2K_EM1_Toolchain.cmake")
