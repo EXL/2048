@@ -1,4 +1,4 @@
-# This Makefile was edited by EXL, 15-Jan-2023.
+# This Makefile was created by EXL, 15-Jan-2023.
 # Default platform is Motorola P2K, ElfPack v1.0, ADS1.2 [Build 848] on Linux.
 # Warning: `-nodebug` flag option for `armlink` is buggy.
 
@@ -25,20 +25,19 @@ INCLUDES = -I../src/ -I../image/icon/precompiled/
 # Optimization.
 OPTIM = -O2
 
-# Output names.
-ENG_NAME = 2048
+# Project/ELF name.
 ELF_NAME = 2048-UIS
-FINAL_NAME = 2048-P2K-UIS_EP1
 
 all:
 	$(ARM_PATH)/bin/tcc -I$(SDK_PATH) $(INCLUDES) $(DEFINES) $(OPTIM) -bigend -apcs /interwork \
-		-c ../src/$(ENG_NAME).c -o $(ENG_NAME).o
+		-c ../src/2048.c -o 2048.o
 	$(ARM_PATH)/bin/tcc -I$(SDK_PATH) $(INCLUDES) $(DEFINES) $(OPTIM) -bigend -apcs /interwork \
 		-c $(ELF_NAME).c -o $(ELF_NAME).o
-	$(ARM_PATH)/bin/armlink -nolocals -reloc -first $(LIB_MAIN)\(Lib\) $(ENG_NAME).o $(ELF_NAME).o \
+	$(ARM_PATH)/bin/armlink -nolocals -reloc -first $(LIB_MAIN)\(Lib\) 2048.o $(ELF_NAME).o \
 		$(LIB_PATH)/$(LIB_MAIN) -o $(ELF_NAME).elf
-	-mv $(ELF_NAME).elf $(FINAL_NAME).elf
 
 clean:
 	-rm -f *.o
+	-rm -f *.obj
+	-rm -f *.elfp
 	-rm -f *.elf
