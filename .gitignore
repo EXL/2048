@@ -9,6 +9,7 @@
 .qtc_clangd/
 .qtc/
 qtcsettings.cmake
+.cache
 
 # Qt MOC generated files.
 *.moc
