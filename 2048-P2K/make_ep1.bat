@@ -1,4 +1,4 @@
-:: This make.bat script was created by EXL, 15-Jan-2023.
+:: This make_ep1.bat script was created by EXL, 15-Jan-2023.
 :: Default platform is Motorola P2K, ElfPack v1.x, ADS1.2 [Build 848] on Windows.
 :: Warning: `-nodebug` flag option for `armlink` is buggy.
 

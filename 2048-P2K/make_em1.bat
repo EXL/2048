@@ -1,4 +1,4 @@
-:: This make.bat script was created by EXL, 04-Jun-2023.
+:: This make_em1.bat script was created by EXL, 04-Jun-2023.
 :: Default platform is Motorola P2K, EM1 ElfPack M*CORE, mcore-elf-gcc (GCC) 3.4.6 on Windows.
 
 :: Uncomment it for disable verbose output.
