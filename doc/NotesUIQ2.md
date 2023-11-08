@@ -46,9 +46,10 @@ The documentation files that come with the Symbian UIQ2 SDK along with code exam
 12. [x] Add photo with Motorola A1000.
 13. [x] Add photo with Motorola A925.
 14. [x] Add photo with Motorola A920.
-15. [ ] Add photo with Sony Ericsson P910.
+15. [x] Add photo with Sony Ericsson P910.
 16. [x] Add photo with Sony Ericsson P900.
 17. [x] Add photo with Sony Ericsson P800.
+18. [x] Add photo with Nokia 6708.
 
 ## Motorola FOMA M1000 key codes table
 
