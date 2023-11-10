@@ -1022,6 +1022,10 @@ static UINT32 HandleEventKeyRelease(EVENT_STACK_T *ev_st, APPLICATION_T *app) {
 static UINT32 HandleEventTimerExpired(EVENT_STACK_T *ev_st, APPLICATION_T *app) {
 	EVENT_T *event;
 	APP_TIMER_T timer_id;
+#if defined(FTR_V600)
+	APP_INSTANCE_T *app_instance;
+	app_instance = (APP_INSTANCE_T *) app;
+#endif
 
 	event = AFW_GetEv(ev_st);
 	timer_id = ((DL_TIMER_DATA_T *) event->attachment)->ID;
@@ -1042,6 +1046,11 @@ static UINT32 HandleEventTimerExpired(EVENT_STACK_T *ev_st, APPLICATION_T *app) 
 		case APP_TIMER_RESET:
 			DrawSoftKeys(ev_st, app, APP_SOFT_KEY_RIGHT, FALSE);
 			e_key(KEY_0);
+#if defined(FTR_V600)
+			if (app_instance->options.background == APP_BACKGROUND_SHOW) {
+				flushWallpaperOnScreen((UINT32 *) theWallpaper, app_instance->area, DISPLAY_MAIN);
+			}
+#endif
 			PaintAll(ev_st, app, FALSE, FALSE);
 			break;
 		case APP_TIMER_SAVE:
