@@ -86,7 +86,7 @@ The ELF-application has been tested on the following phones and firmware:
 * Motorola RAZR V3i: R4441D_G_08.01.03R
 * Motorola RAZR V3r: R4515_G_08.BD.D3R
 
-Application type: GUI.
+Application type: GUI + UIS Canvas.
 
 ## Additional Stuff
 
@@ -182,6 +182,7 @@ GNU ld (GNU Binutils) 2.18.50.20080711
 ## Information
 
 * [NotesMotoP2K.md](../doc/NotesMotoP2K.md): Document contains additional information about ElfPacks on Motorola P2K phones.
+* [ELFs by EXL](https://forum.motofan.ru/index.php?showtopic=1742337): A thread on the MotoFan.Ru forum with my ELF projects and additional information.
 * [ELFs development and porting](https://forum.motofan.ru/index.php?showforum=184): A section of the MotoFan.Ru forum dedicated to the development and porting of ELFs.
 * [ElfPack 1.x](https://wiki.motofan.ru/ElfPack): Page on MotoWiki site about first version of ElfPack for Motorola P2K phones.
 * [ElfPack 2.x](https://wiki.motofan.ru/ElfPack2): Page on MotoWiki site about second version of ElfPack for Motorola P2K phones.
