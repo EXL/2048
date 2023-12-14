@@ -210,7 +210,9 @@ extern void e_key(int keycode) {
 extern void e_init(int esc_keycode, int left_keycode, int right_keycode, int up_keycode, int down_keycode) {
 #if !defined(mc68000) || defined(NeXT) /* GCC on Sega Mega Drive and Sega Genesis platform. */
 #if !defined(THINK_C) /* Symantec THINK C IDE on Classic Mac OS platform. */
+#if !defined(MRE) /* MediaTek MRE platform. */
 	srand((unsigned int) time(NULL));
+#endif
 #endif
 #endif
 	K_ESCAPE = esc_keycode;
