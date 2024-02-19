@@ -40,15 +40,7 @@ void draw_tile(int value, int x, int y) {
 	const int bg = e_background(value);
 	const int fg = e_foreground(value);
 	set_color((e_win || e_lose) ? bg - COLOR_FADE : bg);
-
-	// Draw rounded rectangle made up of rectangles and circles
-	const int rad = TILE_SIZE/12;
-	vm_graphic_fill_rect_ex(layer_hdl[0], x+rad, y, TILE_SIZE - rad*2, TILE_SIZE);
-	vm_graphic_fill_rect_ex(layer_hdl[0], x, y+rad, TILE_SIZE, TILE_SIZE - rad*2);
-	vm_graphic_fill_ellipse_ex(layer_hdl[0], x, y, rad*2, rad*2);
-	vm_graphic_fill_ellipse_ex(layer_hdl[0], x + TILE_SIZE - rad*2, y, rad*2, rad*2);
-	vm_graphic_fill_ellipse_ex(layer_hdl[0], x, y + TILE_SIZE - rad*2, rad*2, rad*2);
-	vm_graphic_fill_ellipse_ex(layer_hdl[0], x + TILE_SIZE - rad*2, y + TILE_SIZE - rad*2, rad*2, rad*2);
+	vm_graphic_fill_roundrect_ex(layer_hdl[0], x, y, TILE_SIZE, TILE_SIZE, TILE_SIZE/12);
 
 	if (!value) return;
 

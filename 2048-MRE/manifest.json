@@ -1,0 +1,11 @@
+{
+    "name": "2048",
+    "vendor": "gtrxAC, EXL",
+    "app_name_multilang": ["2048", "2048", "2048"],
+    "description": "Block sliding puzzle game",
+    "version": 2,
+
+    "required_ram": 60,
+    "imsi": "1234567890",
+    "run_in_background": 0
+}
