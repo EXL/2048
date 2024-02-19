@@ -12,18 +12,18 @@ SDK = sdk
 APP_FILE_NAME = 2048
 
 INCLUDES = -I "$(SDK)/include" -I "src/include" -I "src/ResID" -I "src" -I ../src
-DEFINES = -D _MINIGUI_LIB_ -D _USE_MINIGUIENTRY -D _NOUNIX_ -D _FOR_WNC -D __MRE_SDK__ -D   __MRE_VENUS_NORMAL__  -D  __MMI_MAINLCD_240X320__ -D MRE -D GCC -D __MRE_COMPILER_GCC__
+DEFINES = -D _MINIGUI_LIB_ -D _USE_MINIGUIENTRY -D _NOUNIX_ -D _FOR_WNC -D __MRE_SDK__ -D __MRE_VENUS_NORMAL__ -D __MMI_MAINLCD_240X320__ -D MRE -D GCC -D __MRE_COMPILER_GCC__
 
 SHARED_PARAM = -c -fpic -march=armv5te -fvisibility=hidden -Os -mlittle-endian $(INCLUDES) $(DEFINES) -fdata-sections -ffunction-sections
 GCC_PARAM = $(SHARED_PARAM)
 GPP_PARAM = $(SHARED_PARAM) -fno-threadsafe-statics -fno-exceptions -fno-non-call-exceptions
 
 LINK_LIB = -lstdc++ $(SDK)/lib/*.a 
-LINK_PARAM = -fno-threadsafe-statics -Wl,--gc-sections  -fpic -fpcc-struct-return --disable-libstdcxx-verbose -pie -lm -T "$(SDK)/scat.ld" 
+LINK_PARAM = -fno-threadsafe-statics -Wl,--gc-sections -fpic -fpcc-struct-return --disable-libstdcxx-verbose -pie -lm -T "$(SDK)/scat.ld"
 
 # ______________________________________________________________________________
 # 
-all: $(APP_FILE_NAME).vxp
+all: build $(APP_FILE_NAME).vxp
 
 # 1. Compile
 build/%.o: src/%.c
@@ -44,9 +44,9 @@ build/$(APP_FILE_NAME).vxp: build/$(APP_FILE_NAME).axf
 $(APP_FILE_NAME).vxp: build/$(APP_FILE_NAME).vxp
 	$(PYTHON) $(SDK)/build.py $^ $@
 
-setup:
+build:
 	mkdir -p build
 
 clean:
 	rm -rf build
-	rm *.vxp
+	rm -f *.vxp
