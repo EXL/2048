@@ -15,6 +15,18 @@ A popular "2048" puzzle game for Motorola P2K implemented as ELF-application. Wr
 
 ![2048-AHI Motorola ROKR E1 Screenshot 1](../../image/2048-AHI-E1-Screenshot1.png) ![2048-AHI Motorola ROKR E1 Screenshot 2](../../image/2048-AHI-E1-Screenshot2.png) ![2048-AHI Motorola ROKR E1 Screenshot 3](../../image/2048-AHI-E1-Screenshot3.png) ![2048-AHI Motorola ROKR E1 Screenshot 4](../../image/2048-AHI-E1-Screenshot4.png) ![2048-AHI Motorola ROKR E1 Screenshot 5](../../image/2048-AHI-E1-Screenshot5.png)
 
+*Motorola KRZR K1 Screenshots:*
+
+![2048-AHI Motorola KRZR K1 Screenshot 1](../../image/2048-AHI-K1-Screenshot1.png) ![2048-AHI Motorola KRZR K1 Screenshot 2](../../image/2048-AHI-K1-Screenshot2.png) ![2048-AHI Motorola KRZR K1 Screenshot 3](../../image/2048-AHI-K1-Screenshot3.png) ![2048-AHI Motorola KRZR K1 Screenshot 4](../../image/2048-AHI-K1-Screenshot4.png) ![2048-AHI Motorola KRZR K1 Screenshot 5](../../image/2048-AHI-K1-Screenshot5.png)
+
+*Motorola SLVR L7e Screenshots:*
+
+![2048-AHI Motorola SLVR L7e Screenshot 1](../../image/2048-AHI-L7e-Screenshot1.png) ![2048-AHI Motorola SLVR L7e Screenshot 2](../../image/2048-AHI-L7e-Screenshot2.png) ![2048-AHI Motorola SLVR L7e Screenshot 3](../../image/2048-AHI-L7e-Screenshot3.png) ![2048-AHI Motorola SLVR L7e Screenshot 4](../../image/2048-AHI-L7e-Screenshot4.png) ![2048-AHI Motorola SLVR L7e Screenshot 5](../../image/2048-AHI-L7e-Screenshot5.png)
+
+*Motorola SLVR L9 Screenshots:*
+
+![2048-AHI Motorola SLVR L9 Screenshot 1](../../image/2048-AHI-L9-Screenshot1.png) ![2048-AHI Motorola SLVR L9 Screenshot 2](../../image/2048-AHI-L9-Screenshot2.png) ![2048-AHI Motorola SLVR L9 Screenshot 3](../../image/2048-AHI-L9-Screenshot3.png) ![2048-AHI Motorola SLVR L9 Screenshot 4](../../image/2048-AHI-L9-Screenshot4.png) ![2048-AHI Motorola SLVR L9 Screenshot 5](../../image/2048-AHI-L9-Screenshot5.png)
+
 ## ELF files
 
 * 2048-P2K-AHI_EP1.elf (ELF for ElfPack 1.0)
