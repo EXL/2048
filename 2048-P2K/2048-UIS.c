@@ -236,8 +236,13 @@ static UINT32 SaveGame(APPLICATION_T *app);
 static const char g_app_name[APP_NAME_LEN] = "2048-UIS";
 
 static const WCHAR g_str_app_name[] = L"2048-P2K-UIS";
+#if defined(FTR_L7E) || defined(FTR_L9)
+static const WCHAR g_str_app_soft_left[] = L"Options";
+static const WCHAR g_str_app_soft_right[] = L"Back";
+#else
 static const WCHAR g_str_app_soft_left[] = L"Exit";
 static const WCHAR g_str_app_soft_right[] = L"Reset";
+#endif
 static const WCHAR g_str_app_score[] = L"Score: ";
 static const WCHAR g_str_menu_save[] = L"Save Game";
 static const WCHAR g_str_menu_load[] = L"Load Game";
@@ -807,13 +812,21 @@ static UINT32 HandleEventKeyRelease(EVENT_STACK_T *ev_st, APPLICATION_T *app) {
 	switch (event->data.key_pressed) {
 		case KEY_RED:
 		case KEY_SOFT_LEFT:
+#if defined(FTR_L7E) || defined(FTR_L9)
+			status |= APP_UtilStartTimer(TIMER_FAST_TRIGGER_MS, APP_TIMER_MENU, app);
+#else
 			status |= APP_UtilStartTimer(TIMER_FAST_TRIGGER_MS, APP_TIMER_EXIT, app);
+#endif
 			break;
 		case KEY_MENU:
 			status |= APP_UtilStartTimer(TIMER_FAST_TRIGGER_MS, APP_TIMER_MENU, app);
 			break;
 		case KEY_SOFT_RIGHT:
+#if defined(FTR_L7E) || defined(FTR_L9)
+			status |= APP_UtilStartTimer(TIMER_FAST_TRIGGER_MS, APP_TIMER_EXIT, app);
+#else
 			status |= APP_UtilStartTimer(TIMER_FAST_TRIGGER_MS, APP_TIMER_RESET, app);
+#endif
 			break;
 		default:
 			break;
