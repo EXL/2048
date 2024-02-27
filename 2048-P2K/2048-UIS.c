@@ -1021,6 +1021,11 @@ static UINT32 SetWorikingArea(GRAPHIC_REGION_T *working_area) {
 	rect.lrc.y = 150;
 #endif
 
+
+#if defined(FTR_L7E) || defined(FTR_L9)
+	rect.ulc.y += 8;
+#endif
+
 	memcpy(working_area, &rect, sizeof(GRAPHIC_REGION_T));
 
 	return status;
@@ -1051,6 +1056,22 @@ static UINT32 SetMeasuredValues(APP_MEASURED_T *measured_values, DRAWING_BUFFER_
 			break;
 		case APP_DISPLAY_176x220:
 		case APP_DISPLAY_240x320: /* FIXME: Unknown values for 240x320 screen, set them similar to 176x220. */
+#if defined(FTR_L7E) || defined(FTR_L9)
+			measured_values->tile_size = 32;
+			measured_values->offset_x = 6;
+			measured_values->offset_y = 4;
+			measured_values->offset_width = 10;
+			measured_values->offset_height = 2;
+			measured_values->rounded_rad = 4;
+			measured_values->pencil_width = 2;
+			measured_values->font_large = 0x05;        /* Big numbers at set of number font. */
+			measured_values->font_normal = 0x05;       /* Big numbers at set of number font. */
+			measured_values->font_small = 0x04;        /* Small numbers at set of number font. */
+			measured_values->font_ultra_small = 0x09;  /* Very narrow numbers font. */
+			measured_values->font_final = 0x01;        /* General font. */
+			measured_values->gap = 1;
+			measured_values->gap_y_huge = 0;
+#else
 			measured_values->tile_size = 34;
 			measured_values->offset_x = 4;
 			measured_values->offset_y = 4;
@@ -1065,6 +1086,7 @@ static UINT32 SetMeasuredValues(APP_MEASURED_T *measured_values, DRAWING_BUFFER_
 			measured_values->font_final = 0x0A;        /* Bold WAP-browser font. */
 			measured_values->gap = 1;
 			measured_values->gap_y_huge = 0;
+#endif
 			break;
 	}
 
@@ -1214,6 +1236,8 @@ static UINT32 PaintTile(EVENT_STACK_T *ev_st, APPLICATION_T *app, UINT32 value, 
 		WCHAR tile_value[TILE_VALUE_MAX_LENGTH] = { 0 };
 		GRAPHIC_POINT_T point;
 		GRAPHIC_METRIC_T string_measure;
+		UINT16 precalc_w;
+		UINT16 precalc_h;
 
 		if (value < 64) {
 			SetRgbColor(&color, e_foreground(value));
@@ -1224,22 +1248,40 @@ static UINT32 PaintTile(EVENT_STACK_T *ev_st, APPLICATION_T *app, UINT32 value, 
 
 		if (value < 10) {
 			font_id = app_instance->measured.font_large;
+			precalc_w = 14; precalc_h = 20;
 		} else if (value < 100) {
 			font_id = app_instance->measured.font_normal;
+			precalc_w = 24; precalc_h = 20;
 		} else if (value < 1000) {
+			precalc_w = 30; precalc_h = 18;
 			font_id = app_instance->measured.font_small;
 		} else {
+			precalc_w = 28; precalc_h = 22;
 			font_id = app_instance->measured.font_ultra_small;
 		}
 
 		UIS_CanvasSetFont(font_id, app->dialog);
+
+		{
 #if defined(EM2)
-		FONT_ATTRIB_T font_attrib;
-		UIS_CanvasGetAttributesFromFontID(&font_attrib, font_id);
-		GET_STRING_SIZE(tile_value, &string_measure, font_attrib);
+			FONT_ATTRIB_T font_attrib;
+			UIS_CanvasGetAttributesFromFontID(&font_attrib, font_id);
+			GET_STRING_SIZE(tile_value, &string_measure, font_attrib);
+#elif defined(FTR_L7E) || defined(FTR_L9)
+			/* Use precalculated values since `UIS_CanvasGetStringSize()` function is buggy on L7e and L9. */
+//			FONT_ATTRIB_T font_attrib;
+//			memclr(&font_attrib, sizeof(FONT_ATTRIB_T));
+//			font_attrib.font_id = font_id;
+//			font_attrib.font_style = FONT_STYLE_PLAIN;
+//			font_attrib.point_size = 6;
+//			UIS_CanvasGetStringSize(tile_value, &string_measure, font_attrib);
+//			LOG("=> String size: %dx%d\n", string_measure.width, string_measure.height);
+			string_measure.width = precalc_w;
+			string_measure.height = precalc_h;
 #else
-		UIS_CanvasGetStringSize(tile_value, &string_measure, font_id);
+			UIS_CanvasGetStringSize(tile_value, &string_measure, font_id);
 #endif
+		}
 
 		point.x = (coord_x + (tile_size - string_measure.width) / 2) + app_instance->measured.gap;
 		point.y = (coord_y + (tile_size - string_measure.height) / 2) + app_instance->measured.gap;
@@ -1273,13 +1315,22 @@ static UINT32 PaintFinal(EVENT_STACK_T *ev_st, APPLICATION_T *app) {
 			string_final = (WCHAR *) g_str_game_over;
 		}
 
+		{
 #if defined(EM2)
-		FONT_ATTRIB_T font_attrib;
-		UIS_CanvasGetAttributesFromFontID(&font_attrib, app_instance->measured.font_final);
-		GET_STRING_SIZE(string_final, &string_measure, font_attrib);
+			FONT_ATTRIB_T font_attrib;
+			UIS_CanvasGetAttributesFromFontID(&font_attrib, app_instance->measured.font_final);
+			GET_STRING_SIZE(string_final, &string_measure, font_attrib);
+#elif defined(FTR_L7E) || defined(FTR_L9)
+			/* Use precalculated values since `UIS_CanvasGetStringSize()` function is buggy on L7e and L9. */
+			if (e_win) {
+				string_measure.width = 64; string_measure.height = 28;
+			} else {
+				string_measure.width = 80; string_measure.height = 28;
+			}
 #else
-		UIS_CanvasGetStringSize(string_final, &string_measure, app_instance->measured.font_final);
+			UIS_CanvasGetStringSize(string_final, &string_measure, app_instance->measured.font_final);
 #endif
+		}
 
 		rect.lrc.x = string_measure.width;
 		rect.lrc.y = string_measure.height;
