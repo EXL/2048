@@ -133,7 +133,7 @@ The P2K OS screenshots from Motorola KRZR K1:
 
 The P2K OS screenshots from Motorola SLVR L7e:
 
-![P2K Motorola K1 Screenshot 1 Main Desktop Screen](../image/P2K-K1-Screenshot1.png) ![P2K Motorola K1 Screenshot 2 Main Menu](../image/P2K-K1-Screenshot2.png) ![P2K Motorola K1 Screenshot 3 Multimedia Menu](../image/P2K-K1-Screenshot3.png) ![P2K Motorola K1 Screenshot 4 S/W Version](../image/P2K-K1-Screenshot4.png) ![P2K Motorola K1 Screenshot 5 Flex Version](../image/P2K-K1-Screenshot5.png)
+![P2K Motorola L7e Screenshot 1 Main Desktop Screen](../image/P2K-L7e-Screenshot1.png) ![P2K Motorola L7e Screenshot 2 Main Menu](../image/P2K-L7e-Screenshot2.png) ![P2K Motorola L7e Screenshot 3 Multimedia Menu](../image/P2K-L7e-Screenshot3.png) ![P2K Motorola L7e Screenshot 4 S/W Version](../image/P2K-L7e-Screenshot4.png) ![P2K Motorola L7e Screenshot 5 Flex Version](../image/P2K-L7e-Screenshot5.png)
 
 The P2K OS screenshots from Motorola SLVR L9:
 
