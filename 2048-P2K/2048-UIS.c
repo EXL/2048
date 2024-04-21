@@ -883,7 +883,7 @@ static UINT32 HandleEventTimerExpired(EVENT_STACK_T *ev_st, APPLICATION_T *app) 
 #if defined(FTR_V600)
 			MME_GC_playback_open_audio_play_forget(L"/a/mobile/system/shutter5.wav");
 #elif defined(EM1) || defined(EM2)
-			MME_GC_avp_open_audio_play_forget(L"/a/mobile/system/shutter5.wav");
+			MME_GC_playback_audio_play_forget(L"/a/mobile/system/shutter5.wav");
 #else
 			MME_GC_playback_open_audio_play_forget(L"/a/mobile/system/shutter5.amr");
 #endif
@@ -1111,7 +1111,7 @@ static UINT32 SetMeasuredValues(APP_MEASURED_T *measured_values, DRAWING_BUFFER_
 			measured_values->gap_0000 = 0;
 #endif
 			break;
-		case APP_DISPLAY_240x320: /* FIXME: Unknown values for 240x320 screen, set them similar to 176x220. */
+		case APP_DISPLAY_240x320:
 			measured_values->tile_size = 48;
 			measured_values->offset_x = 6;
 			measured_values->offset_y = 6;
