@@ -146,8 +146,11 @@ typedef struct {
 	UINT16 font_small;
 	UINT16 font_ultra_small;
 	UINT16 font_final;
-	UINT16 gap;
-	UINT16 gap_y_huge;
+	INT16 gap;
+	INT16 gap_0;
+	INT16 gap_00;
+	INT16 gap_000;
+	INT16 gap_0000;
 } APP_MEASURED_T;
 
 typedef enum {
@@ -236,7 +239,7 @@ static UINT32 SaveGame(APPLICATION_T *app);
 static const char g_app_name[APP_NAME_LEN] = "2048-UIS";
 
 static const WCHAR g_str_app_name[] = L"2048-P2K-UIS";
-#if defined(FTR_L7E) || defined(FTR_L9)
+#if defined(EM1) || defined(EM2) || defined(FTR_L7E) || defined(FTR_L9)
 static const WCHAR g_str_app_soft_left[] = L"Options";
 static const WCHAR g_str_app_soft_right[] = L"Back";
 #else
@@ -813,8 +816,10 @@ static UINT32 HandleEventKeyRelease(EVENT_STACK_T *ev_st, APPLICATION_T *app) {
 
 	switch (event->data.key_pressed) {
 		case KEY_RED:
+			status |= APP_UtilStartTimer(TIMER_FAST_TRIGGER_MS, APP_TIMER_EXIT, app);
+			break;
 		case KEY_SOFT_LEFT:
-#if defined(FTR_L7E) || defined(FTR_L9)
+#if defined(EM1) || defined(EM2) || defined(FTR_L7E) || defined(FTR_L9)
 			status |= APP_UtilStartTimer(TIMER_FAST_TRIGGER_MS, APP_TIMER_MENU, app);
 #else
 			status |= APP_UtilStartTimer(TIMER_FAST_TRIGGER_MS, APP_TIMER_EXIT, app);
@@ -824,7 +829,7 @@ static UINT32 HandleEventKeyRelease(EVENT_STACK_T *ev_st, APPLICATION_T *app) {
 			status |= APP_UtilStartTimer(TIMER_FAST_TRIGGER_MS, APP_TIMER_MENU, app);
 			break;
 		case KEY_SOFT_RIGHT:
-#if defined(FTR_L7E) || defined(FTR_L9)
+#if defined(EM1) || defined(EM2) || defined(FTR_L7E) || defined(FTR_L9)
 			status |= APP_UtilStartTimer(TIMER_FAST_TRIGGER_MS, APP_TIMER_EXIT, app);
 #else
 			status |= APP_UtilStartTimer(TIMER_FAST_TRIGGER_MS, APP_TIMER_RESET, app);
@@ -875,11 +880,13 @@ static UINT32 HandleEventTimerExpired(EVENT_STACK_T *ev_st, APPLICATION_T *app) 
 #if defined(USE_MME)
 			/* Play a normal camera shutter sound using loud speaker. */
 			/* NOTE: Function `MME_GC_playback_open_audio_play_forget()` may not be available on most libraries. */
-#if !defined(FTR_V600)
-			MME_GC_playback_open_audio_play_forget(L"/a/mobile/system/shutter5.amr");
-#else
+#if defined(FTR_V600)
 			MME_GC_playback_open_audio_play_forget(L"/a/mobile/system/shutter5.wav");
-#endif /* !defined(FTR_V600) */
+#elif defined(EM1) || defined(EM2)
+			MME_GC_avp_open_audio_play_forget(L"/a/mobile/system/shutter5.wav");
+#else
+			MME_GC_playback_open_audio_play_forget(L"/a/mobile/system/shutter5.amr");
+#endif
 #endif /* !defined(USE_MME) */
 			break;
 		default:
@@ -1012,12 +1019,11 @@ static UINT32 SetWorikingArea(GRAPHIC_REGION_T *working_area) {
 	GRAPHIC_REGION_T rect;
 	UINT8 count_lines;
 	UINT8 chars_on_line;
-	UINT8 height_title_bar_end;
-	UINT8 height_soft_keys_start;
+	UINT16 height_title_bar_end;
+	UINT16 height_soft_keys_start;
 
 	status = RESULT_OK;
 
-#if defined(EP1) || defined(EP2)
 	UIS_CanvasGetWorkingArea(&rect, &count_lines, &chars_on_line, TITLE_BAR_AREA, TRUE, 1);
 	height_title_bar_end = rect.lrc.y + 1;
 
@@ -1028,17 +1034,11 @@ static UINT32 SetWorikingArea(GRAPHIC_REGION_T *working_area) {
 	/* rect.lrc.x -= 1; */
 	rect.lrc.y = height_soft_keys_start;
 	/* rect.lrc.y += 1; */
-#elif defined(EM1) || defined(EM2)
-	/* TODO: Fix these values! */
-	rect.ulc.x = 0;
-	rect.ulc.y = 32;
-	rect.lrc.x = 220;
-	rect.lrc.y = 150;
-#endif
-
 
 #if defined(FTR_L7E) || defined(FTR_L9)
 	rect.ulc.y += 8;
+#elif defined(EM1) || defined(EM2)
+	rect.ulc.y += 6;
 #endif
 
 	memcpy(working_area, &rect, sizeof(GRAPHIC_REGION_T));
@@ -1067,11 +1067,13 @@ static UINT32 SetMeasuredValues(APP_MEASURED_T *measured_values, DRAWING_BUFFER_
 			measured_values->font_ultra_small = 0x09;  /* Very narrow numbers font. */
 			measured_values->font_final = 0x0A;        /* Bold WAP-browser font. */
 			measured_values->gap = 1;
-			measured_values->gap_y_huge = 2;
+			measured_values->gap_0 = 0;
+			measured_values->gap_00 = 0;
+			measured_values->gap_000 = 0;
+			measured_values->gap_0000 = 2;
 			break;
 		case APP_DISPLAY_176x220:
-		case APP_DISPLAY_240x320: /* FIXME: Unknown values for 240x320 screen, set them similar to 176x220. */
-#if defined(FTR_L7E) || defined(FTR_L9)
+#if defined(EM1) || defined(EM2) || defined(FTR_L7E) || defined(FTR_L9)
 			measured_values->tile_size = 32;
 			measured_values->offset_x = 6;
 			measured_values->offset_y = 4;
@@ -1085,7 +1087,10 @@ static UINT32 SetMeasuredValues(APP_MEASURED_T *measured_values, DRAWING_BUFFER_
 			measured_values->font_ultra_small = 0x09;  /* Very narrow numbers font. */
 			measured_values->font_final = 0x01;        /* General font. */
 			measured_values->gap = 1;
-			measured_values->gap_y_huge = 0;
+			measured_values->gap_0 = 0;
+			measured_values->gap_00 = 0;
+			measured_values->gap_000 = 0;
+			measured_values->gap_0000 = 0;
 #else
 			measured_values->tile_size = 34;
 			measured_values->offset_x = 4;
@@ -1100,8 +1105,30 @@ static UINT32 SetMeasuredValues(APP_MEASURED_T *measured_values, DRAWING_BUFFER_
 			measured_values->font_ultra_small = 0x01;  /* General font. */
 			measured_values->font_final = 0x0A;        /* Bold WAP-browser font. */
 			measured_values->gap = 1;
-			measured_values->gap_y_huge = 0;
+			measured_values->gap_0 = 0;
+			measured_values->gap_00 = 0;
+			measured_values->gap_000 = 0;
+			measured_values->gap_0000 = 0;
 #endif
+			break;
+		case APP_DISPLAY_240x320: /* FIXME: Unknown values for 240x320 screen, set them similar to 176x220. */
+			measured_values->tile_size = 48;
+			measured_values->offset_x = 6;
+			measured_values->offset_y = 6;
+			measured_values->offset_width = 10;
+			measured_values->offset_height = 4;
+			measured_values->rounded_rad = 8;
+			measured_values->pencil_width = 2;
+			measured_values->font_large = 0x05;        /* Big numbers at set of number font. */
+			measured_values->font_normal = 0x05;       /* Big numbers at set of number font. */
+			measured_values->font_small = 0x04;        /* Small numbers at set of number font. */
+			measured_values->font_ultra_small = 0x09;  /* Very narrow numbers font. */
+			measured_values->font_final = 0x01;        /* General font. */
+			measured_values->gap = 1;
+			measured_values->gap_0 = -3;
+			measured_values->gap_00 = -3;
+			measured_values->gap_000 = -2;
+			measured_values->gap_0000 = 2;
 			break;
 	}
 
@@ -1253,6 +1280,7 @@ static UINT32 PaintTile(EVENT_STACK_T *ev_st, APPLICATION_T *app, UINT32 value, 
 		GRAPHIC_METRIC_T string_measure;
 		UINT16 precalc_w;
 		UINT16 precalc_h;
+		INT16 patch_y;
 
 		if (value < 64) {
 			SetRgbColor(&color, e_foreground(value));
@@ -1263,15 +1291,15 @@ static UINT32 PaintTile(EVENT_STACK_T *ev_st, APPLICATION_T *app, UINT32 value, 
 
 		if (value < 10) {
 			font_id = app_instance->measured.font_large;
-			precalc_w = 14; precalc_h = 20;
+			precalc_w = 14; precalc_h = 20; patch_y = app_instance->measured.gap_0;
 		} else if (value < 100) {
 			font_id = app_instance->measured.font_normal;
-			precalc_w = 24; precalc_h = 20;
+			precalc_w = 24; precalc_h = 20; patch_y = app_instance->measured.gap_00;
 		} else if (value < 1000) {
-			precalc_w = 30; precalc_h = 18;
+			precalc_w = 30; precalc_h = 18; patch_y = app_instance->measured.gap_000;
 			font_id = app_instance->measured.font_small;
 		} else {
-			precalc_w = 28; precalc_h = 22;
+			precalc_w = 28; precalc_h = 22; patch_y = app_instance->measured.gap_0000;
 			font_id = app_instance->measured.font_ultra_small;
 		}
 
@@ -1301,9 +1329,8 @@ static UINT32 PaintTile(EVENT_STACK_T *ev_st, APPLICATION_T *app, UINT32 value, 
 		point.x = (coord_x + (tile_size - string_measure.width) / 2) + app_instance->measured.gap;
 		point.y = (coord_y + (tile_size - string_measure.height) / 2) + app_instance->measured.gap;
 
-		if (value > 1000) {
-			point.y -= app_instance->measured.gap_y_huge;
-		}
+		/* Apply height patches. */
+		point.y -= patch_y;
 
 		UIS_CanvasDrawColorText(tile_value, 0, u_strlen(tile_value), point, 0, app->dialog);
 	}
