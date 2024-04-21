@@ -32,10 +32,10 @@ set ELF_NAME=2048-UIS
 
 :: Compiling step.
 %MCORE_PATH%\GCC_MCore\bin\mcore-elf-gcc -fshort-wchar -mbig-endian -nostdinc -m340 ^
-	-fomit-frame-pointer -nostdlib -fno-builtin -I%SDK_PATH% %INCLUDES% %DEFINES% ^
+	-fomit-frame-pointer -nostdlib -fno-builtin -I%SDK_PATH% %INCLUDES% %DEFINES% %OPTIM% ^
 	-c ..\src\2048.c -o 2048.o
 %MCORE_PATH%\GCC_MCore\bin\mcore-elf-gcc -fshort-wchar -mbig-endian -nostdinc -m340 ^
-	-fomit-frame-pointer -nostdlib -fno-builtin -I%SDK_PATH% %INCLUDES% %DEFINES% ^
+	-fomit-frame-pointer -nostdlib -fno-builtin -I%SDK_PATH% %INCLUDES% %DEFINES% %OPTIM% ^
 	-c %ELF_NAME%.c -o %ELF_NAME%.o
 
 :: Linking step.
