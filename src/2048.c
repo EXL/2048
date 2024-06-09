@@ -128,7 +128,7 @@ static void add_tile(int n) {
 	for (i = 0; i < n; ++i) {
 		const int size = update_space();
 		if (size)
-			*f_space[(E_RANDOM * size / 100) % size] = (E_RANDOM < 90) ? 128 : 4;
+			*f_space[(E_RANDOM * size / 100) % size] = (E_RANDOM < 90) ? 2 : 4;
 	}
 }
 

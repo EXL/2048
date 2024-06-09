@@ -262,14 +262,13 @@ static boolean GFX_PaintFinal(AEEApplet *pMe) {
 	APP_INSTANCE_T *app = (APP_INSTANCE_T *) pMe;
 	AECHAR w_score[SCORE_VALUE_MAX_LENGTH];
 	const AECHAR *w_press = L"\"0\" to Reset!";
+	const AECHAR *w_win = L"You Won!";
+	const AECHAR *w_over = L"Game Over!";
+
 	int width;
 
 	WSPRINTF(w_score, sizeof(AECHAR) * SCORE_VALUE_MAX_LENGTH, L"Score: %d", e_score);
 	IDISPLAY_SetColor(app->pMe.m_pIDisplay, CLR_USER_TEXT, GFX_ConvertColor(COLOR_TEXT));
-
-	if (e_win || e_lose) {
-
-	}
 
 	width = IDISPLAY_MeasureText(app->pMe.m_pIDisplay, AEE_FONT_NORMAL, w_score);
 
@@ -277,6 +276,16 @@ static boolean GFX_PaintFinal(AEEApplet *pMe) {
 		10 /* offset_w */, 280 - 10, NULL, IDF_TEXT_TRANSPARENT);
 	IDISPLAY_DrawText(app->pMe.m_pIDisplay, AEE_FONT_NORMAL, w_score, -1,
 		240 - width - 10 /* offset_w */, 280 - 10, NULL, IDF_TEXT_TRANSPARENT);
+
+	if (e_win || e_lose) {
+		if (e_win) {
+			IDISPLAY_DrawText(app->pMe.m_pIDisplay, AEE_FONT_LARGE, w_win, -1,
+				10 /* offset_w */, 260 - 10, NULL, IDF_TEXT_TRANSPARENT);
+		} else {
+			IDISPLAY_DrawText(app->pMe.m_pIDisplay, AEE_FONT_LARGE, w_over, -1,
+				10 /* offset_w */, 260 - 10, NULL, IDF_TEXT_TRANSPARENT);
+		}
+	}
 
 	return TRUE;
 }
