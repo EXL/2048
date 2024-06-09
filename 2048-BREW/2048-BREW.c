@@ -2,19 +2,14 @@
 #include <AEEStdLib.h>
 #include <AEEGraphics.h>
 
-#include "2048.h"
-
 #include "2048-BREW.bid"
+
+#include "2048.h"
 
 #define SCORE_VALUE_MAX_LENGTH           (16)
 #define TILE_VALUE_MAX_LENGTH             (5)
 
-typedef enum {
-	R,
-	G,
-	B,
-	A
-} APP_COLOR_COMPONENT_T;
+typedef enum { R, G, B, A } APP_COLOR_COMPONENT_T;
 
 typedef struct {
 	AEEApplet pMe;
@@ -41,11 +36,11 @@ static inline RGBVAL GFX_ConvertColor(uint32 color) {
 
 static inline uint8 GFX_RGBA(uint32 color, APP_COLOR_COMPONENT_T component) {
 	switch (component) {
-		case A: return (color >> 24) & 0xFF;
-		case R: return (color >> 16) & 0xFF;
-		case G: return (color >>  8) & 0xFF;
-		default:
-		case B: return (color >>  0) & 0xFF;
+		case A:  return (color >> 24) & 0xFF;
+		case R:  return (color >> 16) & 0xFF;
+		case G:  return (color >>  8) & 0xFF;
+		case B:  return (color >>  0) & 0xFF;
+		default: return 0x00;
 	}
 }
 
@@ -55,7 +50,6 @@ static inline uint32 GFX_OffsetCoord(uint8 coord, uint16 tile_size, uint16 offse
 
 AEEResult AEEClsCreateInstance(AEECLSID ClsId, IShell *pIShell, IModule *pMod, void **ppObj) {
 	*ppObj = NULL;
-
 	if (ClsId == AEECLSID_2048_BREW) {
 		if(
 			AEEApplet_New(
@@ -187,10 +181,9 @@ static boolean GFX_PaintTile(AEEApplet *pMe, uint32 value, uint8 x, uint8 y) {
 	uint32 fc;
 	uint32 bc;
 
-
 	app = (APP_INSTANCE_T *) pMe;
 
-	// TODO: Hacks.
+	// TODO: these depends screen resolution.
 	tile_size = 48;
 	offset_x = offset_y = 6;
 	offset_w = 10;
