@@ -31,6 +31,8 @@ typedef struct {
 	AEEFont m_FontXX;      /* Big Size Font. */
 	AEEFont m_FontXXX;     /* Meduim/Regular Size Font. */
 	AEEFont m_FontXXXX;    /* Small Size Font. */
+
+	const AECHAR *m_wstr_title;
 } APP_DEVICE_T;
 
 typedef struct {
@@ -59,6 +61,7 @@ static boolean GFX_PaintTile(AEEApplet *pMe, uint32 value, uint8 x, uint8 y);
 static boolean GFX_PaintFinal(AEEApplet *pMe);
 
 const AECHAR *wstr_lbl_title = L"2048-BREW";
+const AECHAR *wstr_lbl_title_small = L"2048";
 const AECHAR *wstr_game_win = L"You Won!";
 const AECHAR *wstr_game_over = L"Game Over!";
 const AECHAR *wstr_lbl_score = L"Score: %d";
@@ -216,9 +219,6 @@ static boolean APP_DeviceFill(AEEApplet *pMe) {
 	app->m_AppDevice.m_ScreenW = device_info.cxScreen;
 	app->m_AppDevice.m_ScreenH = device_info.cyScreen;
 
-//	app->m_AppDevice.m_ScreenW = 176;
-//	app->m_AppDevice.m_ScreenH = 208;
-
 	SETAEERECT(&app->m_AppDevice.m_RectScreen, 0, 0, app->m_AppDevice.m_ScreenW, app->m_AppDevice.m_ScreenH);
 
 	switch (app->m_AppDevice.m_ScreenW) {
@@ -237,6 +237,7 @@ static boolean APP_DeviceFill(AEEApplet *pMe) {
 			app->m_AppDevice.m_FontXX = AEE_FONT_LARGE;
 			app->m_AppDevice.m_FontXXX = AEE_FONT_BOLD;
 			app->m_AppDevice.m_FontXXXX = AEE_FONT_NORMAL;
+			app->m_AppDevice.m_wstr_title = wstr_lbl_title;
 			break;
 		case 176: /* 176x220 */
 			app->m_AppDevice.m_TileSize = 34;
@@ -252,6 +253,7 @@ static boolean APP_DeviceFill(AEEApplet *pMe) {
 			app->m_AppDevice.m_FontXX = AEE_FONT_BOLD;
 			app->m_AppDevice.m_FontXXX = AEE_FONT_BOLD;
 			app->m_AppDevice.m_FontXXXX = AEE_FONT_NORMAL;
+			app->m_AppDevice.m_wstr_title = wstr_lbl_title_small;
 			break;
 	}
 
@@ -415,8 +417,11 @@ static boolean GFX_PaintFinal(AEEApplet *pMe) {
 	text_w = IDISPLAY_MeasureText(app->m_App.m_pIDisplay, app->m_AppDevice.m_FontXXXX, wstr_score);
 	text_h = nAscent + nDescent;
 	zoom_r = text_h * app->m_AppDevice.m_ZoomFactor;
+	if (app->m_AppDevice.m_ScreenW < 240) {
+		zoom_r += text_h / 2; /* + 1.5 */
+	}
 
-	IDISPLAY_DrawText(app->m_App.m_pIDisplay, app->m_AppDevice.m_FontXXXX, wstr_lbl_title, -1,
+	IDISPLAY_DrawText(app->m_App.m_pIDisplay, app->m_AppDevice.m_FontXXXX, app->m_AppDevice.m_wstr_title, -1,
 		app->m_AppDevice.m_OffsetW, app->m_AppDevice.m_ScreenH - zoom_r, NULL, IDF_TEXT_TRANSPARENT);
 
 	IDISPLAY_DrawText(app->m_App.m_pIDisplay, app->m_AppDevice.m_FontXXXX, wstr_score, -1,
@@ -443,7 +448,7 @@ static boolean GFX_PaintFinal(AEEApplet *pMe) {
 	coord_x = app->m_AppDevice.m_ScreenW - text_w - app->m_AppDevice.m_OffsetW;
 	coord_y = app->m_AppDevice.m_ScreenH - text_h - app->m_AppDevice.m_OffsetH;
 	SETAEERECT(&frame_r, app->m_AppDevice.m_ScreenW / 2 + 1, coord_y - zoom_r,
-		app->m_AppDevice.m_ScreenW, text_h + zoom_r * 2);
+		app->m_AppDevice.m_ScreenW / 2, text_h + zoom_r * 2);
 	IDisplay_FrameSolidRect(app->m_App.m_pIDisplay, &frame_r);
 	IDISPLAY_DrawText(app->m_App.m_pIDisplay, app->m_AppDevice.m_FontXXXX, wstr_soft_reset, -1, coord_x, coord_y,
 		NULL, IDF_TEXT_TRANSPARENT);
