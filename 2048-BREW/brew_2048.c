@@ -1,8 +1,10 @@
 #include <AEEAppGen.h>
 #include <AEEStdLib.h>
 #include <AEEGraphics.h>
+#include <AEEMenu.h>
 
-#include "2048-BREW.bid"
+#include "brew_2048.bid"
+#include "brew_2048.brh"
 
 #include "2048.h"
 
@@ -10,6 +12,17 @@
 #define TILE_VALUE_MAX_LENGTH             (5)
 
 typedef enum { R, G, B, A } APP_COLOR_COMPONENT_T;
+
+typedef enum {
+	APP_STATE_GAME,
+	APP_STATE_GAME_SAVE,
+	APP_STATE_GAME_LOAD,
+	APP_STATE_GAME_RESET,
+	APP_STATE_TILE,
+	APP_STATE_HELP,
+	APP_STATE_ABOUT,
+	APP_STATE_EXIT,
+} APP_STATE_T;
 
 typedef struct {
 	AEERect m_RectScreen;
@@ -45,6 +58,7 @@ typedef struct {
 	APP_SETTINGS_T m_AppSettings;
 
 	IGraphics *m_pIGraphics;
+	IMenuCtl *m_pIMenuCtl;
 
 	boolean is_softkey_menu_pushed;
 	boolean is_softkey_reset_pushed;
@@ -54,6 +68,8 @@ static boolean APP_InitAppData(AEEApplet *pMe);
 static boolean APP_FreeAppData(AEEApplet *pMe);
 static boolean APP_HandleEvent(AEEApplet *pMe, AEEEvent eCode, uint16 wParam, uint32 dwParam);
 static boolean APP_DeviceFill(AEEApplet *pMe);
+
+static boolean MENU_Init(AEEApplet *pMe);
 
 static boolean GFX_PaintBoard(AEEApplet *pMe);
 static boolean GFX_PaintBackgroud(AEEApplet *pMe);
@@ -92,7 +108,7 @@ static inline uint32 GFX_OffsetCoord(uint8 coord, uint16 tile_size, uint16 offse
 
 AEEResult AEEClsCreateInstance(AEECLSID ClsId, IShell *pIShell, IModule *pMod, void **ppObj) {
 	*ppObj = NULL;
-	if (ClsId == AEECLSID_2048_BREW) {
+	if (ClsId == AEECLSID_BREW_2048) {
 		if(
 			AEEApplet_New(
 				sizeof(APP_INSTANCE_T),                     // Size of our private class.
@@ -124,17 +140,22 @@ static boolean APP_InitAppData(AEEApplet *pMe) {
 	APP_DeviceFill(pMe);
 	app->m_AppSettings.m_RoundedRectangle = TRUE;
 
-	if (ISHELL_CreateInstance(app->m_App.m_pIShell, AEECLSID_GRAPHICS, (void **) &app->m_pIGraphics) == AEE_SUCCESS) {
-		return TRUE;
+	if (ISHELL_CreateInstance(app->m_App.m_pIShell, AEECLSID_GRAPHICS, (void **) &app->m_pIGraphics) != AEE_SUCCESS) {
+		return FALSE;
 	}
 
-	return FALSE;
+	if (ISHELL_CreateInstance(app->m_App.m_pIShell, AEECLSID_MENUCTL, (void **) &app->m_pIMenuCtl) != AEE_SUCCESS) {
+		return FALSE;
+	}
+
+	return TRUE;
 }
 
 static boolean APP_FreeAppData(AEEApplet *pMe) {
 	APP_INSTANCE_T *app = (APP_INSTANCE_T *) pMe;
 
 	IGRAPHICS_Release(app->m_pIGraphics);
+	IMENUCTL_Release(app->m_pIMenuCtl);
 
 	return TRUE;
 }
@@ -144,7 +165,8 @@ static boolean APP_HandleEvent(AEEApplet *pMe, AEEEvent eCode, uint16 wParam, ui
 
 	switch (eCode) {
 		case EVT_APP_START:
-			GFX_PaintBoard(pMe);
+//			GFX_PaintBoard(pMe);
+			MENU_Init(pMe);
 			return TRUE;
 			break;
 		case EVT_APP_STOP:
@@ -256,6 +278,41 @@ static boolean APP_DeviceFill(AEEApplet *pMe) {
 			app->m_AppDevice.m_wstr_title = wstr_lbl_title_small;
 			break;
 	}
+
+	return TRUE;
+}
+
+static boolean MENU_Init(AEEApplet *pMe) {
+	APP_INSTANCE_T *app = (APP_INSTANCE_T *) pMe;
+	CtlAddItem ctlAddItem;
+
+	IMENUCTL_SetRect(app->m_pIMenuCtl, &app->m_AppDevice.m_RectScreen);
+	IMENUCTL_SetTitle(app->m_pIMenuCtl, BREW_2048_RES_FILE, IDS_APP_NAME, NULL);
+
+	ctlAddItem.pText = NULL;
+	ctlAddItem.pImage = NULL;
+	ctlAddItem.pszResText = BREW_2048_RES_FILE;
+	ctlAddItem.pszResImage = BREW_2048_RES_FILE;
+	ctlAddItem.wFont = AEE_FONT_NORMAL;
+	ctlAddItem.dwData = 0;
+	ctlAddItem.wText = IDS_APP_NAME;
+//	ctlAddItem.wImage = IDS_MENU_ITEM_SAVE;
+	ctlAddItem.wItemID = IDS_APP_NAME;
+
+	IMENUCTL_AddItemEx(app->m_pIMenuCtl, &ctlAddItem);
+
+//	IMENUCTL_SetTitle(app->m_pIMenuCtl, NULL, NULL, L"Main Menu");
+//	IMENUCTL_SetProperties (app->m_pIMenuCtl, MP_UNDERLINE_TITLE);
+//	IMENUCTL_AddItem(app->m_pIMenuCtl, NULL, NULL, 0, L"Start", NULL);
+//	IMENUCTL_AddItem(app->m_pIMenuCtl, NULL, NULL, 1, L"High Score", NULL);
+//	IMENUCTL_AddItem(app->m_pIMenuCtl, NULL, NULL, 2, L"Help", NULL);
+//	IMENUCTL_AddItem(app->m_pIMenuCtl, NULL, NULL, 3, L"Exit", NULL);
+
+	IMENUCTL_EnableCommand(app->m_pIMenuCtl, TRUE);
+
+	IMENUCTL_SetActive(app->m_pIMenuCtl, TRUE);
+	IMENUCTL_Redraw(app->m_pIMenuCtl);
+
 
 	return TRUE;
 }

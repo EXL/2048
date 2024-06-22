@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<BREWRes Name="brew_2048" VERSION="1">
+<Strings Encoding="Unicode">
+	<String Id="1001" Name="IDS_APP_NAME">
+		<Text>2048-BREW</Text>
+	</String>
+	<String Id="1002" Name="IDS_MENU_TITLE_MAIN">
+		<Text>2048-BREW Menu</Text>
+	</String>
+	<String Id="1003" Name="IDS_MENU_ITEM_SAVE">
+		<Text>Save Game</Text>
+	</String>
+	<String Id="1004" Name="IDS_MENU_ITEM_LOAD">
+		<Text>Load Game</Text>
+	</String>
+	<String Id="1005" Name="IDS_MENU_ITEM_RESET">
+		<Text>Reset Game</Text>
+	</String>
+	<String Id="1006" Name="IDS_MENU_ITEM_HELP">
+		<Text>Help...</Text>
+	</String>
+	<String Id="1007" Name="IDS_MENU_ITEM_ABOUT">
+		<Text>About...</Text>
+	</String>
+	<String Id="1008" Name="IDS_MENU_ITEM_EXIT">
+		<Text>Exit</Text>
+	</String>
+</Strings>
+</BREWRes>

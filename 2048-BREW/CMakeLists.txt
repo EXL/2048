@@ -7,10 +7,10 @@ include_directories(
 	${PROJECT_SOURCE_DIR}/../src
 )
 
-add_brew_module(2048-BREW
+add_brew_module(brew_2048
 	${BREW_PLATFORM_SDK_ROOT}/src/AEEModGen.c
 	${BREW_PLATFORM_SDK_ROOT}/src/AEEAppGen.c
 
 	${PROJECT_SOURCE_DIR}/../src/2048.c
-	2048-BREW.c
+	brew_2048.c
 )

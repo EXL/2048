@@ -1,6 +1,0 @@
-#ifndef BREW_2048_BID
-#define BREW_2048_BID
-
-#define AEECLSID_2048_BREW 0x0200E398
-
-#endif /* BREW_2048_BID */
