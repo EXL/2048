@@ -15,6 +15,7 @@ typedef enum { R, G, B, A } APP_COLOR_COMPONENT_T;
 
 typedef enum {
 	APP_STATE_GAME,
+	APP_STATE_MENU,
 	APP_STATE_GAME_SAVE,
 	APP_STATE_GAME_LOAD,
 	APP_STATE_GAME_RESET,
@@ -22,7 +23,19 @@ typedef enum {
 	APP_STATE_HELP,
 	APP_STATE_ABOUT,
 	APP_STATE_EXIT,
+	APP_STATE_MAX
 } APP_STATE_T;
+
+typedef enum {
+	APP_MENU_ITEM_SAVE,
+	APP_MENU_ITEM_LOAD,
+	APP_MENU_ITEM_RESET,
+	APP_MENU_ITEM_TILES,
+	APP_MENU_ITEM_HELP,
+	APP_MENU_ITEM_ABOUT,
+	APP_MENU_ITEM_EXIT,
+	APP_MENU_ITEM_MAX
+} APP_MENU_T;
 
 typedef struct {
 	AEERect m_RectScreen;
@@ -62,6 +75,8 @@ typedef struct {
 
 	boolean is_softkey_menu_pushed;
 	boolean is_softkey_reset_pushed;
+
+	APP_STATE_T m_AppState;
 } APP_INSTANCE_T;
 
 static boolean APP_InitAppData(AEEApplet *pMe);
@@ -139,6 +154,7 @@ static boolean APP_InitAppData(AEEApplet *pMe) {
 
 	APP_DeviceFill(pMe);
 	app->m_AppSettings.m_RoundedRectangle = TRUE;
+	app->m_AppState = APP_STATE_GAME;
 
 	if (ISHELL_CreateInstance(app->m_App.m_pIShell, AEECLSID_GRAPHICS, (void **) &app->m_pIGraphics) != AEE_SUCCESS) {
 		return FALSE;
@@ -165,63 +181,93 @@ static boolean APP_HandleEvent(AEEApplet *pMe, AEEEvent eCode, uint16 wParam, ui
 
 	switch (eCode) {
 		case EVT_APP_START:
-//			GFX_PaintBoard(pMe);
 			MENU_Init(pMe);
+			GFX_PaintBoard(pMe);
 			return TRUE;
 			break;
 		case EVT_APP_STOP:
 			return TRUE;
 			break;
-		case EVT_KEY:
+		case EVT_COMMAND:
 			switch (wParam) {
-				case AVK_0:
-				case AVK_LEFT:
-				case AVK_RIGHT:
-				case AVK_UP:
-				case AVK_DOWN:
-					e_key(wParam); GFX_PaintBoard(pMe); return TRUE;
-					break;
-				case AVK_4:
-					e_key(AVK_LEFT); GFX_PaintBoard(pMe); return TRUE;
-					break;
-				case AVK_6:
-					e_key(AVK_RIGHT); GFX_PaintBoard(pMe); return TRUE;
-					break;
-				case AVK_2:
-					e_key(AVK_UP); GFX_PaintBoard(pMe); return TRUE;
-					break;
-				case AVK_8:
-					e_key(AVK_DOWN); GFX_PaintBoard(pMe); return TRUE;
-					break;
-				case AVK_SOFT2:
-					e_key(AVK_0); GFX_PaintBoard(pMe); return TRUE;
+				case APP_MENU_ITEM_EXIT:
+					ISHELL_CloseApplet(app->m_App.m_pIShell, FALSE); return TRUE;
 					break;
 				default:
 					break;
+			}
+			break;
+		case EVT_KEY:
+			if (app->m_AppState == APP_STATE_MENU) {
+				if (wParam == AVK_CLR) {
+					app->m_AppState = APP_STATE_GAME;
+					IMENUCTL_SetActive(app->m_pIMenuCtl, FALSE); GFX_PaintBoard(pMe); return TRUE;
+				} else {
+					IMENUCTL_HandleEvent(app->m_pIMenuCtl, EVT_KEY, wParam, dwParam); return TRUE;
+				}
+			} else {
+				switch (wParam) {
+					case AVK_0:
+					case AVK_LEFT:
+					case AVK_RIGHT:
+					case AVK_UP:
+					case AVK_DOWN:
+						e_key(wParam); GFX_PaintBoard(pMe); return TRUE;
+						break;
+					case AVK_4:
+						e_key(AVK_LEFT); GFX_PaintBoard(pMe); return TRUE;
+						break;
+					case AVK_6:
+						e_key(AVK_RIGHT); GFX_PaintBoard(pMe); return TRUE;
+						break;
+					case AVK_2:
+						e_key(AVK_UP); GFX_PaintBoard(pMe); return TRUE;
+						break;
+					case AVK_8:
+						e_key(AVK_DOWN); GFX_PaintBoard(pMe); return TRUE;
+						break;
+					case AVK_SOFT2:
+						e_key(AVK_0); GFX_PaintBoard(pMe); return TRUE;
+						break;
+					default:
+						break;
+				}
 			}
 			break;
 		case EVT_KEY_PRESS:
-			switch (wParam) {
-				case AVK_SOFT1:
-					app->is_softkey_menu_pushed = TRUE; GFX_PaintBoard(pMe); return TRUE;
-					break;
-				case AVK_SOFT2:
-					app->is_softkey_reset_pushed = TRUE; GFX_PaintBoard(pMe); return TRUE;
-					break;
-				default:
-					break;
+			if (app->m_AppState == APP_STATE_MENU) {
+//				IMENUCTL_HandleEvent(app->m_pIMenuCtl, EVT_KEY, wParam, dwParam);
+			} else {
+				switch (wParam) {
+					case AVK_SOFT1:
+						app->is_softkey_menu_pushed = TRUE; GFX_PaintBoard(pMe); return TRUE;
+						break;
+					case AVK_SOFT2:
+						app->is_softkey_reset_pushed = TRUE; GFX_PaintBoard(pMe); return TRUE;
+						break;
+					default:
+						break;
+				}
 			}
 			break;
 		case EVT_KEY_RELEASE:
-			switch (wParam) {
-				case AVK_SOFT1:
-					app->is_softkey_menu_pushed = FALSE; GFX_PaintBoard(pMe); return TRUE;
-					break;
-				case AVK_SOFT2:
-					app->is_softkey_reset_pushed = FALSE; GFX_PaintBoard(pMe); return TRUE;
-					break;
-				default:
-					break;
+			if (app->m_AppState == APP_STATE_MENU) {
+//				IMENUCTL_HandleEvent(app->m_pIMenuCtl, EVT_KEY, wParam, dwParam);
+			} else {
+				switch (wParam) {
+					case AVK_SOFT1:
+						app->is_softkey_menu_pushed = FALSE;
+						app->m_AppState = APP_STATE_MENU;
+						GFX_PaintBoard(pMe);
+						IMENUCTL_SetActive(app->m_pIMenuCtl, TRUE);
+						return TRUE;
+						break;
+					case AVK_SOFT2:
+						app->is_softkey_reset_pushed = FALSE; GFX_PaintBoard(pMe); return TRUE;
+						break;
+					default:
+						break;
+				}
 			}
 			break;
 		default:
@@ -284,35 +330,81 @@ static boolean APP_DeviceFill(AEEApplet *pMe) {
 
 static boolean MENU_Init(AEEApplet *pMe) {
 	APP_INSTANCE_T *app = (APP_INSTANCE_T *) pMe;
-	CtlAddItem ctlAddItem;
+	CtlAddItem ctlAddItems[APP_MENU_ITEM_MAX];
 
 	IMENUCTL_SetRect(app->m_pIMenuCtl, &app->m_AppDevice.m_RectScreen);
-	IMENUCTL_SetTitle(app->m_pIMenuCtl, BREW_2048_RES_FILE, IDS_APP_NAME, NULL);
+	IMENUCTL_SetTitle(app->m_pIMenuCtl, BREW_2048_RES_FILE, IDS_MENU_TITLE_MAIN, NULL);
+	IMENUCTL_SetProperties(app->m_pIMenuCtl, MP_UNDERLINE_TITLE);
 
-	ctlAddItem.pText = NULL;
-	ctlAddItem.pImage = NULL;
-	ctlAddItem.pszResText = BREW_2048_RES_FILE;
-	ctlAddItem.pszResImage = BREW_2048_RES_FILE;
-	ctlAddItem.wFont = AEE_FONT_NORMAL;
-	ctlAddItem.dwData = 0;
-	ctlAddItem.wText = IDS_APP_NAME;
-//	ctlAddItem.wImage = IDS_MENU_ITEM_SAVE;
-	ctlAddItem.wItemID = IDS_APP_NAME;
+	ctlAddItems[APP_MENU_ITEM_SAVE].pText = NULL;
+	ctlAddItems[APP_MENU_ITEM_SAVE].pImage = NULL;
+	ctlAddItems[APP_MENU_ITEM_SAVE].pszResText = BREW_2048_RES_FILE;
+	ctlAddItems[APP_MENU_ITEM_SAVE].pszResImage = BREW_2048_RES_FILE;
+	ctlAddItems[APP_MENU_ITEM_SAVE].wFont = AEE_FONT_NORMAL;
+	ctlAddItems[APP_MENU_ITEM_SAVE].dwData = 0;
+	ctlAddItems[APP_MENU_ITEM_SAVE].wText = IDS_MENU_ITEM_SAVE;
+	ctlAddItems[APP_MENU_ITEM_SAVE].wImage = IDI_ICON_SAVE;
+	ctlAddItems[APP_MENU_ITEM_SAVE].wItemID = APP_MENU_ITEM_SAVE;
+	IMENUCTL_AddItemEx(app->m_pIMenuCtl, &ctlAddItems[APP_MENU_ITEM_SAVE]);
 
-	IMENUCTL_AddItemEx(app->m_pIMenuCtl, &ctlAddItem);
+	ctlAddItems[APP_MENU_ITEM_LOAD].pText = NULL;
+	ctlAddItems[APP_MENU_ITEM_LOAD].pImage = NULL;
+	ctlAddItems[APP_MENU_ITEM_LOAD].pszResText = BREW_2048_RES_FILE;
+	ctlAddItems[APP_MENU_ITEM_LOAD].pszResImage = BREW_2048_RES_FILE;
+	ctlAddItems[APP_MENU_ITEM_LOAD].wFont = AEE_FONT_NORMAL;
+	ctlAddItems[APP_MENU_ITEM_LOAD].dwData = 0;
+	ctlAddItems[APP_MENU_ITEM_LOAD].wText = IDS_MENU_ITEM_LOAD;
+	ctlAddItems[APP_MENU_ITEM_LOAD].wImage = IDI_ICON_SAVE;
+	ctlAddItems[APP_MENU_ITEM_LOAD].wItemID = APP_MENU_ITEM_LOAD;
+	IMENUCTL_AddItemEx(app->m_pIMenuCtl, &ctlAddItems[APP_MENU_ITEM_LOAD]);
 
-//	IMENUCTL_SetTitle(app->m_pIMenuCtl, NULL, NULL, L"Main Menu");
-//	IMENUCTL_SetProperties (app->m_pIMenuCtl, MP_UNDERLINE_TITLE);
-//	IMENUCTL_AddItem(app->m_pIMenuCtl, NULL, NULL, 0, L"Start", NULL);
-//	IMENUCTL_AddItem(app->m_pIMenuCtl, NULL, NULL, 1, L"High Score", NULL);
-//	IMENUCTL_AddItem(app->m_pIMenuCtl, NULL, NULL, 2, L"Help", NULL);
-//	IMENUCTL_AddItem(app->m_pIMenuCtl, NULL, NULL, 3, L"Exit", NULL);
+	ctlAddItems[APP_MENU_ITEM_RESET].pText = NULL;
+	ctlAddItems[APP_MENU_ITEM_RESET].pImage = NULL;
+	ctlAddItems[APP_MENU_ITEM_RESET].pszResText = BREW_2048_RES_FILE;
+	ctlAddItems[APP_MENU_ITEM_RESET].pszResImage = BREW_2048_RES_FILE;
+	ctlAddItems[APP_MENU_ITEM_RESET].wFont = AEE_FONT_NORMAL;
+	ctlAddItems[APP_MENU_ITEM_RESET].dwData = 0;
+	ctlAddItems[APP_MENU_ITEM_RESET].wText = IDS_MENU_ITEM_RESET;
+	ctlAddItems[APP_MENU_ITEM_RESET].wImage = IDI_ICON_SAVE;
+	ctlAddItems[APP_MENU_ITEM_RESET].wItemID = APP_MENU_ITEM_RESET;
+	IMENUCTL_AddItemEx(app->m_pIMenuCtl, &ctlAddItems[APP_MENU_ITEM_RESET]);
+
+	IMENUCTL_AddItem(app->m_pIMenuCtl, BREW_2048_RES_FILE, IDS_MENU_ITEM_TILES, IDS_MENU_ITEM_TILES, NULL, 0);
+
+	ctlAddItems[APP_MENU_ITEM_HELP].pText = NULL;
+	ctlAddItems[APP_MENU_ITEM_HELP].pImage = NULL;
+	ctlAddItems[APP_MENU_ITEM_HELP].pszResText = BREW_2048_RES_FILE;
+	ctlAddItems[APP_MENU_ITEM_HELP].pszResImage = BREW_2048_RES_FILE;
+	ctlAddItems[APP_MENU_ITEM_HELP].wFont = AEE_FONT_NORMAL;
+	ctlAddItems[APP_MENU_ITEM_HELP].dwData = 0;
+	ctlAddItems[APP_MENU_ITEM_HELP].wText = IDS_MENU_ITEM_HELP;
+	ctlAddItems[APP_MENU_ITEM_HELP].wImage = IDI_ICON_SAVE;
+	ctlAddItems[APP_MENU_ITEM_HELP].wItemID = APP_MENU_ITEM_HELP;
+	IMENUCTL_AddItemEx(app->m_pIMenuCtl, &ctlAddItems[APP_MENU_ITEM_HELP]);
+
+	ctlAddItems[APP_MENU_ITEM_ABOUT].pText = NULL;
+	ctlAddItems[APP_MENU_ITEM_ABOUT].pImage = NULL;
+	ctlAddItems[APP_MENU_ITEM_ABOUT].pszResText = BREW_2048_RES_FILE;
+	ctlAddItems[APP_MENU_ITEM_ABOUT].pszResImage = BREW_2048_RES_FILE;
+	ctlAddItems[APP_MENU_ITEM_ABOUT].wFont = AEE_FONT_NORMAL;
+	ctlAddItems[APP_MENU_ITEM_ABOUT].dwData = 0;
+	ctlAddItems[APP_MENU_ITEM_ABOUT].wText = IDS_MENU_ITEM_ABOUT;
+	ctlAddItems[APP_MENU_ITEM_ABOUT].wImage = IDI_ICON_SAVE;
+	ctlAddItems[APP_MENU_ITEM_ABOUT].wItemID = APP_MENU_ITEM_ABOUT;
+	IMENUCTL_AddItemEx(app->m_pIMenuCtl, &ctlAddItems[APP_MENU_ITEM_ABOUT]);
+
+	ctlAddItems[APP_MENU_ITEM_EXIT].pText = NULL;
+	ctlAddItems[APP_MENU_ITEM_EXIT].pImage = NULL;
+	ctlAddItems[APP_MENU_ITEM_EXIT].pszResText = BREW_2048_RES_FILE;
+	ctlAddItems[APP_MENU_ITEM_EXIT].pszResImage = BREW_2048_RES_FILE;
+	ctlAddItems[APP_MENU_ITEM_EXIT].wFont = AEE_FONT_NORMAL;
+	ctlAddItems[APP_MENU_ITEM_EXIT].dwData = 0;
+	ctlAddItems[APP_MENU_ITEM_EXIT].wText = IDS_MENU_ITEM_EXIT;
+	ctlAddItems[APP_MENU_ITEM_EXIT].wImage = IDI_ICON_SAVE;
+	ctlAddItems[APP_MENU_ITEM_EXIT].wItemID = APP_MENU_ITEM_EXIT;
+	IMENUCTL_AddItemEx(app->m_pIMenuCtl, &ctlAddItems[APP_MENU_ITEM_EXIT]);
 
 	IMENUCTL_EnableCommand(app->m_pIMenuCtl, TRUE);
-
-	IMENUCTL_SetActive(app->m_pIMenuCtl, TRUE);
-	IMENUCTL_Redraw(app->m_pIMenuCtl);
-
 
 	return TRUE;
 }

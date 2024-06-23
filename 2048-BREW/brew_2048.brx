@@ -25,5 +25,19 @@
 	<String Id="1008" Name="IDS_MENU_ITEM_EXIT">
 		<Text>Exit</Text>
 	</String>
+	<String Id="1009" Name="IDS_MENU_ITEM_TILES">
+		<Text>Tiles:</Text>
+	</String>
+	<String Id="1010" Name="IDS_MENU_ITEM_RECTANGLE">
+		<Text>Rectangle</Text>
+	</String>
+	<String Id="1011" Name="IDS_MENU_ITEM_ROUNDED">
+		<Text>Rounded</Text>
+	</String>
 </Strings>
+<Objects MimeType="image/png">
+	<Object Id="5001" Name="IDI_ICON_SAVE">
+		<File>.\icons\icon-save.png</File>
+	</Object>
+</Objects>
 </BREWRes>

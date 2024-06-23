@@ -45,13 +45,13 @@
 </Strings>
 <Objects MimeType="image/png">
 	<Object Id="21" Name="IDI_OBJECT_21">
-		<File>icons\brew_medium_26x26.png</File>
+		<File>.\icons\brew_medium_26x26.png</File>
 	</Object>
 	<Object Id="22" Name="IDI_OBJECT_22">
-		<File>icons\brew_large_65x42.png</File>
+		<File>.\icons\brew_large_65x42.png</File>
 	</Object>
 	<Object Id="23" Name="IDI_OBJECT_23">
-		<File>icons\brew_small_16x16.png</File>
+		<File>.\icons\brew_small_16x16.png</File>
 	</Object>
 </Objects>
 </BREWRes>
