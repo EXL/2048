@@ -188,8 +188,26 @@ static boolean APP_HandleEvent(AEEApplet *pMe, AEEEvent eCode, uint16 wParam, ui
 		case EVT_APP_STOP:
 			return TRUE;
 			break;
+		case EVT_APP_RESUME:
+			if (app->m_AppState == APP_STATE_MENU) {
+				IMENUCTL_SetActive(app->m_pIMenuCtl, TRUE);
+				GFX_PaintBoard(pMe);
+			}
+			return TRUE;
+			break;
 		case EVT_COMMAND:
 			switch (wParam) {
+				case APP_MENU_ITEM_RESET:
+					app->m_AppState = APP_STATE_GAME;
+					IMENUCTL_SetActive(app->m_pIMenuCtl, FALSE);
+					e_key(AVK_0); GFX_PaintBoard(pMe); return TRUE;
+					return TRUE;
+					break;
+				case APP_MENU_ITEM_ABOUT:
+					IDISPLAY_ClearScreen(app->m_App.m_pIDisplay);
+					ISHELL_ShowCopyright(app->m_App.m_pIShell);
+					return TRUE;
+					break;
 				case APP_MENU_ITEM_EXIT:
 					ISHELL_CloseApplet(app->m_App.m_pIShell, FALSE); return TRUE;
 					break;
