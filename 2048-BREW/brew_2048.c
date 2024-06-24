@@ -1,6 +1,7 @@
 #include <AEEAppGen.h>
 #include <AEEStdLib.h>
 #include <AEEGraphics.h>
+#include <AEESound.h>
 #include <AEEMenu.h>
 #include <AEEFile.h>
 
@@ -12,6 +13,7 @@
 #define SCORE_VALUE_MAX_LENGTH                           (16)
 #define TILE_VALUE_MAX_LENGTH                             (5)
 #define SHOW_PROMPT_DELAY_MS                           (2000) /* 2.0 seconds. */
+#define TONE_SOUND_DELAY_MS                             (500) /* 0.5 seconds. */
 #define SETTINGS_FILENAME                     "brew_2048.dat"
 #define GAMESAVE_FILENAME                     "brew_2048.sav"
 
@@ -84,11 +86,11 @@ typedef struct {
 	APP_SAVE_T m_AppSave;
 
 	IGraphics *m_pIGraphics;
+	IFileMgr *m_pIFileMgr;
+	ISound *m_pISound;
 
 	IMenuCtl *m_pIMenuMainCtl;
 	IMenuCtl *m_pIMenuTileCtl;
-
-	IFileMgr *m_pIFileMgr;
 
 	boolean is_softkey_menu_pushed;
 	boolean is_softkey_reset_pushed;
@@ -119,6 +121,8 @@ static boolean APP_SaveSettings(AEEApplet *pMe);
 static boolean APP_LoadSettings(AEEApplet *pMe);
 static boolean APP_SaveGame(AEEApplet *pMe);
 static boolean APP_LoadGame(AEEApplet *pMe);
+
+static boolean APP_PlaySoundTone(AEEApplet *pMe, AEESoundTone aSoundTone);
 
 const AECHAR *wstr_lbl_title = L"2048-BREW";
 const AECHAR *wstr_lbl_title_small = L"2048";
@@ -195,16 +199,16 @@ static boolean APP_InitAppData(AEEApplet *pMe) {
 	if (ISHELL_CreateInstance(app->m_App.m_pIShell, AEECLSID_GRAPHICS, (void **) &app->m_pIGraphics) != AEE_SUCCESS) {
 		return FALSE;
 	}
-
 	if (ISHELL_CreateInstance(app->m_App.m_pIShell, AEECLSID_MENUCTL, (void **) &app->m_pIMenuMainCtl) != AEE_SUCCESS) {
 		return FALSE;
 	}
-
 	if (ISHELL_CreateInstance(app->m_App.m_pIShell, AEECLSID_MENUCTL, (void **) &app->m_pIMenuTileCtl) != AEE_SUCCESS) {
 		return FALSE;
 	}
-
 	if (ISHELL_CreateInstance(app->m_App.m_pIShell, AEECLSID_FILEMGR, (void **) &app->m_pIFileMgr) != AEE_SUCCESS) {
+		return FALSE;
+	}
+	if (ISHELL_CreateInstance(app->m_App.m_pIShell, AEECLSID_SOUND, (void **) &app->m_pISound) != AEE_SUCCESS) {
 		return FALSE;
 	}
 
@@ -218,6 +222,7 @@ static boolean APP_FreeAppData(AEEApplet *pMe) {
 	IMENUCTL_Release(app->m_pIMenuMainCtl);
 	IMENUCTL_Release(app->m_pIMenuTileCtl);
 	IFILEMGR_Release(app->m_pIFileMgr);
+	ISOUND_Release(app->m_pISound);
 
 	return TRUE;
 }
@@ -252,13 +257,15 @@ static boolean APP_HandleEvent(AEEApplet *pMe, AEEEvent eCode, uint16 wParam, ui
 			switch (wParam) {
 				case APP_MENU_ITEM_SAVE:
 					if (APP_SaveGame(pMe)) {
-						return APP_ShowPrompt(pMe, wstr_lbl_title, L"Game Saved!");
+						APP_PlaySoundTone(pMe, AEE_TONE_WARN);
+						return APP_ShowPrompt(pMe, wstr_lbl_title, L"Game\nSaved!");
 					} else {
 						return APP_ShowPrompt(pMe, wstr_lbl_title, L"Game NOT Saved!");
 					}
 				case APP_MENU_ITEM_LOAD:
 					if (APP_LoadGame(pMe)){
-						return APP_ShowPrompt(pMe, wstr_lbl_title, L"Game Loaded!");
+						APP_PlaySoundTone(pMe, AEE_TONE_CTRL);
+						return APP_ShowPrompt(pMe, wstr_lbl_title, L"Game\nLoaded!");
 					} else {
 						return APP_ShowPrompt(pMe, wstr_lbl_title, L"Game NOT Loaded!");
 					}
@@ -913,4 +920,16 @@ static boolean APP_LoadGame(AEEApplet *pMe) {
 	}
 
 	return FALSE;
+}
+
+static boolean APP_PlaySoundTone(AEEApplet *pMe, AEESoundTone aSoundTone) {
+	APP_INSTANCE_T *app = (APP_INSTANCE_T *) pMe;
+	AEESoundToneData tone;
+
+	tone.eTone = aSoundTone;
+	tone.wDuration = TONE_SOUND_DELAY_MS;
+
+	ISOUND_PlayTone(app->m_pISound, tone);
+
+	return TRUE;
 }
