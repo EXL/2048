@@ -96,7 +96,9 @@ static boolean GFX_PaintBoard(AEEApplet *pMe);
 static boolean GFX_PaintBackgroud(AEEApplet *pMe);
 static boolean GFX_PaintTile(AEEApplet *pMe, uint32 value, uint8 x, uint8 y);
 static boolean GFX_PaintFinal(AEEApplet *pMe);
+
 static boolean GFX_PaintRedrawAll(AEEApplet *pMe);
+static boolean GFX_SetCustomColors(AEEApplet *pMe);
 
 const AECHAR *wstr_lbl_title = L"2048-BREW";
 const AECHAR *wstr_lbl_title_small = L"2048";
@@ -122,6 +124,14 @@ static inline byte COL_BGRA(RGBVAL color, APP_COLOR_COMPONENT_T component) {
 		default:
 		case A:  return (color >>  0) & 0xFF;
 	}
+}
+
+static inline RGBVAL COL_BUMP(uint32 color, int32 bump) {
+	uint32 A = ((color >> 24) & 0xFF) + bump;
+	uint32 R = ((color >> 16) & 0xFF) + bump;
+	uint32 G = ((color >>  8) & 0xFF) + bump;
+	uint32 B = ((color >>  0) & 0xFF) + bump;
+	return MAKE_RGBA(R, G, B, A);
 }
 
 static inline uint32 GFX_OffsetCoord(uint8 coord, uint16 tile_size, uint16 offset) {
@@ -195,6 +205,7 @@ static boolean APP_HandleEvent(AEEApplet *pMe, AEEEvent eCode, uint16 wParam, ui
 		case EVT_APP_START:
 			APP_MenuMainInit(pMe);
 			APP_MenuTilesInit(pMe);
+			GFX_SetCustomColors(pMe);
 			return GFX_PaintRedrawAll(pMe);
 		case EVT_APP_STOP:
 			return TRUE;
@@ -242,7 +253,6 @@ static boolean APP_HandleEvent(AEEApplet *pMe, AEEEvent eCode, uint16 wParam, ui
 					app->m_AppState = APP_STATE_GAME;
 					return GFX_PaintRedrawAll(pMe);
 				case APP_MENU_ITEM_HELP:
-					IMENUCTL_SetActive(app->m_pIMenuMainCtl, FALSE);
 					return APP_ShowHelp(pMe);
 				case APP_MENU_ITEM_ABOUT:
 					return APP_ShowAbout(pMe);
@@ -357,7 +367,7 @@ static boolean APP_DeviceFill(AEEApplet *pMe) {
 
 	switch (app->m_AppDevice.m_ScreenW) {
 		default:
-		case 240: /* 240x320 */
+		case 240: /* Precalculated 240x320 values. */
 			app->m_AppDevice.m_TileSize = 48;
 			app->m_AppDevice.m_OffsetX = 6;
 			app->m_AppDevice.m_OffsetY = 6;
@@ -373,7 +383,7 @@ static boolean APP_DeviceFill(AEEApplet *pMe) {
 			app->m_AppDevice.m_FontXXXX = AEE_FONT_NORMAL;
 			app->m_AppDevice.m_wstr_title = wstr_lbl_title;
 			break;
-		case 176: /* 176x220 */
+		case 176: /* Precalculated 176x220 values. */
 			app->m_AppDevice.m_TileSize = 34;
 			app->m_AppDevice.m_OffsetX = 4;
 			app->m_AppDevice.m_OffsetY = 4;
@@ -504,7 +514,9 @@ static boolean APP_ShowHelp(AEEApplet *pMe) {
 	APP_INSTANCE_T *app = (APP_INSTANCE_T *) pMe;
 
 	app->m_AppState = APP_STATE_HELP;
+	IMENUCTL_SetActive(app->m_pIMenuMainCtl, FALSE);
 
+	GFX_SetCustomColors(pMe);
 	ISHELL_MessageBox(app->m_App.m_pIShell, BREW_2048_RES_FILE, IDS_APP_NAME, IDS_MENU_ITEM_RESET);
 
 	return TRUE;
@@ -512,21 +524,14 @@ static boolean APP_ShowHelp(AEEApplet *pMe) {
 
 static boolean APP_ShowAbout(AEEApplet *pMe) {
 	APP_INSTANCE_T *app = (APP_INSTANCE_T *) pMe;
-	RGBVAL background;
 
 	app->m_AppState = APP_STATE_ABOUT;
-
 	IMENUCTL_SetActive(app->m_pIMenuMainCtl, FALSE);
 
-	background = IDISPLAY_SetColor(app->m_App.m_pIDisplay, CLR_SYS_WIN, RGB_WHITE);
-
-	IDISPLAY_SetColor(app->m_App.m_pIDisplay, CLR_USER_TEXT, RGB_BLACK);
-	IDISPLAY_SetColor(app->m_App.m_pIDisplay, CLR_USER_BACKGROUND, RGB_WHITE);
-
+	GFX_SetCustomColors(pMe);
 	IDISPLAY_ClearScreen(app->m_App.m_pIDisplay);
-	ISHELL_ShowCopyright(app->m_App.m_pIShell);
 
-	IDISPLAY_SetColor(app->m_App.m_pIDisplay, CLR_SYS_WIN, background);
+	ISHELL_ShowCopyright(app->m_App.m_pIShell);
 
 	return TRUE;
 }
@@ -731,6 +736,36 @@ static boolean GFX_PaintRedrawAll(AEEApplet *pMe) {
 	GFX_PaintBoard(pMe);
 
 	IDISPLAY_Update(app->m_App.m_pIDisplay);
+
+	return TRUE;
+}
+
+static boolean GFX_SetCustomColors(AEEApplet *pMe) {
+	APP_INSTANCE_T *app = (APP_INSTANCE_T *) pMe;
+	AEEMenuColors menu_colors;
+
+	IDISPLAY_SetColor(app->m_App.m_pIDisplay, CLR_SYS_WIN, COL_ARGB_BGRA(COLOR_BOARD));
+	IDISPLAY_SetColor(app->m_App.m_pIDisplay, CLR_USER_TEXT, COL_ARGB_BGRA(COLOR_TEXT));
+	IDISPLAY_SetColor(app->m_App.m_pIDisplay, CLR_USER_BACKGROUND, COL_ARGB_BGRA(COLOR_BOARD));
+	IDISPLAY_SetColor(app->m_App.m_pIDisplay, CLR_USER_LINE, COL_ARGB_BGRA(COLOR_BOARD));
+	IDISPLAY_SetColor(app->m_App.m_pIDisplay, CLR_SYS_FRAME_HI, COL_BUMP(COLOR_TEXT, 0x60));
+	IDISPLAY_SetColor(app->m_App.m_pIDisplay, CLR_SYS_FRAME_LO, COL_BUMP(COLOR_TEXT, -0x60));
+	IDISPLAY_SetColor(app->m_App.m_pIDisplay, CLR_SYS_LT_SHADOW, COL_BUMP(COLOR_TEXT, 0x70));
+	IDISPLAY_SetColor(app->m_App.m_pIDisplay, CLR_SYS_DK_SHADOW, COL_BUMP(COLOR_TEXT, -0x40));
+
+	menu_colors.wMask = 0xFFFF;
+	menu_colors.cBack = COL_ARGB_BGRA(COLOR_BOARD);
+	menu_colors.cText = COL_ARGB_BGRA(COLOR_TEXT);
+	menu_colors.cSelBack = COL_ARGB_BGRA(COLOR_FINAL);
+	menu_colors.cSelText = COL_BUMP(COLOR_TEXT, 0x70);
+	menu_colors.cFrame = COL_ARGB_BGRA(COLOR_TEXT);
+	menu_colors.cScrollbar = COL_ARGB_BGRA(COLOR_TEXT);
+	menu_colors.cScrollbarFill = COL_ARGB_BGRA(COLOR_FINAL);
+	menu_colors.cTitle = COL_ARGB_BGRA(COLOR_BOARD);
+	menu_colors.cTitleText = COL_ARGB_BGRA(COLOR_TEXT);
+
+	IMENUCTL_SetColors(app->m_pIMenuMainCtl, &menu_colors);
+	IMENUCTL_SetColors(app->m_pIMenuTileCtl, &menu_colors);
 
 	return TRUE;
 }
