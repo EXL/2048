@@ -2,6 +2,7 @@
 #include <AEEStdLib.h>
 #include <AEEGraphics.h>
 #include <AEEMenu.h>
+#include <AEEFile.h>
 
 #include "brew_2048.bid"
 #include "brew_2048.brh"
@@ -11,6 +12,8 @@
 #define SCORE_VALUE_MAX_LENGTH                           (16)
 #define TILE_VALUE_MAX_LENGTH                             (5)
 #define SHOW_PROMPT_DELAY_MS                           (2000) /* 2.0 seconds. */
+#define SETTINGS_FILENAME                     "brew_2048.dat"
+#define GAMESAVE_FILENAME                     "brew_2048.sav"
 
 typedef enum { R, G, B, A } APP_COLOR_COMPONENT_T;
 
@@ -66,14 +69,26 @@ typedef struct {
 } APP_SETTINGS_T;
 
 typedef struct {
+	JulianType date_time;
+	uint16 board[BOARD_SIZE];
+	uint16 win;
+	uint16 lose;
+	uint16 score;
+} APP_SAVE_T;
+
+typedef struct {
 	AEEApplet m_App;
+
 	APP_DEVICE_T m_AppDevice;
 	APP_SETTINGS_T m_AppSettings;
+	APP_SAVE_T m_AppSave;
 
 	IGraphics *m_pIGraphics;
 
 	IMenuCtl *m_pIMenuMainCtl;
 	IMenuCtl *m_pIMenuTileCtl;
+
+	IFileMgr *m_pIFileMgr;
 
 	boolean is_softkey_menu_pushed;
 	boolean is_softkey_reset_pushed;
@@ -99,6 +114,11 @@ static boolean GFX_PaintFinal(AEEApplet *pMe);
 
 static boolean GFX_PaintRedrawAll(AEEApplet *pMe);
 static boolean GFX_SetCustomColors(AEEApplet *pMe);
+
+static boolean APP_SaveSettings(AEEApplet *pMe);
+static boolean APP_LoadSettings(AEEApplet *pMe);
+static boolean APP_SaveGame(AEEApplet *pMe);
+static boolean APP_LoadGame(AEEApplet *pMe);
 
 const AECHAR *wstr_lbl_title = L"2048-BREW";
 const AECHAR *wstr_lbl_title_small = L"2048";
@@ -158,7 +178,6 @@ AEEResult AEEClsCreateInstance(AEECLSID ClsId, IShell *pIShell, IModule *pMod, v
 				IAPPLET_Release((IApplet *) *ppObj);
 				return AEE_EFAILED;
 			}
-
 		}
 	}
 	return AEE_EFAILED;
@@ -185,6 +204,10 @@ static boolean APP_InitAppData(AEEApplet *pMe) {
 		return FALSE;
 	}
 
+	if (ISHELL_CreateInstance(app->m_App.m_pIShell, AEECLSID_FILEMGR, (void **) &app->m_pIFileMgr) != AEE_SUCCESS) {
+		return FALSE;
+	}
+
 	return TRUE;
 }
 
@@ -194,6 +217,7 @@ static boolean APP_FreeAppData(AEEApplet *pMe) {
 	IGRAPHICS_Release(app->m_pIGraphics);
 	IMENUCTL_Release(app->m_pIMenuMainCtl);
 	IMENUCTL_Release(app->m_pIMenuTileCtl);
+	IFILEMGR_Release(app->m_pIFileMgr);
 
 	return TRUE;
 }
@@ -203,6 +227,7 @@ static boolean APP_HandleEvent(AEEApplet *pMe, AEEEvent eCode, uint16 wParam, ui
 
 	switch (eCode) {
 		case EVT_APP_START:
+			APP_LoadSettings(pMe);
 			APP_MenuMainInit(pMe);
 			APP_MenuTilesInit(pMe);
 			GFX_SetCustomColors(pMe);
@@ -226,9 +251,17 @@ static boolean APP_HandleEvent(AEEApplet *pMe, AEEEvent eCode, uint16 wParam, ui
 		case EVT_COMMAND:
 			switch (wParam) {
 				case APP_MENU_ITEM_SAVE:
-					return APP_ShowPrompt(pMe, wstr_lbl_title, L"Game Saved!");
+					if (APP_SaveGame(pMe)) {
+						return APP_ShowPrompt(pMe, wstr_lbl_title, L"Game Saved!");
+					} else {
+						return APP_ShowPrompt(pMe, wstr_lbl_title, L"Game NOT Saved!");
+					}
 				case APP_MENU_ITEM_LOAD:
-					return APP_ShowPrompt(pMe, wstr_lbl_title, L"Game Loaded!");
+					if (APP_LoadGame(pMe)){
+						return APP_ShowPrompt(pMe, wstr_lbl_title, L"Game Loaded!");
+					} else {
+						return APP_ShowPrompt(pMe, wstr_lbl_title, L"Game NOT Loaded!");
+					}
 				case APP_MENU_ITEM_RESET:
 					e_key(AVK_0);
 					IMENUCTL_SetActive(app->m_pIMenuMainCtl, FALSE);
@@ -242,12 +275,14 @@ static boolean APP_HandleEvent(AEEApplet *pMe, AEEEvent eCode, uint16 wParam, ui
 					return TRUE;
 				case APP_MENU_ITEM_TILES_RECTANGLE:
 					app->m_AppSettings.m_RoundedRectangle = FALSE;
+					APP_SaveSettings(pMe);
 					IMENUCTL_SetActive(app->m_pIMenuMainCtl, FALSE);
 					IMENUCTL_SetActive(app->m_pIMenuTileCtl, FALSE);
 					app->m_AppState = APP_STATE_GAME;
 					return GFX_PaintRedrawAll(pMe);
 				case APP_MENU_ITEM_TILES_ROUNDED:
 					app->m_AppSettings.m_RoundedRectangle = TRUE;
+					APP_SaveSettings(pMe);
 					IMENUCTL_SetActive(app->m_pIMenuMainCtl, FALSE);
 					IMENUCTL_SetActive(app->m_pIMenuTileCtl, FALSE);
 					app->m_AppState = APP_STATE_GAME;
@@ -768,4 +803,114 @@ static boolean GFX_SetCustomColors(AEEApplet *pMe) {
 	IMENUCTL_SetColors(app->m_pIMenuTileCtl, &menu_colors);
 
 	return TRUE;
+}
+
+static boolean APP_SaveSettings(AEEApplet *pMe) {
+	APP_INSTANCE_T *app = (APP_INSTANCE_T *) pMe;
+	IFile *pIFile;
+	uint32 bytes;
+
+	pIFile = NULL;
+
+	bytes = IFILEMGR_GetFreeSpace(app->m_pIFileMgr, NULL);
+	if (bytes > sizeof(app->m_AppSettings)) {
+		if (IFILEMGR_Test(app->m_pIFileMgr, SETTINGS_FILENAME) == AEE_SUCCESS) {
+			pIFile = IFILEMGR_OpenFile(app->m_pIFileMgr, SETTINGS_FILENAME, _OFM_READWRITE);
+		} else {
+			pIFile = IFILEMGR_OpenFile(app->m_pIFileMgr, SETTINGS_FILENAME, _OFM_CREATE);
+		}
+		if (pIFile) {
+			bytes = IFILE_Write(pIFile, (PACKED const void *) &app->m_AppSettings, sizeof(app->m_AppSettings));
+			IFILE_Release(pIFile);
+			if (bytes == sizeof(app->m_AppSettings)) {
+				return TRUE;
+			}
+		}
+	}
+
+	return FALSE;
+}
+
+static boolean APP_LoadSettings(AEEApplet *pMe) {
+	APP_INSTANCE_T *app = (APP_INSTANCE_T *) pMe;
+	IFile *pIFile;
+	uint32 bytes;
+
+	pIFile = NULL;
+
+	if (IFILEMGR_Test(app->m_pIFileMgr, SETTINGS_FILENAME) == AEE_SUCCESS) {
+		pIFile = IFILEMGR_OpenFile(app->m_pIFileMgr, SETTINGS_FILENAME, _OFM_READ);
+		if (pIFile) {
+			bytes = IFILE_Read(pIFile, (PACKED void *) &app->m_AppSettings, sizeof(app->m_AppSettings));
+			IFILE_Release(pIFile);
+			if (bytes == sizeof(app->m_AppSettings)) {
+				return TRUE;
+			}
+		}
+	}
+
+	return FALSE;
+}
+
+static boolean APP_SaveGame(AEEApplet *pMe) {
+	APP_INSTANCE_T *app = (APP_INSTANCE_T *) pMe;
+	IFile *pIFile;
+	uint32 bytes;
+
+	pIFile = NULL;
+
+	bytes = IFILEMGR_GetFreeSpace(app->m_pIFileMgr, NULL);
+	if (bytes > sizeof(app->m_AppSettings)) {
+		if (IFILEMGR_Test(app->m_pIFileMgr, GAMESAVE_FILENAME) == AEE_SUCCESS) {
+			pIFile = IFILEMGR_OpenFile(app->m_pIFileMgr, GAMESAVE_FILENAME, _OFM_READWRITE);
+		} else {
+			pIFile = IFILEMGR_OpenFile(app->m_pIFileMgr, GAMESAVE_FILENAME, _OFM_CREATE);
+		}
+		if (pIFile) {
+			uint16 i;
+			GETJULIANDATE(0, &app->m_AppSave.date_time);
+			app->m_AppSave.win = e_win;
+			app->m_AppSave.lose = e_lose;
+			app->m_AppSave.score = e_score;
+			for (i = 0; i < BOARD_SIZE; ++i) {
+				app->m_AppSave.board[i] = e_board[i];
+			}
+
+			bytes = IFILE_Write(pIFile, (PACKED const void *) &app->m_AppSave, sizeof(app->m_AppSave));
+			IFILE_Release(pIFile);
+			if (bytes == sizeof(app->m_AppSave)) {
+				return TRUE;
+			}
+		}
+	}
+
+	return FALSE;
+}
+
+static boolean APP_LoadGame(AEEApplet *pMe) {
+	APP_INSTANCE_T *app = (APP_INSTANCE_T *) pMe;
+	IFile *pIFile;
+	uint32 bytes;
+
+	pIFile = NULL;
+
+	if (IFILEMGR_Test(app->m_pIFileMgr, GAMESAVE_FILENAME) == AEE_SUCCESS) {
+		pIFile = IFILEMGR_OpenFile(app->m_pIFileMgr, GAMESAVE_FILENAME, _OFM_READ);
+		if (pIFile) {
+			bytes = IFILE_Read(pIFile, (PACKED void *) &app->m_AppSave, sizeof(app->m_AppSave));
+			IFILE_Release(pIFile);
+			if (bytes == sizeof(app->m_AppSave)) {
+				uint16 i;
+				e_win = app->m_AppSave.win;
+				e_lose = app->m_AppSave.lose;
+				e_score = app->m_AppSave.score;
+				for (i = 0; i < BOARD_SIZE; ++i) {
+					e_board[i] = app->m_AppSave.board[i];
+				}
+				return TRUE;
+			}
+		}
+	}
+
+	return FALSE;
 }
