@@ -17,7 +17,7 @@ typedef enum { R, G, B, A } APP_COLOR_COMPONENT_T;
 typedef enum {
 	APP_STATE_GAME,
 	APP_STATE_MENU_MAIN,
-	APP_STATE_MENU_TILES,
+	APP_STATE_MENU_TILE,
 	APP_STATE_PROMPT,
 	APP_STATE_HELP,
 	APP_STATE_ABOUT,
@@ -29,6 +29,8 @@ typedef enum {
 	APP_MENU_ITEM_LOAD,
 	APP_MENU_ITEM_RESET,
 	APP_MENU_ITEM_TILES,
+	APP_MENU_ITEM_TILES_RECTANGLE,
+	APP_MENU_ITEM_TILES_ROUNDED,
 	APP_MENU_ITEM_HELP,
 	APP_MENU_ITEM_ABOUT,
 	APP_MENU_ITEM_EXIT,
@@ -69,7 +71,9 @@ typedef struct {
 	APP_SETTINGS_T m_AppSettings;
 
 	IGraphics *m_pIGraphics;
-	IMenuCtl *m_pIMenuCtl;
+
+	IMenuCtl *m_pIMenuMainCtl;
+	IMenuCtl *m_pIMenuTileCtl;
 
 	boolean is_softkey_menu_pushed;
 	boolean is_softkey_reset_pushed;
@@ -82,11 +86,11 @@ static boolean APP_FreeAppData(AEEApplet *pMe);
 static boolean APP_HandleEvent(AEEApplet *pMe, AEEEvent eCode, uint16 wParam, uint32 dwParam);
 static boolean APP_DeviceFill(AEEApplet *pMe);
 
-static boolean MENU_MainInit(AEEApplet *pMe);
-static boolean PROMPT_ShowFromRes(AEEApplet *pMe, const AECHAR *aTitle, const AECHAR *aText);
-static boolean PROMPT_ShowFromBar(AEEApplet *pMe, uint16 aTitleID, uint16 aTextID);
-static boolean PROMPT_ShowAbout(AEEApplet *pMe);
-static boolean PROMPT_ShowHelp(AEEApplet *pMe);
+static boolean APP_MenuMainInit(AEEApplet *pMe);
+static boolean APP_MenuTilesInit(AEEApplet *pMe);
+static boolean APP_ShowPrompt(AEEApplet *pMe, const AECHAR *aTitle, const AECHAR *aText);
+static boolean APP_ShowHelp(AEEApplet *pMe);
+static boolean APP_ShowAbout(AEEApplet *pMe);
 
 static boolean GFX_PaintBoard(AEEApplet *pMe);
 static boolean GFX_PaintBackgroud(AEEApplet *pMe);
@@ -163,7 +167,11 @@ static boolean APP_InitAppData(AEEApplet *pMe) {
 		return FALSE;
 	}
 
-	if (ISHELL_CreateInstance(app->m_App.m_pIShell, AEECLSID_MENUCTL, (void **) &app->m_pIMenuCtl) != AEE_SUCCESS) {
+	if (ISHELL_CreateInstance(app->m_App.m_pIShell, AEECLSID_MENUCTL, (void **) &app->m_pIMenuMainCtl) != AEE_SUCCESS) {
+		return FALSE;
+	}
+
+	if (ISHELL_CreateInstance(app->m_App.m_pIShell, AEECLSID_MENUCTL, (void **) &app->m_pIMenuTileCtl) != AEE_SUCCESS) {
 		return FALSE;
 	}
 
@@ -174,7 +182,8 @@ static boolean APP_FreeAppData(AEEApplet *pMe) {
 	APP_INSTANCE_T *app = (APP_INSTANCE_T *) pMe;
 
 	IGRAPHICS_Release(app->m_pIGraphics);
-	IMENUCTL_Release(app->m_pIMenuCtl);
+	IMENUCTL_Release(app->m_pIMenuMainCtl);
+	IMENUCTL_Release(app->m_pIMenuTileCtl);
 
 	return TRUE;
 }
@@ -184,7 +193,8 @@ static boolean APP_HandleEvent(AEEApplet *pMe, AEEEvent eCode, uint16 wParam, ui
 
 	switch (eCode) {
 		case EVT_APP_START:
-			MENU_MainInit(pMe);
+			APP_MenuMainInit(pMe);
+			APP_MenuTilesInit(pMe);
 			return GFX_PaintRedrawAll(pMe);
 		case EVT_APP_STOP:
 			return TRUE;
@@ -194,8 +204,7 @@ static boolean APP_HandleEvent(AEEApplet *pMe, AEEEvent eCode, uint16 wParam, ui
 				case APP_STATE_HELP:
 				case APP_STATE_ABOUT:
 					app->m_AppState = APP_STATE_MENU_MAIN;
-					IMENUCTL_SetActive(app->m_pIMenuCtl, TRUE);
-					IMENUCTL_Redraw(app->m_pIMenuCtl);
+					IMENUCTL_SetActive(app->m_pIMenuMainCtl, TRUE);
 					break;
 				default:
 					app->m_AppState = APP_STATE_GAME;
@@ -206,15 +215,25 @@ static boolean APP_HandleEvent(AEEApplet *pMe, AEEEvent eCode, uint16 wParam, ui
 		case EVT_COMMAND:
 			switch (wParam) {
 				case APP_MENU_ITEM_SAVE:
-					return PROMPT_ShowFromRes(pMe, wstr_lbl_title, L"Game Saved!");
+					return APP_ShowPrompt(pMe, wstr_lbl_title, L"Game Saved!");
 				case APP_MENU_ITEM_LOAD:
-					return PROMPT_ShowFromRes(pMe, wstr_lbl_title, L"Game Loaded!");
+					return APP_ShowPrompt(pMe, wstr_lbl_title, L"Game Loaded!");
 				case APP_MENU_ITEM_RESET:
-					return PROMPT_ShowFromBar(pMe, IDS_APP_NAME, IDS_MENU_ITEM_RESET);
+					e_key(AVK_0);
+					IMENUCTL_SetActive(app->m_pIMenuMainCtl, FALSE);
+					app->m_AppState = APP_STATE_GAME;
+					return GFX_PaintRedrawAll(pMe);
+				case APP_MENU_ITEM_TILES:
+					app->m_AppState = APP_STATE_MENU_TILE;
+					IMENUCTL_SetSel(app->m_pIMenuTileCtl, APP_MENU_ITEM_TILES_RECTANGLE);
+					IMENUCTL_SetActive(app->m_pIMenuMainCtl, FALSE);
+					IMENUCTL_SetActive(app->m_pIMenuTileCtl, TRUE);
+					return TRUE;
 				case APP_MENU_ITEM_HELP:
-					return PROMPT_ShowHelp(pMe);
+					IMENUCTL_SetActive(app->m_pIMenuMainCtl, FALSE);
+					return APP_ShowHelp(pMe);
 				case APP_MENU_ITEM_ABOUT:
-					return PROMPT_ShowAbout(pMe);
+					return APP_ShowAbout(pMe);
 				case APP_MENU_ITEM_EXIT:
 					return ISHELL_CloseApplet(app->m_App.m_pIShell, FALSE);
 				default:
@@ -226,19 +245,22 @@ static boolean APP_HandleEvent(AEEApplet *pMe, AEEEvent eCode, uint16 wParam, ui
 				case APP_STATE_MENU_MAIN:
 					if (wParam == AVK_CLR) {
 						app->m_AppState = APP_STATE_GAME;
-						IMENUCTL_SetActive(app->m_pIMenuCtl, FALSE);
+						IMENUCTL_SetActive(app->m_pIMenuMainCtl, FALSE);
 						return GFX_PaintRedrawAll(pMe);
 					} else {
-						return IMENUCTL_HandleEvent(app->m_pIMenuCtl, EVT_KEY, wParam, dwParam);
+						return IMENUCTL_HandleEvent(app->m_pIMenuMainCtl, EVT_KEY, wParam, dwParam);
 					}
 					break;
-//				case APP_STATE_HELP:
-//					if (wParam == AVK_CLR) {
-//						app->m_AppState = APP_STATE_MENU_MAIN;
-//						IMENUCTL_SetActive(app->m_pIMenuCtl, TRUE);
-//						return TRUE;
-//					}
-//					break;
+				case APP_STATE_MENU_TILE:
+					if (wParam == AVK_CLR) {
+						app->m_AppState = APP_STATE_MENU_MAIN;
+						IMENUCTL_SetActive(app->m_pIMenuTileCtl, FALSE);
+						IMENUCTL_SetActive(app->m_pIMenuMainCtl, TRUE);
+						return TRUE;
+					} else {
+						return IMENUCTL_HandleEvent(app->m_pIMenuTileCtl, EVT_KEY, wParam, dwParam);
+					}
+					break;
 				case APP_STATE_GAME:
 					switch (wParam) {
 						case AVK_0:
@@ -291,8 +313,8 @@ static boolean APP_HandleEvent(AEEApplet *pMe, AEEEvent eCode, uint16 wParam, ui
 						app->is_softkey_menu_pushed = FALSE;
 						app->m_AppState = APP_STATE_MENU_MAIN;
 						GFX_PaintRedrawAll(pMe);
-						IMENUCTL_SetSel(app->m_pIMenuCtl, APP_MENU_ITEM_SAVE);
-						IMENUCTL_SetActive(app->m_pIMenuCtl, TRUE);
+						IMENUCTL_SetSel(app->m_pIMenuMainCtl, APP_MENU_ITEM_SAVE);
+						IMENUCTL_SetActive(app->m_pIMenuMainCtl, TRUE);
 						return TRUE;
 					case AVK_SOFT2:
 						app->is_softkey_reset_pushed = FALSE;
@@ -360,13 +382,13 @@ static boolean APP_DeviceFill(AEEApplet *pMe) {
 	return TRUE;
 }
 
-static boolean MENU_MainInit(AEEApplet *pMe) {
+static boolean APP_MenuMainInit(AEEApplet *pMe) {
 	APP_INSTANCE_T *app = (APP_INSTANCE_T *) pMe;
 	CtlAddItem menu_item;
 
-	IMENUCTL_SetRect(app->m_pIMenuCtl, &app->m_AppDevice.m_RectScreen);
-	IMENUCTL_SetTitle(app->m_pIMenuCtl, BREW_2048_RES_FILE, IDS_MENU_TITLE_MAIN, NULL);
-	IMENUCTL_SetProperties(app->m_pIMenuCtl, MP_UNDERLINE_TITLE | MP_WRAPSCROLL);
+	IMENUCTL_SetRect(app->m_pIMenuMainCtl, &app->m_AppDevice.m_RectScreen);
+	IMENUCTL_SetTitle(app->m_pIMenuMainCtl, BREW_2048_RES_FILE, IDS_MENU_TITLE_MAIN, NULL);
+	IMENUCTL_SetProperties(app->m_pIMenuMainCtl, MP_UNDERLINE_TITLE | MP_WRAPSCROLL);
 
 	menu_item.pText = NULL;
 	menu_item.pImage = NULL;
@@ -378,44 +400,74 @@ static boolean MENU_MainInit(AEEApplet *pMe) {
 	menu_item.wText = IDS_MENU_ITEM_SAVE;
 	menu_item.wImage = IDI_ICON_SAVE;
 	menu_item.wItemID = APP_MENU_ITEM_SAVE;
-	IMENUCTL_AddItemEx(app->m_pIMenuCtl, &menu_item);
+	IMENUCTL_AddItemEx(app->m_pIMenuMainCtl, &menu_item);
 
 	menu_item.wText = IDS_MENU_ITEM_LOAD;
 	menu_item.wImage = IDI_ICON_SAVE;
 	menu_item.wItemID = APP_MENU_ITEM_LOAD;
-	IMENUCTL_AddItemEx(app->m_pIMenuCtl, &menu_item);
+	IMENUCTL_AddItemEx(app->m_pIMenuMainCtl, &menu_item);
 
 	menu_item.wText = IDS_MENU_ITEM_RESET;
 	menu_item.wImage = IDI_ICON_SAVE;
 	menu_item.wItemID = APP_MENU_ITEM_RESET;
-	IMENUCTL_AddItemEx(app->m_pIMenuCtl, &menu_item);
+	IMENUCTL_AddItemEx(app->m_pIMenuMainCtl, &menu_item);
 
 	menu_item.wText = IDS_MENU_ITEM_TILES;
 	menu_item.wImage = IDI_ICON_SAVE;
 	menu_item.wItemID = APP_MENU_ITEM_TILES;
-	IMENUCTL_AddItemEx(app->m_pIMenuCtl, &menu_item);
+	IMENUCTL_AddItemEx(app->m_pIMenuMainCtl, &menu_item);
 
 	menu_item.wText = IDS_MENU_ITEM_HELP;
 	menu_item.wImage = IDI_ICON_SAVE;
 	menu_item.wItemID = APP_MENU_ITEM_HELP;
-	IMENUCTL_AddItemEx(app->m_pIMenuCtl, &menu_item);
+	IMENUCTL_AddItemEx(app->m_pIMenuMainCtl, &menu_item);
 
 	menu_item.wText = IDS_MENU_ITEM_ABOUT;
 	menu_item.wImage = IDI_ICON_SAVE;
 	menu_item.wItemID = APP_MENU_ITEM_ABOUT;
-	IMENUCTL_AddItemEx(app->m_pIMenuCtl, &menu_item);
+	IMENUCTL_AddItemEx(app->m_pIMenuMainCtl, &menu_item);
 
 	menu_item.wText = IDS_MENU_ITEM_EXIT;
 	menu_item.wImage = IDI_ICON_SAVE;
 	menu_item.wItemID = APP_MENU_ITEM_EXIT;
-	IMENUCTL_AddItemEx(app->m_pIMenuCtl, &menu_item);
+	IMENUCTL_AddItemEx(app->m_pIMenuMainCtl, &menu_item);
 
-	IMENUCTL_EnableCommand(app->m_pIMenuCtl, TRUE);
+	IMENUCTL_EnableCommand(app->m_pIMenuMainCtl, TRUE);
 
 	return TRUE;
 }
 
-static boolean PROMPT_ShowFromRes(AEEApplet *pMe, const AECHAR *aTitle, const AECHAR *aText) {
+static boolean APP_MenuTilesInit(AEEApplet *pMe) {
+	APP_INSTANCE_T *app = (APP_INSTANCE_T *) pMe;
+	CtlAddItem menu_item;
+
+	IMENUCTL_SetRect(app->m_pIMenuTileCtl, &app->m_AppDevice.m_RectScreen);
+	IMENUCTL_SetTitle(app->m_pIMenuTileCtl, BREW_2048_RES_FILE, IDS_MENU_ITEM_TILES, NULL);
+	IMENUCTL_SetProperties(app->m_pIMenuTileCtl, MP_UNDERLINE_TITLE | MP_WRAPSCROLL);
+
+	menu_item.pText = NULL;
+	menu_item.pImage = NULL;
+	menu_item.pszResText = BREW_2048_RES_FILE;
+	menu_item.pszResImage = BREW_2048_RES_FILE;
+	menu_item.wFont = AEE_FONT_NORMAL;
+	menu_item.dwData = 0;
+
+	menu_item.wText = IDS_MENU_ITEM_RECTANGLE;
+	menu_item.wImage = IDI_ICON_SAVE;
+	menu_item.wItemID = APP_MENU_ITEM_TILES_RECTANGLE;
+	IMENUCTL_AddItemEx(app->m_pIMenuTileCtl, &menu_item);
+
+	menu_item.wText = IDS_MENU_ITEM_ROUNDED;
+	menu_item.wImage = IDI_ICON_SAVE;
+	menu_item.wItemID = APP_MENU_ITEM_TILES_ROUNDED;
+	IMENUCTL_AddItemEx(app->m_pIMenuTileCtl, &menu_item);
+
+	IMENUCTL_EnableCommand(app->m_pIMenuTileCtl, TRUE);
+
+	return TRUE;
+}
+
+static boolean APP_ShowPrompt(AEEApplet *pMe, const AECHAR *aTitle, const AECHAR *aText) {
 	APP_INSTANCE_T *app = (APP_INSTANCE_T *) pMe;
 	AEEPromptInfo prompt;
 
@@ -429,42 +481,30 @@ static boolean PROMPT_ShowFromRes(AEEApplet *pMe, const AECHAR *aTitle, const AE
 	prompt.dwTimeout = SHOW_PROMPT_DELAY_MS;
 
 	app->m_AppState = APP_STATE_PROMPT;
-	IMENUCTL_SetActive(app->m_pIMenuCtl, FALSE);
+	IMENUCTL_SetActive(app->m_pIMenuMainCtl, FALSE);
 
 	ISHELL_Prompt(app->m_App.m_pIShell, &prompt);
 
 	return TRUE;
 }
 
-static boolean PROMPT_ShowFromBar(AEEApplet *pMe, uint16 aTitleID, uint16 aTextID) {
+static boolean APP_ShowHelp(AEEApplet *pMe) {
 	APP_INSTANCE_T *app = (APP_INSTANCE_T *) pMe;
-	AEEPromptInfo prompt;
 
-	prompt.pszRes = BREW_2048_RES_FILE;
-	prompt.pTitle = NULL;
-	prompt.pText = NULL;
-	prompt.wTitleID = aTitleID;
-	prompt.wTextID = aTextID;
-	prompt.pBtnIDs = NULL;
-	prompt.dwProps = 0;
-	prompt.fntTitle = AEE_FONT_BOLD;
-	prompt.fntText = AEE_FONT_NORMAL;
-	prompt.dwTimeout = SHOW_PROMPT_DELAY_MS;
+	app->m_AppState = APP_STATE_HELP;
 
-	app->m_AppState = APP_STATE_PROMPT;
-	IMENUCTL_SetActive(app->m_pIMenuCtl, FALSE);
+	ISHELL_MessageBox(app->m_App.m_pIShell, BREW_2048_RES_FILE, IDS_APP_NAME, IDS_MENU_ITEM_RESET);
 
-	ISHELL_Prompt(app->m_App.m_pIShell, &prompt);
 	return TRUE;
 }
 
-static boolean PROMPT_ShowAbout(AEEApplet *pMe) {
+static boolean APP_ShowAbout(AEEApplet *pMe) {
 	APP_INSTANCE_T *app = (APP_INSTANCE_T *) pMe;
 	RGBVAL background;
 
 	app->m_AppState = APP_STATE_ABOUT;
 
-	IMENUCTL_SetActive(app->m_pIMenuCtl, FALSE);
+	IMENUCTL_SetActive(app->m_pIMenuMainCtl, FALSE);
 
 	background = IDISPLAY_SetColor(app->m_App.m_pIDisplay, CLR_SYS_WIN, RGB_WHITE);
 
@@ -475,16 +515,6 @@ static boolean PROMPT_ShowAbout(AEEApplet *pMe) {
 	ISHELL_ShowCopyright(app->m_App.m_pIShell);
 
 	IDISPLAY_SetColor(app->m_App.m_pIDisplay, CLR_SYS_WIN, background);
-
-	return TRUE;
-}
-
-static boolean PROMPT_ShowHelp(AEEApplet *pMe) {
-	APP_INSTANCE_T *app = (APP_INSTANCE_T *) pMe;
-
-	app->m_AppState = APP_STATE_HELP;
-
-	ISHELL_MessageBox(app->m_App.m_pIShell, BREW_2048_RES_FILE, IDS_APP_NAME, IDS_MENU_ITEM_RESET);
 
 	return TRUE;
 }
