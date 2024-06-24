@@ -229,6 +229,18 @@ static boolean APP_HandleEvent(AEEApplet *pMe, AEEEvent eCode, uint16 wParam, ui
 					IMENUCTL_SetActive(app->m_pIMenuMainCtl, FALSE);
 					IMENUCTL_SetActive(app->m_pIMenuTileCtl, TRUE);
 					return TRUE;
+				case APP_MENU_ITEM_TILES_RECTANGLE:
+					app->m_AppSettings.m_RoundedRectangle = FALSE;
+					IMENUCTL_SetActive(app->m_pIMenuMainCtl, FALSE);
+					IMENUCTL_SetActive(app->m_pIMenuTileCtl, FALSE);
+					app->m_AppState = APP_STATE_GAME;
+					return GFX_PaintRedrawAll(pMe);
+				case APP_MENU_ITEM_TILES_ROUNDED:
+					app->m_AppSettings.m_RoundedRectangle = TRUE;
+					IMENUCTL_SetActive(app->m_pIMenuMainCtl, FALSE);
+					IMENUCTL_SetActive(app->m_pIMenuTileCtl, FALSE);
+					app->m_AppState = APP_STATE_GAME;
+					return GFX_PaintRedrawAll(pMe);
 				case APP_MENU_ITEM_HELP:
 					IMENUCTL_SetActive(app->m_pIMenuMainCtl, FALSE);
 					return APP_ShowHelp(pMe);
