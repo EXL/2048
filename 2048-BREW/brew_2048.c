@@ -11,14 +11,15 @@
 
 #include "2048.h"
 
+#define SETTINGS_FILENAME                     "brew_2048.dat"
+#define GAMESAVE_FILENAME                     "brew_2048.sav"
+
 #define WSTR_TITLE_MAX                                   (64)
 #define WSTR_TEXT_MAX                                   (128)
 #define SCORE_VALUE_MAX_LENGTH                           (16)
 #define TILE_VALUE_MAX_LENGTH                             (5)
-#define SHOW_PROMPT_DELAY_MS                           (2000) /* 2.0 seconds. */
+#define SHOW_NOTIFICATION_DELAY_MS                     (1200) /* 1.2 seconds. */
 #define TONE_SOUND_DELAY_MS                             (500) /* 0.5 seconds. */
-#define SETTINGS_FILENAME                     "brew_2048.dat"
-#define GAMESAVE_FILENAME                     "brew_2048.sav"
 
 typedef enum { R, G, B, A } APP_COLOR_COMPONENT_T;
 
@@ -26,7 +27,7 @@ typedef enum {
 	APP_STATE_GAME,
 	APP_STATE_MENU_MAIN,
 	APP_STATE_MENU_TILE,
-	APP_STATE_PROMPT,
+	APP_STATE_NOTIFICATION,
 	APP_STATE_HELP,
 	APP_STATE_ABOUT,
 	APP_STATE_MAX
@@ -110,9 +111,10 @@ static boolean APP_DeviceFill(AEEApplet *pMe);
 
 static boolean APP_MenuMainInit(AEEApplet *pMe);
 static boolean APP_MenuTilesInit(AEEApplet *pMe);
-static boolean APP_ShowPrompt(AEEApplet *pMe, const AECHAR *aTitle, const AECHAR *aText);
+static boolean APP_ShowNotification(AEEApplet *pMe, const AECHAR *aTitle, const AECHAR *aText, const AECHAR *aDesc);
 static boolean APP_ShowHelp(AEEApplet *pMe);
 static boolean APP_ShowAbout(AEEApplet *pMe);
+static boolean APP_ShowGame(AEEApplet *pMe);
 
 static boolean GFX_PaintBoard(AEEApplet *pMe);
 static boolean GFX_PaintBackgroud(AEEApplet *pMe);
@@ -245,8 +247,7 @@ static boolean APP_HandleEvent(AEEApplet *pMe, AEEEvent eCode, uint16 wParam, ui
 			APP_LoadSettings(pMe);
 			APP_MenuMainInit(pMe);
 			APP_MenuTilesInit(pMe);
-			GFX_SetCustomColors(pMe);
-			return GFX_PaintRedrawAll(pMe);
+			return APP_ShowGame(pMe);
 		case EVT_APP_STOP:
 			return TRUE;
 		case EVT_DIALOG_END:
@@ -258,8 +259,7 @@ static boolean APP_HandleEvent(AEEApplet *pMe, AEEEvent eCode, uint16 wParam, ui
 					IMENUCTL_SetActive(app->m_pIMenuMainCtl, TRUE);
 					break;
 				default:
-					app->m_AppState = APP_STATE_GAME;
-					GFX_PaintRedrawAll(pMe);
+					APP_ShowGame(pMe);
 					break;
 			}
 			return TRUE;
@@ -272,8 +272,7 @@ static boolean APP_HandleEvent(AEEApplet *pMe, AEEEvent eCode, uint16 wParam, ui
 				case APP_MENU_ITEM_RESET:
 					e_key(AVK_0);
 					IMENUCTL_SetActive(app->m_pIMenuMainCtl, FALSE);
-					app->m_AppState = APP_STATE_GAME;
-					return GFX_PaintRedrawAll(pMe);
+					return APP_ShowGame(pMe);
 				case APP_MENU_ITEM_TILES:
 					app->m_AppState = APP_STATE_MENU_TILE;
 					IMENUCTL_SetSel(app->m_pIMenuTileCtl, APP_MENU_ITEM_TILES_RECTANGLE);
@@ -285,15 +284,13 @@ static boolean APP_HandleEvent(AEEApplet *pMe, AEEEvent eCode, uint16 wParam, ui
 					APP_SaveSettings(pMe);
 					IMENUCTL_SetActive(app->m_pIMenuMainCtl, FALSE);
 					IMENUCTL_SetActive(app->m_pIMenuTileCtl, FALSE);
-					app->m_AppState = APP_STATE_GAME;
-					return GFX_PaintRedrawAll(pMe);
+					return APP_ShowGame(pMe);
 				case APP_MENU_ITEM_TILES_ROUNDED:
 					app->m_AppSettings.m_RoundedRectangle = TRUE;
 					APP_SaveSettings(pMe);
 					IMENUCTL_SetActive(app->m_pIMenuMainCtl, FALSE);
 					IMENUCTL_SetActive(app->m_pIMenuTileCtl, FALSE);
-					app->m_AppState = APP_STATE_GAME;
-					return GFX_PaintRedrawAll(pMe);
+					return APP_ShowGame(pMe);
 				case APP_MENU_ITEM_HELP:
 					return APP_ShowHelp(pMe);
 				case APP_MENU_ITEM_ABOUT:
@@ -307,16 +304,15 @@ static boolean APP_HandleEvent(AEEApplet *pMe, AEEEvent eCode, uint16 wParam, ui
 		case EVT_KEY:
 			switch (app->m_AppState) {
 				case APP_STATE_MENU_MAIN:
-					if (wParam == AVK_CLR) {
-						app->m_AppState = APP_STATE_GAME;
+					if (wParam == AVK_CLR || wParam == AVK_SOFT2) {
 						IMENUCTL_SetActive(app->m_pIMenuMainCtl, FALSE);
-						return GFX_PaintRedrawAll(pMe);
+						return APP_ShowGame(pMe);
 					} else {
 						return IMENUCTL_HandleEvent(app->m_pIMenuMainCtl, eCode, wParam, dwParam);
 					}
 					break;
 				case APP_STATE_MENU_TILE:
-					if (wParam == AVK_CLR) {
+					if (wParam == AVK_CLR || wParam == AVK_SOFT2) {
 						app->m_AppState = APP_STATE_MENU_MAIN;
 						IMENUCTL_SetActive(app->m_pIMenuTileCtl, FALSE);
 						IMENUCTL_SetActive(app->m_pIMenuMainCtl, TRUE);
@@ -326,7 +322,7 @@ static boolean APP_HandleEvent(AEEApplet *pMe, AEEEvent eCode, uint16 wParam, ui
 					}
 					break;
 				case APP_STATE_HELP:
-					if (wParam == AVK_CLR || wParam == AVK_SELECT) {
+					if (wParam == AVK_CLR || wParam == AVK_SELECT || wParam == AVK_SOFT2) {
 						app->m_AppState = APP_STATE_MENU_MAIN;
 						ISTATIC_SetActive(app->m_pIStatic, FALSE);
 						IMENUCTL_SetActive(app->m_pIMenuMainCtl, TRUE);
@@ -540,23 +536,47 @@ static boolean APP_MenuTilesInit(AEEApplet *pMe) {
 	return TRUE;
 }
 
-static boolean APP_ShowPrompt(AEEApplet *pMe, const AECHAR *aTitle, const AECHAR *aText) {
+static boolean APP_ShowNotification(AEEApplet *pMe, const AECHAR *aTitle, const AECHAR *aText, const AECHAR *aDesc) {
 	APP_INSTANCE_T *app = (APP_INSTANCE_T *) pMe;
-	AEEPromptInfo prompt;
+	AEERect rNot;
+	int nAscent;
+	int nDescent;
+	int text_h;
 
-	prompt.pszRes = NULL;
-	prompt.pTitle = aTitle;
-	prompt.pText = aText;
-	prompt.pBtnIDs = NULL;
-	prompt.dwProps = 0;
-	prompt.fntTitle = AEE_FONT_BOLD;
-	prompt.fntText = AEE_FONT_NORMAL;
-	prompt.dwTimeout = SHOW_PROMPT_DELAY_MS;
-
-	app->m_AppState = APP_STATE_PROMPT;
+	app->m_AppState = APP_STATE_NOTIFICATION;
 	IMENUCTL_SetActive(app->m_pIMenuMainCtl, FALSE);
 
-	ISHELL_Prompt(app->m_App.m_pIShell, &prompt);
+	GFX_PaintRedrawAll(pMe);
+	GFX_SetCustomColors(pMe);
+
+	IDISPLAY_GetFontMetrics(app->m_App.m_pIDisplay, AEE_FONT_BOLD, &nAscent, &nDescent);
+	text_h = nAscent + nDescent;
+	SETAEERECT(&rNot,
+		app->m_AppDevice.m_OffsetX,
+		(app->m_AppDevice.m_RectScreen.dy / 2) - text_h * 2,
+		app->m_AppDevice.m_RectScreen.dx - (app->m_AppDevice.m_OffsetX * 2),
+		text_h * 4
+	);
+
+	IDISPLAY_DrawRect(app->m_App.m_pIDisplay, &rNot,
+		COL_ARGB_BGRA(COLOR_TEXT), COL_ARGB_BGRA(COLOR_BOARD), IDF_RECT_FRAME | IDF_RECT_FILL);
+
+	rNot.x  += 1;
+	rNot.dx -= 1 * 2;
+	rNot.y  += 2;
+	rNot.dy -= 2 * 2;
+
+	IDISPLAY_DrawText(app->m_App.m_pIDisplay, AEE_FONT_BOLD, aTitle, -1, 0, 0, &rNot,
+		IDF_ALIGN_CENTER | IDF_ALIGN_TOP);
+	IDISPLAY_DrawText(app->m_App.m_pIDisplay, AEE_FONT_NORMAL, aText, -1, 0, 0, &rNot,
+		IDF_ALIGN_CENTER | IDF_ALIGN_MIDDLE);
+	if (aDesc) {
+		IDISPLAY_DrawText(app->m_App.m_pIDisplay, AEE_FONT_NORMAL, aDesc, -1, 0, 0, &rNot,
+			IDF_ALIGN_CENTER | IDF_ALIGN_BOTTOM);
+	}
+
+	IDISPLAY_Update(app->m_App.m_pIDisplay);
+	ISHELL_SetTimer(app->m_App.m_pIShell, SHOW_NOTIFICATION_DELAY_MS, (PFNNOTIFY) APP_ShowGame, (void *) pMe);
 
 	return TRUE;
 }
@@ -603,6 +623,17 @@ static boolean APP_ShowAbout(AEEApplet *pMe) {
 	IDISPLAY_ClearScreen(app->m_App.m_pIDisplay);
 
 	ISHELL_ShowCopyright(app->m_App.m_pIShell);
+
+	return TRUE;
+}
+
+static boolean APP_ShowGame(AEEApplet *pMe) {
+	APP_INSTANCE_T *app = (APP_INSTANCE_T *) pMe;
+
+	app->m_AppState = APP_STATE_GAME;
+
+	GFX_SetCustomColors(pMe);
+	GFX_PaintRedrawAll(pMe);
 
 	return TRUE;
 }
@@ -893,8 +924,7 @@ static boolean APP_SaveAndLoadGame(AEEApplet *pMe, boolean aSave) {
 	APP_INSTANCE_T *app = (APP_INSTANCE_T *) pMe;
 	AECHAR title[WSTR_TITLE_MAX];
 	AECHAR text[WSTR_TEXT_MAX];
-	AECHAR timedate[WSTR_TEXT_MAX];
-	AECHAR text_combined[WSTR_TEXT_MAX];
+	AECHAR time_date[WSTR_TEXT_MAX];
 	boolean result;
 	uint16 res_ok_title;
 	uint16 res_err_title;
@@ -915,19 +945,18 @@ static boolean APP_SaveAndLoadGame(AEEApplet *pMe, boolean aSave) {
 		tone = AEE_TONE_CTRL;
 	}
 
-	if (result){
+	if (result) {
 		ISHELL_LoadResString(app->m_App.m_pIShell, BREW_2048_RES_FILE, res_ok_title, title, s * WSTR_TITLE_MAX);
 		ISHELL_LoadResString(app->m_App.m_pIShell, BREW_2048_RES_FILE, IDS_STATE, text, s * WSTR_TEXT_MAX);
-		WSPRINTF(timedate, s * WSTR_TEXT_MAX, L"%02d:%02d:%02d %02d/%02d/%04d",
+		WSPRINTF(time_date, s * WSTR_TEXT_MAX, L"%02d:%02d:%02d %02d/%02d/%04d",
 			 app->m_AppSave.date_time.wHour, app->m_AppSave.date_time.wMinute, app->m_AppSave.date_time.wSecond,
 			 app->m_AppSave.date_time.wMonth, app->m_AppSave.date_time.wDay, app->m_AppSave.date_time.wYear);
-		WSPRINTF(text_combined, s * WSTR_TEXT_MAX, L"%s\n\n%s", text, timedate);
 		APP_PlaySoundTone(pMe, tone);
-		return APP_ShowPrompt(pMe, title, text_combined);
+		return APP_ShowNotification(pMe, title, text, time_date);
 	} else {
 		ISHELL_LoadResString(app->m_App.m_pIShell, BREW_2048_RES_FILE, res_err_title, title, s * WSTR_TITLE_MAX);
 		ISHELL_LoadResString(app->m_App.m_pIShell, BREW_2048_RES_FILE, res_err_text, text, s * WSTR_TEXT_MAX);
-		return APP_ShowPrompt(pMe, title, text);
+		return APP_ShowNotification(pMe, title, text, NULL);
 	}
 
 	return TRUE;
