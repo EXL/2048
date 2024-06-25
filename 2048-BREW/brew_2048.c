@@ -1,4 +1,5 @@
 #include <AEEAppGen.h>
+#include <AEEShell.h>
 #include <AEEStdLib.h>
 #include <AEEGraphics.h>
 #include <AEESound.h>
@@ -10,6 +11,8 @@
 
 #include "2048.h"
 
+#define STR_TITLE_MAX                                    (32)
+#define STR_TEXT_MAX                                    (128)
 #define SCORE_VALUE_MAX_LENGTH                           (16)
 #define TILE_VALUE_MAX_LENGTH                             (5)
 #define SHOW_PROMPT_DELAY_MS                           (2000) /* 2.0 seconds. */
@@ -119,6 +122,7 @@ static boolean GFX_SetCustomColors(AEEApplet *pMe);
 
 static boolean APP_SaveSettings(AEEApplet *pMe);
 static boolean APP_LoadSettings(AEEApplet *pMe);
+static boolean APP_SaveAndLoadGame(AEEApplet *pMe, boolean aSave);
 static boolean APP_SaveGame(AEEApplet *pMe);
 static boolean APP_LoadGame(AEEApplet *pMe);
 
@@ -256,19 +260,9 @@ static boolean APP_HandleEvent(AEEApplet *pMe, AEEEvent eCode, uint16 wParam, ui
 		case EVT_COMMAND:
 			switch (wParam) {
 				case APP_MENU_ITEM_SAVE:
-					if (APP_SaveGame(pMe)) {
-						APP_PlaySoundTone(pMe, AEE_TONE_WARN);
-						return APP_ShowPrompt(pMe, wstr_lbl_title, L"Game\nSaved!");
-					} else {
-						return APP_ShowPrompt(pMe, wstr_lbl_title, L"Game NOT Saved!");
-					}
+					return APP_SaveAndLoadGame(pMe, TRUE);
 				case APP_MENU_ITEM_LOAD:
-					if (APP_LoadGame(pMe)){
-						APP_PlaySoundTone(pMe, AEE_TONE_CTRL);
-						return APP_ShowPrompt(pMe, wstr_lbl_title, L"Game\nLoaded!");
-					} else {
-						return APP_ShowPrompt(pMe, wstr_lbl_title, L"Game NOT Loaded!");
-					}
+					return APP_SaveAndLoadGame(pMe, FALSE);
 				case APP_MENU_ITEM_RESET:
 					e_key(AVK_0);
 					IMENUCTL_SetActive(app->m_pIMenuMainCtl, FALSE);
@@ -506,7 +500,7 @@ static boolean APP_MenuTilesInit(AEEApplet *pMe) {
 	CtlAddItem menu_item;
 
 	IMENUCTL_SetRect(app->m_pIMenuTileCtl, &app->m_AppDevice.m_RectScreen);
-	IMENUCTL_SetTitle(app->m_pIMenuTileCtl, BREW_2048_RES_FILE, IDS_MENU_ITEM_TILES, NULL);
+	IMENUCTL_SetTitle(app->m_pIMenuTileCtl, BREW_2048_RES_FILE, IDS_MENU_TITLE_TILE, NULL);
 	IMENUCTL_SetProperties(app->m_pIMenuTileCtl, MP_UNDERLINE_TITLE | MP_WRAPSCROLL);
 
 	menu_item.pText = NULL;
@@ -559,7 +553,7 @@ static boolean APP_ShowHelp(AEEApplet *pMe) {
 	IMENUCTL_SetActive(app->m_pIMenuMainCtl, FALSE);
 
 	GFX_SetCustomColors(pMe);
-	ISHELL_MessageBox(app->m_App.m_pIShell, BREW_2048_RES_FILE, IDS_APP_NAME, IDS_MENU_ITEM_RESET);
+	ISHELL_MessageBox(app->m_App.m_pIShell, BREW_2048_RES_FILE, IDS_HELP_TITLE, IDS_HELP_TEXT);
 
 	return TRUE;
 }
@@ -857,6 +851,51 @@ static boolean APP_LoadSettings(AEEApplet *pMe) {
 	}
 
 	return FALSE;
+}
+
+static boolean APP_SaveAndLoadGame(AEEApplet *pMe, boolean aSave) {
+	const uint32 s = sizeof(AECHAR);
+	APP_INSTANCE_T *app = (APP_INSTANCE_T *) pMe;
+	AECHAR title[STR_TITLE_MAX];
+	AECHAR text[STR_TEXT_MAX];
+	AECHAR timedate[STR_TEXT_MAX];
+	AECHAR text_combined[STR_TEXT_MAX];
+	boolean result;
+	uint16 res_ok_title;
+	uint16 res_err_title;
+	uint16 res_err_text;
+	AEESoundTone tone;
+
+	if (aSave) {
+		result = APP_SaveGame(pMe);
+		res_ok_title = IDS_SAVE_TITLE;
+		res_err_title = IDS_SAVE_ERROR_TITLE;
+		res_err_text = IDS_SAVE_ERROR_TEXT;
+		tone = AEE_TONE_WARN;
+	} else {
+		result = APP_LoadGame(pMe);
+		res_ok_title = IDS_LOAD_TITLE;
+		res_err_title = IDS_LOAD_ERROR_TITLE;
+		res_err_text = IDS_LOAD_ERROR_TEXT;
+		tone = AEE_TONE_CTRL;
+	}
+
+	if (result){
+		ISHELL_LoadResString(app->m_App.m_pIShell, BREW_2048_RES_FILE, res_ok_title, title, s * STR_TITLE_MAX);
+		ISHELL_LoadResString(app->m_App.m_pIShell, BREW_2048_RES_FILE, IDS_STATE, text, s * STR_TEXT_MAX);
+		WSPRINTF(timedate, s * STR_TEXT_MAX, L"%02d:%02d:%02d %02d/%02d/%04d",
+			 app->m_AppSave.date_time.wHour, app->m_AppSave.date_time.wMinute, app->m_AppSave.date_time.wSecond,
+			 app->m_AppSave.date_time.wMonth, app->m_AppSave.date_time.wDay, app->m_AppSave.date_time.wYear);
+		WSPRINTF(text_combined, s * STR_TEXT_MAX, L"%s\n\n%s", text, timedate);
+		APP_PlaySoundTone(pMe, tone);
+		return APP_ShowPrompt(pMe, title, text_combined);
+	} else {
+		ISHELL_LoadResString(app->m_App.m_pIShell, BREW_2048_RES_FILE, res_err_title, title, s * STR_TITLE_MAX);
+		ISHELL_LoadResString(app->m_App.m_pIShell, BREW_2048_RES_FILE, res_err_text, text, s * STR_TEXT_MAX);
+		return APP_ShowPrompt(pMe, title, text);
+	}
+
+	return TRUE;
 }
 
 static boolean APP_SaveGame(AEEApplet *pMe) {

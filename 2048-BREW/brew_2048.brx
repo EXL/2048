@@ -5,7 +5,7 @@
 		<Text>2048-BREW</Text>
 	</String>
 	<String Id="1002" Name="IDS_MENU_TITLE_MAIN">
-		<Text>2048-BREW Menu</Text>
+		<Text> 2048-BREW Menu</Text>
 	</String>
 	<String Id="1003" Name="IDS_MENU_ITEM_SAVE">
 		<Text>Save Game</Text>
@@ -26,13 +26,45 @@
 		<Text>Exit</Text>
 	</String>
 	<String Id="1009" Name="IDS_MENU_ITEM_TILES">
-		<Text>Tiles:</Text>
+		<Text>Tiles</Text>
 	</String>
 	<String Id="1010" Name="IDS_MENU_ITEM_RECTANGLE">
 		<Text>Rectangle</Text>
 	</String>
 	<String Id="1011" Name="IDS_MENU_ITEM_ROUNDED">
 		<Text>Rounded</Text>
+	</String>
+	<String Id="1012" Name="IDS_MENU_TITLE_TILE">
+		<Text> Tiles Menu</Text>
+	</String>
+	<String Id="1013" Name="IDS_HELP_TITLE">
+		<Text> 2048-BREW Help</Text>
+	</String>
+	<String Id="1014" Name="IDS_HELP_TEXT">
+		<Text>A popular puzzle game for Qualcomm BREW platform written using AEE framework.
+
+Collect "2048" by moving tiles!</Text>
+	</String>
+	<String Id="1015" Name="IDS_LOAD_ERROR_TITLE">
+		<Text> Load Error!</Text>
+	</String>
+	<String Id="1016" Name="IDS_SAVE_TITLE">
+		<Text> Game Saved!</Text>
+	</String>
+	<String Id="1017" Name="IDS_LOAD_ERROR_TEXT">
+		<Text>Cannot find save file!</Text>
+	</String>
+	<String Id="1018" Name="IDS_LOAD_TITLE">
+		<Text> Game Loaded!</Text>
+	</String>
+	<String Id="1019" Name="IDS_STATE">
+		<Text>State on: </Text>
+	</String>
+	<String Id="1020" Name="IDS_SAVE_ERROR_TITLE">
+		<Text> Save Error!</Text>
+	</String>
+	<String Id="1021" Name="IDS_SAVE_ERROR_TEXT">
+		<Text>Cannot create save file!</Text>
 	</String>
 </Strings>
 <Objects MimeType="image/png">
