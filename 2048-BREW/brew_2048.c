@@ -11,8 +11,8 @@
 
 #include "2048.h"
 
-#define STR_TITLE_MAX                                    (32)
-#define STR_TEXT_MAX                                    (128)
+#define WSTR_TITLE_MAX                                   (64)
+#define WSTR_TEXT_MAX                                   (128)
 #define SCORE_VALUE_MAX_LENGTH                           (16)
 #define TILE_VALUE_MAX_LENGTH                             (5)
 #define SHOW_PROMPT_DELAY_MS                           (2000) /* 2.0 seconds. */
@@ -94,6 +94,8 @@ typedef struct {
 
 	IMenuCtl *m_pIMenuMainCtl;
 	IMenuCtl *m_pIMenuTileCtl;
+
+	IStatic *m_pIStatic;
 
 	boolean is_softkey_menu_pushed;
 	boolean is_softkey_reset_pushed;
@@ -215,6 +217,9 @@ static boolean APP_InitAppData(AEEApplet *pMe) {
 	if (ISHELL_CreateInstance(app->m_App.m_pIShell, AEECLSID_SOUND, (void **) &app->m_pISound) != AEE_SUCCESS) {
 		return FALSE;
 	}
+	if (ISHELL_CreateInstance(app->m_App.m_pIShell, AEECLSID_STATIC, (void **) &app->m_pIStatic) != AEE_SUCCESS) {
+		return FALSE;
+	}
 
 	return TRUE;
 }
@@ -227,6 +232,7 @@ static boolean APP_FreeAppData(AEEApplet *pMe) {
 	IMENUCTL_Release(app->m_pIMenuTileCtl);
 	IFILEMGR_Release(app->m_pIFileMgr);
 	ISOUND_Release(app->m_pISound);
+	ISTATIC_Release(app->m_pIStatic);
 
 	return TRUE;
 }
@@ -306,7 +312,7 @@ static boolean APP_HandleEvent(AEEApplet *pMe, AEEEvent eCode, uint16 wParam, ui
 						IMENUCTL_SetActive(app->m_pIMenuMainCtl, FALSE);
 						return GFX_PaintRedrawAll(pMe);
 					} else {
-						return IMENUCTL_HandleEvent(app->m_pIMenuMainCtl, EVT_KEY, wParam, dwParam);
+						return IMENUCTL_HandleEvent(app->m_pIMenuMainCtl, eCode, wParam, dwParam);
 					}
 					break;
 				case APP_STATE_MENU_TILE:
@@ -316,9 +322,18 @@ static boolean APP_HandleEvent(AEEApplet *pMe, AEEEvent eCode, uint16 wParam, ui
 						IMENUCTL_SetActive(app->m_pIMenuMainCtl, TRUE);
 						return TRUE;
 					} else {
-						return IMENUCTL_HandleEvent(app->m_pIMenuTileCtl, EVT_KEY, wParam, dwParam);
+						return IMENUCTL_HandleEvent(app->m_pIMenuTileCtl, eCode, wParam, dwParam);
 					}
 					break;
+				case APP_STATE_HELP:
+					if (wParam == AVK_CLR || wParam == AVK_SELECT) {
+						app->m_AppState = APP_STATE_MENU_MAIN;
+						ISTATIC_SetActive(app->m_pIStatic, FALSE);
+						IMENUCTL_SetActive(app->m_pIMenuMainCtl, TRUE);
+						return TRUE;
+					} else {
+						return ISTATIC_HandleEvent(app->m_pIStatic, eCode, wParam, dwParam);
+					}
 				case APP_STATE_GAME:
 					switch (wParam) {
 						case AVK_0:
@@ -547,13 +562,33 @@ static boolean APP_ShowPrompt(AEEApplet *pMe, const AECHAR *aTitle, const AECHAR
 }
 
 static boolean APP_ShowHelp(AEEApplet *pMe) {
+	const uint32 text_size = 1024 * sizeof(AECHAR); /* 2048 bytes, 1024 characters. */
 	APP_INSTANCE_T *app = (APP_INSTANCE_T *) pMe;
+	AECHAR title[WSTR_TITLE_MAX];
+	AECHAR *text;
+	boolean load_ok;
 
 	app->m_AppState = APP_STATE_HELP;
 	IMENUCTL_SetActive(app->m_pIMenuMainCtl, FALSE);
 
 	GFX_SetCustomColors(pMe);
-	ISHELL_MessageBox(app->m_App.m_pIShell, BREW_2048_RES_FILE, IDS_HELP_TITLE, IDS_HELP_TEXT);
+	IDISPLAY_ClearScreen(app->m_App.m_pIDisplay);
+
+	text = (AECHAR *) MALLOC(text_size);
+	load_ok = ISHELL_LoadResString(app->m_App.m_pIShell, BREW_2048_RES_FILE, IDS_HELP_TITLE, title, WSTR_TITLE_MAX);
+	load_ok = ISHELL_LoadResString(app->m_App.m_pIShell, BREW_2048_RES_FILE, IDS_HELP_TEXT, text, text_size);
+
+	if (!text || !load_ok) {
+		if (text) {
+			FREE(text);
+		}
+		return FALSE;
+	}
+
+	ISTATIC_SetProperties(app->m_pIStatic, ST_TEXTALLOC | ST_NOSCROLL);
+	ISTATIC_SetText(app->m_pIStatic, title, text, AEE_FONT_BOLD, AEE_FONT_NORMAL);
+	ISTATIC_SetActive(app->m_pIStatic, TRUE);
+	ISTATIC_Redraw(app->m_pIStatic);
 
 	return TRUE;
 }
@@ -856,10 +891,10 @@ static boolean APP_LoadSettings(AEEApplet *pMe) {
 static boolean APP_SaveAndLoadGame(AEEApplet *pMe, boolean aSave) {
 	const uint32 s = sizeof(AECHAR);
 	APP_INSTANCE_T *app = (APP_INSTANCE_T *) pMe;
-	AECHAR title[STR_TITLE_MAX];
-	AECHAR text[STR_TEXT_MAX];
-	AECHAR timedate[STR_TEXT_MAX];
-	AECHAR text_combined[STR_TEXT_MAX];
+	AECHAR title[WSTR_TITLE_MAX];
+	AECHAR text[WSTR_TEXT_MAX];
+	AECHAR timedate[WSTR_TEXT_MAX];
+	AECHAR text_combined[WSTR_TEXT_MAX];
 	boolean result;
 	uint16 res_ok_title;
 	uint16 res_err_title;
@@ -881,17 +916,17 @@ static boolean APP_SaveAndLoadGame(AEEApplet *pMe, boolean aSave) {
 	}
 
 	if (result){
-		ISHELL_LoadResString(app->m_App.m_pIShell, BREW_2048_RES_FILE, res_ok_title, title, s * STR_TITLE_MAX);
-		ISHELL_LoadResString(app->m_App.m_pIShell, BREW_2048_RES_FILE, IDS_STATE, text, s * STR_TEXT_MAX);
-		WSPRINTF(timedate, s * STR_TEXT_MAX, L"%02d:%02d:%02d %02d/%02d/%04d",
+		ISHELL_LoadResString(app->m_App.m_pIShell, BREW_2048_RES_FILE, res_ok_title, title, s * WSTR_TITLE_MAX);
+		ISHELL_LoadResString(app->m_App.m_pIShell, BREW_2048_RES_FILE, IDS_STATE, text, s * WSTR_TEXT_MAX);
+		WSPRINTF(timedate, s * WSTR_TEXT_MAX, L"%02d:%02d:%02d %02d/%02d/%04d",
 			 app->m_AppSave.date_time.wHour, app->m_AppSave.date_time.wMinute, app->m_AppSave.date_time.wSecond,
 			 app->m_AppSave.date_time.wMonth, app->m_AppSave.date_time.wDay, app->m_AppSave.date_time.wYear);
-		WSPRINTF(text_combined, s * STR_TEXT_MAX, L"%s\n\n%s", text, timedate);
+		WSPRINTF(text_combined, s * WSTR_TEXT_MAX, L"%s\n\n%s", text, timedate);
 		APP_PlaySoundTone(pMe, tone);
 		return APP_ShowPrompt(pMe, title, text_combined);
 	} else {
-		ISHELL_LoadResString(app->m_App.m_pIShell, BREW_2048_RES_FILE, res_err_title, title, s * STR_TITLE_MAX);
-		ISHELL_LoadResString(app->m_App.m_pIShell, BREW_2048_RES_FILE, res_err_text, text, s * STR_TEXT_MAX);
+		ISHELL_LoadResString(app->m_App.m_pIShell, BREW_2048_RES_FILE, res_err_title, title, s * WSTR_TITLE_MAX);
+		ISHELL_LoadResString(app->m_App.m_pIShell, BREW_2048_RES_FILE, res_err_text, text, s * WSTR_TEXT_MAX);
 		return APP_ShowPrompt(pMe, title, text);
 	}
 
