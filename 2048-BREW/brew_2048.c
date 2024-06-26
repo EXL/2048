@@ -115,6 +115,7 @@ static boolean APP_ShowNotification(AEEApplet *pMe, const AECHAR *aTitle, const 
 static boolean APP_ShowHelp(AEEApplet *pMe);
 static boolean APP_ShowAbout(AEEApplet *pMe);
 static boolean APP_ShowGame(AEEApplet *pMe);
+static boolean APP_UpdateMenu(AEEApplet *pMe);
 
 static boolean GFX_PaintBoard(AEEApplet *pMe);
 static boolean GFX_PaintBackgroud(AEEApplet *pMe);
@@ -281,12 +282,14 @@ static boolean APP_HandleEvent(AEEApplet *pMe, AEEEvent eCode, uint16 wParam, ui
 					return TRUE;
 				case APP_MENU_ITEM_TILES_RECTANGLE:
 					app->m_AppSettings.m_RoundedRectangle = FALSE;
+					APP_UpdateMenu(pMe);
 					APP_SaveSettings(pMe);
 					IMENUCTL_SetActive(app->m_pIMenuMainCtl, FALSE);
 					IMENUCTL_SetActive(app->m_pIMenuTileCtl, FALSE);
 					return APP_ShowGame(pMe);
 				case APP_MENU_ITEM_TILES_ROUNDED:
 					app->m_AppSettings.m_RoundedRectangle = TRUE;
+					APP_UpdateMenu(pMe);
 					APP_SaveSettings(pMe);
 					IMENUCTL_SetActive(app->m_pIMenuMainCtl, FALSE);
 					IMENUCTL_SetActive(app->m_pIMenuTileCtl, FALSE);
@@ -472,32 +475,32 @@ static boolean APP_MenuMainInit(AEEApplet *pMe) {
 	IMENUCTL_AddItemEx(app->m_pIMenuMainCtl, &menu_item);
 
 	menu_item.wText = IDS_MENU_ITEM_LOAD;
-	menu_item.wImage = IDI_ICON_SAVE;
+	menu_item.wImage = IDI_ICON_LOAD;
 	menu_item.wItemID = APP_MENU_ITEM_LOAD;
 	IMENUCTL_AddItemEx(app->m_pIMenuMainCtl, &menu_item);
 
 	menu_item.wText = IDS_MENU_ITEM_RESET;
-	menu_item.wImage = IDI_ICON_SAVE;
+	menu_item.wImage = IDI_ICON_RESET;
 	menu_item.wItemID = APP_MENU_ITEM_RESET;
 	IMENUCTL_AddItemEx(app->m_pIMenuMainCtl, &menu_item);
 
 	menu_item.wText = IDS_MENU_ITEM_TILES;
-	menu_item.wImage = IDI_ICON_SAVE;
+	menu_item.wImage = IDI_ICON_TILE;
 	menu_item.wItemID = APP_MENU_ITEM_TILES;
 	IMENUCTL_AddItemEx(app->m_pIMenuMainCtl, &menu_item);
 
 	menu_item.wText = IDS_MENU_ITEM_HELP;
-	menu_item.wImage = IDI_ICON_SAVE;
+	menu_item.wImage = IDI_ICON_HELP;
 	menu_item.wItemID = APP_MENU_ITEM_HELP;
 	IMENUCTL_AddItemEx(app->m_pIMenuMainCtl, &menu_item);
 
 	menu_item.wText = IDS_MENU_ITEM_ABOUT;
-	menu_item.wImage = IDI_ICON_SAVE;
+	menu_item.wImage = IDI_ICON_ABOUT;
 	menu_item.wItemID = APP_MENU_ITEM_ABOUT;
 	IMENUCTL_AddItemEx(app->m_pIMenuMainCtl, &menu_item);
 
 	menu_item.wText = IDS_MENU_ITEM_EXIT;
-	menu_item.wImage = IDI_ICON_SAVE;
+	menu_item.wImage = IDI_ICON_EXIT;
 	menu_item.wItemID = APP_MENU_ITEM_EXIT;
 	IMENUCTL_AddItemEx(app->m_pIMenuMainCtl, &menu_item);
 
@@ -522,12 +525,12 @@ static boolean APP_MenuTilesInit(AEEApplet *pMe) {
 	menu_item.dwData = 0;
 
 	menu_item.wText = IDS_MENU_ITEM_RECTANGLE;
-	menu_item.wImage = IDI_ICON_SAVE;
+	menu_item.wImage = (app->m_AppSettings.m_RoundedRectangle) ? IDI_ICON_CHECKBOX_FALSE : IDI_ICON_CHECKBOX_TRUE;
 	menu_item.wItemID = APP_MENU_ITEM_TILES_RECTANGLE;
 	IMENUCTL_AddItemEx(app->m_pIMenuTileCtl, &menu_item);
 
 	menu_item.wText = IDS_MENU_ITEM_ROUNDED;
-	menu_item.wImage = IDI_ICON_SAVE;
+	menu_item.wImage = (app->m_AppSettings.m_RoundedRectangle) ? IDI_ICON_CHECKBOX_TRUE : IDI_ICON_CHECKBOX_FALSE;
 	menu_item.wItemID = APP_MENU_ITEM_TILES_ROUNDED;
 	IMENUCTL_AddItemEx(app->m_pIMenuTileCtl, &menu_item);
 
@@ -634,6 +637,26 @@ static boolean APP_ShowGame(AEEApplet *pMe) {
 
 	GFX_SetCustomColors(pMe);
 	GFX_PaintRedrawAll(pMe);
+
+	return TRUE;
+}
+
+static boolean APP_UpdateMenu(AEEApplet *pMe) {
+	APP_INSTANCE_T *app = (APP_INSTANCE_T *) pMe;
+	CtlAddItem menu_item;
+
+	menu_item.pText = NULL;
+	menu_item.pImage = NULL;
+	menu_item.pszResText = BREW_2048_RES_FILE;
+	menu_item.pszResImage = BREW_2048_RES_FILE;
+	menu_item.wFont = AEE_FONT_NORMAL;
+	menu_item.dwData = 0;
+
+	menu_item.wImage = (app->m_AppSettings.m_RoundedRectangle) ? IDI_ICON_CHECKBOX_FALSE : IDI_ICON_CHECKBOX_TRUE;
+	IMENUCTL_SetItem(app->m_pIMenuTileCtl, APP_MENU_ITEM_TILES_RECTANGLE, MSIF_IMAGE, &menu_item);
+
+	menu_item.wImage = (app->m_AppSettings.m_RoundedRectangle) ? IDI_ICON_CHECKBOX_TRUE : IDI_ICON_CHECKBOX_FALSE;
+	IMENUCTL_SetItem(app->m_pIMenuTileCtl, APP_MENU_ITEM_TILES_ROUNDED, MSIF_IMAGE, &menu_item);
 
 	return TRUE;
 }
@@ -854,6 +877,8 @@ static boolean GFX_SetCustomColors(AEEApplet *pMe) {
 	IDISPLAY_SetColor(app->m_App.m_pIDisplay, CLR_SYS_FRAME_LO, COL_BUMP(COLOR_TEXT, -0x60));
 	IDISPLAY_SetColor(app->m_App.m_pIDisplay, CLR_SYS_LT_SHADOW, COL_BUMP(COLOR_TEXT, 0x70));
 	IDISPLAY_SetColor(app->m_App.m_pIDisplay, CLR_SYS_DK_SHADOW, COL_BUMP(COLOR_TEXT, -0x40));
+	IDISPLAY_SetColor(app->m_App.m_pIDisplay, CLR_SYS_SCROLLBAR, COL_ARGB_BGRA(COLOR_TEXT));
+	IDISPLAY_SetColor(app->m_App.m_pIDisplay, CLR_SYS_SCROLLBAR_FILL, COL_ARGB_BGRA(COLOR_FINAL));
 
 	menu_colors.wMask = 0xFFFF;
 	menu_colors.cBack = COL_ARGB_BGRA(COLOR_BOARD);

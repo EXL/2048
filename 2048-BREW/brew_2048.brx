@@ -43,7 +43,11 @@
 	<String Id="1014" Name="IDS_HELP_TEXT">
 		<Text>A popular puzzle game for Qualcomm BREW platform written using AEE framework.
 
-Collect "2048" by moving tiles!</Text>
+Collect "2048" by moving tiles! Use "0" button to reset game.
+
+Thanks to Jeff Anders for the Material Desing Icons. Thanks to usernameak, kraze1984, and asdf for help and advice.
+
+https://github.com/EXL/2048</Text>
 	</String>
 	<String Id="1015" Name="IDS_LOAD_ERROR_TITLE">
 		<Text> Load Error!</Text>
@@ -69,7 +73,31 @@ Collect "2048" by moving tiles!</Text>
 </Strings>
 <Objects MimeType="image/png">
 	<Object Id="5001" Name="IDI_ICON_SAVE">
-		<File>.\icons\icon-save.png</File>
+		<File>.\icons\action\icon_save_16x16.png</File>
+	</Object>
+	<Object Id="5002" Name="IDI_ICON_LOAD">
+		<File>.\icons\action\icon_load_16x16.png</File>
+	</Object>
+	<Object Id="5003" Name="IDI_ICON_RESET">
+		<File>.\icons\action\icon_reset_16x16.png</File>
+	</Object>
+	<Object Id="5004" Name="IDI_ICON_TILE">
+		<File>.\icons\action\icon_tiles_16x16.png</File>
+	</Object>
+	<Object Id="5005" Name="IDI_ICON_CHECKBOX_FALSE">
+		<File>.\icons\action\icon_checkbox_false_16x16.png</File>
+	</Object>
+	<Object Id="5006" Name="IDI_ICON_CHECKBOX_TRUE">
+		<File>.\icons\action\icon_checkbox_true_16x16.png</File>
+	</Object>
+	<Object Id="5007" Name="IDI_ICON_HELP">
+		<File>.\icons\action\icon_help_16x16.png</File>
+	</Object>
+	<Object Id="5008" Name="IDI_ICON_ABOUT">
+		<File>.\icons\action\icon_about_16x16.png</File>
+	</Object>
+	<Object Id="5009" Name="IDI_ICON_EXIT">
+		<File>.\icons\action\icon_exit_16x16.png</File>
 	</Object>
 </Objects>
 </BREWRes>
