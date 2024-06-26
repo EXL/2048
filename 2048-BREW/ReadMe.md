@@ -13,23 +13,25 @@ The "2048" puzzle game for the Qualcomm BREW platform written using AEE framewor
 
 ## Install Tools & Build & Run
 
+Install BREW SDK first.
+
 Windows recipe:
 
 ```bat
 > cd 2048\2048-BREW\
 > md build
 > cd build
-> cmake .. -DCMAKE_TOOLCHAIN_FILE=brew-cmake-toolchain/brew.cmake -DCMAKE_BUILD_TYPE=Release -G Ninja
+> cmake .. -DCMAKE_TOOLCHAIN_FILE=brew-cmake-toolchain\brew.cmake -DCMAKE_BUILD_TYPE=Release -G Ninja
 > cmake --build . --clean-first --verbose
 ```
 
-Linux recipe (ElfPack 1.x build only):
+Linux recipe:
 
 ```bash
 $ cd 2048/2048-BREW/
 $ mkdir build
 $ cd build
-$ cmake .. -DCMAKE_TOOLCHAIN_FILE=/home/exl/Downloads/Shared/CDMA/brew-cmake-toolchain/brew.cmake -DCMAKE_BUILD_TYPE=Release -DUSE_SYSTEM_TOOLCHAIN=Yes -G Ninja
+$ cmake .. -DCMAKE_TOOLCHAIN_FILE=brew-cmake-toolchain/brew.cmake -DCMAKE_BUILD_TYPE=Release -DUSE_SYSTEM_TOOLCHAIN=Yes -G Ninja
 $ cmake --build . --clean-first --verbose
 ```
 
@@ -41,7 +43,7 @@ $ cmake --build . --clean-first --verbose
 │   ├── brew_2048.bar      # Data resource archive.
 │   ├── brew_2048.mod      # Executable file.
 │   └── brew_2048.sig      # Test signature.
-└── brew_2048.mif          # Application manifest, parameters, and icon.
+└── brew_2048.mif          # Application manifest, parameters, and icons.
 ```
 
 ## Additional Stuff
@@ -72,5 +74,4 @@ arm-none-eabi-g++ (15:10.3-2021.07-4) 10.3.1 20210621 (release)
 
 ## Information
 
-* [brew-cmake-toolchain](https://github.com/usernameak/brew-cmake-toolchain) by [@usernameak](https://github.com/usernameak/).
 * [Motorola CDMA: A840, E815, Е685, V710, V950, L7c, V3c, V3m, K1m, V9m, Z6c, Z6m, Z6tv](https://forum.motofan.ru/index.php?showforum=104): A section of the MotoFan.Ru forum dedicated to the Motorola CDMA phones.
