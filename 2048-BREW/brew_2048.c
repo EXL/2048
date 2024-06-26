@@ -1,3 +1,18 @@
+/*
+ * About:
+ *   A popular "2048" puzzle game for Qualcomm BREW platform written using AEE framework.
+ *
+ * Author:
+ *   EXL
+ *
+ * License:
+ *   MIT
+ *
+ * Additional information:
+ *   1. starting_brew.pdf
+ *   2. https://github.com/usernameak/brew-cmake-toolchain
+ */
+
 #include <AEEAppGen.h>
 #include <AEEShell.h>
 #include <AEEStdLib.h>
