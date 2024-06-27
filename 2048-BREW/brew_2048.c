@@ -828,12 +828,23 @@ static boolean GFX_PaintFinal(AEEApplet *pMe) {
 	IDISPLAY_SetColor(app->m_App.m_pIDisplay, CLR_USER_TEXT, tc);
 
 	IDISPLAY_GetFontMetrics(app->m_App.m_pIDisplay, app->m_AppDevice.m_FontXXXX, &nAscent, &nDescent);
-	text_w = IDISPLAY_MeasureText(app->m_App.m_pIDisplay, app->m_AppDevice.m_FontXXXX, wstr_score);
 	text_h = nAscent + nDescent;
 	zoom_r = text_h * app->m_AppDevice.m_ZoomFactor;
+
+	/* Patch #1: Fix height on 176x220 and Casio G'zOne Ravine C751. */
 	if (app->m_AppDevice.m_ScreenW < 240) {
-		zoom_r += text_h / 2; /* + 1.5 */
+		zoom_r += text_h / 2; /* + 50% of font size. */
+	} else {
+		zoom_r += 2;          /* + 2 px. */
 	}
+
+	/* Patch #2: Fix title on big font phones like Casio G'zOne Ravine C751. */
+	text_w = IDISPLAY_MeasureText(app->m_App.m_pIDisplay, app->m_AppDevice.m_FontXXXX, app->m_AppDevice.m_wstr_title);
+	if (text_w > ((app->m_AppDevice.m_ScreenW / 2) - 2)) { /* (Screen Width / 2) - 2 px. */
+		app->m_AppDevice.m_wstr_title = wstr_lbl_title_small;
+	}
+
+	text_w = IDISPLAY_MeasureText(app->m_App.m_pIDisplay, app->m_AppDevice.m_FontXXXX, wstr_score);
 
 	IDISPLAY_DrawText(app->m_App.m_pIDisplay, app->m_AppDevice.m_FontXXXX, app->m_AppDevice.m_wstr_title, -1,
 		app->m_AppDevice.m_OffsetW, app->m_AppDevice.m_ScreenH - zoom_r, NULL, IDF_TEXT_TRANSPARENT);

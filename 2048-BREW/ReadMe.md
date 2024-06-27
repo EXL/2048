@@ -72,6 +72,12 @@ arm-none-eabi-g++ --version
 arm-none-eabi-g++ (15:10.3-2021.07-4) 10.3.1 20210621 (release)
 ```
 
+## Thanks
+
+* usernameak
+* kraze1984
+* asdf
+
 ## Information
 
 * [Motorola CDMA: A840, E815, Е685, V710, V950, L7c, V3c, V3m, K1m, V9m, Z6c, Z6m, Z6tv](https://forum.motofan.ru/index.php?showforum=104): A section of the MotoFan.Ru forum dedicated to the Motorola CDMA phones.
