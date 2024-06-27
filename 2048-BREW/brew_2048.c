@@ -31,6 +31,7 @@
 
 #define WSTR_TITLE_MAX                                   (64)
 #define WSTR_TEXT_MAX                                   (128)
+#define WSTR_LONG_TEXT_MAX                             (1024)
 #define SCORE_VALUE_MAX_LENGTH                           (16)
 #define TILE_VALUE_MAX_LENGTH                             (5)
 #define SHOW_NOTIFICATION_DELAY_MS                     (1200) /* 1.2 seconds. */
@@ -600,7 +601,7 @@ static boolean APP_ShowNotification(AEEApplet *pMe, const AECHAR *aTitle, const 
 }
 
 static boolean APP_ShowHelp(AEEApplet *pMe) {
-	const uint32 text_size = 1024 * sizeof(AECHAR); /* 2048 bytes, 1024 characters. */
+	const uint32 text_size = sizeof(AECHAR) * WSTR_LONG_TEXT_MAX; /* 2048 bytes, 1024 characters. */
 	APP_INSTANCE_T *app = (APP_INSTANCE_T *) pMe;
 	AECHAR title[WSTR_TITLE_MAX];
 	AECHAR *text;
