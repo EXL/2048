@@ -624,7 +624,7 @@ static boolean APP_ShowHelp(AEEApplet *pMe) {
 		return FALSE;
 	}
 
-	ISTATIC_SetProperties(app->m_pIStatic, ST_TEXTALLOC | ST_NOSCROLL);
+	ISTATIC_SetProperties(app->m_pIStatic, ST_TEXTALLOC | ST_UNDERLINE);
 	ISTATIC_SetText(app->m_pIStatic, title, text, AEE_FONT_BOLD, AEE_FONT_NORMAL);
 	ISTATIC_SetActive(app->m_pIStatic, TRUE);
 	ISTATIC_Redraw(app->m_pIStatic);
