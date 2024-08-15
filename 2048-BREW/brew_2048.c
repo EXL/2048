@@ -825,18 +825,18 @@ static boolean GFX_PaintFinal(AEEApplet *pMe) {
 	text_h = nAscent + nDescent;
 
 	zoom_r = 1;
-	text_w = IDISPLAY_MeasureText(app->m_App.m_pIDisplay, app->m_AppDevice.m_FontXXXX, wstr_score);
-
 	if (e_score > 0) {
 		score_string = &wstr_score[0];
 	} else {
 		score_string = wstr_lbl_title;
 	}
 
+	text_w = IDISPLAY_MeasureText(app->m_App.m_pIDisplay, app->m_AppDevice.m_FontXXXX, score_string);
+
 	IDISPLAY_DrawText(app->m_App.m_pIDisplay, app->m_AppDevice.m_FontXXXX, score_string, -1,
-	app->m_AppDevice.m_ScreenW - text_w - app->m_AppDevice.m_OffsetW,
-	app->m_AppDevice.m_ScreenH - text_h * 2 - zoom_r,
-	NULL, IDF_TEXT_TRANSPARENT);
+		app->m_AppDevice.m_ScreenW - text_w - app->m_AppDevice.m_OffsetW,
+		app->m_AppDevice.m_ScreenH - text_h * 2 - zoom_r,
+		NULL, IDF_TEXT_TRANSPARENT);
 
 	/* Soft Keys. */
 	IDISPLAY_SetColor(app->m_App.m_pIDisplay, CLR_USER_LINE, fc);
