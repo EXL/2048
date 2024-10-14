@@ -154,6 +154,7 @@ typedef struct {
 } APP_MEASURED_T;
 
 typedef enum {
+	APP_DISPLAY_128x128 = 128,
 	APP_DISPLAY_128x160 = 160,
 	APP_DISPLAY_176x220 = 220,
 	APP_DISPLAY_240x320 = 320
@@ -616,10 +617,10 @@ static UINT32 HandleStateEnter(EVENT_STACK_T *ev_st, APPLICATION_T *app, ENTER_S
 			buffer.buf = NULL;
 			SetWorikingArea(&app_instance->area);
 			SetMeasuredValues(&app_instance->measured, &buffer);
-#if !defined(FTR_V600)
-			dialog = UIS_CreateColorCanvasWithWallpaper(&port, &buffer, FALSE, TRUE);
-#else
+#if defined(FTR_V600) && !defined(FTR_C650)
 			dialog = UIS_CreateColorCanvas(&port, &buffer, TRUE);
+#else
+			dialog = UIS_CreateColorCanvasWithWallpaper(&port, &buffer, FALSE, TRUE);
 #endif
 			break;
 		case APP_STATE_MENU:
@@ -723,7 +724,7 @@ static UINT32 HandleStateEnter(EVENT_STACK_T *ev_st, APPLICATION_T *app, ENTER_S
 
 	switch (app_state) {
 		case APP_STATE_MAIN:
-#if defined(FTR_V600)
+#if defined(FTR_V600) && !defined(FTR_C650)
 			if (app_instance->options.background == APP_BACKGROUND_SHOW) {
 				flushWallpaperOnScreen((UINT32 *) theWallpaper, app_instance->area, DISPLAY_MAIN);
 			}
@@ -845,7 +846,7 @@ static UINT32 HandleEventKeyRelease(EVENT_STACK_T *ev_st, APPLICATION_T *app) {
 static UINT32 HandleEventTimerExpired(EVENT_STACK_T *ev_st, APPLICATION_T *app) {
 	EVENT_T *event;
 	APP_TIMER_T timer_id;
-#if defined(FTR_V600)
+#if defined(FTR_V600) && !defined(FTR_C650)
 	APP_INSTANCE_T *app_instance;
 	app_instance = (APP_INSTANCE_T *) app;
 #endif
@@ -869,7 +870,7 @@ static UINT32 HandleEventTimerExpired(EVENT_STACK_T *ev_st, APPLICATION_T *app) 
 		case APP_TIMER_RESET:
 			DrawSoftKeys(ev_st, app, APP_SOFT_KEY_RIGHT, FALSE);
 			e_key(KEY_0);
-#if defined(FTR_V600)
+#if defined(FTR_V600) && !defined(FTR_C650)
 			if (app_instance->options.background == APP_BACKGROUND_SHOW) {
 				flushWallpaperOnScreen((UINT32 *) theWallpaper, app_instance->area, DISPLAY_MAIN);
 			}
@@ -880,7 +881,7 @@ static UINT32 HandleEventTimerExpired(EVENT_STACK_T *ev_st, APPLICATION_T *app) 
 #if defined(USE_MME)
 			/* Play a normal camera shutter sound using loud speaker. */
 			/* NOTE: Function `MME_GC_playback_open_audio_play_forget()` may not be available on most libraries. */
-#if defined(FTR_V600)
+#if defined(FTR_V600) && !defined(FTR_C650)
 			MME_GC_playback_open_audio_play_forget(L"/a/mobile/system/shutter5.wav");
 #elif defined(EM1) || defined(EM2)
 			MME_GC_playback_audio_play_forget(L"/a/mobile/system/shutter5.wav");
@@ -1039,6 +1040,8 @@ static UINT32 SetWorikingArea(GRAPHIC_REGION_T *working_area) {
 	rect.ulc.y += 8;
 #elif defined(EM1) || defined(EM2)
 	rect.ulc.y += 6;
+#elif defined(FTR_C650)
+	rect.ulc.y += 12;
 #endif
 
 	memcpy(working_area, &rect, sizeof(GRAPHIC_REGION_T));
@@ -1053,6 +1056,25 @@ static UINT32 SetMeasuredValues(APP_MEASURED_T *measured_values, DRAWING_BUFFER_
 
 	switch (buffer->h) {
 		default:
+		case APP_DISPLAY_128x128:
+			measured_values->tile_size = 16;
+			measured_values->offset_x = 4;
+			measured_values->offset_y = 2;
+			measured_values->offset_width = 22;
+			measured_values->offset_height = 1;
+			measured_values->rounded_rad = 3;
+			measured_values->pencil_width = 1;
+			measured_values->font_large = 0x0A;        /* Bold WAP-browser font. */
+			measured_values->font_normal = 0x01;       /* General font. */
+			measured_values->font_small = 0x09;        /* Software keys font. */
+			measured_values->font_ultra_small = 0x09;  /* Very narrow numbers font. */
+			measured_values->font_final = 0x0A;        /* Bold WAP-browser font. */
+			measured_values->gap = 1;
+			measured_values->gap_0 = 0;
+			measured_values->gap_00 = 0;
+			measured_values->gap_000 = 2;
+			measured_values->gap_0000 = 2;
+			break;
 		case APP_DISPLAY_128x160:
 			measured_values->tile_size = 22;
 			measured_values->offset_x = 8;
@@ -1216,7 +1238,7 @@ static UINT32 PaintBackground(EVENT_STACK_T *ev_st, APPLICATION_T *app) {
 	switch (app_instance->options.background) {
 		default:
 		case APP_BACKGROUND_SHOW:
-#if !defined(FTR_V600)
+#if !(defined(FTR_V600) && !defined(FTR_C650))
 			UIS_CanvasFillRect(app_instance->area, app->dialog);
 #endif
 			break;

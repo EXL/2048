@@ -18,6 +18,7 @@ LIB_MAIN = Lib.o
 DEFINES = -D__P2K__ -DEP1 -DUSE_MME
 #DEFINES = -D__P2K__ -DEP1 -DUSE_MME -DFTR_V600
 #DEFINES = -D__P2K__ -DEP1 -DUSE_MME -DFTR_L7E
+#DEFINES = -D__P2K__ -DEP1 -DUSE_MME -DFTR_V600 -DFTR_C650
 
 # Includes.
 INCLUDES = -I../src/ -I../image/icon/precompiled/
