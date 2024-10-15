@@ -3,6 +3,10 @@
 
 The "2048" puzzle game for the Motorola P2K platform written using AFW and UIS frameworks and implemented as ELF-application.
 
+*Motorola C650 Screenshots:*
+
+![2048-UIS Motorola C650 Screenshot 1](../image/2048-P2K-C650-Screenshot1.png) ![2048-UIS Motorola C650 Screenshot 2](../image/2048-P2K-C650-Screenshot2.png) ![2048-UIS Motorola C650 Screenshot 3](../image/2048-P2K-C650-Screenshot3.png) ![2048-UIS Motorola C650 Screenshot 4](../image/2048-P2K-C650-Screenshot4.png) ![2048-UIS Motorola C650 Screenshot 5](../image/2048-P2K-C650-Screenshot5.png)
+
 *Motorola SLVR L6 Screenshots:*
 
 ![2048-UIS Motorola SLVR L6 Screenshot 1](../image/2048-P2K-L6-Screenshot1.png) ![2048-UIS Motorola SLVR L6 Screenshot 2](../image/2048-P2K-L6-Screenshot2.png) ![2048-UIS Motorola SLVR L6 Screenshot 3](../image/2048-P2K-L6-Screenshot3.png) ![2048-UIS Motorola SLVR L6 Screenshot 4](../image/2048-P2K-L6-Screenshot4.png) ![2048-UIS Motorola SLVR L6 Screenshot 5](../image/2048-P2K-L6-Screenshot5.png)
