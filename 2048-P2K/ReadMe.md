@@ -86,10 +86,13 @@ $ make
 ## ELF files
 
 * 2048-P2K-UIS_EP1.elf (ELF for ElfPack 1.0)
-* 2048-P2K-UIS_EP1_V600.elf (ELF for ElfPack 1.0, Motorola V600 version)
 * 2048-P2K-UIS_EP2.elf (ELF for ElfPack 2.0)
 * 2048-P2K-UIS_EM1.elf (ELF for ElfPack 1.0, M·CORE)
 * 2048-P2K-UIS_EM2.elf (ELF for ElfPack 2.0, M·CORE)
+* 2048-P2K-UIS_EP1_L7e.elf (ELF for ElfPack 1.0, Motorola SLVR L7e version)
+* 2048-P2K-UIS_EP2_L7e.elf (ELF for ElfPack 2.0, Motorola SLVR L7e version)
+* 2048-P2K-UIS_EP1_V600.elf (ELF for ElfPack 1.0, Motorola V600 version)
+* 2048-P2K-UIS_EP1_C650.elf (ELF for ElfPack 1.0, Motorola C650 version)
 
 The ELF-application has been tested on the following phones and firmware:
 
@@ -103,6 +106,7 @@ The ELF-application has been tested on the following phones and firmware:
 * Motorola SLVR L7: R4513_G_08.B7.E0R_RB
 * Motorola RAZR V3i: R4441D_G_08.01.03R
 * Motorola RAZR V3r: R4515_G_08.BD.D3R
+* Motorola SLVR L7e: R452D_G_08.01.0AR
 
 Application type: GUI + UIS Canvas.
 
