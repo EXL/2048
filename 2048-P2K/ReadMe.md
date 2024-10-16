@@ -152,13 +152,9 @@ Photos of 2048 game running on Motorola SLVR L6 and Motorola ROKR E1:
 
 ![2048-P2K-UIS ELF-application running on Motorola SLVR L6 and Motorola ROKR E1 Photo](../image/2048-P2K-UIS-L6-E1-Photo.jpg)
 
-Photos of 2048 game running on Motorola V235, thanks @Indepth6:
-
-![2048-P2K-UIS ELF-application running on Motorola V235 Photo](../image/2048-P2K-UIS-V235-Photo.jpg)
-
 Photos of 2048 game running on Motorola RAZR V3r, thanks @Blue_Screen_0f_Death:
 
-![2048-P2K-UIS ELF-application running on Motorola RAZR V3r Photo 1](../image/2048-P2K-UIS-V3r-Photo_1.jpg) ![2048-P2K-UIS ELF-application running on Motorola RAZR V3r Photo 2](../image/2048-P2K-UIS-V3r-Photo_2.jpg)
+![2048-P2K-UIS ELF-application running on Motorola RAZR V3r Photo 2](../image/2048-P2K-UIS-V3r-Photo_2.jpg)
 
 Photos of 2048 game running on Motorola SLVR L7e, thanks @fkcoder:
 
