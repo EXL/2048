@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 date=`date "+%d-%b-%Y"`
-unreal_icons=false
+unreal_icons=true
 
 function clean {
 	cd 2048-MotoMAGX/
