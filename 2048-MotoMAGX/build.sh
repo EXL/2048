@@ -13,6 +13,8 @@ func_build() {
 	make PLATFORM=EZX-EM35; make rmobj
 	make PLATFORM=EZX-VA76R; make rmobj
 	make PLATFORM=EZX-AURA; make rmobj
+
+	make -f Makefile.emu; make -f Makefile.emu rmobj
 }
 
 func_build;
