@@ -827,7 +827,7 @@ static UINT32 HandleStateEnter(EVENT_STACK_T *ev_st, APPLICATION_T *app, ENTER_S
 				if (app_instance->flag_from_select) {
 					if (app_instance->menu_current_item_index != APP_MENU_ITEM_FIRST) {
 						APP_UtilAddEvChangeListPosition(ev_st, app, app_instance->menu_current_item_index + 1,
-							NULL, NULL, NULL);
+							0, 0, NULL);
 						UIS_HandleEvent(dialog, ev_st);
 					}
 					app_instance->flag_from_select = FALSE;
