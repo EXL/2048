@@ -21,6 +21,9 @@
 		GETRAND((byte *) &random_number, sizeof(int));
 		return random_number;
 	}
+#elif defined(SE)						/* Sony Ericsson A1/A2 platform. */
+	#include "../2048-SE/include/Lib_Clara.h"
+	#include "../2048-SE/2048/rand.h"
 #else
 	#include <time.h>
 	#include <stdlib.h>
@@ -221,7 +224,9 @@ extern void e_init(int esc_keycode, int left_keycode, int right_keycode, int up_
 #if !defined(THINK_C)                   /* Symantec THINK C IDE on Classic Mac OS platform. */
 #if !defined(MRE)                       /* MediaTek MRE platform. */
 #if !defined(__BREW__)                  /* Qualcomm BREW platform. */
+#if !defined(SE)						/* Sony Ericsson A1/A2 platform. */
 	srand((unsigned int) time(NULL));
+#endif
 #endif
 #endif
 #endif
