@@ -34,6 +34,7 @@ A popular "2048" puzzle game for Motorola P2K implemented as ELF-application. Wr
 * 2048-P2K-AHI_EP1_L7e.elf (ELF for ElfPack 1.0, Motorola SLVR L7e version)
 * 2048-P2K-AHI_EP2_L7e.elf (ELF for ElfPack 2.0, Motorola SLVR L7e version)
 * 2048-P2K-AHI_EP1_V600.elf (ELF for ElfPack 1.0, Motorola V600 version)
+* 2048-P2K-AHI_EP1_V635.elf (ELF for ElfPack 1.0, Motorola V635 version)
 
 The ELF-application has been tested on the following phones and firmware:
 
@@ -41,6 +42,7 @@ The ELF-application has been tested on the following phones and firmware:
 * Motorola SLVR L6i: R3443H1_G_0A.65.0BR
 * Motorola ROKR E1: R373_G_0E.30.49R
 * Motorola V600: TRIPLETS_G_0B.09.72R
+* Motorola V635: R474_G_08.48.6FR
 
 Application type: GUI + UIS Canvas + ATI.
 
