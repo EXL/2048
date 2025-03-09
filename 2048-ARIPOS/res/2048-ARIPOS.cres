@@ -25,5 +25,11 @@
 		RES_GAME2048_BMP_ARROW_VERTICAL {
 			RES_LANG_ENG : bitmap("res\\bmps\\ArrowV.bmp");
 		}
+		RES_GAME2048_BMP_WIN {
+			RES_LANG_ENG : bitmap("res\\bmps\\Win.bmp");
+		}
+		RES_GAME2048_BMP_LOSE {
+			RES_LANG_ENG : bitmap("res\\bmps\\Lose.bmp");
+		}
 	}
 }
