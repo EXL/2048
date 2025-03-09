@@ -1,0 +1,26 @@
+#include <system/stdresourcetypes.h>
+
+#include "2048-ARIPOS_resources.h"
+
+{
+	RES_TYPE_SYSTEM {
+		RES_ID_SYS_APPICONBIG {
+			RES_LANG_ENG : bitmap("res\\bmps\\hello.bmp");
+		}
+		RES_ID_SYS_APPICONSMALL {
+			RES_LANG_ENG : bitmap("res\\bmps\\hello_small.bmp");
+		}
+		RES_ID_SYS_APPICONPRIORITY {
+			RES_LANG_ENG : 25000;
+		}
+		RES_ID_SYS_APPNAME {
+			RES_LANG_ENG : "2048-ARIPOS";
+		}
+	}
+
+	RES_TYPE_STRING {
+		RES_HELLOWORLD_STR_HELLO_WORLD {
+			RES_LANG_ENG : "Hello world";
+		}
+	}
+}
