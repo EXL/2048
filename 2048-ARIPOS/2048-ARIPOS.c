@@ -64,9 +64,11 @@ static _inline void Canvas_Smart_Fill_Tile(int *ty, int *tf, int y, int value, i
 			offset = 4;
 			break;
 		case 256:
+		case 512:
 			offset = 5;
 			break;
-		case 512:
+		case 1024:
+		case 2048:
 			offset = 6;
 			break;
 	}
@@ -133,7 +135,7 @@ static int Canvas_Draw_Final(WidgetDC *pWDC) {
 		Canvas_Center_Rect(&x, &y, 0, 0, EF + 1, w_y, WR, HR);
 		WidgetDC_FillRect(pWDC, x, y, WR, HR, LCD_COL_WHITE, MODE_COPY);
 
-		WidgetDC_TextOut(pWDC, x + o_x, y + 2, label, strlen(label), PP_LARGEFONT, MODE_COPY);
+		WidgetDC_TextOut(pWDC, x + o_x, y + 2, (char *) label, strlen(label), PP_LARGEFONT, MODE_COPY);
 	}
 
 	return NADA;
@@ -281,6 +283,6 @@ void Game2048_evthandler(int event, void *ptr, void *userdata) {
 			Game2048_CleanUp();
 			break;
 		default:
-			Dbg_printf("2048-ARIPOS:Got unknown:%d\n",a);
+			Dbg_printf("2048-ARIPOS:Got unknown:0x%08X %d\n", event, event);
 	}
 }
