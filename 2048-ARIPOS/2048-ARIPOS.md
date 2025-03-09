@@ -1,4 +1,4 @@
-Name          = 2048
+Name          = 2048-ARIPOS
 Version       = 3
 Revision      = 0
 

@@ -67,8 +67,8 @@ LINK32=link.exe
 # PROP Intermediate_Dir "Debug"
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
-# ADD BASE CPP /nologo /MTd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "2048-ARIPOS_EXPORTS" /YX /FD /GZ  /c
-# ADD CPP /nologo /MTd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "2048-ARIPOS_EXPORTS" /YX /FD /GZ  /c
+# ADD BASE CPP /nologo /MTd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "2048-ARIPOS_EXPORTS" /YX /FD /GZ /c
+# ADD CPP /nologo /MTd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "2048-ARIPOS_EXPORTS" /YX /FD /GZ /c
 # ADD BASE MTL /nologo /D "_DEBUG" /mktyplib203 /win32
 # ADD MTL /nologo /D "_DEBUG" /mktyplib203 /win32
 # ADD BASE RSC /l 0x409 /d "_DEBUG"
@@ -91,7 +91,7 @@ LINK32=link.exe
 # PROP Default_Filter "cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
 # Begin Source File
 
-SOURCE=.\2048-ARIPOS.c
+SOURCE=".\2048-ARIPOS.c"
 
 !IF  "$(CFG)" == "Game2048 - Win32 Release"
 
@@ -113,32 +113,20 @@ SOURCE=.\2048-ARIPOS.c
 # PROP Default_Filter "ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe"
 # Begin Source File
 
-SOURCE=.\res\2048-ARIPOS.cres
+SOURCE=".\res\2048-ARIPOS.cres"
 # End Source File
 # Begin Source File
 
-SOURCE=.\res\2048-ARIPOS_cres.header
-# End Source File
-# Begin Source File
-
-SOURCE=.\res\2048-ARIPOS_languages.txt
-# End Source File
-# Begin Source File
-
-SOURCE=.\res\2048-ARIPOS_resources.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\res\2048-ARIPOS_resources_h.header
+SOURCE=".\res\2048-ARIPOS_resources.h"
 # End Source File
 # End Group
 # Begin Source File
 
-SOURCE=.\2048-ARIPOS.md
+SOURCE=".\2048-ARIPOS.md"
 # End Source File
 # Begin Source File
 
-SOURCE=.\2048-ARIPOS.xl
+SOURCE=".\2048-ARIPOS.xl"
 # End Source File
 # Begin Source File
 
