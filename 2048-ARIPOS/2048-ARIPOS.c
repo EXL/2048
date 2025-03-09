@@ -11,14 +11,14 @@
 
 #include "res/2048-ARIPOS_resources.h"
 
-#define TS                        ((is_c_pen_800) ?      7 :      7) /* TILE_SIZE       */
-#define TT                        ((is_c_pen_800) ?      8 :      8) /* TILE_TILE       */
+#define TS                        ((is_c_pen_800) ?     13 :      7) /* TILE_SIZE       */
+#define TT                        ((is_c_pen_800) ?     14 :      8) /* TILE_TILE       */
 #define TO                        ((is_c_pen_800) ?      1 :      1) /* TILE_OFFSET     */
-#define TX                        ((is_c_pen_800) ?      9 :      9) /* TEXT_OFFSET     */
-#define TM                        ((is_c_pen_800) ?     22 :     22) /* TILE_MARGIN     */
+#define TX                        ((is_c_pen_800) ?      2 :      9) /* TEXT_OFFSET     */
+#define TM                        ((is_c_pen_800) ?      0 :     22) /* TILE_MARGIN     */
 #define YO                        ((is_c_pen_800) ?      1 :      1) /* Y_OFFSET        */
-#define EF                        ((is_c_pen_800) ?    120 :    120) /* X_END_FIELD     */
-#define YC                        ((is_c_pen_800) ? TT + 1 : TT + 1) /* Y_COLUMN_OFFSET */
+#define EF                        ((is_c_pen_800) ?     58 :    120) /* X_END_FIELD     */
+#define YC                        ((is_c_pen_800) ? TS + 1 : TT + 1) /* Y_COLUMN_OFFSET */
 #define WR                        ((is_c_pen_800) ?     44 :     44) /* W_RECT_OVER     */
 #define HR                        ((is_c_pen_800) ?     14 :     14) /* H_RECT_OVER     */
 
@@ -82,6 +82,44 @@ static _inline void Canvas_Center_Rect(int *x0, int *y0, int x, int y, int w, in
 	*y0 = y + (h - hh) / 2;
 }
 
+static _inline void Canvas_FixUp_Text_Offsets(int *x, int *y, FontGUID *font, int value) {
+	if (!is_c_pen_800) {
+		*x = 0;
+		*y = 0;
+		*font = PP_FONT;
+	} else {
+		switch (value) {
+			case 2:
+			case 4:
+			case 8:
+				*x = 3;
+				*y = 2;
+				*font = PP_LARGEFONT;
+				break;
+			case 16:
+				*x = 2;
+				*y = 2;
+				*font = DEFAULT_FONT;
+				break;
+			case 32:
+			case 64:
+				*x = 1;
+				*y = 3;
+				*font = PP_FONT;
+				break;
+			case 128:
+			case 256:
+			case 512:
+			case 1024:
+			case 2048:
+				*x = 0;
+				*y = 4;
+				*font = MINIMAL_FONT;
+				break;
+		}
+	}
+}
+
 static int Canvas_Draw_Tile(WidgetDC *pWDC, int value, int x, int y) {
 	char num[5]; // "2048\0"
 	const int tile_x = Canvas_Offset_Coord(x, TT, TM, TO);
@@ -93,11 +131,19 @@ static int Canvas_Draw_Tile(WidgetDC *pWDC, int value, int x, int y) {
 	
 	if (value) {
 		int ty, tf;
+		int x_o, y_o;
+		FontGUID font;
+
 		sprintf(num, "%d", value);
 
-		Canvas_Smart_Fill_Tile(&ty, &tf, tile_y, value, TS);
-		WidgetDC_FillRect(pWDC, tile_x, ty, TS, tf, LCD_COL_BLACK, MODE_COPY);
-		WidgetDC_TextOut(pWDC, text_x, text_y, num, strlen(num), PP_FONT, MODE_COPY);
+		if (!is_c_pen_800) {
+			Canvas_Smart_Fill_Tile(&ty, &tf, tile_y, value, TS);
+			WidgetDC_FillRect(pWDC, tile_x, ty, TS, tf, LCD_COL_BLACK, MODE_COPY);
+		}
+
+		Canvas_FixUp_Text_Offsets(&x_o, &y_o, &font, value);
+		WidgetDC_TextOut(pWDC, text_x + x_o, text_y + y_o, num, strlen(num),
+			font, (is_c_pen_800 && (value < 512)) ? MODE_XOR : MODE_COPY);
 	}
 
 	return NADA;
@@ -109,8 +155,9 @@ static int Canvas_Draw_Final(WidgetDC *pWDC) {
 	WidgetDC_DrawLine(pWDC, EF, 0, EF, w_y, LCD_COL_BLACK, LINE_SOLID);
 
 	sprintf(score, "%d", e_score);
-	WidgetDC_TextOut(pWDC, EF + 2, 0 * YC, "Score", 5, MINIMAL_FONT, MODE_COPY);
-	WidgetDC_TextOut(pWDC, EF + 2, 1 * YC, score, strlen(score), MINIMAL_FONT, MODE_COPY);
+	WidgetDC_TextOut(pWDC, EF + 2, 0 * YC, "Score", 5, (is_c_pen_800) ? PP_LARGEFONT : MINIMAL_FONT, MODE_COPY);
+	WidgetDC_TextOut(pWDC, EF + 2, 1 * YC, score, strlen(score),
+		(is_c_pen_800) ? PP_LARGEFONT : MINIMAL_FONT, MODE_COPY);
 
 	if ((rid_arrow_h != -1) && (rid_arrow_v != -1)) {
 		Lcd_Bitmap *bitmap;
@@ -185,6 +232,7 @@ int Canvas_StepDown(OPTR pS) {
 
 int Canvas_ScanPressed(OPTR pS) {
 	Dbg_printf("2048-ARIPOS:ScanPressed\n");
+	is_vertical = FALSE;
 	e_key(KEY_RESET);
 	CCALL0(Widget, pS, MarkRenderDirty);
 	return NADA;
@@ -204,6 +252,17 @@ int Game2048_Start(OPTR pFromObj) {
 	OPTR pDlg;
 
 	e_init(KEY_RESET, KEY_LEFT, KEY_RIGHT, KEY_UP, KEY_DOWN);
+
+#if 0
+	e_board[ 0] =  128;
+	e_board[ 1] =   64;
+	e_board[ 4] =  256;
+	e_board[ 5] =   32;
+	e_board[ 8] =  512;
+	e_board[ 9] =   16;
+	e_board[12] = 1024;
+	e_board[13] =    8;
+#endif
 
 	rid_arrow_h = Res_MakeID((char *) GAME2048_MODULENAME, RES_TYPE_BITMAP, RES_GAME2048_BMP_ARROW_HORZONTAL, 0);
 	rid_arrow_v = Res_MakeID((char *) GAME2048_MODULENAME, RES_TYPE_BITMAP, RES_GAME2048_BMP_ARROW_VERTICAL, 0);
