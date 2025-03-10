@@ -121,20 +121,20 @@ SOURCE=.\2048.h
 # PROP Default_Filter "ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe"
 # Begin Source File
 
-SOURCE=".\res\2048-ARIPOS.cres"
+SOURCE=.\res\Game2048.cres
 # End Source File
 # Begin Source File
 
-SOURCE=".\res\2048-ARIPOS_resources.h"
+SOURCE=.\res\Game2048_resources.h
 # End Source File
 # End Group
 # Begin Source File
 
-SOURCE=".\2048-ARIPOS.md"
+SOURCE=.\Game2048.md
 # End Source File
 # Begin Source File
 
-SOURCE=".\2048-ARIPOS.xl"
+SOURCE=.\Game2048.xl
 # End Source File
 # Begin Source File
 

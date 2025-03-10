@@ -1,6 +1,6 @@
 #include <system/stdresourcetypes.h>
 
-#include "2048-ARIPOS_resources.h"
+#include "Game2048_resources.h"
 
 {
 	RES_TYPE_SYSTEM {

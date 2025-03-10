@@ -9,7 +9,13 @@
 #include <ogui/container.h>
 #include <ogui/opi/addon.h>
 
-#include "res/2048-ARIPOS_resources.h"
+#include "res/Game2048_resources.h"
+
+#if defined(_MSVC_VER)
+#define INLINE _inline
+#else
+#define INLINE inline
+#endif
 
 #define TS                        ((is_c_pen_800) ?     13 :      7) /* TILE_SIZE       */
 #define TT                        ((is_c_pen_800) ?     14 :      8) /* TILE_TILE       */
@@ -42,11 +48,11 @@ static int w_x, w_y;
 static Bool is_c_pen_800 = FALSE;
 static Bool is_vertical = FALSE;
 
-static _inline int Canvas_Offset_Coord(int coord, int tile, int margin, int offset) {
+static INLINE int Canvas_Offset_Coord(int coord, int tile, int margin, int offset) {
 	return coord * (tile + margin) + offset;
 }
 
-static _inline void Canvas_Smart_Fill_Tile(int *ty, int *tf, int y, int value, int tile) {
+static INLINE void Canvas_Smart_Fill_Tile(int *ty, int *tf, int y, int value, int tile) {
 	int offset = 0;
 
 	switch (value) {
@@ -77,12 +83,12 @@ static _inline void Canvas_Smart_Fill_Tile(int *ty, int *tf, int y, int value, i
 	*tf = tile - (tile - offset);
 }
 
-static _inline void Canvas_Center_Rect(int *x0, int *y0, int x, int y, int w, int h, int ww, int hh) {
+static INLINE void Canvas_Center_Rect(int *x0, int *y0, int x, int y, int w, int h, int ww, int hh) {
 	*x0 = x + (w - ww) / 2;
 	*y0 = y + (h - hh) / 2;
 }
 
-static _inline void Canvas_FixUp_Text_Offsets(int *x, int *y, FontGUID *font, int value) {
+static INLINE void Canvas_FixUp_Text_Offsets(int *x, int *y, FontGUID *font, int value) {
 	if (!is_c_pen_800) {
 		*x = 0;
 		*y = 0;
@@ -155,7 +161,8 @@ static int Canvas_Draw_Final(WidgetDC *pWDC) {
 	WidgetDC_DrawLine(pWDC, EF, 0, EF, w_y, LCD_COL_BLACK, LINE_SOLID);
 
 	sprintf(score, "%d", e_score);
-	WidgetDC_TextOut(pWDC, EF + 2, 0 * YC, "Score", 5, (is_c_pen_800) ? PP_LARGEFONT : MINIMAL_FONT, MODE_COPY);
+	WidgetDC_TextOut(pWDC, EF + 2, 0 * YC, "Score", 5,
+		(is_c_pen_800) ? PP_LARGEFONT : MINIMAL_FONT, MODE_COPY);
 	WidgetDC_TextOut(pWDC, EF + 2, 1 * YC, score, strlen(score),
 		(is_c_pen_800) ? PP_LARGEFONT : MINIMAL_FONT, MODE_COPY);
 
