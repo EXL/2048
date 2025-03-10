@@ -51,6 +51,8 @@ Get `2048-ARIPOS-ASCII.car` file from the `archive` directory and install it on 
 
 ## Build for C-Pen (Unicode Support)
 
+The SDK should be patched for Unicode support, see the `sdk_unicode.zip` archive.
+
 ```bat
 make _UNICODE=1 uninstall
 make _UNICODE=1 clean
@@ -63,7 +65,7 @@ Get `2048-ARIPOS-UNICODE.car` file from the `archive` directory and install it o
 
 ![Hardware Photo 1](../image/hw/C-Pen-600_Photo_1.jpg) ![Hardware Photo 2](../image/hw/C-Pen-600_Photo_2.jpg) ![Hardware Photo 3](../image/hw/C-Pen-600_Photo_3.jpg)
 
-* C-Tech ARGUS CT1000A0-BG 0040: A custom Intel StrongArm SA-110 @ 100 MHz CPU by C-Tech.
+* C-Tech ARGUS CT1000A0-BG 0040: A custom Intel StrongARM SA-110 @ 100 MHz CPU by C-Tech.
 * Samsung K4G323222M: 4 MB SDRAM.
 * Toshiba TC58V64AFT: 8 MB NAND EEPROM.
 
