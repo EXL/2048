@@ -11,7 +11,7 @@
 
 #include "res/Game2048_resources.h"
 
-#if defined(_MSVC_VER)
+#if defined(_MSC_VER)
 #define INLINE _inline
 #else
 #define INLINE inline
