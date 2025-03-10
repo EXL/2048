@@ -21,9 +21,14 @@
 		GETRAND((byte *) &random_number, sizeof(int));
 		return random_number;
 	}
-#elif defined(SE)						/* Sony Ericsson A1/A2 platform. */
+#elif defined(SE)                       /* Sony Ericsson A1/A2 platform. */
 	#include "../2048-SE/include/Lib_Clara.h"
 	#include "../2048-SE/2048/rand.h"
+#elif defined(CPEN)                     /* C-Pen 600, C-Pen 800 ARIPOS platform. */
+	#include <stdlib.h>
+	#include <string.h>
+	#include <cpen/timer.h>
+	#define time(x) Timer_GetFastTickCount()
 #else
 	#include <time.h>
 	#include <stdlib.h>
