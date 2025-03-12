@@ -47,11 +47,29 @@ make clean
 make
 ```
 
-Get `2048-ARIPOS-ASCII.car` file from the `archive` directory and install it on the device.
+Get `2048-ARIPOS.car` file from the `archive` directory and install it on the device.
 
 ## Build for C-Pen (Unicode Support)
 
-The SDK should be patched for Unicode support, see the `sdk_unicode.zip` archive.
+The SDK should be patched for Unicode support, see the `README.TXT` document in the `sdk_unicode.zip` archive.
+
+Please patch the `C:\Program Files\C Technologies\C-Pen SDK\Aripos\tools\rules.mk` also:
+
+```diff
+--- rules.mak	2025-03-13 04:00:08.034127848 +0700
++++ rules_new.mak	2025-03-13 03:54:27.828840000 +0700
+@@ -9,7 +9,7 @@
+ endif
+ 
+ ifdef _UNICODE
+-EXTRA_CFLAGS = -D_UNICODE
++EXTRA_CFLAGS += -D_UNICODE
+ endif
+ 
+ ifdef WINPEN
+```
+
+Now build:
 
 ```bat
 make _UNICODE=1 uninstall
@@ -59,7 +77,7 @@ make _UNICODE=1 clean
 make _UNICODE=1
 ```
 
-Get `2048-ARIPOS-UNICODE.car` file from the `archive` directory and install it on the device.
+Get `2048-ARIPOS_U.car` file from the `archive` directory and install it on the device.
 
 ## Hardware
 
