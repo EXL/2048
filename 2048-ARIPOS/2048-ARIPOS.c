@@ -11,6 +11,10 @@
 
 #include "res/Game2048_resources.h"
 
+#define  STR_LEN_VALUE            (5)
+#define  STR_LEN_SCORE            (6)
+#define  STR_LEN_LABEL           (10)
+
 #if defined(_MSC_VER)
 #define INLINE _inline
 #else
@@ -36,8 +40,8 @@ typedef enum _KEY_CODE {
 	KEY_RESET
 } KEY_CODE;
 
-static const char *GAME2048_TASKNAME   = "2048-ARIPOS";
-static const char *GAME2048_MODULENAME = "2048-ARIPOS";
+static const char *GAME2048_TASKNAME   = "Game2048";
+static const char *GAME2048_MODULENAME = "Game2048";
 
 static ResID rid_arrow_h;
 static ResID rid_arrow_v;
@@ -127,7 +131,10 @@ static INLINE void Canvas_FixUp_Text_Offsets(int *x, int *y, FontGUID *font, int
 }
 
 static int Canvas_Draw_Tile(WidgetDC *pWDC, int value, int x, int y) {
-	char num[5]; // "2048\0"
+	char num[STR_LEN_VALUE]; // "2048\0"
+#if defined(_UNICODE)
+	wchar wnum[STR_LEN_VALUE];
+#endif
 	const int tile_x = Canvas_Offset_Coord(x, TT, TM, TO);
 	const int tile_y = Canvas_Offset_Coord(y, TT,  0, YO);
 	const int text_x = Canvas_Offset_Coord(x, TT, TM, TX);
@@ -141,6 +148,9 @@ static int Canvas_Draw_Tile(WidgetDC *pWDC, int value, int x, int y) {
 		FontGUID font;
 
 		sprintf(num, "%d", value);
+#if defined(_UNICODE)
+		ISOToUniCode(wnum, strlen(num), num);
+#endif
 
 		if (!is_c_pen_800) {
 			Canvas_Smart_Fill_Tile(&ty, &tf, tile_y, value, TS);
@@ -148,23 +158,43 @@ static int Canvas_Draw_Tile(WidgetDC *pWDC, int value, int x, int y) {
 		}
 
 		Canvas_FixUp_Text_Offsets(&x_o, &y_o, &font, value);
+#if defined(_UNICODE)
+		WidgetDC_TextOut(pWDC, text_x + x_o, text_y + y_o, wnum, wstrlen(wnum),
+			font, (is_c_pen_800 && (value < 512)) ? MODE_XOR : MODE_COPY);
+#else
 		WidgetDC_TextOut(pWDC, text_x + x_o, text_y + y_o, num, strlen(num),
 			font, (is_c_pen_800 && (value < 512)) ? MODE_XOR : MODE_COPY);
+#endif
 	}
 
 	return NADA;
 }
 
 static int Canvas_Draw_Final(WidgetDC *pWDC) {
-	char score[6]; // "99999\0"
+	char score[STR_LEN_SCORE]; // "99999\0"
+	const char *score_label = "Score";
+#if defined(_UNICODE)
+	wchar wscore[STR_LEN_SCORE];
+	wchar wscore_label[STR_LEN_SCORE];
+#endif
 
 	WidgetDC_DrawLine(pWDC, EF, 0, EF, w_y, LCD_COL_BLACK, LINE_SOLID);
 
 	sprintf(score, "%d", e_score);
-	WidgetDC_TextOut(pWDC, EF + 2, 0 * YC, "Score", 5,
+#if defined(_UNICODE)
+	ISOToUniCode(wscore, strlen(score), score);
+	ISOToUniCode(wscore_label, strlen(score_label), (char *) score_label);
+
+	WidgetDC_TextOut(pWDC, EF + 2, 0 * YC, wscore_label, wstrlen(wscore_label),
+		(is_c_pen_800) ? PP_LARGEFONT : MINIMAL_FONT, MODE_COPY);
+	WidgetDC_TextOut(pWDC, EF + 2, 1 * YC, wscore, wstrlen(wscore),
+		(is_c_pen_800) ? PP_LARGEFONT : MINIMAL_FONT, MODE_COPY);
+#else
+	WidgetDC_TextOut(pWDC, EF + 2, 0 * YC, score_label, strlen(score_label),
 		(is_c_pen_800) ? PP_LARGEFONT : MINIMAL_FONT, MODE_COPY);
 	WidgetDC_TextOut(pWDC, EF + 2, 1 * YC, score, strlen(score),
 		(is_c_pen_800) ? PP_LARGEFONT : MINIMAL_FONT, MODE_COPY);
+#endif
 
 	if ((rid_arrow_h != -1) && (rid_arrow_v != -1)) {
 		Lcd_Bitmap *bitmap;
@@ -181,6 +211,10 @@ static int Canvas_Draw_Final(WidgetDC *pWDC) {
 	if (e_win || e_lose) {
 		int x, y, o_x = (e_win) ? 3 : 2;
 		const char *label = (e_win) ? "You Won!" : "You Lose!";
+#if defined(_UNICODE)
+		wchar wlabel[STR_LEN_LABEL];
+		ISOToUniCode(wlabel, strlen(label), (char *) label);
+#endif
 
 		WidgetDC_FillRect(pWDC, 0, 0, EF + 1, w_y, LCD_COL_BLACK, MODE_XOR);
 
@@ -188,8 +222,11 @@ static int Canvas_Draw_Final(WidgetDC *pWDC) {
 		WidgetDC_FillRect(pWDC, x, y, WR + 2, HR + 2, LCD_COL_BLACK, MODE_COPY);
 		Canvas_Center_Rect(&x, &y, 0, 0, EF + 1, w_y, WR, HR);
 		WidgetDC_FillRect(pWDC, x, y, WR, HR, LCD_COL_WHITE, MODE_COPY);
-
+#if defined(_UNICODE)
+		WidgetDC_TextOut(pWDC, x + o_x, y + 2, wlabel, wstrlen(wlabel), PP_LARGEFONT, MODE_COPY);
+#else
 		WidgetDC_TextOut(pWDC, x + o_x, y + 2, (char *) label, strlen(label), PP_LARGEFONT, MODE_COPY);
+#endif
 	}
 
 	return NADA;
