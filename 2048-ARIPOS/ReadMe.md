@@ -12,6 +12,10 @@ C-Pen is the original high-quality state-of-the-art pen scanner. C-Pen scanners 
 | C-Pen 600      | Total: 6MB   User: ~4MB   | 168x33 pixels   | No real time clock included.                  |
 | C-Pen 800      | Total: 8MB   User: ~5MB   | 200x56 pixels   | Automatic trigger at the tip of the pen.      |
 
+![2048-ARIPOS on C-Pen 600MX Photo](../image/2048-ARIPOS-C-Pen-600MX-Photo-1.jpg)
+
+*Thanks Alexander (@sashapont) for this photo.*
+
 ## C-Pen SDK
 
 Download [C-Pen SDK 1.11 & Unicode Support](https://archive.org/details/cpen-sdk-1-11-unicode) archive, and install SDK on Oracle VM VirtualBox or VMWare Workstation Player with Windows and Microsoft Visual C++ 6.0 IDE.
