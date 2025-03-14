@@ -11,9 +11,9 @@
 
 #include "res/Game2048_resources.h"
 
-#define  STR_LEN_VALUE            (5)
-#define  STR_LEN_SCORE            (6)
-#define  STR_LEN_LABEL           (10)
+#define STR_LEN_VALUE            (5)
+#define STR_LEN_SCORE            (6)
+#define STR_LEN_LABEL           (10)
 
 #if defined(_MSC_VER)
 #define INLINE _inline
