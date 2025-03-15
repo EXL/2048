@@ -13,11 +13,105 @@
 
 struct module_t g_main_module;
 
+struct cList *g_pMainMenu;
+struct cCustomForm *g_pMainMenuForm;
+
 static bool g_quit = FALSE;
 static bool g_focus = FALSE;
 static bool g_reg_esc = FALSE;
 static bool g_req_score = FALSE;
 static bool g_req_draw = FALSE;
+
+bool cMainMenu_proc(struct cCustomForm *pForm, struct Message *pMsg) {
+	struct KeyParam *p_key_param;
+
+	switch (pMsg->msgid) {
+		case MSG_SHUTUP:
+		case MSG_QUIT:
+			pForm->ModalResult = mrQuit;
+			return TRUE;
+			break;
+		case MSG_KEYDOWN:
+			p_key_param = Message_get_key_param(pMsg);
+			switch (p_key_param->scancode) {
+				case KEY_HELP:
+//					pForm->ModalResult = mrQuit;
+					return TRUE;
+					break;
+				case KEY_ENTER:
+					switch (cList_Sel(g_pMainMenu)) {
+						case 0:
+						case 1:
+						case 2:
+							pForm->ModalResult = mrQuit;
+							g_quit = TRUE;
+							return TRUE;
+//							cWinApp_defproc(g_main_module.m_process, pMsg);
+							break;
+					}
+					return TRUE;
+					break;
+			}
+			break;
+	}
+
+	return cCustomForm_proc(pForm, pMsg);
+}
+
+int cMainMenu_ShowModal(struct cCustomForm *pForm) {
+//	g_focus = FALSE;
+	cCustomForm_Show(pForm);
+
+	pForm->ModalResult = mrNone;
+	while (pForm->ModalResult == mrNone) {
+		struct Message *pMsg = cWinApp_get_message(pForm->CurrApplication, 0, 1, MSG_USER);
+
+		cMainMenu_proc(pForm, pMsg);
+
+		cCustomForm_update(pForm);
+
+		Message_delete(pMsg);
+	}
+
+	return pForm->ModalResult;
+}
+
+struct cCustomForm *cMainMenu_ctor() {
+	int i;
+	struct rect_t main_menu_rect;
+
+	g_pMainMenu = (struct cList *) malloc(sizeof(*g_pMainMenu));
+	cList_ctor(g_pMainMenu, 80);
+
+	for (i = 1; i < 8; ++i) {
+		char title[8];
+		struct cItem *pMenuItem = (struct cItem *) malloc(sizeof(*pMenuItem));
+
+		sprintf(title, "Item %d", i);
+
+		cItem_ctor(pMenuItem, 80, title, TRUE, NULL, NULL);
+
+		cList_AddItem(g_pMainMenu, pMenuItem);
+	}
+
+	g_pMainMenuForm = (struct cCustomForm *) malloc(sizeof(*g_pMainMenuForm));
+
+	main_menu_rect.x = 40;
+	main_menu_rect.y = 20;
+	main_menu_rect.w = 86;
+	main_menu_rect.h = 60;
+
+	cCustomForm_ctor(g_pMainMenuForm, &main_menu_rect, "2048-CyOS Menu", TRUE, g_main_module.m_process);
+
+	g_pMainMenuForm->HelpContext = 0;
+	g_pMainMenuForm->ModalResult = mrNone;
+
+	cCustomForm_AddObj(g_pMainMenuForm, g_pMainMenu, 0, 0);
+
+	cCustomForm_Hide(g_pMainMenuForm);
+
+	return g_pMainMenuForm;
+}
 
 static void draw_tile(int value, int x, int y) {
 	int x_o;
@@ -123,6 +217,8 @@ long main(int argc, char *argv[], bool start) {
 
 	AppGeneric_clear_screen();
 
+	cMainMenu_ctor();
+
 	while (!g_quit) {
 		struct Message *p_msg;
 		struct KeyParam *p_key_param;
@@ -161,9 +257,13 @@ long main(int argc, char *argv[], bool start) {
 						g_req_draw = TRUE;
 						break;
 					case KEY_ESC:
+					case KEY_SPACE:
+					case KEY_ENTER: /* EXL, 15-Mar-2025: Also "Menu" key on Cybiko Xtreme in apps & games but not OS. */
 						/* Drop key auto-repeat. */
 						if(!(p_key_param->mask & KEYMASK_AUTOREPEAT)) {
-							g_reg_esc = TRUE;
+							if (g_focus) {
+								g_reg_esc = TRUE;
+							}
 						}
 						break;
 					default:
@@ -181,7 +281,11 @@ long main(int argc, char *argv[], bool start) {
 
 		if (g_reg_esc) {
 			// Show menu there.
-			g_quit = TRUE;
+//			g_quit = TRUE;
+			cMainMenu_ShowModal(g_pMainMenuForm);
+//			g_focus = TRUE;
+			cCustomForm_Hide(g_pMainMenuForm);
+			g_req_draw = TRUE;
 		}
 
 		if (g_focus && g_req_draw) {
