@@ -22,6 +22,16 @@ static bool g_reg_esc = FALSE;
 static bool g_req_score = FALSE;
 static bool g_req_draw = FALSE;
 
+void cMainMenu_on_about(void) {
+	struct cDialog *p_dialog = (struct cDialog *) malloc(sizeof(struct cDialog));
+
+	cDialog_ctor(p_dialog, "Caption", "Dummy dialog 2", mbOk | mbs1, 0, g_main_module.m_process);
+
+	cDialog_ShowModal(p_dialog);
+
+	cDialog_dtor(p_dialog, FREE_MEMORY);
+}
+
 bool cMainMenu_proc(struct cCustomForm *pForm, struct Message *pMsg) {
 	struct KeyParam *p_key_param;
 
@@ -41,6 +51,10 @@ bool cMainMenu_proc(struct cCustomForm *pForm, struct Message *pMsg) {
 				case KEY_ENTER:
 					switch (cList_Sel(g_pMainMenu)) {
 						case 0:
+							cMainMenu_on_about();
+							pForm->ModalResult = mrQuit;
+							return TRUE;
+							break;
 						case 1:
 						case 2:
 							pForm->ModalResult = mrQuit;
