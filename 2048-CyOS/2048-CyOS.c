@@ -9,6 +9,7 @@
 
 #define TILE_MARGIN              (3)
 #define TILE_SIZE               (22)
+#define X_END_FIELD             ((TILE_MARGIN * 4) + (TILE_SIZE * 4))
 
 struct module_t g_main_module;
 
@@ -74,25 +75,33 @@ static void draw_final(void) {
 
 	sprintf(score, "%d", e_score);
 
-	if (e_win || e_lose) {
-
-	}
-
 	DisplayGraphics_set_color(g_main_module.m_gfx, CLR_BLACK);
 	DisplayGraphics_set_font(g_main_module.m_gfx, cool_bold_font);
-	DisplayGraphics_draw_text(g_main_module.m_gfx, score_label, 104, 2);
-	DisplayGraphics_draw_text(g_main_module.m_gfx, score, 104, 18);
+	DisplayGraphics_draw_text(g_main_module.m_gfx, score_label, X_END_FIELD + TILE_MARGIN, 2);
+	DisplayGraphics_draw_text(g_main_module.m_gfx, score, X_END_FIELD + TILE_MARGIN, 18);
 
 	DisplayGraphics_set_color(g_main_module.m_gfx, CLR_DKGRAY);
 	DisplayGraphics_set_font(g_main_module.m_gfx, mini_normal_font);
-	DisplayGraphics_draw_text(g_main_module.m_gfx, reset_label_1, 104, SCREEN_HEIGHT - 24);
-	DisplayGraphics_draw_text(g_main_module.m_gfx, reset_label_2, 104 + 6, SCREEN_HEIGHT - 12);
+	DisplayGraphics_draw_text(g_main_module.m_gfx, reset_label_1, X_END_FIELD + TILE_MARGIN, SCREEN_HEIGHT - 24);
+	DisplayGraphics_draw_text(g_main_module.m_gfx, reset_label_2, X_END_FIELD + TILE_MARGIN + 6, SCREEN_HEIGHT - 12);
+
+	if (e_win || e_lose) {
+		int o_x = (e_win) ? 0 : 1;
+		const char *game_over_label = (e_win) ? "You Won!" : "You Lose!";
+		DisplayGraphics_set_draw_mode(g_main_module.m_gfx, DM_XOR);
+		DisplayGraphics_set_color(g_main_module.m_gfx, CLR_BLACK);
+		DisplayGraphics_fill_rect(g_main_module.m_gfx, 2, 0, X_END_FIELD, SCREEN_HEIGHT - 1);
+
+		DisplayGraphics_set_font(g_main_module.m_gfx, cool_bold_font);
+		DisplayGraphics_draw_text(g_main_module.m_gfx, game_over_label, X_END_FIELD + TILE_MARGIN - o_x, 46);
+	}
 }
 
 static void draw(void) {
 	int x;
 	int y;
 
+	DisplayGraphics_set_draw_mode(g_main_module.m_gfx, DM_PUT);
 	DisplayGraphics_fill_screen(g_main_module.m_gfx, CLR_WHITE);
 
 	for (y = 0; y < LINE_SIZE; ++y)
