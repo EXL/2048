@@ -11,120 +11,162 @@
 #define TILE_SIZE               (22)
 #define X_END_FIELD             ((TILE_MARGIN * 4) + (TILE_SIZE * 4))
 
-struct module_t g_main_module;
+typedef enum _ACTION_T {
+	ACTION_EXIT,
+	ACTION_RESET,
+	ACTION_SAVE,
+	ACTION_LOAD,
+	ACTION_SCORE,
+	ACTION_SCREENSHOT,
+	ACTION_ABOUT
+} ACTION_T;
 
-struct cList *g_pMainMenu;
-struct cCustomForm *g_pMainMenuForm;
+const char *menu_items[] = {
+	"Exit",
+	"Reset Game",
+	"Save Game...",
+	"Load Game...",
+	"High Scores...",
+	"Screenshot...",
+	"About...",
+};
+
+struct cMenuForm : public cCustomForm {
+	struct cList *m_list;
+	int m_index;
+};
+
+struct module_t g_main_module;
 
 static bool g_quit = FALSE;
 static bool g_focus = FALSE;
-static bool g_reg_esc = FALSE;
-static bool g_req_score = FALSE;
+static bool g_req_menu = FALSE;
 static bool g_req_draw = FALSE;
 
-void cMainMenu_on_about(void) {
+void Action_About(void) {
 	struct cDialog *p_dialog = (struct cDialog *) malloc(sizeof(struct cDialog));
 
-	cDialog_ctor(p_dialog, "Caption", "Dummy dialog 2", mbOk | mbs1, 0, g_main_module.m_process);
+	cDialog_ctor(
+		p_dialog,
+		"About 2048-CyOS...",
+		"2048 Game for Cybiko\n© EXL, MotoFan.Ru\n15-Mar-2025",
+		mbOk | mbs1, 0,
+		g_main_module.m_process
+	);
 
 	cDialog_ShowModal(p_dialog);
 
 	cDialog_dtor(p_dialog, FREE_MEMORY);
 }
 
-bool cMainMenu_proc(struct cCustomForm *pForm, struct Message *pMsg) {
-	struct KeyParam *p_key_param;
+struct cMenuForm *cMenuForm_ctor(
+	struct cMenuForm *p_form,
+	int x, int y, int w, int h,
+	const char *title,
+	bool round,
+	struct cWinApp *p_win,
+	const char **item_strs,
+	int item_count
+) {
+	int i;
+	struct rect_t menu_form_rect;
 
-	switch (pMsg->msgid) {
+	rect_set(&menu_form_rect, x, y, w, h);
+
+	p_form->m_list = (struct cList *) malloc(sizeof(struct cList));
+	cList_ctor(p_form->m_list, w - 6);
+	for (i = 0; i < item_count; ++i) {
+		struct cItem *p_item = (struct cItem *) malloc(sizeof(struct cItem));
+		cItem_ctor(p_item, w - 6, item_strs[i], FALSE, NULL, NULL);
+		cList_AddItem(p_form->m_list, p_item);
+	}
+
+	cCustomForm_ctor(p_form, &menu_form_rect, title, round, p_win);
+
+	cCustomForm_AddObj(p_form, p_form->m_list, 0, 0);
+
+	p_form->HelpContext = 0;
+	p_form->ModalResult = mrNone;
+
+	p_form->m_index = -1;
+
+	cCustomForm_Hide(p_form);
+
+	return p_form;
+}
+
+void cMenuForm_dtor(struct cMenuForm *p_form, int mem_flag) {
+	cList_dtor(p_form->m_list, mem_flag);
+	cCustomForm_dtor(p_form, mem_flag);
+}
+
+bool cMenuForm_proc(struct cMenuForm *p_form, struct Message *p_msg) {
+	switch (p_msg->msgid) {
 		case MSG_SHUTUP:
 		case MSG_QUIT:
-			pForm->ModalResult = mrQuit;
+			p_form->ModalResult = mrQuit;
 			return TRUE;
 			break;
 		case MSG_KEYDOWN:
-			p_key_param = Message_get_key_param(pMsg);
-			switch (p_key_param->scancode) {
+			switch (Message_get_key_param(p_msg)->scancode) {
 				case KEY_HELP:
-//					pForm->ModalResult = mrQuit;
+					return TRUE;
+					break;
+				case KEY_ESC:
+					p_form->ModalResult = mrCancel;
 					return TRUE;
 					break;
 				case KEY_ENTER:
-					switch (cList_Sel(g_pMainMenu)) {
-						case 0:
-							cMainMenu_on_about();
-							pForm->ModalResult = mrQuit;
-							return TRUE;
-							break;
-						case 1:
-						case 2:
-							pForm->ModalResult = mrQuit;
-							g_quit = TRUE;
-							return TRUE;
-//							cWinApp_defproc(g_main_module.m_process, pMsg);
-							break;
-					}
+					p_form->ModalResult = mrOk;
+					p_form->m_index = cList_FindObj(p_form->m_list, cList_GetSelectedObject(p_form->m_list));
 					return TRUE;
-					break;
 			}
 			break;
 	}
-
-	return cCustomForm_proc(pForm, pMsg);
+	return cCustomForm_proc(p_form, p_msg);
 }
 
-int cMainMenu_ShowModal(struct cCustomForm *pForm) {
-//	g_focus = FALSE;
-	cCustomForm_Show(pForm);
+int cMenuForm_ShowModal(struct cMenuForm *p_form) {
+	cCustomForm_Show(p_form);
 
-	pForm->ModalResult = mrNone;
-	while (pForm->ModalResult == mrNone) {
-		struct Message *pMsg = cWinApp_get_message(pForm->CurrApplication, 0, 1, MSG_USER);
+	cList_SelectFirst(p_form->m_list);
 
-		cMainMenu_proc(pForm, pMsg);
+	p_form->ModalResult = mrNone;
+	while (p_form->ModalResult == mrNone) {
+		struct Message *p_msg = cWinApp_get_message(p_form->CurrApplication, 0, 1, MSG_USER);
 
-		cCustomForm_update(pForm);
+		cMenuForm_proc(p_form, p_msg);
 
-		Message_delete(pMsg);
+		cCustomForm_update(p_form);
+
+		Message_delete(p_msg);
 	}
 
-	return pForm->ModalResult;
+	cCustomForm_Hide(p_form);
+
+	return p_form->ModalResult;
 }
 
-struct cCustomForm *cMainMenu_ctor() {
-	int i;
-	struct rect_t main_menu_rect;
-
-	g_pMainMenu = (struct cList *) malloc(sizeof(*g_pMainMenu));
-	cList_ctor(g_pMainMenu, 80);
-
-	for (i = 1; i < 8; ++i) {
-		char title[8];
-		struct cItem *pMenuItem = (struct cItem *) malloc(sizeof(*pMenuItem));
-
-		sprintf(title, "Item %d", i);
-
-		cItem_ctor(pMenuItem, 80, title, TRUE, NULL, NULL);
-
-		cList_AddItem(g_pMainMenu, pMenuItem);
+void cMenuForm_DoAction(struct cMenuForm *p_form) {
+	switch (p_form->m_index) {
+		case ACTION_EXIT:
+			g_quit = TRUE;
+			break;
+		case ACTION_RESET:
+			e_key(KEY_DEL);
+			break;
+		case ACTION_SAVE:
+			break;
+		case ACTION_LOAD:
+			break;
+		case ACTION_SCORE:
+			break;
+		case ACTION_SCREENSHOT:
+			break;
+		case ACTION_ABOUT:
+			Action_About();
+			break;
 	}
-
-	g_pMainMenuForm = (struct cCustomForm *) malloc(sizeof(*g_pMainMenuForm));
-
-	main_menu_rect.x = 40;
-	main_menu_rect.y = 20;
-	main_menu_rect.w = 86;
-	main_menu_rect.h = 60;
-
-	cCustomForm_ctor(g_pMainMenuForm, &main_menu_rect, "2048-CyOS Menu", TRUE, g_main_module.m_process);
-
-	g_pMainMenuForm->HelpContext = 0;
-	g_pMainMenuForm->ModalResult = mrNone;
-
-	cCustomForm_AddObj(g_pMainMenuForm, g_pMainMenu, 0, 0);
-
-	cCustomForm_Hide(g_pMainMenuForm);
-
-	return g_pMainMenuForm;
 }
 
 static void draw_tile(int value, int x, int y) {
@@ -221,6 +263,8 @@ static void draw(void) {
 }
 
 long main(int argc, char *argv[], bool start) {
+	struct cMenuForm *p_menu;
+
 	init_module(&g_main_module);
 
 	e_init(KEY_DEL, KEY_LEFT, KEY_RIGHT, KEY_UP, KEY_DOWN);
@@ -231,7 +275,14 @@ long main(int argc, char *argv[], bool start) {
 
 	AppGeneric_clear_screen();
 
-	cMainMenu_ctor();
+	p_menu = (struct cMenuForm *) malloc(sizeof(struct cMenuForm));
+	cMenuForm_ctor(
+		p_menu,
+		25, 20, 100, 60,
+		"Main Menu", TRUE,
+		g_main_module.m_process,
+		menu_items, sizeof(menu_items) / sizeof(menu_items[0])
+	);
 
 	while (!g_quit) {
 		struct Message *p_msg;
@@ -239,7 +290,7 @@ long main(int argc, char *argv[], bool start) {
 
 		p_msg = cWinApp_get_message(g_main_module.m_process, 0, 1, MSG_USER);
 
-		g_reg_esc = g_req_score = g_req_draw = FALSE;
+		g_req_menu = g_req_draw = FALSE;
 
 		switch (p_msg->msgid) {
 			case MSG_SHUTUP:
@@ -276,7 +327,7 @@ long main(int argc, char *argv[], bool start) {
 						/* Drop key auto-repeat. */
 						if(!(p_key_param->mask & KEYMASK_AUTOREPEAT)) {
 							if (g_focus) {
-								g_reg_esc = TRUE;
+								g_req_menu = TRUE;
 							}
 						}
 						break;
@@ -293,23 +344,20 @@ long main(int argc, char *argv[], bool start) {
 
 		Message_delete(p_msg);
 
-		if (g_reg_esc) {
-			// Show menu there.
-//			g_quit = TRUE;
-			cMainMenu_ShowModal(g_pMainMenuForm);
-//			g_focus = TRUE;
-			cCustomForm_Hide(g_pMainMenuForm);
+		if (g_req_menu) {
+			int mr = cMenuForm_ShowModal(p_menu);
+			if (mr == mrOk) {
+				cMenuForm_DoAction(p_menu);
+			}
 			g_req_draw = TRUE;
 		}
 
 		if (g_focus && g_req_draw) {
 			draw();
 		}
-
-		if (g_focus && g_req_score) {
-			// Score
-		}
 	}
+
+	cMenuForm_dtor(p_menu, FREE_MEMORY);
 
 	return 0L;
 }
