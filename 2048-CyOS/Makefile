@@ -10,6 +10,8 @@ APP_NAME = 2048-CyOS
 APP_CLASSIC = $(APP_NAME).app
 APP_XTREME = $(APP_NAME)_X.app
 
+LIBS = highscore.o
+
 all:
 	2pic res/0.ico res/0.bmp
 	2pic res/1.ico res/1.bmp
@@ -18,10 +20,9 @@ all:
 
 	$(VCC) -DCYOS -O -c 2048.c -o 2048.o
 	$(VCC) -DCYOS -O -c 2048-CyOS.c -o 2048-CyOS.o
-	$(VCC) 2048.o 2048-CyOS.o -o bytecode.bin
+	$(VCC) $(LIBS) 2048.o 2048-CyOS.o -o bytecode.bin
 
 	$(VCC) -R0 @res/filer_classic.list bytecode.bin -o $(APP_CLASSIC)
-
 	$(VCC) -R0 @res/filer_xtreme.list bytecode.bin -o $(APP_XTREME)
 
 clean:

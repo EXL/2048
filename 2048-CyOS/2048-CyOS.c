@@ -2,6 +2,7 @@
 
 #include <cybiko.h>
 #include <cywin.h>
+#include <highscore.h>
 
 #define STR_LEN_VALUE            (5)
 #define STR_LEN_SCORE            (6)
@@ -43,23 +44,25 @@ static bool g_focus = FALSE;
 static bool g_req_menu = FALSE;
 static bool g_req_draw = FALSE;
 
-void Action_About(void) {
+static void cMessageBox_Info(const char *title, const char *text) {
 	struct cDialog *p_dialog = (struct cDialog *) malloc(sizeof(struct cDialog));
 
-	cDialog_ctor(
-		p_dialog,
-		"About 2048-CyOS...",
-		"2048 Game for Cybiko\n© EXL, MotoFan.Ru\n15-Mar-2025",
-		mbOk | mbs1, 0,
-		g_main_module.m_process
-	);
+	cDialog_ctor(p_dialog, title, text, mbOk | mbs1, 0, g_main_module.m_process);
 
 	cDialog_ShowModal(p_dialog);
 
 	cDialog_dtor(p_dialog, FREE_MEMORY);
 }
 
-struct cMenuForm *cMenuForm_ctor(
+void Action_About(void) {
+	cMessageBox_Info("About 2048-CyOS...", "2048 Game for Cybiko\n© EXL, MotoFan.Ru\n15-Mar-2025");
+}
+
+void Action_HighScore(void) {
+	highscore_enter(&g_main_module, e_score, HSM_SHOW);
+}
+
+static struct cMenuForm *cMenuForm_ctor(
 	struct cMenuForm *p_form,
 	int x, int y, int w, int h,
 	const char *title,
@@ -95,12 +98,12 @@ struct cMenuForm *cMenuForm_ctor(
 	return p_form;
 }
 
-void cMenuForm_dtor(struct cMenuForm *p_form, int mem_flag) {
+static void cMenuForm_dtor(struct cMenuForm *p_form, int mem_flag) {
 	cList_dtor(p_form->m_list, mem_flag);
 	cCustomForm_dtor(p_form, mem_flag);
 }
 
-bool cMenuForm_proc(struct cMenuForm *p_form, struct Message *p_msg) {
+static bool cMenuForm_proc(struct cMenuForm *p_form, struct Message *p_msg) {
 	switch (p_msg->msgid) {
 		case MSG_SHUTUP:
 		case MSG_QUIT:
@@ -126,7 +129,7 @@ bool cMenuForm_proc(struct cMenuForm *p_form, struct Message *p_msg) {
 	return cCustomForm_proc(p_form, p_msg);
 }
 
-int cMenuForm_ShowModal(struct cMenuForm *p_form) {
+static int cMenuForm_ShowModal(struct cMenuForm *p_form) {
 	cCustomForm_Show(p_form);
 
 	cList_SelectFirst(p_form->m_list);
@@ -147,7 +150,7 @@ int cMenuForm_ShowModal(struct cMenuForm *p_form) {
 	return p_form->ModalResult;
 }
 
-void cMenuForm_DoAction(struct cMenuForm *p_form) {
+static void cMenuForm_DoAction(struct cMenuForm *p_form) {
 	switch (p_form->m_index) {
 		case ACTION_EXIT:
 			g_quit = TRUE;
@@ -160,6 +163,7 @@ void cMenuForm_DoAction(struct cMenuForm *p_form) {
 		case ACTION_LOAD:
 			break;
 		case ACTION_SCORE:
+			Action_HighScore();
 			break;
 		case ACTION_SCREENSHOT:
 			break;
@@ -267,6 +271,8 @@ long main(int argc, char *argv[], bool start) {
 
 	init_module(&g_main_module);
 
+	highscore_init(&g_main_module);
+
 	e_init(KEY_DEL, KEY_LEFT, KEY_RIGHT, KEY_UP, KEY_DOWN);
 
 	// Hi-Sco
@@ -358,6 +364,8 @@ long main(int argc, char *argv[], bool start) {
 	}
 
 	cMenuForm_dtor(p_menu, FREE_MEMORY);
+
+	highscore_cleanup(&g_main_module);
 
 	return 0L;
 }
