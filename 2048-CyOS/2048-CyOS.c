@@ -366,6 +366,7 @@ static void draw(void) {
 }
 
 long main(int argc, char *argv[], bool start) {
+	struct MSequence music;
 	struct cMenuForm *p_menu;
 
 	init_module(&g_main_module);
@@ -374,7 +375,10 @@ long main(int argc, char *argv[], bool start) {
 
 	e_init(KEY_DEL, KEY_LEFT, KEY_RIGHT, KEY_UP, KEY_DOWN);
 
-	// Music bkg title?
+	MSequence_ctor(&music, "title.mus");
+	if (MSequence_is_sane(&music)) {
+		MSequence_play_background(&music);
+	}
 
 	AppGeneric_clear_screen();
 
@@ -407,7 +411,9 @@ long main(int argc, char *argv[], bool start) {
 				break;
 			case MSG_LOSTFOCUS:
 				g_focus = FALSE;
-				// TODO: Stop music?
+				if (MSequence_is_playing(&music)) {
+					MSequence_stop(&music);
+				}
 				break;
 			case MSG_KEYDOWN:
 				p_key_param = Message_get_key_param(p_msg);
@@ -482,6 +488,8 @@ long main(int argc, char *argv[], bool start) {
 	cMenuForm_dtor(p_menu, FREE_MEMORY);
 
 	highscore_cleanup(&g_main_module);
+
+	MSequence_dtor(&music, LEAVE_MEMORY);
 
 	return 0L;
 }
