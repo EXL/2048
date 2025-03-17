@@ -7,6 +7,8 @@
 #define STR_LEN_VALUE            (5)
 #define STR_LEN_SCORE            (6)
 #define STR_LEN_LABEL           (10)
+#define STR_TIME_DATE           (18)
+#define STR_SAVE                (46)
 
 #define TILE_MARGIN              (3)
 #define TILE_SIZE               (22)
@@ -22,6 +24,19 @@ typedef enum _ACTION_T {
 	ACTION_ABOUT
 } ACTION_T;
 
+typedef struct _GAME_SAVE_T {
+	char date_time[STR_TIME_DATE]; /* 00:00:00 31-12-01 */
+	int board[BOARD_SIZE];
+	int score;
+	int win;
+	int lose;
+} GAME_SAVE_T;
+
+struct cMenuForm : public cCustomForm {
+	struct cList *m_list;
+	int m_index;
+};
+
 const char *menu_items[] = {
 	"Exit",
 	"Reset Game",
@@ -30,11 +45,6 @@ const char *menu_items[] = {
 	"High Scores...",
 	"Screenshot...",
 	"About...",
-};
-
-struct cMenuForm : public cCustomForm {
-	struct cList *m_list;
-	int m_index;
 };
 
 struct module_t g_main_module;
@@ -55,12 +65,96 @@ static void cMessageBox_Info(const char *title, const char *text) {
 	cDialog_dtor(p_dialog, FREE_MEMORY);
 }
 
-void Action_About(void) {
-	cMessageBox_Info("About 2048-CyOS...", "2048 Game for Cybiko\n© EXL, MotoFan.Ru\n15-Mar-2025");
+static bool Action_Save(void) {
+	int i;
+	bool is_ok;
+	char save_str[STR_SAVE];
+
+	GAME_SAVE_T save;
+	struct Time c_time;
+	struct FileOutput *p_file_output;
+
+	is_ok = FALSE;
+
+	Time_decode(&c_time, time());
+	memset(save.date_time, 0, STR_TIME_DATE);
+	sprintf(
+		save.date_time, "%02d:%02d:%02d %02d-%02d-%02d",
+		c_time.hour, c_time.minute, c_time.second, c_time.day, c_time.month, c_time.year
+	);
+	for (i = 0; i < BOARD_SIZE; ++i)
+		save.board[i] = e_board[i];
+	save.score = e_score;
+	save.win = e_win;
+	save.lose = e_lose;
+
+	p_file_output = (struct FileOutput *) malloc(sizeof(struct FileOutput));
+	FileOutput_ctor_Ex(p_file_output, "2048-CyOS.sav", TRUE);
+	if (FileOutput_is_good(p_file_output)) {
+		FileOutput_write(p_file_output, &save, sizeof(GAME_SAVE_T));
+		is_ok = TRUE;
+	}
+	FileOutput_dtor(p_file_output, FREE_MEMORY);
+
+	if (is_ok) {
+		sprintf(save_str, "\n%s\nOn: %s", "Saved '2048-CyOS.sav'", save.date_time);
+		cMessageBox_Info("Game Saved...", save_str);
+	} else {
+		cMessageBox_Info("Error Saving Game...", "\nCannot save '2048-CyOS.sav' file!");
+	}
+
+	return is_ok;
 }
 
-void Action_HighScore(void) {
+static bool Action_Load(void) {
+	int i;
+	bool is_ok;
+	char save_str[STR_SAVE];
+
+	GAME_SAVE_T save;
+	struct FileInput *p_file_input;
+
+	is_ok = FALSE;
+
+	p_file_input = (struct FileInput *) malloc(sizeof(struct FileInput));
+	FileInput_ctor_Ex(p_file_input, "2048-CyOS.sav");
+	if (FileInput_is_good(p_file_input)) {
+		long file_size = FileInput_get_size(p_file_input);
+		if (file_size > 0) {
+			FileInput_read(p_file_input, &save, sizeof(GAME_SAVE_T));
+
+			for (i = 0; i < BOARD_SIZE; ++i)
+				e_board[i] = save.board[i];
+			e_score = save.score;
+			e_win = save.win;
+			e_lose = save.lose;
+
+			is_ok = TRUE;
+		}
+	}
+	FileInput_dtor(p_file_input, FREE_MEMORY);
+
+	if (is_ok) {
+		g_req_score = FALSE;
+		sprintf(save_str, "\n%s\nOn: %s", "Loaded '2048-CyOS.sav'", save.date_time);
+		cMessageBox_Info("Game Loaded...", save_str);
+	} else {
+		cMessageBox_Info("Error Loading Game...", "\nCannot read '2048-CyOS.sav' file!");
+	}
+
+	return is_ok;
+}
+
+static void Action_HighScore(void) {
 	highscore_enter(&g_main_module, e_score, HSM_SHOW);
+}
+
+static void Action_Screenshot(void) {
+
+}
+
+static void Action_About(void) {
+	cMessageBox_Info("About 2048-CyOS...", "2048 Game for Cybiko\n© EXL, MotoFan.Ru\n15-Mar-2025");
 }
 
 static struct cMenuForm *cMenuForm_ctor(
@@ -161,13 +255,16 @@ static void cMenuForm_DoAction(struct cMenuForm *p_form) {
 			e_key(KEY_DEL);
 			break;
 		case ACTION_SAVE:
+			Action_Save();
 			break;
 		case ACTION_LOAD:
+			Action_Load();
 			break;
 		case ACTION_SCORE:
 			Action_HighScore();
 			break;
 		case ACTION_SCREENSHOT:
+			Action_Screenshot();
 			break;
 		case ACTION_ABOUT:
 			Action_About();
