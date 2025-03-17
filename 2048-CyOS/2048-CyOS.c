@@ -43,6 +43,7 @@ static bool g_quit = FALSE;
 static bool g_focus = FALSE;
 static bool g_req_menu = FALSE;
 static bool g_req_draw = FALSE;
+static bool g_req_score = FALSE;
 
 static void cMessageBox_Info(const char *title, const char *text) {
 	struct cDialog *p_dialog = (struct cDialog *) malloc(sizeof(struct cDialog));
@@ -156,6 +157,7 @@ static void cMenuForm_DoAction(struct cMenuForm *p_form) {
 			g_quit = TRUE;
 			break;
 		case ACTION_RESET:
+			g_req_score = FALSE;
 			e_key(KEY_DEL);
 			break;
 		case ACTION_SAVE:
@@ -244,7 +246,7 @@ static void draw_final(void) {
 		const char *game_over_label = (e_win) ? "You Won!" : "You Lose!";
 		DisplayGraphics_set_draw_mode(g_main_module.m_gfx, DM_XOR);
 		DisplayGraphics_set_color(g_main_module.m_gfx, CLR_BLACK);
-		DisplayGraphics_fill_rect(g_main_module.m_gfx, 2, 0, X_END_FIELD, SCREEN_HEIGHT - 1);
+		DisplayGraphics_fill_rect(g_main_module.m_gfx, 2, 0, X_END_FIELD, SCREEN_HEIGHT);
 
 		DisplayGraphics_set_font(g_main_module.m_gfx, cool_bold_font);
 		DisplayGraphics_draw_text(g_main_module.m_gfx, game_over_label, X_END_FIELD + TILE_MARGIN - o_x, 46);
@@ -274,8 +276,6 @@ long main(int argc, char *argv[], bool start) {
 	highscore_init(&g_main_module);
 
 	e_init(KEY_DEL, KEY_LEFT, KEY_RIGHT, KEY_UP, KEY_DOWN);
-
-	// Hi-Sco
 
 	// Music bkg title?
 
@@ -316,6 +316,8 @@ long main(int argc, char *argv[], bool start) {
 				p_key_param = Message_get_key_param(p_msg);
 				switch (p_key_param->scancode) {
 					case KEY_DEL:
+						g_req_score = FALSE;
+						/* Fall-through. */
 					case KEY_LEFT:
 					case KEY_RIGHT:
 					case KEY_UP:
@@ -325,6 +327,7 @@ long main(int argc, char *argv[], bool start) {
 						break;
 					case KEY_R:
 						e_key(KEY_DEL);
+						g_req_score = FALSE;
 						g_req_draw = TRUE;
 						break;
 					case KEY_ESC:
@@ -356,6 +359,22 @@ long main(int argc, char *argv[], bool start) {
 				cMenuForm_DoAction(p_menu);
 			}
 			g_req_draw = TRUE;
+		}
+
+		if (e_win || e_lose) {
+			if (g_focus && g_req_draw) {
+				draw();
+			}
+			if (!g_req_score) {
+				int highscores_result;
+
+				g_req_score = TRUE;
+				highscores_result = highscore_enter(&g_main_module, e_score, HSM_CHECKSHOWALL);
+				if (highscores_result == HSR_RESTART) {
+					g_req_score = FALSE;
+					e_key(KEY_DEL);
+				}
+			}
 		}
 
 		if (g_focus && g_req_draw) {

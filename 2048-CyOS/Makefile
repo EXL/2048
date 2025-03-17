@@ -17,6 +17,7 @@ all:
 	2pic res/1.ico res/1.bmp
 	2pic res/root.ico res/root.bmp
 	2pic res/intro.pic res/intro.bmp
+	2pic res/score.pic res/score_1.bmp res/score_2.bmp
 
 	$(VCC) -DCYOS -O -c 2048.c -o 2048.o
 	$(VCC) -DCYOS -O -c 2048-CyOS.c -o 2048-CyOS.o
