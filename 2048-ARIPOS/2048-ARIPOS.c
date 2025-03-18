@@ -298,6 +298,7 @@ int Game2048_Start(OPTR pFromObj) {
 	e_init(KEY_RESET, KEY_LEFT, KEY_RIGHT, KEY_UP, KEY_DOWN);
 
 #if 0
+	e_score = 15656;
 	e_board[ 0] =  128;
 	e_board[ 1] =   64;
 	e_board[ 4] =  256;
