@@ -29,6 +29,9 @@
 	#include <string.h>
 	#include <cpen/timer.h>
 	#define time(x) Timer_GetFastTickCount()
+#elif defined(CYOS)                     /* CyOS on Cybiko Classic and Cybiko Xtreme platform. */
+	#include <cybiko.h>
+	#define time(x) clock()
 #else
 	#include <time.h>
 	#include <stdlib.h>

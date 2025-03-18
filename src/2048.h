@@ -6,9 +6,13 @@ extern "C" {
 #endif
 
 #if defined(macintosh) /* Classic Mac OS platform. */
-#define BIG long
+	#define BIG long
+#elif defined(CYOS)    /* CyOS on Cybiko Classic and Cybiko Xtreme platform. */
+	#define BIG long
+	/* Bytecode VM of H8S on Cybikos have no unsigned type on old firmware versions. */
+	#define unsigned
 #else
-#define BIG
+	#define BIG
 #endif
 
 #define LINE_SIZE                           4
