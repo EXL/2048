@@ -13,6 +13,7 @@
 #define TILE_MARGIN              (3)
 #define TILE_SIZE               (22)
 #define X_END_FIELD             ((TILE_MARGIN * 4) + (TILE_SIZE * 4))
+#define SCREEN_WIDTH_DIV_4      (SCREEN_WIDTH / 4)
 
 typedef enum _ACTION_T {
 	ACTION_EXIT,
@@ -37,6 +38,19 @@ struct cMenuForm : public cCustomForm {
 	int m_index;
 };
 
+char g_bmp_4bpp_head[] = {
+	0x42, 0x4D, 0xB6, 0x1F, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x76, 0x00,
+	0x00, 0x00, 0x28, 0x00, 0x00, 0x00, 0xA0, 0x00, 0x00, 0x00, 0x64, 0x00,
+	0x00, 0x00, 0x01, 0x00, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00, 0x40, 0x1F,
+	0x00, 0x00, 0x13, 0x0B, 0x00, 0x00, 0x13, 0x0B, 0x00, 0x00, 0x10, 0x00,
+	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xFF, 0xFF, 0xFF, 0x00, 0xA3, 0xA3,
+	0xA3, 0x00, 0x53, 0x53, 0x53, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
+};
+
 const char *menu_items[] = {
 	"Exit",
 	"Reset Game",
@@ -54,6 +68,7 @@ static bool g_focus = FALSE;
 static bool g_req_menu = FALSE;
 static bool g_req_draw = FALSE;
 static bool g_req_score = FALSE;
+static bool g_req_screen_shot = FALSE;
 
 static void cMessageBox_Info(const char *title, const char *text) {
 	struct cDialog *p_dialog = (struct cDialog *) malloc(sizeof(struct cDialog));
@@ -149,8 +164,59 @@ static void Action_HighScore(void) {
 	highscore_enter(&g_main_module, e_score, HSM_SHOW);
 }
 
-static void Action_Screenshot(void) {
+static bool Action_Screenshot(void) {
+	bool is_ok;
+	char filename[STR_SAVE];
 
+	struct Time c_time;
+	struct FileOutput *p_file_output;
+
+	is_ok = FALSE;
+
+	Time_decode(&c_time, time());
+	sprintf(filename, "2048-CyOS_%02d%02d%02d.bmp", c_time.hour, c_time.minute, c_time.second);
+
+	p_file_output = (struct FileOutput *) malloc(sizeof(struct FileOutput));
+	FileOutput_ctor_Ex(p_file_output, filename, TRUE);
+	if (FileOutput_is_good(p_file_output)) {
+		int i;
+		int j;
+		int out_i;
+		char *bmp;
+		int size = Graphics_get_bytes_total(g_main_module.m_gfx);
+		char *vbuf = Graphics_get_buf_addr(g_main_module.m_gfx);
+
+		FileOutput_write(p_file_output, g_bmp_4bpp_head, strlen(g_bmp_4bpp_head));
+
+		bmp = (char *) malloc((SCREEN_WIDTH * SCREEN_HEIGHT) / 2);
+
+		out_i = 0;
+		for (i = 0; i < SCREEN_HEIGHT; ++i) {
+			int row_i = (SCREEN_HEIGHT - 1 - i) * SCREEN_WIDTH_DIV_4;
+			for (j = 0; j < SCREEN_WIDTH_DIV_4; ++j) {
+				int i_i = row_i + j;
+				char b = vbuf[i_i];
+
+				bmp[out_i++] = (b & 0xC0) >> 2 | (b & 0x30) >> 4;
+				bmp[out_i++] = (b & 0x0C) << 2 | (b & 0x03);
+			}
+		}
+
+		FileOutput_write(p_file_output, bmp, (SCREEN_WIDTH * SCREEN_HEIGHT) / 2);
+
+		free(bmp);
+
+		is_ok = TRUE;
+	}
+	FileOutput_dtor(p_file_output, FREE_MEMORY);
+
+	if (is_ok) {
+		cMessageBox_Info("Screen Saved...", filename);
+	} else {
+		cMessageBox_Info("Error Save Screen...", filename);
+	}
+
+	return is_ok;
 }
 
 static void Action_About(void) {
@@ -264,7 +330,7 @@ static void cMenuForm_DoAction(struct cMenuForm *p_form) {
 			Action_HighScore();
 			break;
 		case ACTION_SCREENSHOT:
-			Action_Screenshot();
+			g_req_screen_shot = TRUE;
 			break;
 		case ACTION_ABOUT:
 			Action_About();
@@ -375,6 +441,18 @@ long main(int argc, char *argv[], bool start) {
 
 	e_init(KEY_DEL, KEY_LEFT, KEY_RIGHT, KEY_UP, KEY_DOWN);
 
+#if 0
+	e_score = 15656;
+	e_board[ 0] =  128;
+	e_board[ 1] =   64;
+	e_board[ 4] =  256;
+	e_board[ 5] =   32;
+	e_board[ 8] =  512;
+	e_board[ 9] =   16;
+	e_board[12] = 1024;
+	e_board[13] =    8;
+#endif
+
 	MSequence_ctor(&music, "title.mus");
 	if (MSequence_is_sane(&music)) {
 		MSequence_play_background(&music);
@@ -481,6 +559,12 @@ long main(int argc, char *argv[], bool start) {
 		}
 
 		if (g_focus && g_req_draw) {
+			draw();
+		}
+
+		if (g_req_screen_shot) {
+			g_req_screen_shot = FALSE;
+			Action_Screenshot();
 			draw();
 		}
 	}
