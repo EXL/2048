@@ -190,7 +190,7 @@ static int Canvas_Draw_Final(WidgetDC *pWDC) {
 	WidgetDC_TextOut(pWDC, EF + 2, 1 * YC, wscore, wstrlen(wscore),
 		(is_c_pen_800) ? PP_LARGEFONT : MINIMAL_FONT, MODE_COPY);
 #else
-	WidgetDC_TextOut(pWDC, EF + 2, 0 * YC, score_label, strlen(score_label),
+	WidgetDC_TextOut(pWDC, EF + 2, 0 * YC, (char *) score_label, strlen(score_label),
 		(is_c_pen_800) ? PP_LARGEFONT : MINIMAL_FONT, MODE_COPY);
 	WidgetDC_TextOut(pWDC, EF + 2, 1 * YC, score, strlen(score),
 		(is_c_pen_800) ? PP_LARGEFONT : MINIMAL_FONT, MODE_COPY);
