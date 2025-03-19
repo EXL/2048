@@ -330,7 +330,7 @@ int Game2048_Start(OPTR pFromObj) {
 		OPI_SET_METHOD(pDlg, OPI_METHOD_HOOK(ScanPressed, Canvas_ScanPressed));
 
 		// Set application icon (relevant only for C-Pen 800).
-		MCALL1(pDlg, SetTaskName, "2048-ARIPOS");
+		MCALL1(pDlg, SetTaskName, GAME2048_TASKNAME);
 
 		// Activate dialog Widget and set focus to it.
 		MCALL0(pDlg, Mark);
