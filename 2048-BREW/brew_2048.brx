@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<BREWRes Name="brew_2048" VERSION="1">
+<Strings Encoding="Unicode">
+	<String Id="1001" Name="IDS_APP_NAME">
+		<Text>2048-BREW</Text>
+	</String>
+	<String Id="1002" Name="IDS_MENU_TITLE_MAIN">
+		<Text> 2048-BREW Menu</Text>
+	</String>
+	<String Id="1003" Name="IDS_MENU_ITEM_SAVE">
+		<Text>Save Game</Text>
+	</String>
+	<String Id="1004" Name="IDS_MENU_ITEM_LOAD">
+		<Text>Load Game</Text>
+	</String>
+	<String Id="1005" Name="IDS_MENU_ITEM_RESET">
+		<Text>Reset Game</Text>
+	</String>
+	<String Id="1006" Name="IDS_MENU_ITEM_HELP">
+		<Text>Help...</Text>
+	</String>
+	<String Id="1007" Name="IDS_MENU_ITEM_ABOUT">
+		<Text>About...</Text>
+	</String>
+	<String Id="1008" Name="IDS_MENU_ITEM_EXIT">
+		<Text>Exit</Text>
+	</String>
+	<String Id="1009" Name="IDS_MENU_ITEM_TILES">
+		<Text>Tiles</Text>
+	</String>
+	<String Id="1010" Name="IDS_MENU_ITEM_RECTANGLE">
+		<Text>Rectangle</Text>
+	</String>
+	<String Id="1011" Name="IDS_MENU_ITEM_ROUNDED">
+		<Text>Rounded</Text>
+	</String>
+	<String Id="1012" Name="IDS_MENU_TITLE_TILE">
+		<Text> Tiles Menu</Text>
+	</String>
+	<String Id="1013" Name="IDS_HELP_TITLE">
+		<Text> 2048-BREW Help</Text>
+	</String>
+	<String Id="1014" Name="IDS_HELP_TEXT">
+		<Text>A popular puzzle game for Qualcomm BREW platform written using AEE framework.
+
+Collect "2048" by moving tiles! Use "0" button to reset game.
+
+Thanks to Jeff Anders for the Material Desing Icons. Thanks to usernameak, kraze1984, and asdf for help and advice.
+
+https://github.com/EXL/2048</Text>
+	</String>
+	<String Id="1015" Name="IDS_LOAD_ERROR_TITLE">
+		<Text> Load Error!</Text>
+	</String>
+	<String Id="1016" Name="IDS_SAVE_TITLE">
+		<Text> Game Saved!</Text>
+	</String>
+	<String Id="1017" Name="IDS_LOAD_ERROR_TEXT">
+		<Text>Cannot find save file!</Text>
+	</String>
+	<String Id="1018" Name="IDS_LOAD_TITLE">
+		<Text> Game Loaded!</Text>
+	</String>
+	<String Id="1019" Name="IDS_STATE">
+		<Text>State on: </Text>
+	</String>
+	<String Id="1020" Name="IDS_SAVE_ERROR_TITLE">
+		<Text> Save Error!</Text>
+	</String>
+	<String Id="1021" Name="IDS_SAVE_ERROR_TEXT">
+		<Text>Cannot create save file!</Text>
+	</String>
+</Strings>
+<Objects MimeType="image/png">
+	<Object Id="5001" Name="IDI_ICON_SAVE">
+		<File>.\icons\action\icon_save_16x16.png</File>
+	</Object>
+	<Object Id="5002" Name="IDI_ICON_LOAD">
+		<File>.\icons\action\icon_load_16x16.png</File>
+	</Object>
+	<Object Id="5003" Name="IDI_ICON_RESET">
+		<File>.\icons\action\icon_reset_16x16.png</File>
+	</Object>
+	<Object Id="5004" Name="IDI_ICON_TILE">
+		<File>.\icons\action\icon_tiles_16x16.png</File>
+	</Object>
+	<Object Id="5005" Name="IDI_ICON_CHECKBOX_FALSE">
+		<File>.\icons\action\icon_checkbox_false_16x16.png</File>
+	</Object>
+	<Object Id="5006" Name="IDI_ICON_CHECKBOX_TRUE">
+		<File>.\icons\action\icon_checkbox_true_16x16.png</File>
+	</Object>
+	<Object Id="5007" Name="IDI_ICON_HELP">
+		<File>.\icons\action\icon_help_16x16.png</File>
+	</Object>
+	<Object Id="5008" Name="IDI_ICON_ABOUT">
+		<File>.\icons\action\icon_about_16x16.png</File>
+	</Object>
+	<Object Id="5009" Name="IDI_ICON_EXIT">
+		<File>.\icons\action\icon_exit_16x16.png</File>
+	</Object>
+</Objects>
+</BREWRes>

@@ -1,0 +1,11 @@
++res/0.help
++res/intro.pic
++res/root.ico
++res/classic/root.inf
++res/root.spl
+-res/score.inf
++res/score.pic
++res/score.mus
++res/score_lose.mus
++res/score_win.mus
++res/title.mus

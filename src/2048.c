@@ -1,17 +1,37 @@
 #include "2048.h"
 
-#if defined(mc68000) && !defined(NeXT) /* GCC on Sega Mega Drive and Sega Genesis platform. */
+#if defined(mc68000) && !defined(NeXT)  /* GCC on Sega Mega Drive and Sega Genesis platform. */
 	#include <genesis.h>
 	#include <string.h>
 	#define rand random
-#elif defined(THINK_C) /* Symantec THINK C IDE on Classic Mac OS platform. */
+#elif defined(THINK_C)                  /* Symantec THINK C IDE on Classic Mac OS platform. */
 	#include <string.h>
 	#define rand Random
-#elif defined(__P2K__) /* Motorola P2K platform. */
+#elif defined(__P2K__)                  /* Motorola P2K platform. */
 	#include <utilities.h>
 	#include <time_date.h>
 	#include <mem.h>
 	#define srand(x) randomize()
+#elif defined(__BREW__)                 /* Qualcomm BREW platform. */
+	#include <AEEStdLib.h>
+	#define memcpy MEMCPY
+	#define memset MEMSET
+	static inline int rand(void) {
+		int random_number;
+		GETRAND((byte *) &random_number, sizeof(int));
+		return random_number;
+	}
+#elif defined(SE)                       /* Sony Ericsson A1/A2 platform. */
+	#include "../2048-SE/include/Lib_Clara.h"
+	#include "../2048-SE/2048/rand.h"
+#elif defined(CPEN)                     /* C-Pen 600, C-Pen 800 ARIPOS platform. */
+	#include <stdlib.h>
+	#include <string.h>
+	#include <cpen/timer.h>
+	#define time(x) Timer_GetFastTickCount()
+#elif defined(CYOS)                     /* CyOS on Cybiko Classic and Cybiko Xtreme platform. */
+	#include <cybiko.h>
+	#define time(x) clock()
 #else
 	#include <time.h>
 	#include <stdlib.h>
@@ -208,10 +228,14 @@ extern void e_key(int keycode) {
 }
 
 extern void e_init(int esc_keycode, int left_keycode, int right_keycode, int up_keycode, int down_keycode) {
-#if !defined(mc68000) || defined(NeXT) /* GCC on Sega Mega Drive and Sega Genesis platform. */
-#if !defined(THINK_C) /* Symantec THINK C IDE on Classic Mac OS platform. */
-#if !defined(MRE) /* MediaTek MRE platform. */
+#if !defined(mc68000) || defined(NeXT)  /* GCC on Sega Mega Drive and Sega Genesis platform. */
+#if !defined(THINK_C)                   /* Symantec THINK C IDE on Classic Mac OS platform. */
+#if !defined(MRE)                       /* MediaTek MRE platform. */
+#if !defined(__BREW__)                  /* Qualcomm BREW platform. */
+#if !defined(SE)						/* Sony Ericsson A1/A2 platform. */
 	srand((unsigned int) time(NULL));
+#endif
+#endif
 #endif
 #endif
 #endif

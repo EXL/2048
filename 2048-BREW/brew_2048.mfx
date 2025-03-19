@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<BREWRes Name="brew_2048" VERSION="1">
+<Strings Encoding="Unicode">
+	<String Id="6" Name="IDS_STRING_6">
+		<Text>EXL, 25-Jun-2024</Text>
+	</String>
+	<String Id="7" Name="IDS_STRING_7">
+		<Text>© MotoFan.Ru</Text>
+	</String>
+	<String Id="8" Name="IDS_STRING_8">
+		<Text>Version 1.0.0</Text>
+	</String>
+	<String Id="20" Name="IDS_STRING_20">
+		<Text>2048-BREW</Text>
+	</String>
+</Strings>
+<Objects MimeType="image/png">
+	<Object Id="21" Name="IDI_OBJECT_21">
+		<File>Z:\CDMA\icons\brew_medium_26x26.png</File>
+	</Object>
+	<Object Id="22" Name="IDI_OBJECT_22">
+		<File>Z:\CDMA\icons\brew_large_65x42.png</File>
+	</Object>
+	<Object Id="23" Name="IDI_OBJECT_23">
+		<File>Z:\CDMA\icons\brew_small_16x16.png</File>
+	</Object>
+</Objects>
+<BREWMif>
+	<Module Encoding="Unicode">
+		<!--Author = IDS_STRING_6-->
+		<!--Copyright = IDS_STRING_7-->
+		<!--Version = IDS_STRING_8-->
+		<Privileges>
+			<Privilege Level="File"/>
+		</Privileges>
+		<Exported/>
+		<MimeTypes/>
+		<Imported/>
+		<ACLs>
+			<ACL Type="fs"/>
+		</ACLs>
+	</Module>
+	<Applets>
+		<Applet BaseId="20" CLSID="0x0200e398">
+			<!--Name = IDS_STRING_20-->
+			<!--Icon = IDI_OBJECT_21-->
+			<!--Image = IDI_OBJECT_22-->
+			<!--Thumb = IDI_OBJECT_23-->
+			<Type>0x00000000</Type>
+			<Applethost>0x00000000</Applethost>
+			<Flags/>
+			<Environment/>
+			<Notifications/>
+		</Applet>
+	</Applets>
+</BREWMif>
+</BREWRes>

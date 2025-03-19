@@ -1,0 +1,35 @@
+#include <system/stdresourcetypes.h>
+
+#include "Game2048_resources.h"
+
+{
+	RES_TYPE_SYSTEM {
+		RES_ID_SYS_APPICONBIG {
+			RES_LANG_ENG : bitmap("res\\bmps\\IconBig.bmp");
+		}
+		RES_ID_SYS_APPICONSMALL {
+			RES_LANG_ENG : bitmap("res\\bmps\\IconSmall.bmp");
+		}
+		RES_ID_SYS_APPICONPRIORITY {
+			RES_LANG_ENG : 25000;
+		}
+		RES_ID_SYS_APPNAME {
+			RES_LANG_ENG : "2048";
+		}
+	}
+
+	RES_TYPE_BITMAP {
+		RES_GAME2048_BMP_ARROW_HORZONTAL {
+			RES_LANG_ENG : bitmap("res\\bmps\\ArrowH.bmp");
+		}
+		RES_GAME2048_BMP_ARROW_VERTICAL {
+			RES_LANG_ENG : bitmap("res\\bmps\\ArrowV.bmp");
+		}
+		RES_GAME2048_BMP_WIN {
+			RES_LANG_ENG : bitmap("res\\bmps\\Win.bmp");
+		}
+		RES_GAME2048_BMP_LOSE {
+			RES_LANG_ENG : bitmap("res\\bmps\\Lose.bmp");
+		}
+	}
+}

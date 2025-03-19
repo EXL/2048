@@ -265,8 +265,13 @@ static UINT32 SaveGame(APPLICATION_T *app);
 static const char g_app_name[APP_NAME_LEN] = "2048-AHI";
 
 static const WCHAR g_str_app_name[] = L"2048-P2K-AHI";
+#if defined(FTR_L7E) || defined(FTR_L9)
+static const WCHAR g_str_app_soft_left[] = L"Options";
+static const WCHAR g_str_app_soft_right[] = L"Back";
+#else
 static const WCHAR g_str_app_soft_left[] = L"Exit";
 static const WCHAR g_str_app_soft_right[] = L"Reset";
+#endif
 static const WCHAR g_str_app_score[] = L"Score: ";
 static const WCHAR g_str_menu_save[] = L"Save Game";
 static const WCHAR g_str_menu_load[] = L"Load Game";
@@ -495,6 +500,8 @@ static UINT32 ApplicationStop(EVENT_STACK_T *ev_st, APPLICATION_T *app) {
 
 	status = RESULT_OK;
 	app_instance = (APP_INSTANCE_T *) app;
+
+	APP_ConsumeEv(ev_st, app);
 
 	DeleteDialog(app);
 
@@ -820,7 +827,7 @@ static UINT32 HandleStateEnter(EVENT_STACK_T *ev_st, APPLICATION_T *app, ENTER_S
 				if (app_instance->flag_from_select) {
 					if (app_instance->menu_current_item_index != APP_MENU_ITEM_FIRST) {
 						APP_UtilAddEvChangeListPosition(ev_st, app, app_instance->menu_current_item_index + 1,
-							NULL, NULL, NULL);
+							0, 0, NULL);
 						UIS_HandleEvent(dialog, ev_st);
 					}
 					app_instance->flag_from_select = FALSE;
@@ -1003,14 +1010,24 @@ static UINT32 HandleEventKeyRelease(EVENT_STACK_T *ev_st, APPLICATION_T *app) {
 
 	switch (event->data.key_pressed) {
 		case KEY_RED:
-		case KEY_SOFT_LEFT:
 			status |= APP_UtilStartTimer(TIMER_FAST_TRIGGER_MS, APP_TIMER_EXIT, app);
+			break;
+		case KEY_SOFT_LEFT:
+#if defined(FTR_L7E) || defined(FTR_L9)
+			status |= APP_UtilStartTimer(TIMER_FAST_TRIGGER_MS, APP_TIMER_MENU, app);
+#else
+			status |= APP_UtilStartTimer(TIMER_FAST_TRIGGER_MS, APP_TIMER_EXIT, app);
+#endif
 			break;
 		case KEY_MENU:
 			status |= APP_UtilStartTimer(TIMER_FAST_TRIGGER_MS, APP_TIMER_MENU, app);
 			break;
 		case KEY_SOFT_RIGHT:
+#if defined(FTR_L7E) || defined(FTR_L9)
+			status |= APP_UtilStartTimer(TIMER_FAST_TRIGGER_MS, APP_TIMER_EXIT, app);
+#else
 			status |= APP_UtilStartTimer(TIMER_FAST_TRIGGER_MS, APP_TIMER_RESET, app);
+#endif
 			break;
 		default:
 			break;
@@ -1057,12 +1074,12 @@ static UINT32 HandleEventTimerExpired(EVENT_STACK_T *ev_st, APPLICATION_T *app) 
 #if defined(USE_MME)
 			/* Play a normal camera shutter sound using loud speaker. */
 			/* NOTE: Function `MME_GC_playback_open_audio_play_forget()` may not be available on most libraries. */
-#if !defined(FTR_V600)
-			MME_GC_playback_open_audio_play_forget(L"/a/mobile/system/shutter5.amr");
-#else
+#if defined(FTR_V600) || defined(FTR_V635)
 			MME_GC_playback_open_audio_play_forget(L"/a/mobile/system/shutter5.wav");
-#endif /* !defined(FTR_V600) */
-#endif /* !defined(USE_MME) */
+#else
+			MME_GC_playback_open_audio_play_forget(L"/a/mobile/system/shutter5.amr");
+#endif /* defined(FTR_V600) || defined(FTR_V635) */
+#endif /* defined(USE_MME) */
 			break;
 		default:
 			break;
@@ -1210,6 +1227,10 @@ static UINT32 SetWorikingArea(GRAPHIC_REGION_T *working_area) {
 	rect.lrc.y = height_soft_keys_start;
 	/* rect.lrc.y += 1; */
 
+#if defined(FTR_L7E) || defined(FTR_L9)
+	rect.ulc.y += 8;
+#endif
+
 	memcpy(working_area, &rect, sizeof(GRAPHIC_REGION_T));
 
 	return status;
@@ -1239,6 +1260,22 @@ static UINT32 SetMeasuredValues(APP_MEASURED_T *measured_values, DRAWING_BUFFER_
 			measured_values->gap_y_huge = 2;
 			break;
 		case APP_DISPLAY_176x220:
+#if defined(FTR_L7E) || defined(FTR_L9)
+			measured_values->tile_size = 34;
+			measured_values->offset_x = 4;
+			measured_values->offset_y = 4;
+			measured_values->offset_width = 10;
+			measured_values->offset_height = 0;
+			measured_values->rounded_rad = 4;
+			measured_values->pencil_width = 2;
+			measured_values->font_large = 0x05;        /* Big numbers at set of number font. */
+			measured_values->font_normal = 0x05;       /* Big numbers at set of number font. */
+			measured_values->font_small = 0x04;        /* Small numbers at set of number font. */
+			measured_values->font_ultra_small = 0x09;  /* Very narrow numbers font. */
+			measured_values->font_final = 0x01;        /* General font. */
+			measured_values->gap = 1;
+			measured_values->gap_y_huge = 0;
+#else
 			measured_values->tile_size = 34;
 			measured_values->offset_x = 4;
 			measured_values->offset_y = 4;
@@ -1253,6 +1290,7 @@ static UINT32 SetMeasuredValues(APP_MEASURED_T *measured_values, DRAWING_BUFFER_
 			measured_values->font_final = 0x0A;        /* Bold WAP-browser font. */
 			measured_values->gap = 1;
 			measured_values->gap_y_huge = 0;
+#endif
 			break;
 	}
 
@@ -1381,6 +1419,13 @@ static UINT32 PaintTile(EVENT_STACK_T *ev_st, APPLICATION_T *app, UINT32 value, 
 	UINT16 tile_size;
 	UINT16 offset_w;
 	UINT16 offset_h;
+	INT16 gap_h;
+
+#if defined(FTR_L7E) || defined(FTR_L9)
+	gap_h = (-3);
+#else
+	gap_h = 0;
+#endif
 
 	status = RESULT_OK;
 	app_instance = (APP_INSTANCE_T *) app;
@@ -1389,7 +1434,7 @@ static UINT32 PaintTile(EVENT_STACK_T *ev_st, APPLICATION_T *app, UINT32 value, 
 	offset_h = app_instance->measured.offset_height;
 
 	coord_x = OffsetCoord(x, tile_size, app_instance->measured.offset_x) + offset_w;
-	coord_y = OffsetCoord(y, tile_size, app_instance->measured.offset_y) + app_instance->area.ulc.y + offset_h;
+	coord_y = OffsetCoord(y, tile_size, app_instance->measured.offset_y) + app_instance->area.ulc.y + offset_h + gap_h;
 
 	rect_O.x1 = coord_x;
 	rect_O.y1 = coord_y;

@@ -42,6 +42,7 @@ const int TILE_MARGIN = 5;
 class Widget : public QWidget {
 	Q_OBJECT
 
+	ZKbMainWidget *zKbMainWidget;
 	QPixmap *fb;
 	QFont *font_large, *font_middle, *font_normal, *font_small;
 	int ww, hh;
@@ -85,16 +86,25 @@ class Widget : public QWidget {
 			const int w = QFontMetrics(*font_large).width(center);
 			painter.drawText(ww / 2 - w / 2, hh / 2, center);
 		}
+#if defined(EZX_EM30) || defined (EZX_E8)
+		if (e_score > 0) {
+			zKbMainWidget->setAppTitle(QString("Score: %1").arg(e_score));
+		} else {
+			zKbMainWidget->setAppTitle("2048");
+		}
+#else
 		painter.setPen(QColor(COLOR_TEXT));
 		painter.setFont(*font_normal);
 		const QString strScore = QString("Score: %1").arg(e_score);
 		const int w = QFontMetrics(*font_normal).width(strScore);
 		painter.drawText(TILE_MARGIN, hh - 10, "Press '0' to Reset!");
 		painter.drawText(ww - w - TILE_MARGIN, hh - 10, strScore);
+#endif
 	}
 public:
 	Widget(QWidget *parent = 0, const char *name = 0) : QWidget(parent, name, WRepaintNoErase | WResizeNoErase) {
 		e_init(KEYCODE_0, KEYCODE_LEFT, KEYCODE_RIGHT, KEYCODE_UP, KEYCODE_DOWN);
+		zKbMainWidget = static_cast<ZKbMainWidget *>(parent);
 		fb = NULL;
 		font_large = new QFont("Sans", 20, QFont::Bold);
 		font_middle = new QFont("Sans", 16, QFont::Bold);
@@ -206,7 +216,7 @@ public slots:
 		ZMessageDlg *msgDlg = new ZMessageDlg("About 2048", QTextCodec::codecForName("UTF-8")->toUnicode(
 			"2048 Game implementation especially for %1 platform.\n\n"
 			"Version: 1.0, %2\nThanks to: Boxa, fill.sa, VINRARUS, Unreal_man\n"
-			"© EXL (exl@bk.ru), 2020\nSource code: https://github.com/EXL/2048").arg(TARGET_PLATFORM).arg(__DATE__),
+			"© EXL (exl@bk.ru), 2024\nSource code: https://github.com/EXL/2048").arg(TARGET_PLATFORM).arg(__DATE__),
 			ZMessageDlg::TypeOK, 60*1000);
 		QString iconPath = QString("%1/%2").arg(QFileInfo(qApp->argv()[0]).dirPath(true)).arg(ICON_ABOUT_NAME);
 		if (QFile::exists(iconPath)) {

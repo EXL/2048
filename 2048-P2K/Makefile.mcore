@@ -1,0 +1,42 @@
+# This Makefile was created by EXL, 20-Apr-2024.
+# Default platform is Motorola P2K M-CORE, ElfPack v2.0 for M-CORE, `mcore-elf-gcc-3.4.6` on Linux.
+
+# Compiler path.
+MCORE_PATH = /opt/mcore-elf-gcc
+
+# SDK path.
+SDK_PATH = $(MCORE_PATH)/sdk
+
+# Libraries path.
+LIB_PATH = $(MCORE_PATH)/mcore-elf/lib
+
+# Defines.
+DEFINES = -D__P2K__ -DEM2 -DUSE_MME
+
+# Includes.
+INCLUDES = -I../src/ -I../image/icon/precompiled/
+
+# Optimization.
+OPTIM = -O2
+
+# Project/ELF name.
+ELF_NAME = 2048-UIS
+
+all:
+	$(MCORE_PATH)/bin/mcore-elf-gcc -fshort-wchar -funsigned-char -fomit-frame-pointer -fno-builtin \
+		-m340 -m4align -mbig-endian -nostdinc -nostdlib \
+		-I$(SDK_PATH) $(INCLUDES) $(DEFINES) $(OPTIM) \
+		-c ../src/2048.c -o 2048.o
+	$(MCORE_PATH)/bin/mcore-elf-gcc -fshort-wchar -funsigned-char -fomit-frame-pointer -fno-builtin \
+		-m340 -m4align -mbig-endian -nostdinc -nostdlib \
+		-I$(SDK_PATH) $(INCLUDES) $(DEFINES) $(OPTIM) \
+		-c $(ELF_NAME).c -o $(ELF_NAME).o
+	$(MCORE_PATH)/bin/mcore-elf-ld -d -EB -N -r -s -Bstatic -Bsymbolic -Bsymbolic-functions \
+		-nostdinc -nostdlib --unresolved-symbols=report-all -z muldefs -z combreloc -z nodefaultlib \
+		2048.o $(ELF_NAME).o -T$(LIB_PATH)/linker_elf.ld -o $(ELF_NAME).elf
+
+clean:
+	-rm -f *.o
+	-rm -f *.obj
+	-rm -f *.elfp
+	-rm -f *.elf

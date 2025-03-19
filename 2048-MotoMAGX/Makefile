@@ -146,7 +146,7 @@ mpkg: $(APPNAME)_Z6
 	-mkdir $(APPNAME)
 	-cp $(APPNAME)_Z6 $(APPNAME)
 	-cp mpkg/2048-MotoMAGX.desktop $(APPNAME)
-	-cp ../image/icon/ic_launcher0.png $(APPNAME)/icon_usr.png
+	-cp ../image/icon/magx_48x48.png $(APPNAME)/icon_usr.png
 	$(TAR) $(APPNAME).uncompressed $(APPNAME)
 	$(GZIP) $(APPNAME).uncompressed
 	-mv $(APPNAME).uncompressed.gz $(APPNAME)_Z6.mpkg

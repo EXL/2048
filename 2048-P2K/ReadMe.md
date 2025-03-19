@@ -3,6 +3,10 @@
 
 The "2048" puzzle game for the Motorola P2K platform written using AFW and UIS frameworks and implemented as ELF-application.
 
+*Motorola C650 Screenshots:*
+
+![2048-UIS Motorola C650 Screenshot 1](../image/2048-P2K-C650-Screenshot1.png) ![2048-UIS Motorola C650 Screenshot 2](../image/2048-P2K-C650-Screenshot2.png) ![2048-UIS Motorola C650 Screenshot 3](../image/2048-P2K-C650-Screenshot3.png) ![2048-UIS Motorola C650 Screenshot 4](../image/2048-P2K-C650-Screenshot4.png) ![2048-UIS Motorola C650 Screenshot 5](../image/2048-P2K-C650-Screenshot5.png)
+
 *Motorola SLVR L6 Screenshots:*
 
 ![2048-UIS Motorola SLVR L6 Screenshot 1](../image/2048-P2K-L6-Screenshot1.png) ![2048-UIS Motorola SLVR L6 Screenshot 2](../image/2048-P2K-L6-Screenshot2.png) ![2048-UIS Motorola SLVR L6 Screenshot 3](../image/2048-P2K-L6-Screenshot3.png) ![2048-UIS Motorola SLVR L6 Screenshot 4](../image/2048-P2K-L6-Screenshot4.png) ![2048-UIS Motorola SLVR L6 Screenshot 5](../image/2048-P2K-L6-Screenshot5.png)
@@ -26,6 +30,18 @@ The "2048" puzzle game for the Motorola P2K platform written using AFW and UIS f
 ![2048-UIS Motorola ROKR E1 Screenshot 6](../image/2048-P2K-E1-Screenshot6.png) ![2048-UIS Motorola ROKR E1 Screenshot 7](../image/2048-P2K-E1-Screenshot7.png) ![2048-UIS Motorola ROKR E1 Screenshot 8](../image/2048-P2K-E1-Screenshot8.png) ![2048-UIS Motorola ROKR E1 Screenshot 9](../image/2048-P2K-E1-Screenshot9.png) ![2048-UIS Motorola ROKR E1 Screenshot 10](../image/2048-P2K-E1-Screenshot10.png)
 
 ![2048-UIS Motorola ROKR E1 Screenshot 11](../image/2048-P2K-E1-Screenshot11.png) ![2048-UIS Motorola ROKR E1 Screenshot 12](../image/2048-P2K-E1-Screenshot12.png) ![2048-UIS Motorola ROKR E1 Screenshot 13](../image/2048-P2K-E1-Screenshot13.png) ![2048-UIS Motorola ROKR E1 Screenshot 14](../image/2048-P2K-E1-Screenshot14.png) ![2048-UIS Motorola ROKR E1 Screenshot 15](../image/2048-P2K-E1-Screenshot15.png)
+
+*Motorola KRZR K1 Screenshots:*
+
+![2048-UIS Motorola KRZR K1 Screenshot 1](../image/2048-P2K-K1-Screenshot1.png) ![2048-UIS Motorola KRZR K1 Screenshot 2](../image/2048-P2K-K1-Screenshot2.png) ![2048-UIS Motorola KRZR K1 Screenshot 3](../image/2048-P2K-K1-Screenshot3.png) ![2048-UIS Motorola KRZR K1 Screenshot 4](../image/2048-P2K-K1-Screenshot4.png) ![2048-UIS Motorola KRZR K1 Screenshot 5](../image/2048-P2K-K1-Screenshot5.png)
+
+*Motorola SLVR L7e Screenshots:*
+
+![2048-UIS Motorola SLVR L7e Screenshot 1](../image/2048-P2K-L7e-Screenshot1.png) ![2048-UIS Motorola SLVR L7e Screenshot 2](../image/2048-P2K-L7e-Screenshot2.png) ![2048-UIS Motorola SLVR L7e Screenshot 3](../image/2048-P2K-L7e-Screenshot3.png) ![2048-UIS Motorola SLVR L7e Screenshot 4](../image/2048-P2K-L7e-Screenshot4.png) ![2048-UIS Motorola SLVR L7e Screenshot 5](../image/2048-P2K-L7e-Screenshot5.png)
+
+*Motorola SLVR L9 Screenshots:*
+
+![2048-UIS Motorola SLVR L9 Screenshot 1](../image/2048-P2K-L9-Screenshot1.png) ![2048-UIS Motorola SLVR L9 Screenshot 2](../image/2048-P2K-L9-Screenshot2.png) ![2048-UIS Motorola SLVR L9 Screenshot 3](../image/2048-P2K-L9-Screenshot3.png) ![2048-UIS Motorola SLVR L9 Screenshot 4](../image/2048-P2K-L9-Screenshot4.png) ![2048-UIS Motorola SLVR L9 Screenshot 5](../image/2048-P2K-L9-Screenshot5.png)
 
 This game uses native APIs and frameworks, the ones that the phone's firmware uses itself! All applications for the Motorola P2K OS are built on top of the AFW (Application Framework) which implements event-driven programming and non-preemptive multitasking, the [Event-driven finite-state](https://en.wikipedia.org/wiki/Event-driven_finite-state_machine) machine pattern is very actively used which bloats the application's codebase a lot. The AFW approach is reminiscent of modern Android development with Activities in some ways.
 
@@ -70,22 +86,29 @@ $ make
 ## ELF files
 
 * 2048-P2K-UIS_EP1.elf (ELF for ElfPack 1.0)
-* 2048-P2K-UIS_EP1_V600.elf (ELF for ElfPack 1.0, Motorola V600 version)
 * 2048-P2K-UIS_EP2.elf (ELF for ElfPack 2.0)
 * 2048-P2K-UIS_EM1.elf (ELF for ElfPack 1.0, M·CORE)
 * 2048-P2K-UIS_EM2.elf (ELF for ElfPack 2.0, M·CORE)
+* 2048-P2K-UIS_EP1_L7e.elf (ELF for ElfPack 1.0, Motorola SLVR L7e version)
+* 2048-P2K-UIS_EP2_L7e.elf (ELF for ElfPack 2.0, Motorola SLVR L7e version)
+* 2048-P2K-UIS_EP1_V600.elf (ELF for ElfPack 1.0, Motorola V600 version)
+* 2048-P2K-UIS_EP1_V635.elf (ELF for ElfPack 1.0, Motorola V635 version)
+* 2048-P2K-UIS_EP1_C650.elf (ELF for ElfPack 1.0, Motorola C650 version)
 
 The ELF-application has been tested on the following phones and firmware:
 
+* Motorola C650: R365_G_0B.D3.08R
 * Motorola SLVR L6: R3511_G_0A.52.45R_A
 * Motorola SLVR L6i: R3443H1_G_0A.65.0BR
 * Motorola ROKR E1: R373_G_0E.30.49R
 * Motorola V600: TRIPLETS_G_0B.09.72R
+* Motorola V635: R474_G_08.48.6FR
 * Motorola V360: R4513_G_08.B7.ACR
 * Motorola V235: R3512_G_0A.30.6CR
 * Motorola SLVR L7: R4513_G_08.B7.E0R_RB
 * Motorola RAZR V3i: R4441D_G_08.01.03R
 * Motorola RAZR V3r: R4515_G_08.BD.D3R
+* Motorola SLVR L7e: R452D_G_08.01.0AR
 
 Application type: GUI + UIS Canvas.
 
@@ -115,17 +138,29 @@ The P2K OS screenshots from Motorola ROKR E1:
 
 ![P2K Motorola E1 Screenshot 11 Main Desktop Screen](../image/P2K-E1-Screenshot11.png) ![P2K Motorola E1 Screenshot 12 Main Menu](../image/P2K-E1-Screenshot12.png) ![P2K Motorola E1 Screenshot 13 Multimedia Menu](../image/P2K-E1-Screenshot13.png) ![P2K Motorola E1 Screenshot 14 S/W Version](../image/P2K-E1-Screenshot14.png) ![P2K Motorola E1 Screenshot 15 Flex Version](../image/P2K-E1-Screenshot15.png)
 
+The P2K OS screenshots from Motorola KRZR K1:
+
+![P2K Motorola K1 Screenshot 1 Main Desktop Screen](../image/P2K-K1-Screenshot1.png) ![P2K Motorola K1 Screenshot 2 Main Menu](../image/P2K-K1-Screenshot2.png) ![P2K Motorola K1 Screenshot 3 Multimedia Menu](../image/P2K-K1-Screenshot3.png) ![P2K Motorola K1 Screenshot 4 S/W Version](../image/P2K-K1-Screenshot4.png) ![P2K Motorola K1 Screenshot 5 Flex Version](../image/P2K-K1-Screenshot5.png)
+
+The P2K OS screenshots from Motorola SLVR L7e:
+
+![P2K Motorola L7e Screenshot 1 Main Desktop Screen](../image/P2K-L7e-Screenshot1.png) ![P2K Motorola L7e Screenshot 2 Main Menu](../image/P2K-L7e-Screenshot2.png) ![P2K Motorola L7e Screenshot 3 Multimedia Menu](../image/P2K-L7e-Screenshot3.png) ![P2K Motorola L7e Screenshot 4 S/W Version](../image/P2K-L7e-Screenshot4.png) ![P2K Motorola L7e Screenshot 5 Flex Version](../image/P2K-L7e-Screenshot5.png)
+
+The P2K OS screenshots from Motorola SLVR L9:
+
+![P2K Motorola L9 Screenshot 1 Main Desktop Screen](../image/P2K-L9-Screenshot1.png) ![P2K Motorola L9 Screenshot 2 Main Menu](../image/P2K-L9-Screenshot2.png) ![P2K Motorola L9 Screenshot 3 Multimedia Menu](../image/P2K-L9-Screenshot3.png) ![P2K Motorola L9 Screenshot 4 S/W Version](../image/P2K-L9-Screenshot4.png) ![P2K Motorola L9 Screenshot 5 Flex Version](../image/P2K-L9-Screenshot5.png)
+
 Photos of 2048 game running on Motorola SLVR L6 and Motorola ROKR E1:
 
 ![2048-P2K-UIS ELF-application running on Motorola SLVR L6 and Motorola ROKR E1 Photo](../image/2048-P2K-UIS-L6-E1-Photo.jpg)
 
-Photos of 2048 game running on Motorola V235, thanks @Indepth6:
-
-![2048-P2K-UIS ELF-application running on Motorola V235 Photo](../image/2048-P2K-UIS-V235-Photo.jpg)
-
 Photos of 2048 game running on Motorola RAZR V3r, thanks @Blue_Screen_0f_Death:
 
-![2048-P2K-UIS ELF-application running on Motorola RAZR V3r Photo 1](../image/2048-P2K-UIS-V3r-Photo_1.jpg) ![2048-P2K-UIS ELF-application running on Motorola RAZR V3r Photo 2](../image/2048-P2K-UIS-V3r-Photo_2.jpg)
+![2048-P2K-UIS ELF-application running on Motorola RAZR V3r Photo 2](../image/2048-P2K-UIS-V3r-Photo_2.jpg)
+
+Photos of 2048 game running on Motorola SLVR L7e, thanks @fkcoder:
+
+![2048-P2K-UIS ELF-application running on Motorola SLVR L7e Photo](../image/2048-P2K-UIS-L7e-Photo.jpg)
 
 ## Versions
 
