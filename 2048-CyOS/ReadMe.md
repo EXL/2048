@@ -45,7 +45,7 @@ Get `2048-CyOS.app` (Classic) and `2048-CyOS_X.app` (Xtreme) application version
 * Cybiko CY-OS 1.2.2 HD6432241: A custom Renesas H8S/2245 @ 11.0592 MHz CPU by Cybiko.
 * Atmel AT90S2313-4SC: Coprocessor
 * AMIC/EliteMT LP62S2048X-70LLT x2: 256 KiB SRAM
-* Atmel AT45DB041A
+* Atmel AT45DB041A: 512 KiB FlashROM
 
 Thanks to **SHBEN** for the photos.
 
@@ -68,10 +68,10 @@ Copyright (C) 2000, 2001 Cybiko, Inc.
 
 ## Archive Links
 
-* http://www.piclist.com/techref/cybiko/sdkpro.htm
-* https://archive.org/details/cybiko
-* https://archive.org/details/cybiko-files
-* https://www.dbzoo.com/cybiko/cybiko
-* https://archive.org/details/gamedevelopersgu0000paze
-* https://www.schuerewegen.tk/cybiko/emu/cybiko_xtreme/
-* https://www.schuerewegen.tk/cybiko/emu/cybiko_classic_v2/
+* SDKs Download Links: http://www.piclist.com/techref/cybiko/sdkpro.htm
+* File archive #1: https://archive.org/details/cybiko
+* File archive #2: https://archive.org/details/cybiko-files
+* Wiki information: https://www.dbzoo.com/cybiko/cybiko
+* Game developer's guide to Cybiko book by Ernest Pazera: https://archive.org/details/gamedevelopersgu0000paze
+* Cybiko Xtreme emulatror: https://www.schuerewegen.tk/cybiko/emu/cybiko_xtreme/
+* Cybiko Classic emulatror: https://www.schuerewegen.tk/cybiko/emu/cybiko_classic_v2/
