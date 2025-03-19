@@ -20,7 +20,7 @@ all:
 	2pic res/score.pic res/score_1.bmp res/score_2.bmp
 
 	$(VCC) -DCYOS -O -c 2048.c -o 2048.o
-	$(VCC) -DCYOS -O -c 2048-CyOS.c -o 2048-CyOS.o
+	$(VCC) -DCYOS -O -c 2048-CyOS.cc -o 2048-CyOS.o
 	$(VCC) $(LIBS) 2048.o 2048-CyOS.o -o bytecode.bin
 
 	$(VCC) -R0 @res/filer_classic.list bytecode.bin -o $(APP_CLASSIC)
