@@ -186,7 +186,7 @@ static bool Action_Screenshot(void) {
 		int size = Graphics_get_bytes_total(g_main_module.m_gfx);
 		char *vbuf = Graphics_get_buf_addr(g_main_module.m_gfx);
 
-		FileOutput_write(p_file_output, g_bmp_4bpp_head, strlen(g_bmp_4bpp_head));
+		FileOutput_write(p_file_output, g_bmp_4bpp_head, sizeof(g_bmp_4bpp_head));
 
 		bmp = (char *) malloc((SCREEN_WIDTH * SCREEN_HEIGHT) / 2);
 
