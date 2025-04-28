@@ -1,0 +1,13 @@
+{
+    "display": "2048",
+    "filename": "./2048.mrp",
+    "appid": 1,
+    "version": 1,
+    "vendor": "gtrxAC, EXL",
+    "description": "Puzzle game",
+    "files": [
+        "./lib/start.mr",
+        "./bin.elf",
+        "./lib/cfunction.ext"
+    ]
+}
