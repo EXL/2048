@@ -1,18 +1,17 @@
-#define SE
-
-#include "..\\include\Lib_Clara.h"
-#include "..\\include\Dir.h"
-#include "..\\include\cfg_items.h"
+#include "..\include\Lib_Clara.h"
+#include "..\include\Dir.h"
+#include "..\include\cfg_items.h"
 
 #include "..\..\src\2048.h"
 
+#include "stdint.h"
 #include "conf_loader.h"
 #include "config_data.h"
 #include "icon32.h"
 #include "icon64.h"
 #include "rand.h"
 
-#define BOOKNAME "2048"
+#define BOOKNAME "2048_Book"
 #define DISPNAME "2048_Board"
 #define SAVED_FILE L"2048.sav"
 
@@ -76,6 +75,8 @@ typedef struct
     BOOK *book;
 } MSG;
 
+static MYBOOK *my_2048 = NULL;
+
 void elf_exit()
 {
     SUBPROC(mfree_adr(), &ELF_BEGIN);
@@ -125,9 +126,7 @@ static int reconfig_elf(void *mess, BOOK *book)
     if (!wstrcmpi(reconf->path, successed_config_path) && !wstrcmpi(reconf->name, successed_config_name))
     {
         InitConfig();
-
-        MYBOOK *mbk = (MYBOOK *)FindBook(is_my_book);
-        DispObject_InvalidateRect(GUIObject_GetDispObject(mbk->board), NULL);
+        DispObject_InvalidateRect(GUIObject_GetDispObject(my_2048->board), NULL);
         return 1;
     }
     return 0;
@@ -176,7 +175,7 @@ int board_gui_on_create(DISP_OBJ_2048 *disp)
     disp->tile_margin = disp->scr_width / (disp->margin_const * 4);
     disp->tile_size = disp->field_size / LINE_SIZE - disp->tile_margin * 2;
 
-    if ((GetChipID() & CHIPID_MASK) == CHIPID_DB3350)
+    if (my_2048->chip_id == CHIPID_DB3350)
     {
         if (disp->scr_height > 320) // Aino =)
             disp->score_y = 48;
@@ -192,7 +191,7 @@ void board_gui_on_close(DISP_OBJ_2048 *disp)
     TextID_Destroy(disp->score_txt);
 }
 
-void draw_tile(DISP_OBJ_2048 *disp, GC *gc, int value, int x, int y)
+static inline void draw_tile(DISP_OBJ_2048 *disp, GC *gc, int value, int x, int y)
 {
     int bg_color = e_background(value);
     int fg_color = e_foreground(value);
@@ -236,7 +235,7 @@ void draw_tile(DISP_OBJ_2048 *disp, GC *gc, int value, int x, int y)
     TextID_Destroy(disp->tile_txt);
 }
 
-void draw_score(DISP_OBJ_2048 *disp)
+static inline void draw_score(DISP_OBJ_2048 *disp)
 {
     int text_color = COLOR_TEXT;
     if (e_win || e_lose)
@@ -259,7 +258,7 @@ void draw_score(DISP_OBJ_2048 *disp)
     }
 }
 
-void draw_final(DISP_OBJ_2048 *disp, GC *gc)
+static inline void draw_final(DISP_OBJ_2048 *disp, GC *gc)
 {
     TEXTID text = e_win ? STR("You win!") : STR("Game over!");
 
@@ -302,7 +301,7 @@ void board_gui_on_redraw(DISP_OBJ_2048 *disp, int, int, int)
         draw_final(disp, gc);
 }
 
-void save_state(DISP_OBJ_2048 *disp)
+static inline void save_state(DISP_OBJ_2048 *disp)
 {
     memset(disp->tmp_board, 0, BOARD_SIZE * sizeof(int));
     memcpy(disp->tmp_board, e_board, BOARD_SIZE * sizeof(int));
@@ -311,7 +310,7 @@ void save_state(DISP_OBJ_2048 *disp)
     disp->tmp_score = e_score;
 }
 
-void load_state(DISP_OBJ_2048 *disp)
+static inline void load_state(DISP_OBJ_2048 *disp)
 {
     memcpy(e_board, disp->tmp_board, BOARD_SIZE * sizeof(int));
     e_win = disp->tmp_win;
@@ -597,15 +596,15 @@ static int maindisplay_enter_action(void *r0, BOOK *book)
     return 1;
 }
 
-const PAGE_MSG My_Main_Page[] @ "DYN_PAGE" =
+static const PAGE_MSG My_Main_Page[] @ "DYN_PAGE" =
 {
     PAGE_ENTER_EVENT_TAG, maindisplay_enter_action,
     NIL_EVENT_TAG, NULL
 };
 
-const PAGE_DESC MyMain_Page = {"2048_Main_Page", 0, My_Main_Page};
+static const PAGE_DESC MyMain_Page = {"2048_Main_Page", 0, My_Main_Page};
 
-const PAGE_MSG My_Base_Page[] @ "DYN_PAGE" =
+static const PAGE_MSG My_Base_Page[] @ "DYN_PAGE" =
 {
     ELF_SHOW_INFO_EVENT, show_author_info,
     ELF_TERMINATE_EVENT, terminate_elf,
@@ -614,7 +613,7 @@ const PAGE_MSG My_Base_Page[] @ "DYN_PAGE" =
     NIL_EVENT_TAG, NULL
 };
 
-const PAGE_DESC MyBase_Page = {"2048_Base_Page", 0, My_Base_Page};
+static const PAGE_DESC MyBase_Page = {"2048_Base_Page", 0, My_Base_Page};
 
 void on_close_book(BOOK *book)
 {
@@ -636,45 +635,46 @@ void on_close_book(BOOK *book)
 
 void create_2048_book()
 {
-    MYBOOK *mbk = (MYBOOK *)malloc(sizeof(MYBOOK));
-    memset(mbk, 0, sizeof(MYBOOK));
-    if (!CreateBook(mbk, on_close_book, &MyBase_Page, BOOKNAME, NO_BOOK_ID, NULL))
+    my_2048 = (MYBOOK *)malloc(sizeof(MYBOOK));
+    memset(my_2048, 0, sizeof(MYBOOK));
+    if (!CreateBook(my_2048, on_close_book, &MyBase_Page, BOOKNAME, NO_BOOK_ID, NULL))
     {
-        mfree(mbk);
+        mfree(my_2048);
         return;
     }
-    mbk->board = 0;
-    mbk->feedback = 0;
-    mbk->key_count = 0;
-    mbk->chip_id = GetChipID() & CHIPID_MASK;
+    my_2048->board = 0;
+    my_2048->feedback = 0;
+    my_2048->key_count = 0;
+    my_2048->chip_id = GetChipID() & CHIPID_MASK;
 
     if (Display_GetWidth(0) == 240)
     {
         void *picon64 = malloc(sizeof(icon64_png));
         memcpy(picon64, icon64_png, sizeof(icon64_png));
-        ImageID_GetIndirect(picon64, sizeof(icon64_png), NULL, L"png", &mbk->feedback_icn);
+        ImageID_GetIndirect(picon64, sizeof(icon64_png), NULL, L"png", &my_2048->feedback_icn);
     }
     else
     {
         void *picon32 = malloc(sizeof(icon32_png));
         memcpy(picon32, icon32_png, sizeof(icon32_png));
-        ImageID_GetIndirect(picon32, sizeof(icon32_png), NULL, L"png", &mbk->feedback_icn);
+        ImageID_GetIndirect(picon32, sizeof(icon32_png), NULL, L"png", &my_2048->feedback_icn);
     }
 
-    BookObj_GotoPage(mbk, &MyMain_Page);
+    BookObj_GotoPage(my_2048, &MyMain_Page);
 }
 
 int main()
 {
-    MYBOOK *mbk = (MYBOOK *)FindBook(is_my_book);
-    if (mbk)
+    my_2048 = (MYBOOK *)FindBook(is_my_book);
+    if (my_2048)
     {
-        BookObj_SetFocus(mbk, 0);
+        BookObj_SetFocus(my_2048, 0);
         SUBPROC(elf_exit);
     }
     else
     {
         InitConfig();
+        randomize();
         create_2048_book();
     }
 
