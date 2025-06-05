@@ -550,7 +550,7 @@
         </option>
         <option>
           <name>OutputFile</name>
-          <state>main.elf</state>
+          <state>2048.elf</state>
         </option>
         <option>
           <name>OutputFormat</name>
@@ -962,6 +962,7 @@
           <name>CCDefines</name>
           <state>NDEBUG</state>
           <state>OLDFUNCTIONS</state>
+          <state>SE</state>
         </option>
         <option>
           <name>CCPreprocFile</name>
@@ -1031,7 +1032,7 @@
         <option>
           <name>CCAllowList</name>
           <version>1</version>
-          <state>1001111</state>
+          <state>1111111</state>
         </option>
         <option>
           <name>CCObjUseModuleName</name>
@@ -1170,7 +1171,7 @@
         <option>
           <name>CCInlineThreshold</name>
           <version>0</version>
-          <state>1</state>
+          <state>15</state>
         </option>
       </data>
     </settings>
@@ -1374,7 +1375,7 @@
         </option>
         <option>
           <name>OutputFile</name>
-          <state>HelloWorld.elf</state>
+          <state>2048.elf</state>
         </option>
         <option>
           <name>OutputFormat</name>
@@ -1650,7 +1651,7 @@
     </settings>
   </configuration>
   <file>
-    <name>$PROJ_DIR$\..\C++\_cpp2.cpp</name>
+    <name>$PROJ_DIR$\..\..\src\2048.c</name>
   </file>
   <file>
     <name>$PROJ_DIR$\..\C++\_cpp2.cpp</name>
@@ -2113,12 +2114,11 @@
     <name>$PROJ_DIR$\..\include\func.asm</name>
   </file>
   <file>
-    <name>$PROJ_DIR$\..\..\src\2048.c</name>
-  </file>
-  <file>
     <name>$PROJ_DIR$\main.c</name>
   </file>
   <file>
     <name>$PROJ_DIR$\rand.c</name>
   </file>
 </project>
+
+
