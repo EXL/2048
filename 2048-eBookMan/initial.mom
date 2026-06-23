@@ -1,0 +1,9 @@
+object Franklin _GUI pkg _GUI.pkg
+object Franklin _System fnt _System.fnt
+object Franklin _Default fnt _Default.fnt
+sobject Franklin _alarms timer _alarms.dat
+sobject Franklin _SysSet_ dat _settings.dat
+object Franklin _jingles piezo _jingles.dat
+
+object Developer game2048 exe game2048.fxe
+	icon	game2048.icn 2048

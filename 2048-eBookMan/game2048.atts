@@ -1,0 +1,29 @@
+#
+# This file contains attributes common to all things.
+#
+# Format is:  NAME|permissions|VALUE
+
+# Set these attributes to your desired MOM object name
+#
+_PUB|global+read-only|"Franklin"
+_NAME|global+read-only|"2048-eBookMan"
+
+# If your object has an icon, this attribute sets the icon label text
+# Restrictions: two rows of 9 characters, spaces break to the next line.
+# This example "GUI Test App" will appear as two lines: "GUI Test" and "App"
+_ITXT|global|"2048-eBookMan Game"
+
+#
+# The attributes below should rarely have to change
+#
+
+# Launcher category setting
+_LCAT|nosign+global|"PROGRAMS"
+
+# file extension
+_EXT|global+read-only|"fxe"
+
+# system permissions, apps are read-only, take off the "read-only" 
+# for read/write permission
+_PERM|global+read-only|x"00000000"
+
