@@ -37,6 +37,13 @@ extern "C" {
 #define GAME_DONE                      (1)
 
 /******************* GLOBALS *************************************************/
+#define TILE_SIZE                      (42)
+#define TILE_MARGIN                    (5)
+#define OFFSET_COORD(coord)            (coord * (TILE_MARGIN + TILE_SIZE))
+
+#define STR_LEN_VALUE                  (5)
+#define STR_LEN_SCORE                  (16)
+
 class CGameWindow;
 
 BOOL SoundOn = TRUE;
@@ -50,27 +57,210 @@ CMenu *GameMenu;
 CMenu *HelpMenu;
 CGameWindow *GameWindow;
 
+typedef struct tagCoordinates {
+	int x_score;
+} Coordinates;
+
 class CGameWindow : public CWindow {
 	CLabel *ScoreLabel;
+	Coordinates Coords;
 
  public:
 	CGameWindow(U16 id, const char *title) : CWindow(id, 0, 0, 200, 240, 0, TRUE, FALSE) {
 		EnableOSNotify();
+		
+		SetupCoords(&Coords, FALSE);
 
 		SetTitle(title);
 		
-		ScoreLabel = new CLabel(LABEL_SCORE_ID, "Score: 99999", GUI_GetFont(9, CTRL_BOLD));
-		AddChild(ScoreLabel, 4, 2);
+		ScoreLabel = new CLabel(LABEL_SCORE_ID, "Score: 00000", GUI_GetFont(9, CTRL_BOLD));
+		AddChild(ScoreLabel, Coords.x_score, 2);
+	}
+	
+	void SetupCoords(Coordinates *c, BOOL landscape) {
+		if (landscape) {
+			c->x_score = 120;
+		} else {
+			c->x_score = 120;
+		}
 	}
 
 	S32 MsgHandler(MSG_TYPE type, CViewable *object, S32 data) {
+		switch (type) {
+			case MSG_OS_NOTIFY:
+				switch ((U16) data) {
+					case NTFY_FOREGROUND:
+					case NTFY_POWER_ON:
+						MainMenuBar.Hide();
+						GameWindow->Show();
+						GUI_UpdateNow();
+						return 1;
+					case NTFY_BACKGROUND:
+						Hide();
+						return 1;
+					default:
+						break; 
+				}
+				break;
+			case MSG_PEN_DOWN:
+				HandleTouchEvent(data);
+				break;
+			case MSG_KEY:
+				switch ((U16) data) {
+					case K_LEFT:
+						e_key(K_LEFT); Draw();
+						break;
+					case K_RIGHT:
+						e_key(K_RIGHT); Draw();
+						break;
+					case K_UP:
+					case K_PAGE_UP:
+					case K_TOP:
+					case K_JOG_UP:
+						e_key(K_UP); Draw();
+						break;
+					case K_DOWN:
+					case K_PAGE_DOWN:
+					case K_BOTTOM:
+					case K_JOG_DOWN:
+						e_key(K_DOWN); Draw();
+						break;
+					case K_BACKSPACE:
+						e_key(K_BACKSPACE); Draw();
+						break;
+					default:
+						break; 
+				}
+				break;
+			default:
+				break;
+		}
 		return CWindow::MsgHandler(type, object, data);
 	}
 	
+	void HandleTouchEvent(S32 data) {
+		const U16 x = data >> 16;
+		const U16 y = data & 0xFFFF;
+		const U16 w4 = GetWidth() / 4;
+		const U16 h4 = GetHeight() / 4;
+		
+		RECT u;
+		u.x = w4;
+		u.y = 0;
+		u.width = w4 + w4 * 2;
+		u.height = 0 + h4;
+		
+		RECT d;
+		d.x = w4;
+		d.y = h4 * 3;
+		d.width = w4 + w4 * 2;
+		d.height = h4 * 3 + h4;
+		
+		RECT l;
+		l.x = 0;
+		l.y = h4;
+		l.width = 0 + w4;
+		l.height = h4 + h4 * 2;
+		
+		RECT r;
+		r.x = w4 * 3;
+		r.y = h4;
+		r.width = w4 * 3 + w4;
+		r.height = h4 + h4 * 2;
+
+		if (RectContainsPoint(&u, x, y)) {
+			e_key(K_UP); Draw();
+		} else if (RectContainsPoint(&d, x, y)) {
+			e_key(K_DOWN); Draw();
+		} else if (RectContainsPoint(&l, x, y)) {
+			e_key(K_LEFT); Draw();
+		} else if (RectContainsPoint(&r, x, y)) {
+			e_key(K_RIGHT); Draw();
+		}
+	}
+	
+	inline BOOL RectContainsPoint(const RECT *rect, U16 x, U16 y) {
+		return (x >= rect->x && x < rect->width && y >= rect->y && y < rect->height);
+	}
+	
 	void Draw() {
-		DrawBackground();
-		DrawTitle();
-		DrawChildren();
+		CWindow::Draw();
+		GameDraw();
+	}
+	
+	void GameDraw() {
+		// DrawBackground
+		for (int y = 0; y < LINE_SIZE; ++y) {
+			for (int x = 0; x < LINE_SIZE; ++x) {
+				GameDrawTile(e_board[x + y * LINE_SIZE], x, y);
+			}
+		}
+		GameDrawFinal();
+	}
+	
+	void GameDrawTile(int value, int x, int y) {
+		const int center = (TILE_SIZE * 4 + TILE_MARGIN * 3) / 2;
+		int lX = GetWidth() / 2 - center + OFFSET_COORD(x) - (TILE_MARGIN / 2) - 1;
+		int lY = GetHeight() / 2 - center + OFFSET_COORD(y) - (TILE_MARGIN * 2) - 3;
+		
+		DrawRectFilled(lX + 1, lY + 1, TILE_SIZE, TILE_SIZE, COLOR_GRAY53);
+		
+		if (value) {
+			char num[STR_LEN_VALUE];
+			
+			sprintf(num, "%d", value);
+			
+			DrawRectFilled(lX, lY, TILE_SIZE, TILE_SIZE, COLOR_WHITE);
+			DrawRect(lX, lY, TILE_SIZE, TILE_SIZE, COLOR_BLACK);
+			
+			const int font_size = FixUpTextCoords(&lX, &lY, value);
+			DrawText(num, lX, lY, GUI_GetFont(font_size, CTRL_BOLD));
+		}
+	}
+
+	int FixUpTextCoords(int *x, int *y, int value) {
+		if (value >= 2 && value <= 8) {
+			*x = *x + (TILE_SIZE / 3) + 1;
+			*y = *y + (TILE_SIZE / 3) - 1;
+			return 16;
+		} else if (value >= 16 && value <= 64) {
+			*x = *x + (TILE_SIZE / 3) - 4;
+			*y = *y + (TILE_SIZE / 3) - 1;
+			return 16;
+		} else if (value >= 128 && value <= 512) {
+			*x = *x + (TILE_SIZE / 3) - 6;
+			*y = *y + (TILE_SIZE / 3) + 2;
+			return 12;
+		}
+		*x = *x + (TILE_SIZE / 3) - 6;
+		*y = *y + (TILE_SIZE / 3) + 2;
+		return 9;
+	}
+
+	void GameDrawFinal() {
+		char score[STR_LEN_SCORE];
+		sprintf(score, "Score: %05d", e_score);
+		ScoreLabel->SetLabel(score);
+
+		if (e_win || e_lose) {
+			const int w = 140;
+			const int h = 60;
+			int x = (GetWidth() / 2) -  w / 2;
+			int y = (GetHeight() / 2) -  h / 2;
+			x -= 2;
+			y -= 10;
+
+			InvertRect(0, 0, GetWidth(), GetHeight());
+
+			DrawRectFilled(x + 1, y + 1, w, h, COLOR_GRAY53);
+			DrawRectFilled(x, y, w, h, COLOR_WHITE);
+			DrawRect(x, y, w, h, COLOR_BLACK);
+
+			const char *label = (e_win) ? "You Won!" : "Game Over!";
+			x += (e_win) ? 18 : 6;
+			y += 22;
+			DrawText(label, x, y, GUI_GetFont(16, CTRL_BOLD));
+		}
 	}
 };
 
@@ -106,7 +296,7 @@ void Init_Menu(void) {
 	HelpMenu = new CMenu(HELPMENU_WINDOW_ID);
 	HelpMenu->SetNumRows(2);
 	HelpMenu->SetRow(0, HELPMENU_RULES, "Rules...");
-	HelpMenu->SetRow(1, HELPMENU_ABOUT, PKG_String(GUI_pkg, GUI_MENU_ABOUT), ' ');
+	HelpMenu->SetRow(1, HELPMENU_ABOUT, "About...");
 	MainMenuBar.AddButton(
 		new CPushButton(
 			HELPMENU_BUTTON_ID, 0, 0,
@@ -142,7 +332,7 @@ S32 GUI_main(MSG_TYPE type, CViewable *object, S32 data) {
 				HOSTIO_INLINE_BREAKPOINT();
 			}
 			
-			e_init(1, 2, 3, 4, 5);
+			e_init(K_BACKSPACE, K_LEFT, K_RIGHT, K_UP, K_DOWN);
 			
 			Init_Jingles();
 			Init_Menu(); // must init menu after jingles
@@ -164,6 +354,8 @@ S32 GUI_main(MSG_TYPE type, CViewable *object, S32 data) {
 				case GAMEMENU_LOAD:
 					break;
 				case GAMEMENU_RESET:
+					e_key(K_BACKSPACE);
+					GameWindow->Draw();
 					break;
 				case GAMEMENU_EXIT:
 					GUI_Exit();
