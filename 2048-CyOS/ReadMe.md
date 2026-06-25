@@ -3,14 +3,14 @@
 
 The Cybiko is a line of personal digital assistants and handheld game consoles first released by Cybiko Inc. in 2000. Cybiko handhelds work on the CyOS platform. Founded in 1998 in Lund, Sweden. Cybiko Inc. was a startup company founded by David Yang; the eponymous PDA was first test marketed in New York in April 2000 and rolled out nationwide in May 2000.
 
-![2048-ARIPOS Screenshot](../image/2048-CyOS-Screenshot.png)
+![2048-CyOS Screenshot](../image/2048-CyOS-Screenshot.png)
 
 | Device         | CPU                              | Coprocessor             | RAM     | ROM     | LCD                   |
 |----------------|----------------------------------|-------------------------|---------|---------|-----------------------|
 | Cybiko Classic | Hitachi H8S/2241 @ 11.0592 MHz   | Atmel AT90S2313 @ 4 MHz | 512 KiB | 512 KiB | 160x100, 2bpp, 4 gray |
 | Cybiko Xtreme  | Hitachi H8S/2323 @ 18 MHz        | Atmel AT90S2313 @ 4 MHz | 1.5 MiB | 512 KiB | 160x100, 2bpp, 4 gray |
 
-![2048-ARIPOS on C-Pen 600MX Photo](../image/2048-CyOS-Cybiko-Xtreme-Photo-1.jpg)
+![2048-CyOS on Cybiko Xtreme Photo](../image/2048-CyOS-Cybiko-Xtreme-Photo-1.jpg)
 
 *Thanks SHBEN (@SHU8IT) for this photo.*
 
@@ -48,8 +48,6 @@ Get `2048-CyOS.app` (Classic) and `2048-CyOS_X.app` (Xtreme) application version
 * Atmel AT45DB041A: 512 KiB FlashROM
 
 Thanks to **SHBEN** for the photos.
-
-## C-Pen Development Environment
 
 ## Versions
 
