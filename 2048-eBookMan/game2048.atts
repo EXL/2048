@@ -23,7 +23,6 @@ _LCAT|nosign+global|"PROGRAMS"
 # file extension
 _EXT|global+read-only|"fxe"
 
-# system permissions, apps are read-only, take off the "read-only" 
+# system permissions, apps are read-only, take off the "read-only"
 # for read/write permission
 _PERM|global+read-only|x"00000000"
-

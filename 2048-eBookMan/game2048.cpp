@@ -1,6 +1,7 @@
 #include <assert.h>
-#include <stdlib.h>      // standard libraries include files 
+#include <stdlib.h>      // standard libraries include files
 #include <string.h>
+#include <stdio.h>
 #include <time.h>
 #include <math.h>
 #include <ctype.h>
@@ -73,6 +74,14 @@ CMenu *GameMenu;
 CMenu *HelpMenu;
 CGameWindow *GameWindow;
 
+typedef struct tagSave {
+	time_t time;
+	int board[BOARD_SIZE];
+	int score;
+	int win;
+	int lose;
+} Save;
+
 typedef struct tagCoordinates {
 	int x_score;
 	int win_w;
@@ -89,9 +98,9 @@ class CGameWindow : public CWindow {
  public:
 	CGameWindow(U16 id, const char *title) : CWindow(id, 0, 0, 0, 0, 0, TRUE, FALSE) {
 		EnableOSNotify();
-		
+
 		SetupWindow(title);
-		
+
 		ScoreLabel = new CLabel(LABEL_SCORE_ID, "Score: 00000", GUI_GetFont(9, CTRL_BOLD));
 		AddChild(ScoreLabel, Coords.x_score, 2);
 
@@ -143,7 +152,7 @@ class CGameWindow : public CWindow {
 						Hide();
 						return 1;
 					default:
-						break; 
+						break;
 				}
 				break;
 			case MSG_PEN_DOWN:
@@ -173,7 +182,7 @@ class CGameWindow : public CWindow {
 						e_key(K_BACKSPACE); SetJinglePlayed(FALSE); Draw();
 						break;
 					default:
-						break; 
+						break;
 				}
 				break;
 			default:
@@ -187,25 +196,25 @@ class CGameWindow : public CWindow {
 		const U16 y = data & 0xFFFF;
 		const U16 w4 = GetWidth() / 4;
 		const U16 h4 = GetHeight() / 4;
-		
+
 		RECT u;
 		u.x = w4;
 		u.y = 0;
 		u.width = w4 + w4 * 2;
 		u.height = 0 + h4;
-		
+
 		RECT d;
 		d.x = w4;
 		d.y = h4 * 3;
 		d.width = w4 + w4 * 2;
 		d.height = h4 * 3 + h4;
-		
+
 		RECT l;
 		l.x = 0;
 		l.y = h4;
 		l.width = 0 + w4;
 		l.height = h4 + h4 * 2;
-		
+
 		RECT r;
 		r.x = w4 * 3;
 		r.y = h4;
@@ -222,18 +231,17 @@ class CGameWindow : public CWindow {
 			e_key(K_RIGHT); Draw();
 		}
 	}
-	
+
 	inline BOOL RectContainsPoint(const RECT *rect, U16 x, U16 y) {
 		return (x >= rect->x && x < rect->width && y >= rect->y && y < rect->height);
 	}
-	
+
 	void Draw() {
 		CWindow::Draw();
 		GameDraw();
 	}
-	
+
 	void GameDraw() {
-		// DrawBackground
 		for (int y = 0; y < LINE_SIZE; ++y) {
 			for (int x = 0; x < LINE_SIZE; ++x) {
 				GameDrawTile(e_board[x + y * LINE_SIZE], x, y);
@@ -241,22 +249,22 @@ class CGameWindow : public CWindow {
 		}
 		GameDrawFinal();
 	}
-	
+
 	void GameDrawTile(int value, int x, int y) {
 		const int center = (Coords.tile_size * 4 + Coords.tile_margin * 3) / 2;
 		int lX = GetWidth() / 2 - center + OFFSET_COORD(x) - (Coords.tile_margin / 2) - 1;
 		int lY = GetHeight() / 2 - center + OFFSET_COORD(y) - (Coords.tile_margin * 2) - 3;
-		
+
 		DrawRectFilled(lX + 1, lY + 1, Coords.tile_size, Coords.tile_size, COLOR_GRAY53);
-		
+
 		if (value) {
 			char num[STR_LEN_VALUE];
-			
+
 			sprintf(num, "%d", value);
-			
+
 			DrawRectFilled(lX, lY, Coords.tile_size, Coords.tile_size, COLOR_WHITE);
 			DrawRect(lX, lY, Coords.tile_size, Coords.tile_size, COLOR_BLACK);
-			
+
 			const int font_size = FixUpTextCoords(&lX, &lY, value);
 			DrawText(num, lX, lY, GUI_GetFont(font_size, CTRL_BOLD));
 		}
@@ -321,6 +329,72 @@ class CGameWindow : public CWindow {
 
 	void SetJinglePlayed(BOOL val) {
 		JinglePlayed = val;
+	}
+
+	BOOL GameSave() {
+		Save save;
+		FILE *fp = fopen("2048.sav", "wb");
+		if (!fp) {
+			GUI_TextWindow(0, "Save Game", "Error:\n\nCannot open '2048.sav' file!");
+			return FALSE;
+		}
+
+		const time_t now = time(0);
+
+		save.time = now;
+		for (int i = 0; i < BOARD_SIZE; ++i) {
+			save.board[i] = e_board[i];
+		}
+		save.score = e_score;
+		save.win = e_win;
+		save.lose = e_lose;
+
+		int c = fwrite(&save, sizeof(Save), 1, fp);
+		if (c != 1) {
+			GUI_TextWindow(0, "Save Game", "Error:\n\nCannot write '2048.sav' file!");
+			fclose(fp);
+			return FALSE;
+		}
+		char date_str[STR_LEN_TEXT_BUFFER / 6];
+		char save_str[STR_LEN_TEXT_BUFFER / 3];
+		ctime_r(&now, date_str);
+		sprintf(save_str, "State on:\n%s\n%s", date_str, "Saved '2048.sav' file!");
+		GUI_TextWindow(0, "Save Game", save_str);
+		fclose(fp);
+		return TRUE;
+	}
+
+	BOOL GameLoad() {
+		Save load;
+		FILE *fp = fopen("2048.sav", "rb");
+		if (!fp) {
+			GUI_TextWindow(0, "Load Game", "Error:\n\nCannot open '2048.sav' file!");
+			return FALSE;
+		}
+		int c = fread(&load, sizeof(Save), 1, fp);
+		if (c != 1) {
+			GUI_TextWindow(0, "Load Game", "Error:\n\nCannot read '2048.sav' file!");
+			fclose(fp);
+			return FALSE;
+		}
+
+		for (int i = 0; i < BOARD_SIZE; ++i) {
+			 e_board[i] = load.board[i];
+		}
+		e_score = load.score;
+		e_win = load.win;
+		e_lose = load.lose;
+		
+		char date_str[STR_LEN_TEXT_BUFFER / 6];
+		char save_str[STR_LEN_TEXT_BUFFER / 3];
+		ctime_r(&load.time, date_str);
+		sprintf(save_str, "State on:\n%s\n%s", date_str, "Loaded '2048.sav' file!");
+		GUI_TextWindow(0, "Load Game", save_str);
+		fclose(fp);
+
+		Draw();
+
+		return TRUE;
 	}
 };
 
@@ -396,12 +470,12 @@ S32 GUI_main(MSG_TYPE type, CViewable *object, S32 data) {
 			if (OS_is_present && hostIO_am_I_the_current_task()) {
 				HOSTIO_INLINE_BREAKPOINT();
 			}
-			
+
 			e_init(K_BACKSPACE, K_LEFT, K_RIGHT, K_UP, K_DOWN);
 			
 			Init_Jingles();
 			Init_Menu(); // must init menu after jingles
-			
+
 			GameWindow = new CGameWindow(GAME_WINDOW_ID, "2048-eBookMan");
 			return 1;
 		case MSG_KEY:
@@ -417,10 +491,10 @@ S32 GUI_main(MSG_TYPE type, CViewable *object, S32 data) {
 					GameWindow->Draw();
 					break;
 				case GAMEMENU_SAVE:
-					GUI_TextWindow(0, "Save 2048 State", "Not yet implemented");
+					GameWindow->GameSave();
 					break;
 				case GAMEMENU_LOAD:
-					GUI_TextWindow(0, "Load 2048 State", "Not yet implemented");
+					GameWindow->GameLoad();
 					break;
 				case GAMEMENU_ORIENTATION:
 					GUI_SetOrientation(!GUI_GetOrientation());
@@ -439,7 +513,8 @@ S32 GUI_main(MSG_TYPE type, CViewable *object, S32 data) {
 					break;
 				case HELPMENU_RULES:
 					char help_str[STR_LEN_TEXT_BUFFER];
-					sprintf(help_str, "%s\n\n%s\n\n%s\n\n%s", STR_HELP_1, STR_HELP_2, STR_HELP_3, STR_HELP_4);
+					sprintf(help_str, "%s\n\n%s\n\n%s\n\n%s",
+						STR_HELP_1, STR_HELP_2, STR_HELP_3, STR_HELP_4);
 					GUI_TextWindow(0, "Rules of 2048 Game", help_str);
 					break;
 				case HELPMENU_ABOUT:

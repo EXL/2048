@@ -1,8 +1,8 @@
-#  (c)2000 Franklin Electronic Publishers, Inc. Burlington, NJ.
-#  All rights reserved. */
+#  (c) 2000 Franklin Electronic Publishers, Inc. Burlington, NJ.
+#  All rights reserved.
 #
 #
-#	File: game2048/Makefile
+#  File: game2048/Makefile
 #
 
 APPNAME = game2048
