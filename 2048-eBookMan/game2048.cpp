@@ -333,9 +333,9 @@ class CGameWindow : public CWindow {
 
 	BOOL GameSave() {
 		Save save;
-		FILE *fp = fopen("2048.sav", "wb");
+		FILE *fp = fopen("2048-eBookMan.sav", "wb");
 		if (!fp) {
-			GUI_TextWindow(0, "Save Game", "Error:\n\nCannot open '2048.sav' file!");
+			GUI_Alert(ALERT_ERROR, "Save Error:\n\nCannot open file:\n'2048-eBookMan.sav'!");
 			return FALSE;
 		}
 
@@ -351,32 +351,36 @@ class CGameWindow : public CWindow {
 
 		int c = fwrite(&save, sizeof(Save), 1, fp);
 		if (c != 1) {
-			GUI_TextWindow(0, "Save Game", "Error:\n\nCannot write '2048.sav' file!");
+			GUI_Alert(ALERT_ERROR, "Save Error:\n\nCannot write file:\n'2048-eBookMan.sav'!");
 			fclose(fp);
 			return FALSE;
 		}
+		fclose(fp);
+
 		char date_str[STR_LEN_TEXT_BUFFER / 6];
 		char save_str[STR_LEN_TEXT_BUFFER / 3];
 		ctime_r(&now, date_str);
-		sprintf(save_str, "State on:\n%s\n%s", date_str, "Saved '2048.sav' file!");
-		GUI_TextWindow(0, "Save Game", save_str);
-		fclose(fp);
+		sprintf(save_str,
+			"%s\n\nState on:\n%s", "Saved Game State:\n'2048-eBookMan.sav'!", date_str);
+		GUI_Alert(ALERT_INFO, save_str);
+
 		return TRUE;
 	}
 
 	BOOL GameLoad() {
 		Save load;
-		FILE *fp = fopen("2048.sav", "rb");
+		FILE *fp = fopen("2048-eBookMan.sav", "rb");
 		if (!fp) {
-			GUI_TextWindow(0, "Load Game", "Error:\n\nCannot open '2048.sav' file!");
+			GUI_Alert(ALERT_ERROR, "Load Error:\n\nCannot open file:\n'2048-eBookMan.sav'!");
 			return FALSE;
 		}
 		int c = fread(&load, sizeof(Save), 1, fp);
 		if (c != 1) {
-			GUI_TextWindow(0, "Load Game", "Error:\n\nCannot read '2048.sav' file!");
+			GUI_Alert(ALERT_ERROR, "Load Error:\n\nCannot read file:\n'2048-eBookMan.sav'!");
 			fclose(fp);
 			return FALSE;
 		}
+		fclose(fp);
 
 		for (int i = 0; i < BOARD_SIZE; ++i) {
 			 e_board[i] = load.board[i];
@@ -384,13 +388,13 @@ class CGameWindow : public CWindow {
 		e_score = load.score;
 		e_win = load.win;
 		e_lose = load.lose;
-		
+
 		char date_str[STR_LEN_TEXT_BUFFER / 6];
-		char save_str[STR_LEN_TEXT_BUFFER / 3];
+		char load_str[STR_LEN_TEXT_BUFFER / 3];
 		ctime_r(&load.time, date_str);
-		sprintf(save_str, "State on:\n%s\n%s", date_str, "Loaded '2048.sav' file!");
-		GUI_TextWindow(0, "Load Game", save_str);
-		fclose(fp);
+		sprintf(load_str,
+			"%s\n\nState on:\n%s", "Loaded Game State:\n'2048-eBookMan.sav'!", date_str);
+		GUI_Alert(ALERT_INFO, load_str);
 
 		Draw();
 
