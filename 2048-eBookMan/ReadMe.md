@@ -37,7 +37,8 @@ eBookMan OS 020419: [[Download]](https://web.archive.org/web/20030104060658/http
 
 ![eBookMan OS Screenshot 1](../image/eBookMan-OS-Screenshot1.png) ![eBookMan OS Screenshot 2](../image/eBookMan-OS-Screenshot2.png) ![eBookMan OS Screenshot 3](../image/eBookMan-OS-Screenshot3.png)
 
-// eBookMan Photos
+![Hardware Photo 1](../image/hw/Ectaco-Partner-B-3-Photo1.jpg)
+*Note: Thanks to amix.*
 
 ![Hardware Photo 1](../image/hw/Franklin-eBookMan-EBM-911_HW_Photo1.jpg) ![Hardware Photo 1](../image/hw/Franklin-eBookMan-EBM-911_HW_Photo2.jpg)
 *Note: Thanks to SHBEN.*
